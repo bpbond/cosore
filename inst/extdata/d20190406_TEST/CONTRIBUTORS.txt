@@ -1,23 +1,23 @@
 # Contributor information
 #
 # First name: first name
-# Last name: last name
+# Family name: family (last) name
 # Email: email address
 # ORCID: ORCID ID (see https://orcid.org)
 # Role [optional]: CRediT role (see https://www.casrai.org/credit.html)
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
---------------------------------------
+# --------------------------------------
 First name: Ben
-Last name: Bond-Lamberty
+Family name: Bond-Lamberty
 Email: bondlamberty@pnnl.gov
-ORCID: 
+ORCID: 0000-0001-9525-4633
 Role: Funding acquisition, Investigation
---------------------------------------
+# --------------------------------------
 First name: Stephanie
-Last name: Pennington
+Family name: Pennington
 Email: stephanie.pennington@pnnl.gov
 ORCID: 
 Role: Investigation, Data curation
 
-# paste further records below as needed
+# paste further records below as needed, beginning each with "First name" line

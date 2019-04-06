@@ -6,7 +6,7 @@
 # Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #     "LI-8100A" (no multiplexer), others...
 # Ecosystem type: one-word general summary (Forest, Agriculture, Shrubland, Wetland)
-# Primary publication: DOI (preferred) or other publication information that should 
+# Primary publication: DOI (preferred) or other primary publication information that should 
 #     be cited when these data are used. Leave empty if unpublished.
 # Other publications [optional]: comma-separated DOIs
 #
