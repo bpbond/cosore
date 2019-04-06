@@ -11,6 +11,7 @@ Going for minimal here. Optional in _italics_. Other columns could be added to a
 
 ### Dataset and site information
 
+* Unique ID (here, or generated?)
 * Site name
 * Longitude, latitude
 * Instrument type (starting with LI-8150; will archive other data but no code for them yet)
