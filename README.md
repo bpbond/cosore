@@ -1,7 +1,9 @@
 # csrdb
 R package: continuous soil respiration database
 
-Only free use data accepted. All contributors included on 'definition' paper, and we encourage citations and involvement by database users.
+Only free use data accepted.
+
+All contributors included on database definition paper. We encourage, but do not require, database users to cite all backing publications, and involve data contributors.
 
 ## What would minimal (core) metadata look like?
 
@@ -12,7 +14,7 @@ Going for minimal here. Optional in _italics_. Other columns could be added to a
 * Site name
 * Longitude, latitude
 * Ecosystem type (Agriculture, Forest, Shrubland, Wetland)
-* Primary publication (DOI)
+* Primary publication (DOI) - if empty assume unpublished
 * _Other publications_
 
 ### Contributor information
