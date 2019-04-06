@@ -1,5 +1,5 @@
 # csrdb
-R package of continuous soil respiration database
+R package: continuous soil respiration database
 
 Only free use data accepted. All contributors included on 'definition' paper, and we encourage citations and involvement by database users.
 
@@ -7,7 +7,7 @@ Only free use data accepted. All contributors included on 'definition' paper, an
 
 Going for minimal here. Optional in _italics_. Other columns could be added to all tables.
 
-### Dataset information
+### Dataset and site information
 
 * Site name
 * Longitude, latitude
@@ -26,12 +26,13 @@ Going for minimal here. Optional in _italics_. Other columns could be added to a
 
 ### Site information (all optional)
 
-* _Stand structure, disturbance, etc._
+* _Species, stand structure, disturbance, etc._
 * _Other parts of the carbon cycle_
 
 ## Start with LI-8150 (multiplexer) data only
 
 * SERC data
+
 
 ### Other long-term data
 
