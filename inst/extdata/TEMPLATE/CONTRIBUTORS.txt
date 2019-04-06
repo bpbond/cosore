@@ -1,0 +1,23 @@
+# Contributor information
+#
+# First name: first name
+# Last name: last name
+# Email: email address
+# ORCID: ORCID ID (see https://orcid.org)
+# Role [optional]: CRediT role (see https://www.casrai.org/credit.html)
+#     common roles include "Funding acquisition", "Investigation", "Data curation"
+#
+--------------------------------------
+First name: 
+Last name: 
+Email: 
+ORCID: 
+Role: 
+--------------------------------------
+First name: 
+Last name: 
+Email: 
+ORCID: 
+Role: 
+
+# paste further records below as needed

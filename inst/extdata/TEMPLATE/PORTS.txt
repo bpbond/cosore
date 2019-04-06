@@ -1,0 +1,19 @@
+# Port information
+#
+# Unlike DATASET and CONTRIBUTORS, this is a tabular (comma-separated) data file
+#
+# Port: Port number, generally 1-8 or 1-16 for the LI-8150
+# Treatment: "None" or experimental manipulation
+# Species [optional] and other fields: plant species, soil information, etc.
+#
+# If there is no multiplexer, use a single line with "0" for the port number
+#
+Port,Treatment,Species
+1,None,
+2,None,
+3,None,
+4,None,
+5,None,
+6,None,
+7,None,
+8,None,
