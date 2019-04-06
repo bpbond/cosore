@@ -13,6 +13,7 @@ Going for minimal here. Optional in _italics_. Other columns could be added to a
 
 * Site name
 * Longitude, latitude
+* Instrument type (starting with LI-8150; will archive other data but no code for them yet)
 * Ecosystem type (Agriculture, Forest, Shrubland, Wetland)
 * Primary publication (DOI) - if empty assume unpublished
 * _Other publications_
