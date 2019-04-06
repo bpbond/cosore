@@ -1,0 +1,19 @@
+# Extremely minimal information that MUST be filled out for each dataset
+#
+# Site name: standard site name
+# Longitude: decimal degrees; positive = east, negative = west
+# Latitude: decimal degrees; positive = north, negative = south
+# Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#     "LI-8100A" (no multiplexer), others...
+# Ecosystem type: one-word general summary (Forest, Agriculture, Shrubland, Wetland)
+# Primary publication: DOI (preferred) or other publication information that should 
+#     be cited when these data are used. Leave empty if unpublished.
+# Other publications [optional]: comma-separated DOIs
+#
+Site name: SERC/GCReW Forest
+Longitude: 38.875
+Latitude: -76.552
+Instrument: LI-8100A/LI-8150
+Ecosystem type: Forest
+Primary publication: 
+Other publications: 
