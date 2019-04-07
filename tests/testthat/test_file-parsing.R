@@ -86,5 +86,9 @@ test_that("read_x_file", {
   x <- test_read(labels, dat, read_ports_file)
 
   # site file
-  # TODO
+  # This is different from the others--just a CSV table
+  dat <- c("# test table", "x,y,z", "1,2,3")
+  x <- read_site_file("x", file_data = dat)
+  expect_is(x, "data.frame")
+  expect_identical(nrow(x), 1L)
 })

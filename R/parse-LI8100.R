@@ -67,11 +67,6 @@ parse_LI8100_file <- function(filename, port_data) {
       next()
     }
 
-    # At this point we can go ahead and read
-    # 3 - record-level data AFTER the table
-    results$Flux[i] <- extract_line(record, "Exp_Flux", required = FALSE)
-    results$R2[i] <- extract_line(record, "Exp_R2", required = FALSE)
-
     # Find names, discarding any trailing 'Annotation' column, because if it's empty
     # the Licor software doesn't add a trailing comma, which read.tsv can't handle
     col_names <- strsplit(record[table_start], "\t", fixed = TRUE)[[1]]
@@ -88,6 +83,7 @@ parse_LI8100_file <- function(filename, port_data) {
       message("read.table error reading table ", i, " ", record_starts[i], ":", record_end)
       next
     }
+    # Check whether an error (e.g. chamber closing problem) occurred
     errorlines <- which(df$Type < 0)
     if(length(errorlines) || class(df) == "try-error") {
       results$Error[i] <- TRUE
@@ -109,7 +105,11 @@ parse_LI8100_file <- function(filename, port_data) {
     results$RH[i] <- mean(df$RH[index])
     results$Cdry[i] <- mean(df$Cdry[index])
 
-    # Check the V1...4 (volage) information fields; if any sensors are found,
+    # 3 - record-level data AFTER the table
+    results$Flux[i] <- extract_line(record, "Exp_Flux", required = FALSE)
+    results$R2[i] <- extract_line(record, "Exp_R2", required = FALSE)
+
+    # Check the V1...4 (voltage) information fields; if any sensors are found,
     # use the PORTS info to create new data fields
     for(v in 1:4) {
       info <- extract_line(record, paste0("V", v, " Info"))

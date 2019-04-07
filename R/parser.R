@@ -172,6 +172,24 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 }
 
 
+#' Read dataset SITES file
+#'
+#' @param dataset_name Dataset name, character
+#' @param file_data File data, character vector; optional for testing
+#' @keywords internal
+#' @note This is simply a comma-separated table.
+#' @return A \code{data.frame} containing any data in the file.
+read_site_file <- function(dataset_name, file_data = NULL) {
+  file_data <- read_file(dataset_name, "SITE.txt", file_data)
+  if(length(file_data)) {
+    con <- textConnection(file_data)
+    on.exit(close(con))
+    read.csv(con, stringsAsFactors = FALSE)
+  } else {
+    NULL
+  }
+}
+
 #' Read a complete dataset
 #'
 #' @param dataset_name Dataset name, character
@@ -185,9 +203,9 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 #' read_dataset("d20190406_TEST")
 read_dataset <- function(dataset_name) {
   dataset <- list(description = read_description_file(dataset_name),
-       contributors = read_contributors_file(dataset_name),
-       ports = read_ports_file(dataset_name),
-       site = NULL # TODO
+                  contributors = read_contributors_file(dataset_name),
+                  ports = read_ports_file(dataset_name),
+                  site = read_site_file(dataset_name)
   )
 
   # Parse the actual data
