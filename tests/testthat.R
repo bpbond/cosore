@@ -1,4 +1,4 @@
 library(testthat)
-library(csrdb)
+library(cosore)
 
-test_check("csrdb")
+test_check("cosore")

@@ -48,7 +48,7 @@ list_datasets <- function(path = resolve_dataset("")) {
 #' @keywords internal
 #' @return Fully-qualified filename of dataset folder in \code{inst/extdata}.
 resolve_dataset <- function(dataset_name) {
-  system.file(file.path("extdata", dataset_name), package = "csrdb", mustWork = TRUE)
+  system.file(file.path("extdata", dataset_name), package = "cosore", mustWork = TRUE)
 }
 
 
@@ -177,6 +177,7 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 #' @param dataset_name Dataset name, character
 #' @param file_data File data, character vector; optional for testing
 #' @keywords internal
+#' @importFrom utils read.csv
 #' @note This is simply a comma-separated table.
 #' @return A \code{data.frame} containing any data in the file.
 read_site_file <- function(dataset_name, file_data = NULL) {

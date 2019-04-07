@@ -1,4 +1,5 @@
-# csrdb
+# cosore
+
 R package: continuous soil respiration database
 
 ## Principles and general information
