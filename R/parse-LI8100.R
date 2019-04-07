@@ -50,7 +50,7 @@ parse_LI8100_file <- function(filename, port_data) {
 
     # 1 - record-level data that occur BEFORE the data table
     results$Label[i] <- extract_line(record, "Label")
-    results$Port[i] <- extract_line(record, "Port#")
+    results$Port[i] <- as.integer(extract_line(record, "Port#"))
     results$Area[i] <- extract_line(record, "Area")
     results$Comments[i] <- extract_line(record, "Comments")
 
@@ -108,10 +108,26 @@ parse_LI8100_file <- function(filename, port_data) {
     results$V4[i] <- mean(df$V4[index])
     results$RH[i] <- mean(df$RH[index])
     results$Cdry[i] <- mean(df$Cdry[index])
-  }
+
+    # Check the V1...4 (volage) information fields; if any sensors are found,
+    # use the PORTS info to create new data fields
+    for(v in 1:4) {
+      info <- extract_line(record, paste0("V", v, " Info"))
+      if(grepl("(THERM|SM)$", info)) {
+        port_info <- port_data[[paste0("V", v)]]
+        # A port 0 entry means "all ports"
+        w <- which(port_data$Port == 0 | port_data$Port == results$Port[i])
+
+        if(port_info[w] == "") {
+          warning(filename, i, v, "Sensors detected but no info given for this port")
+        } else { # create new column
+          results[[port_info[w]]] <- results[[paste0("V", v)]]
+        }
+      }
+    }
+  } # for i
 
   # Clean up and return
-  results$Port <- as.integer(results$Port)
   results$Flux <- as.numeric(results$Flux)
   results$R2 <- as.numeric(results$R2)
   results
