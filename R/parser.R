@@ -85,8 +85,7 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 read_description_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
-  data.frame(Dataset = dataset_name,
-             Site_name = extract_line(file_data, "Site_name"),
+  data.frame(Site_name = extract_line(file_data, "Site_name"),
              Longitude = extract_line(file_data, "Longitude", numeric_data = TRUE),
              Latitude = extract_line(file_data, "Latitude", numeric_data = TRUE),
              Instrument = extract_line(file_data, "Instrument"),
@@ -124,8 +123,7 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
       fd <- file_data[entries[i]:length(file_data)]
     }
 
-    df <- data.frame(Dataset = dataset_name,
-                     First_name = extract_line(fd, "First_name"),
+    df <- data.frame(First_name = extract_line(fd, "First_name"),
                      Family_name = extract_line(fd, "Family_name"),
                      Email = extract_line(fd, "Email", required = FALSE),
                      ORCID = extract_line(fd, "ORCID", required = FALSE),
@@ -160,8 +158,7 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
       fd <- file_data[entries[i]:length(file_data)]
     }
 
-    df <- data.frame(Dataset = dataset_name,
-                     Port = extract_line(fd, "Port", numeric_data = TRUE),
+    df <- data.frame(Port = extract_line(fd, "Port", numeric_data = TRUE),
                      Treatment = extract_line(fd, "Treatment"),
                      Species = extract_line(fd, "Species", required = FALSE),
                      V1 = extract_line(fd, "V1", required = FALSE),
@@ -178,7 +175,7 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 #' Read a complete dataset
 #'
 #' @param dataset_name Dataset name, character
-#' @return A list with elements:
+#' @return A list with (at least) elements:
 #' \item{description}{Contents of \code{DESCRIPTION.txt} file}
 #' \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
 #' \item{ports}{Contents of \code{PORTS.txt} file}
@@ -187,10 +184,22 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 #' @examples
 #' read_dataset("d20190406_TEST")
 read_dataset <- function(dataset_name) {
-  list(description = read_description_file(dataset_name),
+  dataset <- list(description = read_description_file(dataset_name),
        contributors = read_contributors_file(dataset_name),
        ports = read_ports_file(dataset_name),
-       site = NULL, # TODO
-       data = NULL  # TODO
+       site = NULL # TODO
   )
+
+  # Parse the actual data
+  # We could do something fancy like dispatch on instrument name, but at least
+  # for now, just if-else it
+  ins <- dataset$description$Instrument
+  df <- resolve_dataset(dataset_name)
+  if(ins == "LI-8100A/LI-8150") {
+    dataset$data <- parse_LI8100_LI8150(df, dataset$ports)
+  } else {
+    message("Unknown instrument for ", dataset_name)
+  }
+
+  dataset
 }

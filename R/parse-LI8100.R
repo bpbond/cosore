@@ -107,5 +107,5 @@ parse_LI8100_LI8150_file <- function(filename, port_data) {
 #----- Function to loop through directory and read multiplexed Licor-8100 data -----
 parse_LI8100_LI8150 <- function(path, port_data) {
   files <- list.files(path, pattern = ".81x$", full.names = TRUE)
-  do.call("rbind", lapply(files, read_licor_data, port_data))
+  do.call("rbind", lapply(files, parse_LI8100_LI8150_file, port_data))
 }

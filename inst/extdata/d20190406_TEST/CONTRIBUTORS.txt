@@ -8,14 +8,14 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 # --------------------------------------
-First name: Ben
-Family name: Bond-Lamberty
+First_name: Ben
+Family_name: Bond-Lamberty
 Email: bondlamberty@pnnl.gov
 ORCID: 0000-0001-9525-4633
 Role: Funding acquisition, Investigation
 # --------------------------------------
-First name: Stephanie
-Family name: Pennington
+First_name: Stephanie
+Family_name: Pennington
 Email: stephanie.pennington@pnnl.gov
 ORCID: 
 Role: Investigation, Data curation
