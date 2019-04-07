@@ -6,8 +6,9 @@
 #' @param filename Filename, character
 #' @param port_data Port information extracted from \code{PORTS.txt} file.
 #' @return A \code{data.frame} containing extracted data.
+#' @importFrom utils read.table
 #' @export
-parse_LI8100_LI8150_file <- function(filename, port_data) {
+parse_LI8100_file <- function(filename, port_data) {
 
   # Read file into memory and find records
   filedata <- readLines(filename)
@@ -55,12 +56,12 @@ parse_LI8100_LI8150_file <- function(filename, port_data) {
 
     # 2 - table data
     # Find the data table start
-    table_start <- tail(grep("^Type\t", record), n = 1)
+    table_start <- grep("^Type\t", record)
     # Look for the next non-numeric line; this marks the end
-    table_stop <-  head(grep("^[A-Z]", record[-(1:table_start)]), n = 1) + table_start - 1
+    table_stop <-  grep("^[A-Z]", record[-(1:table_start)])[1] + table_start - 1
 
     # Sometimes the Licor aborts in the middle of a measurement. Handle gracefully
-    if(length(table_stop) == 0) {
+    if(is.na(table_stop)) {
       results$Error[i] <- TRUE
       message("Licor abort in ", basename(filename), " ", record_starts[i], ":", record_end)
       next()
@@ -68,8 +69,8 @@ parse_LI8100_LI8150_file <- function(filename, port_data) {
 
     # At this point we can go ahead and read
     # 3 - record-level data AFTER the table
-    results$Flux[i] <- extract_line(record, "Exp_Flux")
-    results$R2[i] <- extract_line(record, "Exp_R2")
+    results$Flux[i] <- extract_line(record, "Exp_Flux", required = FALSE)
+    results$R2[i] <- extract_line(record, "Exp_R2", required = FALSE)
 
     # Find names, discarding any trailing 'Annotation' column, because if it's empty
     # the Licor software doesn't add a trailing comma, which read.tsv can't handle
@@ -116,8 +117,13 @@ parse_LI8100_LI8150_file <- function(filename, port_data) {
   results
 }
 
-#----- Function to loop through directory and read multiplexed Licor-8100 data -----
+#' Loop through directory and read multiplexed Licor-8100 data
+#'
+#' @param path Directory path, character
+#' @param port_data Port data, a list returned by \code{\link{read_ports_file}}
+#' @return A data frame with all data read from file(s).
+#' @export
 parse_LI8100_LI8150 <- function(path, port_data) {
   files <- list.files(path, pattern = ".81x$", full.names = TRUE)
-  do.call("rbind", lapply(files, parse_LI8100_LI8150_file, port_data))
+  do.call("rbind", lapply(files, parse_LI8100_file, port_data))
 }

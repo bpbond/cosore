@@ -10,7 +10,7 @@ read_dataset(dataset_name)
 \item{dataset_name}{Dataset name, character}
 }
 \value{
-A list with elements:
+A list with (at least) elements:
 \item{description}{Contents of \code{DESCRIPTION.txt} file}
 \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
 \item{ports}{Contents of \code{PORTS.txt} file}
