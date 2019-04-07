@@ -42,6 +42,18 @@ parse_LI8100_LI8150_file <- function(filename, port_data) {
     # ...and get rid of blank lines because that can screw up paste(collapse()) below
     record <- record[grep("^$", record, invert = TRUE)]
 
+    # There are three categories of data here:
+    # 1 - record-level data that occur BEFORE the data table (e.g. port number)
+    # 2 - table data (e.g. CO2 measurements)
+    # 3 - record-level data AFTER the table (e.g. mean flux)
+
+    # 1 - record-level data that occur BEFORE the data table
+    results$Label[i] <- extract_line(record, "Label")
+    results$Port[i] <- extract_line(record, "Port#")
+    results$Area[i] <- extract_line(record, "Area")
+    results$Comments[i] <- extract_line(record, "Comments")
+
+    # 2 - table data
     # Find the data table start
     table_start <- tail(grep("^Type\t", record), n = 1)
     # Look for the next non-numeric line; this marks the end
@@ -53,6 +65,12 @@ parse_LI8100_LI8150_file <- function(filename, port_data) {
       message("Licor abort in ", basename(filename), " ", record_starts[i], ":", record_end)
       next()
     }
+
+    # At this point we can go ahead and read
+    # 3 - record-level data AFTER the table
+    results$Flux[i] <- extract_line(record, "Exp_Flux")
+    results$R2[i] <- extract_line(record, "Exp_R2")
+
     # Find names, discarding any trailing 'Annotation' column, because if it's empty
     # the Licor software doesn't add a trailing comma, which read.tsv can't handle
     col_names <- strsplit(record[table_start], "\t", fixed = TRUE)[[1]]
@@ -79,22 +97,16 @@ parse_LI8100_LI8150_file <- function(filename, port_data) {
     # Convert to POSIXct
     df$Date <- as.POSIXct(df$Date,format="%Y-%m-%d %H:%M:%S")
 
-    # Pull out the data we're interested in
+    # Pull out the table-level data we're interested in
     index <- which(df$Type == 1)
     results$Timestamp[i] <- mean(df$Date)
-    results$Label[i] <- extract_line(record, "Label")
-    results$Port[i] <- extract_line(record, "Port#")
-    results$Flux[i] <- extract_line(record, "Exp_Flux")
-    results$R2[i] <- extract_line(record, "Exp_R2")
     results$Tcham[i] <- mean(df$Tcham[index])
-    results$Area[i] <- extract_line(record, "Area")
     results$V1[i] <- mean(df$V1[index])
     results$V2[i] <- mean(df$V2[index])
     results$V3[i] <- mean(df$V3[index])
     results$V4[i] <- mean(df$V4[index])
     results$RH[i] <- mean(df$RH[index])
     results$Cdry[i] <- mean(df$Cdry[index])
-    results$Comments[i] <- extract_line(record, "Comments")
   }
 
   # Clean up and return
