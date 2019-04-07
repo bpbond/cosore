@@ -4,10 +4,12 @@
 \alias{read_contributors_file}
 \title{Read dataset CONTRIBUTORS file}
 \usage{
-read_contributors_file(dataset_name)
+read_contributors_file(dataset_name, file_data = NULL)
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}
+
+\item{file_data}{File data, character vector; optional for testing}
 }
 \value{
 A \code{data.frame} with the following columns:
@@ -24,8 +26,5 @@ Read dataset CONTRIBUTORS file
 \note{
 For information about ORCID see \url{https://orcid.org}. For
 CRediT roles, see \url{https://www.casrai.org/credit.html}.
-}
-\examples{
-read_contributors_file("d20190406_TEST")
 }
 \keyword{internal}

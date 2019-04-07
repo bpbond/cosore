@@ -4,12 +4,15 @@
 \alias{read_file}
 \title{Read a text file and strip out comments}
 \usage{
-read_file(dataset_name, file_name, comment_char = "#")
+read_file(dataset_name, file_name, file_data = NULL,
+  comment_char = "#")
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}
 
 \item{file_name}{File name, character}
+
+\item{file_data}{File data, character vector; optional for testing}
 
 \item{comment_char}{Start-of-line comment character}
 }
@@ -18,8 +21,5 @@ Contents of file in a character vector.
 }
 \description{
 Read a text file and strip out comments
-}
-\examples{
-read_file("d20190406_TEST", "DESCRIPTION.txt")
 }
 \keyword{internal}

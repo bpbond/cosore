@@ -15,7 +15,4 @@ Fully-qualified filename of dataset folder in \code{inst/extdata}.
 \description{
 Get the full path of a dataset folder
 }
-\examples{
-resolve_dataset("d20190406_TEST")
-}
 \keyword{internal}

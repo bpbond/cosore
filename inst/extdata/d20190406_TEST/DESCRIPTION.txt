@@ -10,10 +10,11 @@
 #     be cited when these data are used. Leave empty if unpublished.
 # Other publications [optional]: comma-separated DOIs
 #
-Site name: SERC/GCReW Forest
+Site_name: SERC/GCReW Forest
 Longitude: 38.875
 Latitude: -76.552
 Instrument: LI-8100A/LI-8150
-Ecosystem type: Forest
-Primary publication: 
-Other publications: 
+Ecosystem_type: Forest
+Primary_pub: 
+Other_pub: 
+Data_URL: 

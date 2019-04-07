@@ -4,10 +4,12 @@
 \alias{read_description_file}
 \title{Read dataset DESCRIPTION file}
 \usage{
-read_description_file(dataset_name)
+read_description_file(dataset_name, file_data = NULL)
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}
+
+\item{file_data}{File data, character vector; optional for testing}
 }
 \value{
 A \code{data.frame} with the following columns:
@@ -22,8 +24,5 @@ A \code{data.frame} with the following columns:
 }
 \description{
 Read dataset DESCRIPTION file
-}
-\examples{
-read_description_file("d20190406_TEST")
 }
 \keyword{internal}

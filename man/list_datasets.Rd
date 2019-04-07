@@ -4,11 +4,17 @@
 \alias{list_datasets}
 \title{List available datasets}
 \usage{
-list_datasets()
+list_datasets(path = resolve_dataset(""))
+}
+\arguments{
+\item{path}{Path name}
 }
 \value{
 Character vector of datasets.
 }
 \description{
 List available datasets
+}
+\examples{
+list_datasets()
 }

@@ -4,10 +4,12 @@
 \alias{read_ports_file}
 \title{Read dataset PORTS file}
 \usage{
-read_ports_file(dataset_name)
+read_ports_file(dataset_name, file_data = NULL)
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}
+
+\item{file_data}{File data, character vector; optional for testing}
 }
 \value{
 A \code{data.frame} with the following columns:
@@ -19,8 +21,5 @@ A \code{data.frame} with the following columns:
 }
 \description{
 Read dataset PORTS file
-}
-\examples{
-read_contributors_file("d20190406_TEST")
 }
 \keyword{internal}

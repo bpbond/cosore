@@ -22,8 +22,8 @@ Value (character) of data opposite label
 \description{
 Parse labels from information files
 }
-\examples{
-extract_line(c("1:one", "2:two"), "two")
-extract_line(c("one:1", "two:2"), "two", numeric_data = TRUE)
+\note{
+If label is not found, produces an error (if label was required) or returns
+\code{NA} (if not).
 }
 \keyword{internal}
