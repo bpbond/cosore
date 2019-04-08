@@ -15,8 +15,10 @@ combine_data <- function(...) {
 
 datasets <- list_datasets()
 
-cosore_plan <- drake_plan(
-  data = target(read_dataset(ds), transform = map(ds = !!datasets)),
-  all = target(combine_data(data), transform = combine(data)),
-  trace = TRUE
-)
+if(length(datasets)) { # if no data, don't build
+  cosore_plan <- drake_plan(
+    data = target(read_dataset(ds), transform = map(ds = !!datasets)),
+    all = target(combine_data(data), transform = combine(data)),
+    trace = TRUE
+  )
+}

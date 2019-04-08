@@ -201,7 +201,7 @@ read_site_file <- function(dataset_name, file_data = NULL) {
 #' \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
 #' @export
 #' @examples
-#' read_dataset("d20190406_TEST")
+#' read_dataset("TEST_licordata")
 read_dataset <- function(dataset_name) {
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),

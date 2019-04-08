@@ -20,5 +20,5 @@ A list with (at least) elements:
 Read a complete dataset
 }
 \examples{
-read_dataset("d20190406_TEST")
+read_dataset("TEST_licordata")
 }
