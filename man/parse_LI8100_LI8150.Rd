@@ -4,12 +4,14 @@
 \alias{parse_LI8100_LI8150}
 \title{Loop through directory and read multiplexed Licor-8100 data}
 \usage{
-parse_LI8100_LI8150(path, port_data)
+parse_LI8100_LI8150(path, port_data, UTC_offset)
 }
 \arguments{
 \item{path}{Directory path, character}
 
 \item{port_data}{Port data, a list returned by \code{\link{read_ports_file}}}
+
+\item{UTC_offset}{Offset from UTC in hour, numeric}
 }
 \value{
 A data frame with all data read from file(s).

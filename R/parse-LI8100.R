@@ -4,22 +4,24 @@
 #' Parse a LI-8100 (with LI-8150 multiplexer) data file.
 #'
 #' @param filename Filename, character
-#' @param port_data Port information extracted from \code{PORTS.txt} file.
+#' @param port_data Port information extracted from \code{PORTS.txt} file
+#' @param UTC_offset Offset from UTC in hour, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.table
 #' @export
-parse_LI8100_file <- function(filename, port_data) {
+parse_LI8100_file <- function(filename, port_data, UTC_offset) {
 
   # Read file into memory and find records
   filedata <- readLines(filename)
   record_starts <- grep(pattern = "^LI-8100", filedata)
   bfn <- basename(filename)
-  message("Reading ", bfn, ": lines = ", length(filedata), " records = ", length(record_starts), "\n")
+  message("Reading ", bfn, ": lines = ", length(filedata), " records = ", length(record_starts))
 
   # Set up results data frame and fill it in as we go
   results <- data.frame(
     Record = seq_along(record_starts),
-    Timestamp = as.POSIXct(NA),
+    # can't use NA for some reason--screws up mean() timestamp computation later
+    Timestamp = as.POSIXct("1970-01-01", tz = "UTC"),
     Label = NA_character_,
     Port = NA_integer_,
     # next two are converted to numeric at end for performance
@@ -93,8 +95,9 @@ parse_LI8100_file <- function(filename, port_data) {
       next()
     }
 
-    # Convert to POSIXct
-    dat$Date <- as.POSIXct(dat$Date,format="%Y-%m-%d %H:%M:%S")
+    # Convert to POSIXct and UTC
+    stopifnot(abs(UTC_offset) < 15)
+    dat$Date <- as.POSIXct(dat$Date, format = "%Y-%m-%d %H:%M:%S", tz = "UTC") - UTC_offset * 60 * 60
 
     # Pull out the table-level data we're interested in
     index <- which(dat$Type == 1)
@@ -121,12 +124,13 @@ parse_LI8100_file <- function(filename, port_data) {
         w <- which(port_data$Port == 0 | port_data$Port == results$Port[i])
 
         if(port_info[w] == "") {
-          warning(filename, i, v, "Sensors detected but no info given for this port")
+          message(filename, i, v, "Sensors detected but no info given for this port")
         } else { # create new column
           results[[port_info[w]]] <- results[[paste0("V", v)]]
         }
       }
     }
+
   } # for i
 
   # Clean up and return
@@ -139,9 +143,10 @@ parse_LI8100_file <- function(filename, port_data) {
 #'
 #' @param path Directory path, character
 #' @param port_data Port data, a list returned by \code{\link{read_ports_file}}
+#' @param UTC_offset Offset from UTC in hour, numeric
 #' @return A data frame with all data read from file(s).
 #' @export
-parse_LI8100_LI8150 <- function(path, port_data) {
+parse_LI8100_LI8150 <- function(path, port_data, UTC_offset) {
   files <- list.files(path, pattern = ".81x$", full.names = TRUE)
-  do.call("rbind", lapply(files, parse_LI8100_file, port_data))
+  do.call("rbind", lapply(files, parse_LI8100_file, port_data, UTC_offset))
 }
