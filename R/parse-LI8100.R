@@ -13,24 +13,28 @@ parse_LI8100_file <- function(filename, port_data) {
   # Read file into memory and find records
   filedata <- readLines(filename)
   record_starts <- grep(pattern = "^LI-8100", filedata)
-  message("Reading ", basename(filename), ": lines = ", length(filedata), " records = ", length(record_starts), "\n")
+  bfn <- basename(filename)
+  message("Reading ", bfn, ": lines = ", length(filedata), " records = ", length(record_starts), "\n")
 
   # Set up results data frame and fill it in as we go
-  results <- data.frame(Record = seq_along(record_starts),
-                        Timestamp = as.POSIXct(NA),
-                        Label = NA_character_,
-                        Port = NA_integer_,
-                        Flux = NA_character_,
-                        R2 = NA_character_,
-                        Tcham = NA_real_,
-                        Area = NA_real_,
-                        V1 = NA_real_, V2 = NA_real_, V3 = NA_real_, V4 = NA_real_,
-                        RH = NA_real_,
-                        Cdry = NA_real_,
-                        Comments = NA_character_,
-                        Error = FALSE,
-                        stringsAsFactors = FALSE)
+  results <- data.frame(
+    Record = seq_along(record_starts),
+    Timestamp = as.POSIXct(NA),
+    Label = NA_character_,
+    Port = NA_integer_,
+    # next two are converted to numeric at end for performance
+    Flux = NA_character_,
+    R2 = NA_character_,
+    Tcham = NA_real_,
+    Area = NA_real_,
+    V1 = NA_real_, V2 = NA_real_, V3 = NA_real_, V4 = NA_real_,
+    RH = NA_real_,
+    Cdry = NA_real_,
+    Comments = NA_character_,
+    Error = FALSE,
+    stringsAsFactors = FALSE)
 
+  # Main loop
   for (i in seq_along(record_starts)) {
     if(i < length(record_starts)) {
       record_end <- record_starts[i+1]-1
@@ -38,10 +42,8 @@ parse_LI8100_file <- function(filename, port_data) {
       record_end <- length(filedata)
     }
 
-    # Isolate the lines of this record...
+    # Isolate the lines of this record
     record <- filedata[record_starts[i]:record_end]
-    # ...and get rid of blank lines because that can screw up paste(collapse()) below
-    record <- record[grep("^$", record, invert = TRUE)]
 
     # There are three categories of data here:
     # 1 - record-level data that occur BEFORE the data table (e.g. port number)
@@ -63,7 +65,7 @@ parse_LI8100_file <- function(filename, port_data) {
     # Sometimes the Licor aborts in the middle of a measurement. Handle gracefully
     if(is.na(table_stop)) {
       results$Error[i] <- TRUE
-      message("Licor abort in ", basename(filename), " ", record_starts[i], ":", record_end)
+      message("Licor abort in ", bfn, " ", record_starts[i], ":", record_end)
       next()
     }
 
@@ -72,38 +74,38 @@ parse_LI8100_file <- function(filename, port_data) {
     col_names <- strsplit(record[table_start], "\t", fixed = TRUE)[[1]]
     col_names <- col_names[!grepl("Annotation", col_names)]
 
-    con <- textConnection(paste(record[(table_start+1):table_stop], collapse = "\n"))
-    df <- try({
+    con <- textConnection(record[(table_start+1):table_stop])
+    dat <- try({
       read.table(con, col.names = col_names, sep = "\t", stringsAsFactors = FALSE)
     }, silent = TRUE)
     close(con)
 
-    if(class(df) == "try-error") {
+    if(class(dat) == "try-error") {
       results$Error[i] <- TRUE
-      message("read.table error reading table ", i, " ", record_starts[i], ":", record_end)
+      message("read.table error in ", bfn, " ", i, " ", record_starts[i], ":", record_end)
       next
     }
     # Check whether an error (e.g. chamber closing problem) occurred
-    errorlines <- which(df$Type < 0)
-    if(length(errorlines) || class(df) == "try-error") {
+    errorlines <- which(dat$Type < 0)
+    if(length(errorlines) || class(dat) == "try-error") {
       results$Error[i] <- TRUE
-      message("Licor error in ", basename(filename), " ", record_starts[i], ":", record_end)
+      message("Licor error in ", bfn, " ", record_starts[i], ":", record_end)
       next()
     }
 
     # Convert to POSIXct
-    df$Date <- as.POSIXct(df$Date,format="%Y-%m-%d %H:%M:%S")
+    dat$Date <- as.POSIXct(dat$Date,format="%Y-%m-%d %H:%M:%S")
 
     # Pull out the table-level data we're interested in
-    index <- which(df$Type == 1)
-    results$Timestamp[i] <- mean(df$Date)
-    results$Tcham[i] <- mean(df$Tcham[index])
-    results$V1[i] <- mean(df$V1[index])
-    results$V2[i] <- mean(df$V2[index])
-    results$V3[i] <- mean(df$V3[index])
-    results$V4[i] <- mean(df$V4[index])
-    results$RH[i] <- mean(df$RH[index])
-    results$Cdry[i] <- mean(df$Cdry[index])
+    index <- which(dat$Type == 1)
+    results$Timestamp[i] <- mean(dat$Date)
+    results$Tcham[i] <- mean(dat$Tcham[index])
+    results$V1[i] <- mean(dat$V1[index])
+    results$V2[i] <- mean(dat$V2[index])
+    results$V3[i] <- mean(dat$V3[index])
+    results$V4[i] <- mean(dat$V4[index])
+    results$RH[i] <- mean(dat$RH[index])
+    results$Cdry[i] <- mean(dat$Cdry[index])
 
     # 3 - record-level data AFTER the table
     results$Flux[i] <- extract_line(record, "Exp_Flux", required = FALSE)
