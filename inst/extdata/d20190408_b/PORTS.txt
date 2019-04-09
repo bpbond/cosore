@@ -1,0 +1,21 @@
+# Port information
+#
+# Port: Port number, generally 1-4, 1-8, or 1-16 for the LI-8150
+# Treatment: "None" or experimental manipulation
+# The V1-V4 fields are for optional sensors reported by the chamber
+#     use "T5" for 5 cm soil temperature, "SM5" for 5 cm soil moisture, etc.
+# Species [optional] and other fields: plant species, soil information, etc.
+#
+# To apply a single setting to all ports, or if there is no multiplexer, 
+# use a single entry with "0" for the port number
+#
+Port: 0
+Treatment: None
+Species: Liriodendron tulipifera, Acer rubrum
+V1: 
+V2: 
+V3: T5
+V4: SM5
+#--------------------------------------
+
+# paste further records below as needed, beginning each with "Port" line
