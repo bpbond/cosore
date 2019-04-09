@@ -88,11 +88,14 @@ read_description_file <- function(dataset_name, file_data = NULL) {
   data.frame(Site_name = extract_line(file_data, "Site_name"),
              Longitude = extract_line(file_data, "Longitude", numeric_data = TRUE),
              Latitude = extract_line(file_data, "Latitude", numeric_data = TRUE),
+             Elevation = extract_line(file_data, "Elevation", numeric_data = TRUE),
+             UTC_offset = extract_line(file_data, "UTC_offset", numeric_data = TRUE),
+             IGBP = extract_line(file_data, "IGBP"),
              Instrument = extract_line(file_data, "Instrument"),
-             Ecosystem_type = extract_line(file_data, "Ecosystem_type"),
              Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
              Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
              Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
+             Acknowledgment = extract_line(file_data, "Acknowledgment", required = FALSE),
              stringsAsFactors = FALSE)
 }
 
@@ -194,6 +197,7 @@ read_site_file <- function(dataset_name, file_data = NULL) {
 #' Read a complete dataset
 #'
 #' @param dataset_name Dataset name, character
+#' @param log Log messages? Logical
 #' @return A list with (at least) elements:
 #' \item{description}{Contents of \code{DESCRIPTION.txt} file}
 #' \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
@@ -202,7 +206,7 @@ read_site_file <- function(dataset_name, file_data = NULL) {
 #' @export
 #' @examples
 #' read_dataset("TEST_licordata")
-read_dataset <- function(dataset_name) {
+read_dataset <- function(dataset_name, log = TRUE) {
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
                   ports = read_ports_file(dataset_name),
@@ -214,10 +218,25 @@ read_dataset <- function(dataset_name) {
   # for now, just if-else it
   ins <- dataset$description$Instrument
   df <- resolve_dataset(dataset_name)
+
+  if(log) {
+    tf <- tempfile()
+    zz <- file(tf, open = "wt")
+    sink(zz, type = "output")
+    sink(zz, type = "message")
+  }
+
   if(ins == "LI-8100A/LI-8150") {
-    dataset$data <- parse_LI8100_LI8150(df, dataset$ports)
+    dataset$data <- parse_LI8100_LI8150(df, dataset$ports, dataset$description$UTC_offset)
   } else {
     message("Unknown instrument for ", dataset_name)
+  }
+
+  if(log) {
+    sink(type = "message")
+    sink(type = "output")
+    dataset$log <- readLines(tf)
+    unlink(tf)
   }
 
   dataset

@@ -4,10 +4,12 @@
 \alias{read_dataset}
 \title{Read a complete dataset}
 \usage{
-read_dataset(dataset_name)
+read_dataset(dataset_name, log = TRUE)
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}
+
+\item{log}{Log messages? Logical}
 }
 \value{
 A list with (at least) elements:
