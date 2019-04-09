@@ -220,23 +220,26 @@ read_dataset <- function(dataset_name, log = TRUE) {
   df <- resolve_dataset(dataset_name)
 
   if(log) {
-    tf <- tempfile()
-    zz <- file(tf, open = "wt")
-    sink(zz, type = "output")
-    sink(zz, type = "message")
+    # tf <- tempfile()
+    # zz <- file(tf, open = "wt")
+    # sink(zz, type = "output")
+    # sink(zz, type = "message")
   }
 
-  if(ins == "LI-8100A/LI-8150") {
-    dataset$data <- parse_LI8100_LI8150(df, dataset$ports, dataset$description$UTC_offset)
+  utc <- dataset$description$UTC_offset
+  if(ins == "LI-8100A/raw") {
+    dataset$data <- parse_LI8100_raw(df, dataset$ports, utc)
+  } else if(ins == "LI-8100A/processed") {
+    dataset$data <- parse_LI8100_processed(df, utc)
   } else {
     message("Unknown instrument for ", dataset_name)
   }
 
   if(log) {
-    sink(type = "message")
-    sink(type = "output")
-    dataset$log <- readLines(tf)
-    unlink(tf)
+    # sink(type = "message")
+    # sink(type = "output")
+    # dataset$log <- readLines(tf)
+    # unlink(tf)
   }
 
   dataset
