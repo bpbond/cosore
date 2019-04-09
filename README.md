@@ -22,18 +22,21 @@ constant _treatment_ assignments. A dataset lives within a single folder, and th
 of the folder is the dataset's unique _ID_.
 
 See above about simplicity...there are four metadata files, but only two of them
-(eight pieces of information in total) absolutely need to be filled out:
+(ten pieces of information in total) absolutely need to be filled out:
 
 ### `DESCRIPTION.txt`
 
 * Site name
 * Longitude
 * Latitude
+* Elevation
+* UTC_offset
+* IGBP cover type
 * Instrument name (this is used to parse the data files)
-* Ecosystem type
 * Primary publication DOI or URL [optional]
 * Other publications DOI or URL [optional]
 * Data DOI or URL [optional]
+* Acknowledgemnt [optional]
 
 ### `CONTRIBUTORS.txt`
 
@@ -71,7 +74,6 @@ dataset objects (description, contributors, etc); convenience functions generate
 
 * KISS: start with LI-8150 (multiplexer) data parser only 
 (probably want to split this out into separate package actually)
-
 
 ### Other long-term data
 
