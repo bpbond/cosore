@@ -5,14 +5,14 @@
 \title{Split a raw Licor (*.81x) file into pieces.}
 \usage{
 split_licor_file(filename, split_lines = 25000,
-  out_path = dirname(filename))
+  out_dir = dirname(filename))
 }
 \arguments{
 \item{filename}{Fully-qualified filename, character}
 
 \item{split_lines}{Rough number of lines to split by, integer}
 
-\item{out_path}{Output path, character}
+\item{out_dir}{Output directory, character}
 }
 \value{
 Number of files created, invisibly.

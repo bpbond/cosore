@@ -69,8 +69,8 @@ test_that("read_x_file", {
   }
 
   # description file
-  labels <- c("Site_name", "Longitude", "Latitude", "Instrument", "Ecosystem_type")
-  dat <- c("site", "1", "2", "ins", "et")
+  labels <- c("Site_name", "Longitude", "Latitude", "Elevation", "UTC_offset", "Instrument", "IGBP")
+  dat <- c("site", "1", "2", "3", "-1", "ins", "et")
   x <- test_read(labels, dat, read_description_file)
 
   # contributors file

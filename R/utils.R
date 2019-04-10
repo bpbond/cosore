@@ -11,12 +11,16 @@ rename_col <- function(x, old, new) {
 #'
 #' @param filename Fully-qualified filename, character
 #' @param split_lines Rough number of lines to split by, integer
-#' @param out_path Output path, character
+#' @param out_dir Output directory, character
 #' @note Licor output files can get \emph{very} big. This utility splits (on record
 #' boundaries) a file into multiple sub-files.
 #' @return Number of files created, invisibly.
 #' @keywords internal
-split_licor_file <- function(filename, split_lines = 25000, out_path = dirname(filename)) {
+split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(filename)) {
+
+  stopifnot(split_lines > 0)
+  stopifnot(file.exists(filename))
+  stopifnot(dir.exists(out_dir))
 
   # Read file into memory and find records
   filedata <- readLines(filename)
@@ -39,8 +43,8 @@ split_licor_file <- function(filename, split_lines = 25000, out_path = dirname(f
       endline <- record_starts[next_file_start_record] - 1
     }
 
-    new_file <- file.path(out_path, paste0(bfn, "_", sprintf("%06d", filenum), ".81x"))
-    cat("Writing lines", startline, "-", endline, "to ", new_file, "\n")
+    new_file <- file.path(out_dir, paste0(bfn, "_", sprintf("%06d", filenum), ".81x"))
+    message("Writing lines", startline, "-", endline, "to ", new_file, "\n")
     cat(filedata[startline:endline], sep = "\n", file = new_file)
     this_file_start_record <- next_file_start_record
     startline <- endline + 1
