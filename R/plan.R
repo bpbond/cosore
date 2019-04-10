@@ -13,7 +13,7 @@ combine_data <- function(...) {
   x
 }
 
-build_cosore <- function() {
+csr_build <- function() {
   datasets <- list_datasets()
 
   if(length(datasets)) { # if no data, don't build
@@ -23,7 +23,7 @@ build_cosore <- function() {
       # read in datasets into individual targets
       data = target(read_dataset(ds),
                     # each data object is triggered by any change in the dataset directory;
-                    # requires https://github.com/ropensci/drake/pull/795
+                    # requires https://github.com/ropensci/drake/pull/795 (v7.1)
                     trigger = trigger(condition = file_in(dsf)),
                     # map the datasets and their directories to the targets above
                     transform = map(ds = !!datasets, dsf = !!dataset_folders)),
