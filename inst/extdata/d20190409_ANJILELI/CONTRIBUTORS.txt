@@ -1,0 +1,15 @@
+# Contributor information
+#
+# First name: first name
+# Family name: family (last) name
+# Email: email address
+# ORCID: ORCID ID (see https://orcid.org)
+# Role [optional]: CRediT role (see https://www.casrai.org/credit.html)
+#     common roles include "Funding acquisition", "Investigation", "Data curation"
+#
+# --------------------------------------
+First_name: Hassan
+Family_name: Anjileli
+Email: hassan.a@uci.edu
+ORCID: 0000-0001-9635-0686
+Role: Investigation

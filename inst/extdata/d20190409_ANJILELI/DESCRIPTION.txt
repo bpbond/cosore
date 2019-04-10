@@ -1,0 +1,39 @@
+# Extremely minimal information that MUST be filled out for each dataset
+#
+# Site_name: standard site name
+# Longitude: decimal degrees; positive = east, negative = west
+# Latitude: decimal degrees; positive = north, negative = south
+# Elevation: elevation above sea level, meters
+# UTC_offset: offset from UTC of site data, hours (standard time)
+# IGBP: IGBP land cover type. Common types include:
+#    Evergreen needleleaf forest
+#    Evergreen broadleaf forest
+#    Deciduous needleleaf forest
+#    Deciduous broadleaf forest
+#    Mixed forests
+#    Closed shrubland
+#    Open shrubland
+#    Woody savanna
+#    Savannas
+#    Grassland
+#    Wetland
+#    Cropland
+#    Urban
+# Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#    "LI-8100A" (no multiplexer), others...
+# Primary publication: DOI (preferred) or other primary publication that should
+#     be cited when these data are used. Leave empty if unpublished.
+# Other publications [optional]: comma-separated DOIs
+# Acknowledgment [optional]: Acknowledgment (funding or other) text
+# --------------------------------------
+Site_name: San Joaquin Marsh Reserve
+Longitude: -117.849
+Latitude: 33.658
+Elevation: 2
+UTC_offset: -8
+IGBP: Wetland
+Instrument: LI-8100A/raw
+Primary_pub: 10.1029/2018JG004640
+Other_pubs:
+Data_URL:
+Acknowledgment: 
