@@ -1,0 +1,39 @@
+# Extremely minimal information that MUST be filled out for each dataset
+#
+# Site_name: standard site name
+# Longitude: decimal degrees; positive = east, negative = west
+# Latitude: decimal degrees; positive = north, negative = south
+# Elevation: elevation above sea level, meters
+# UTC_offset: offset from UTC of site data, hours (standard time)
+# IGBP: IGBP land cover type. Common types include:
+#    Evergreen needleleaf forest
+#    Evergreen broadleaf forest
+#    Deciduous needleleaf forest
+#    Deciduous broadleaf forest
+#    Mixed forests
+#    Closed shrubland
+#    Open shrubland
+#    Woody savanna
+#    Savannas
+#    Grassland
+#    Wetland
+#    Cropland
+#    Urban
+# Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#    "LI-8100A" (no multiplexer), others...
+# Primary publication: DOI (preferred) or other primary publication that should
+#     be cited when these data are used. Leave empty if unpublished.
+# Other publications [optional]: comma-separated DOIs
+# Acknowledgment [optional]: Acknowledgment (funding or other) text
+# --------------------------------------
+Site_name: Dooary Forest
+Longitude: -7.25
+Latitude: 52.95
+Elevation: 260
+UTC_offset: 1
+IGBP: Evergreen needleaf forest
+Instrument: LI-8100A/processed
+Primary_pub:
+Other_pubs:
+Data_URL:
+Acknowledgment: Supported by a joint Ph.D programme grant (201206300050) from the China Scholarship Council (CSC) and University College Dublin (UCD). Coillte allowed the project almost unlimited access to its properties.
