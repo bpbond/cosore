@@ -98,7 +98,7 @@ parse_LI8100_file <- function(filename, port_data, UTC_offset) {
         next()
       }
 
-      # Convert to POSIXct and UTC
+      # Convert to POSIXct and UTC so we can take mean timestamp
       stopifnot(abs(UTC_offset) < 15)
       dat$Date <- as.POSIXct(dat$Date, format = "%Y-%m-%d %H:%M:%S", tz = "UTC") - UTC_offset * 60 * 60
 

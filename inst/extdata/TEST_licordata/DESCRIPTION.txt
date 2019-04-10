@@ -26,13 +26,13 @@
 # Other publications [optional]: comma-separated DOIs
 # Acknowledgment [optional]: Acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: SERC/GCReW Forest
+Site_name: SERC-GCReW Forest
 Longitude: -76.552
 Latitude: 38.875
 Elevation: 5
 UTC_offset: -5
 IGBP: Deciduous broadleaf forest
-Instrument: LI-8100A/LI-8150
+Instrument: LI-8100A/raw
 Primary_pub:
 Other_pub:
 Data_URL:

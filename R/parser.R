@@ -213,11 +213,9 @@ read_dataset <- function(dataset_name, log = TRUE) {
                   site = read_site_file(dataset_name)
   )
 
-  # Parse the actual data
-  # We could do something fancy like dispatch on instrument name, but at least
-  # for now, just if-else it
+  # Parse the actual data (which must be in a data/ subdirectory)
   ins <- dataset$description$Instrument
-  df <- resolve_dataset(dataset_name)
+  df <- file.path(resolve_dataset(dataset_name), "data")
 
   if(log) {
     # tf <- tempfile()
@@ -227,6 +225,8 @@ read_dataset <- function(dataset_name, log = TRUE) {
   }
 
   utc <- dataset$description$UTC_offset
+  # We could do something fancy like dispatch on instrument name, but at least
+  # for now, just if-else it
   if(ins == "LI-8100A/raw") {
     dataset$data <- parse_LI8100_raw(df, dataset$ports, utc)
   } else if(ins == "LI-8100A/processed") {
