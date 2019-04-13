@@ -2,17 +2,17 @@
 % Please edit documentation in R/parser.R
 \name{resolve_dataset}
 \alias{resolve_dataset}
-\title{Get the full path of a dataset folder}
+\title{Get the full path of a dataset folder(s)}
 \usage{
 resolve_dataset(dataset_name)
 }
 \arguments{
-\item{dataset_name}{Dataset name, character}
+\item{dataset_name}{Dataset name(s), character}
 }
 \value{
-Fully-qualified filename of dataset folder in \code{inst/extdata}.
+Fully-qualified filename(s) of dataset folder in \code{inst/extdata}
+ (\code{extdata/} in built package).
 }
 \description{
-Get the full path of a dataset folder
+Get the full path of a dataset folder(s)
 }
-\keyword{internal}

@@ -42,11 +42,12 @@ list_datasets <- function(path = resolve_dataset("")) {
   ds[grep("^d[0-9]{8}_", ds)]  # dataset folders start with "d" followed by eight numbers
 }
 
-#' Get the full path of a dataset folder
+#' Get the full path of a dataset folder(s)
 #'
-#' @param dataset_name Dataset name, character
-#' @keywords internal
-#' @return Fully-qualified filename of dataset folder in \code{inst/extdata}.
+#' @param dataset_name Dataset name(s), character
+#' @export
+#' @return Fully-qualified filename(s) of dataset folder in \code{inst/extdata}
+#'  (\code{extdata/} in built package).
 resolve_dataset <- function(dataset_name) {
   system.file(file.path("extdata", dataset_name), package = "cosore", mustWork = TRUE)
 }
@@ -197,6 +198,7 @@ read_site_file <- function(dataset_name, file_data = NULL) {
 #' Read a complete dataset
 #'
 #' @param dataset_name Dataset name, character
+#' @param raw_data Path to the raw data folder (not in package)
 #' @param log Log messages? Logical
 #' @return A list with (at least) elements:
 #' \item{description}{Contents of \code{DESCRIPTION.txt} file}
@@ -206,22 +208,34 @@ read_site_file <- function(dataset_name, file_data = NULL) {
 #' @export
 #' @examples
 #' read_dataset("TEST_licordata")
-read_dataset <- function(dataset_name, log = TRUE) {
+read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
                   ports = read_ports_file(dataset_name),
                   site = read_site_file(dataset_name)
   )
 
-  # Parse the actual data (which must be in a data/ subdirectory)
+  # Parse the actual data
+  # Test data live inside the package, in a data/ subdirectory, but generally
+  # we look in raw_data/ which is supplied by the user (external to the package)
+  if(missing(raw_data)) {
+    df <- file.path(resolve_dataset(dataset_name), "data")
+  } else {
+    df <- file.path(raw_data, dataset_name)
+  }
   ins <- dataset$description$Instrument
-  df <- file.path(resolve_dataset(dataset_name), "data")
 
   if(log) {
     # tf <- tempfile()
     # zz <- file(tf, open = "wt")
     # sink(zz, type = "output")
     # sink(zz, type = "message")
+  }
+
+  if(!dir.exists(df)) {
+    message("No data folder found for ", dataset_name)
+    dataset$description$Records <- 0
+    return(dataset)
   }
 
   utc <- dataset$description$UTC_offset
@@ -242,5 +256,6 @@ read_dataset <- function(dataset_name, log = TRUE) {
     # unlink(tf)
   }
 
+  dataset$description$Records <- nrow(data$data)
   dataset
 }

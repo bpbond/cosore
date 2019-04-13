@@ -4,10 +4,12 @@
 \alias{read_dataset}
 \title{Read a complete dataset}
 \usage{
-read_dataset(dataset_name, log = TRUE)
+read_dataset(dataset_name, raw_data, log = TRUE)
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}
+
+\item{raw_data}{Path to the raw data folder (not in package)}
 
 \item{log}{Log messages? Logical}
 }
