@@ -109,7 +109,6 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 #' @note For information about ORCID see \url{https://orcid.org}. For
 #' CRediT roles, see \url{https://www.casrai.org/credit.html}.
 #' @return A \code{data.frame} with the following columns:
-#' \item{Dataset}{Dataset name, character}
 #' \item{First_name}{Site name, character}
 #' \item{Family_name}{Decimal Longitude, numeric}
 #' \item{Email}{Decimal latitude, numeric}
@@ -117,25 +116,18 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 #' \item{Role}{Role, character}
 read_contributors_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "CONTRIBUTORS.txt", file_data)
+  read_csv_data(file_data, required = c("First_name", "Family_name", "ORCID"))
+}
 
-  contribs <- data.frame()
-  entries <- grep("^First_name", file_data)
-  for(i in seq_along(entries)) {
-    if(i < length(entries)) {
-      fd <- file_data[entries[i]:entries[i + 1] - 1]
-    } else {
-      fd <- file_data[entries[i]:length(file_data)]
+
+read_csv_data <- function(file_data, required = NULL) {
+  x <- read.csv(textConnection(file_data), strip.white = TRUE, stringsAsFactors = FALSE)
+  for(col in seq_along(required)) {
+    if(any(is.na(x[[required[col]]])) | any(x[[required[col]]] == "")) {
+      stop("Column ", required[col], " is required but has empty entries")
     }
-
-    df <- data.frame(First_name = extract_line(fd, "First_name"),
-                     Family_name = extract_line(fd, "Family_name"),
-                     Email = extract_line(fd, "Email", required = FALSE),
-                     ORCID = extract_line(fd, "ORCID", required = FALSE),
-                     Role = extract_line(fd, "Role", required = FALSE),
-                     stringsAsFactors = FALSE)
-    contribs <- rbind(contribs, df)
   }
-  contribs
+  x
 }
 
 
@@ -145,38 +137,16 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
 #' @param file_data File data, character vector; optional for testing
 #' @keywords internal
 #' @return A \code{data.frame} with the following columns:
-#' \item{Dataset}{Dataset name, character}
 #' \item{Port}{Port number, numeric; 0 = all ports}
 #' \item{Treatment}{Treatment, character; by default "None"}
 #' \item{Species}{Species, character}
-#' \item{V1-V4}{Sensor information for options V1-V4 probes}
 read_ports_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "PORTS.txt", file_data)
-
-  ports <- data.frame()
-  entries <- grep("^Port", file_data)
-  for(i in seq_along(entries)) {
-    if(i < length(entries)) {
-      fd <- file_data[entries[i]:entries[i + 1] - 1]
-    } else {
-      fd <- file_data[entries[i]:length(file_data)]
-    }
-
-    df <- data.frame(Port = extract_line(fd, "Port", numeric_data = TRUE),
-                     Treatment = extract_line(fd, "Treatment"),
-                     Species = extract_line(fd, "Species", required = FALSE),
-                     V1 = extract_line(fd, "V1", required = FALSE),
-                     V2 = extract_line(fd, "V2", required = FALSE),
-                     V3 = extract_line(fd, "V3", required = FALSE),
-                     V4 = extract_line(fd, "V4", required = FALSE),
-                     stringsAsFactors = FALSE)
-    ports <- rbind(ports, df)
-  }
-  ports
+  read_csv_data(file_data, required = c("Port", "Treatment"))
 }
 
 
-#' Read dataset SITES file
+#' Read dataset ANCILLARY file
 #'
 #' @param dataset_name Dataset name, character
 #' @param file_data File data, character vector; optional for testing
@@ -184,15 +154,9 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 #' @importFrom utils read.csv
 #' @note This is simply a comma-separated table.
 #' @return A \code{data.frame} containing any data in the file.
-read_site_file <- function(dataset_name, file_data = NULL) {
-  file_data <- read_file(dataset_name, "SITE.txt", file_data)
-  if(length(file_data)) {
-    con <- textConnection(file_data)
-    on.exit(close(con))
-    read.csv(con, stringsAsFactors = FALSE)
-  } else {
-    NULL
-  }
+read_ancillary_file <- function(dataset_name, file_data = NULL) {
+  file_data <- read_file(dataset_name, "ANCILLARY.txt", file_data)
+  read_csv_data(file_data)
 }
 
 #' Read a complete dataset
@@ -205,6 +169,7 @@ read_site_file <- function(dataset_name, file_data = NULL) {
 #' \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
 #' \item{ports}{Contents of \code{PORTS.txt} file}
 #' \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
+#' \item{ancillary}{Ancillary site information}
 #' @export
 #' @examples
 #' read_dataset("TEST_licordata")
@@ -213,7 +178,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
                   ports = read_ports_file(dataset_name),
-                  site = read_site_file(dataset_name)
+                  ancillary = read_ancillary_file(dataset_name)
   )
 
   # Parse the actual data
@@ -243,7 +208,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   # We could do something fancy like dispatch on instrument name, but at least
   # for now, just if-else it
   if(ins == "LI-8100A/raw") {
-    dataset$data <- parse_LI8100_raw(df, dataset$ports, utc)
+    dataset$data <- parse_LI8100_raw(df, utc)
   } else if(ins == "LI-8100A/processed") {
     dataset$data <- parse_LI8100_processed(df, utc)
   } else {

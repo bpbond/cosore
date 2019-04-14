@@ -4,12 +4,11 @@
 #' Parse a LI-8100 (with LI-8150 multiplexer) data file.
 #'
 #' @param filename Filename, character
-#' @param port_data Port information extracted from \code{PORTS.txt} file
 #' @param UTC_offset Offset from UTC in hour, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.table
 #' @export
-parse_LI8100_file <- function(filename, port_data, UTC_offset) {
+parse_LI8100_file <- function(filename, UTC_offset) {
 
   # Read file into memory and find records
   filedata <- readLines(filename)
@@ -117,23 +116,6 @@ parse_LI8100_file <- function(filename, port_data, UTC_offset) {
       results$Flux[i] <- extract_line(record, "Exp_Flux", required = FALSE)
       results$R2[i] <- extract_line(record, "Exp_R2", required = FALSE)
 
-      # Check the V1...4 (voltage) information fields; if any sensors are found,
-      # use the PORTS info to create new data fields
-      for(v in 1:4) {
-        info <- extract_line(record, paste0("V", v, " Info"))
-        if(grepl("(THERM|SM)$", info)) {
-          port_info <- port_data[[paste0("V", v)]]
-          # A port 0 entry means "all ports"
-          w <- which(port_data$Port == 0 | port_data$Port == results$Port[i])
-
-          if(port_info[w] == "") {
-            message(filename, i, v, "Sensors detected but no info given for this port")
-          } else { # create new column
-            results[[port_info[w]]] <- results[[paste0("V", v)]]
-          }
-        }
-      }
-
     } # for i
 
     # Clean up and return
@@ -146,13 +128,12 @@ parse_LI8100_file <- function(filename, port_data, UTC_offset) {
 #' Loop through directory and read raw multiplexed Licor-8100 data
 #'
 #' @param path Directory path, character
-#' @param port_data Port data, a list returned by \code{\link{read_ports_file}}
 #' @param UTC_offset Offset from UTC in hour, numeric
 #' @return A data frame with all data read from file(s).
 #' @export
-parse_LI8100_raw <- function(path, port_data, UTC_offset) {
+parse_LI8100_raw <- function(path, UTC_offset) {
   files <- list.files(path, pattern = ".81x$", full.names = TRUE, recursive = TRUE)
-  do.call("rbind", lapply(files, parse_LI8100_file, port_data, UTC_offset))
+  do.call("rbind", lapply(files, parse_LI8100_file, UTC_offset))
 }
 
 #' Loop through directory and read processed multiplexed Licor-8100 data
