@@ -120,11 +120,20 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
 }
 
 
+#' Read comma-separated data from a character vector
+#'
+#' @param file_data File data to read, character vector
+#' @param required Vector of column names that must be all filled in, optional
+#' @return A data frame with loaded data.
+#' @keywords internal
 read_csv_data <- function(file_data, required = NULL) {
   x <- read.csv(textConnection(file_data), strip.white = TRUE, stringsAsFactors = FALSE)
-  for(col in seq_along(required)) {
-    if(any(is.na(x[[required[col]]])) | any(x[[required[col]]] == "")) {
-      stop("Column ", required[col], " is required but has empty entries")
+  for(req in required) {
+    if(!req %in% colnames(x)) {
+      stop(req, " is not a column name")
+    }
+    if(any(is.na(x[[req]])) | any(x[[req]] == "")) {
+      stop("Column ", req, " is required but has empty entries")
     }
   }
   x
