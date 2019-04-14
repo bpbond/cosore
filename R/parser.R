@@ -209,6 +209,7 @@ read_site_file <- function(dataset_name, file_data = NULL) {
 #' @examples
 #' read_dataset("TEST_licordata")
 read_dataset <- function(dataset_name, raw_data, log = TRUE) {
+
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
                   ports = read_ports_file(dataset_name),
@@ -256,6 +257,6 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     # unlink(tf)
   }
 
-  dataset$description$Records <- nrow(data$data)
+  dataset$description$Records <- nrow(dataset$data)
   dataset
 }

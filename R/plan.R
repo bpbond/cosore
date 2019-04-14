@@ -1,13 +1,25 @@
 
 
+run_reports <- function(all_data) {
+  # individual dataset reports
+  mf <- system.file("doc/datareport.Rmd", package = "cosore")
+
+  for(dsn in names(all_data)) {
+    rmarkdown::render(mf,
+                      params = list(all = all, dataset_name = dsn),
+                      output_file = paste0("Report-", dsn, ".html"),
+                      output_dir = "~/Desktop/Reports/")
+  }
+}
 
 #' Title
 #'
+#' @param datasets Character vector of dataset names
 #' @param ... Dataset objects
-#'
 #' @return x
 #' @importFrom drake drake_plan
-combine_data <- function(...) {
+#' @export
+combine_data <- function(datasets, ...) {
   x <-  list(...)
   names(x) <- datasets
   x
@@ -31,16 +43,20 @@ csr_build <- function(raw_data) {
     dataset_folders <- resolve_dataset(datasets)
 
     csr_plan <- drake_plan(
+      datasets = list_datasets(),
+#      dss = rlang::syms(datasets),
+
       # read in datasets into individual targets
       data = target(read_dataset(ds, rd),
                     # each data object is triggered by any change in the dataset directory;
                     # requires https://github.com/ropensci/drake/pull/795 (v7.1)
                     trigger = trigger(condition = file_in(dsf)),
                     # map the datasets and their directories to the targets above
-                    transform = map(ds = !!datasets, dsf = !!dataset_folders, rd = !!raw_data,
-                                    .id = dsf)), #
+                    transform = map(ds = !!datasets, dsf = !!dataset_folders,
+                                    rd = !!raw_data, .id = ds)), #
       # ...and combine into a single big list
-      all = target(combine_data(data), transform = combine(data)),
+      all = target(combine_data(datasets, data), transform = combine(data)),
+
       trace = TRUE
     )
   }

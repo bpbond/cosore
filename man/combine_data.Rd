@@ -4,9 +4,11 @@
 \alias{combine_data}
 \title{Title}
 \usage{
-combine_data(...)
+combine_data(datasets, ...)
 }
 \arguments{
+\item{datasets}{Character vector of dataset names}
+
 \item{...}{Dataset objects}
 }
 \value{

@@ -1,0 +1,16 @@
+---
+title: "datareport"
+date: "4/13/2019"
+params:
+  all: NULL
+  dataset_name: NULL
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## `r params$dataset_name`
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.

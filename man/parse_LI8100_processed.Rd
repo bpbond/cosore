@@ -10,8 +10,6 @@ parse_LI8100_processed(path, UTC_offset)
 \item{path}{Directory path, character}
 
 \item{UTC_offset}{Offset from UTC in hour, numeric}
-
-\item{port_data}{Port data, a list returned by \code{\link{read_ports_file}}}
 }
 \value{
 A data frame with all data read from file(s).

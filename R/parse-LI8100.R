@@ -158,7 +158,6 @@ parse_LI8100_raw <- function(path, port_data, UTC_offset) {
 #' Loop through directory and read processed multiplexed Licor-8100 data
 #'
 #' @param path Directory path, character
-#' @param port_data Port data, a list returned by \code{\link{read_ports_file}}
 #' @param UTC_offset Offset from UTC in hour, numeric
 #' @return A data frame with all data read from file(s).
 #' @note Processed (in the Licor application) data consists of a tab-delimited
