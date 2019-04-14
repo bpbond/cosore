@@ -13,7 +13,6 @@ read_contributors_file(dataset_name, file_data = NULL)
 }
 \value{
 A \code{data.frame} with the following columns:
-\item{Dataset}{Dataset name, character}
 \item{First_name}{Site name, character}
 \item{Family_name}{Decimal Longitude, numeric}
 \item{Email}{Decimal latitude, numeric}

@@ -19,6 +19,7 @@ A list with (at least) elements:
 \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
 \item{ports}{Contents of \code{PORTS.txt} file}
 \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
+\item{ancillary}{Ancillary site information}
 }
 \description{
 Read a complete dataset

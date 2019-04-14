@@ -13,11 +13,9 @@ read_ports_file(dataset_name, file_data = NULL)
 }
 \value{
 A \code{data.frame} with the following columns:
-\item{Dataset}{Dataset name, character}
 \item{Port}{Port number, numeric; 0 = all ports}
 \item{Treatment}{Treatment, character; by default "None"}
 \item{Species}{Species, character}
-\item{V1-V4}{Sensor information for options V1-V4 probes}
 }
 \description{
 Read dataset PORTS file

@@ -4,12 +4,10 @@
 \alias{parse_LI8100_raw}
 \title{Loop through directory and read raw multiplexed Licor-8100 data}
 \usage{
-parse_LI8100_raw(path, port_data, UTC_offset)
+parse_LI8100_raw(path, UTC_offset)
 }
 \arguments{
 \item{path}{Directory path, character}
-
-\item{port_data}{Port data, a list returned by \code{\link{read_ports_file}}}
 
 \item{UTC_offset}{Offset from UTC in hour, numeric}
 }
