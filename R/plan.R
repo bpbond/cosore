@@ -2,7 +2,7 @@
 
 run_reports <- function(all_data) {
   # individual dataset reports
-  mf <- system.file("doc/datareport.Rmd", package = "cosore")
+  mf <- system.file("reports/datareport.Rmd", package = "cosore")
 
   for(dsn in names(all_data)) {
     rmarkdown::render(mf,
