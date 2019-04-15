@@ -1,0 +1,21 @@
+---
+title: "datareport"
+date: "4/13/2019"
+params:
+  dataset: NULL
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+ds <- params$dataset
+```
+
+## `r ds$dataset_name`
+
+### DESCRIPTION
+
+```{r, echo=FALSE}
+knitr::kable(unlist(ds$description), col.names = c("Value"))
+```
+

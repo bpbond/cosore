@@ -7,10 +7,10 @@
 run_reports(all_data)
 }
 \arguments{
-\item{all_data}{hange this}
+\item{all_data}{A list of \code{cosore} datasets.}
 }
 \value{
-stuff
+Nothing.
 }
 \description{
 Run reports
