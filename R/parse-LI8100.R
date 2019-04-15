@@ -149,5 +149,6 @@ parse_LI8100_processed <- function(path, UTC_offset) {
   files <- list.files(path, pattern = "^[0-9]{8}.txt$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.delim, stringsAsFactors = FALSE, check.names = FALSE))
   dat$`IV Date` <- as.POSIXct(dat$`IV Date`, format = "%Y-%m-%d %H:%M:%S", tz = "UTC") - UTC_offset * 60 * 60
+  dat$Error <- FALSE
   dat
 }
