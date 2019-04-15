@@ -116,7 +116,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 #' \item{Role}{Role, character}
 read_contributors_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "CONTRIBUTORS.txt", file_data)
-  read_csv_data(file_data, required = c("First_name", "Family_name", "ORCID"))
+  read_csv_data(file_data, required = c("First_name", "Family_name"))
 }
 
 
@@ -283,7 +283,10 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     dataset$data <- parse_LI8100_raw(df, utc)
   } else if(ins == "LI-8100A/processed") {
     dataset$data <- parse_LI8100_processed(df, utc)
-  } else {
+  } else if(ins == "d20190415_HF068") {
+    dataset$data <- parse_d20190415_HF068(df, utc)
+  }
+  else {
     message("Unknown instrument for ", dataset_name)
   }
 

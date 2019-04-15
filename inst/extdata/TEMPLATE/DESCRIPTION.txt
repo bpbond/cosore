@@ -1,29 +1,23 @@
-# Extremely minimal information that MUST be filled out for each dataset
+# DESCRIPTION.txt
 #
-# Site_name: standard site name
-# Longitude: decimal degrees; positive = east, negative = west
-# Latitude: decimal degrees; positive = north, negative = south
-# Elevation: elevation above sea level, meters
-# UTC_offset: offset from UTC of site data, hours (standard time)
-# IGBP: IGBP land cover type. Common types include:
-#    Evergreen needleleaf forest
-#    Evergreen broadleaf forest
-#    Deciduous needleleaf forest
-#    Deciduous broadleaf forest
-#    Mixed forests
-#    Closed shrubland
-#    Open shrubland
-#    Woody savanna
-#    Savannas
-#    Grassland
-#    Wetland
-#    Cropland
-#    Urban
-# Instrument: e.g. "LI-8100A/raw" for standard Licor setup, "LI-8100A/processed", others...
-# Primary publication: DOI (preferred) or other primary publication that should
-#     be cited when these data are used. Leave empty if unpublished.
-# Other publications [optional]: comma-separated DOIs
-# Acknowledgment [optional]: Acknowledgment (funding or other) text
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	Site_name: standard site name
+# 	Longitude: decimal degrees; positive = east, negative = west
+# 	Latitude: decimal degrees; positive = north, negative = south
+# 	Elevation: elevation above sea level, meters
+# 	UTC_offset: offset from UTC of site data, hours (standard time)
+# 	IGBP: IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	Acknowledgment: optional acknowledgment (funding or other) text
 # --------------------------------------
 Site_name: 
 Longitude: 
@@ -32,7 +26,7 @@ Elevation:
 UTC_offset: 
 IGBP: 
 Instrument: LI-8100A/raw
-Primary_pub: 
-Other_pubs: 
-Data_URL: 
+Primary_pub:
+Other_pub:
+Data_URL:
 Acknowledgment: 

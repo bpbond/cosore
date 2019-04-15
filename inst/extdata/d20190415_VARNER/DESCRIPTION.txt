@@ -1,0 +1,38 @@
+# Extremely minimal information that MUST be filled out for each dataset
+#
+# Site_name: standard site name
+# Longitude: decimal degrees; positive = east, negative = west
+# Latitude: decimal degrees; positive = north, negative = south
+# Elevation: elevation above sea level, meters
+# UTC_offset: offset from UTC of site data, hours (standard time)
+# IGBP: IGBP land cover type. Common types include:
+#    Evergreen needleleaf forest
+#    Evergreen broadleaf forest
+#    Deciduous needleleaf forest
+#    Deciduous broadleaf forest
+#    Mixed forests
+#    Closed shrubland
+#    Open shrubland
+#    Woody savanna
+#    Savannas
+#    Grassland
+#    Wetland
+#    Cropland
+#    Urban
+# Instrument: e.g. "LI-8100A/raw" for standard Licor setup, "LI-8100A/processed", others...
+# Primary publication: DOI (preferred) or other primary publication that should
+#     be cited when these data are used. Leave empty if unpublished.
+# Other publications [optional]: comma-separated DOIs
+# Acknowledgment [optional]: Acknowledgment (funding or other) text
+# --------------------------------------
+Site_name: Prospect Hill Tract (Harvard Forest)
+Longitude: -72.17
+Latitude: 42.54
+Elevation: 340
+UTC_offset: -5
+IGBP: Deciduous broadleaf forest
+Instrument: d20190415_HF068
+Primary_pub: 
+Other_pubs: 
+Data_URL: 10.6073/pasta/29aae9def8e977d8ee67f1ca2f54b632
+Acknowledgment: Varner R. 2008. Soil Respiration Along a Hydrological Gradient at Harvard Forest EMS Tower 2003-2006. Harvard Forest Data Archive: HF068

@@ -127,8 +127,8 @@ parse_LI8100_file <- function(filename, UTC_offset) {
 
 #' Loop through directory and read raw multiplexed Licor-8100 data
 #'
-#' @param path Directory path, character
-#' @param UTC_offset Offset from UTC in hour, numeric
+#' @param path Data directory path, character
+#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A data frame with all data read from file(s).
 #' @export
 parse_LI8100_raw <- function(path, UTC_offset) {
@@ -138,8 +138,8 @@ parse_LI8100_raw <- function(path, UTC_offset) {
 
 #' Loop through directory and read processed multiplexed Licor-8100 data
 #'
-#' @param path Directory path, character
-#' @param UTC_offset Offset from UTC in hour, numeric
+#' @param path Data directory path, character
+#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A data frame with all data read from file(s).
 #' @note Processed (in the Licor application) data consists of a tab-delimited
 #' text file with a standard set of columns.

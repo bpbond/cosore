@@ -7,9 +7,9 @@
 parse_LI8100_raw(path, UTC_offset)
 }
 \arguments{
-\item{path}{Directory path, character}
+\item{path}{Data directory path, character}
 
-\item{UTC_offset}{Offset from UTC in hour, numeric}
+\item{UTC_offset}{Offset from UTC in hours, numeric}
 }
 \value{
 A data frame with all data read from file(s).

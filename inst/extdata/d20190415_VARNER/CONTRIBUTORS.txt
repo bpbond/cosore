@@ -14,4 +14,7 @@
 # Smith,		Jill,			js@smith.edu	0000-1111-2222-3333,	Investigation
 # Jones,		John,			jj@jones.edu	,						"Funding acquisition"
 #
-First_name,	Family_name,	Email,							ORCID,					Role
+First_name,	Family_name,	Email,						ORCID,					Role
+Ruth,		Varner,			ruth.varner@unh.edu,		0000-0002-3571-6629
+Patrick,	Crill
+Steve,		Wofsy

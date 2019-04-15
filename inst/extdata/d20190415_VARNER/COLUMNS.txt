@@ -16,16 +16,9 @@
 #
 Database,		Dataset,	Computation,				Notes
 CSR_AREA,		Area,
-CSR_CDRY,		Cdry,
-CSR_COMMENTS,	Comments,
 CSR_ERROR,		Error,
-CSR_FLUX,  		Flux,
-CSR_LABEL,		Label,
-CSR_PORT,		Port,
-CSR_R2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V4
-CSR_T5,			V3
-CSR_TCHAMBER,	Tcham
+CSR_FLUX,  		co2flux,
+CSR_PORT,		chamber,
+CSR_T5,			avg.grndt
+CSR_TAIR,		avg.airt
 CSR_TIMESTAMP,	Timestamp
