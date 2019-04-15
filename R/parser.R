@@ -132,8 +132,9 @@ read_csv_data <- function(file_data, required = NULL) {
     if(!req %in% colnames(x)) {
       stop(req, " is not a column name")
     }
-    if(any(is.na(x[[req]])) | any(x[[req]] == "")) {
-      stop("Column ", req, " is required but has empty entries")
+    empty <- which(is.na(x[[req]]) | x[[req]] == "")
+    if(length(empty)) {
+      stop("Column ", req, " is required but has empty entries: ", empty)
     }
   }
   x
@@ -155,6 +156,22 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 }
 
 
+#' Read dataset COLUMNS file
+#'
+#' @param dataset_name Dataset name, character
+#' @param file_data File data, character vector; optional for testing
+#' @keywords internal
+#' @return A \code{data.frame} with the following columns:
+#' \item{Database}{Database column name, character}
+#' \item{Dataset}{Dataset column name, character}
+#' \item{Computation}{Optional computation R-parseable to perform, character}
+#' \item{Port}{Optional port number, integer}
+#' \item{Notes}{Optional notes, character}
+read_columns_file <- function(dataset_name, file_data = NULL) {
+  file_data <- read_file(dataset_name, "COLUMNS.txt", file_data)
+  read_csv_data(file_data, required = c("Database", "Dataset"))
+}
+
 #' Read dataset ANCILLARY file
 #'
 #' @param dataset_name Dataset name, character
@@ -166,6 +183,50 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 read_ancillary_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "ANCILLARY.txt", file_data)
   read_csv_data(file_data)
+}
+
+
+#' Map data columns to new names/values.
+#'
+#' @param dat Dataset data, a \code{data.frame}
+#' @param columns Column mapping data from the \code{COLUMNS.txt} file, a \code{data.frame}
+#' @return The \code{dat} data frame with column names transformed, and possibly
+#' computed, as defined by \code{columns}.
+#' @export
+#' @examples
+#' dat <- data.frame(x = 1:3)
+#' columns <- data.frame(Database = "y", Dataset = "x", Computation = "x * 2")
+#' map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
+map_columns <- function(dat, columns) {
+  if(is.data.frame(dat) & is.data.frame(columns)) {
+
+    if(!"Computation" %in% names(columns)) {
+      columns$Computation <- NA_character_
+    }
+
+    # As usual, factors screw things up, so make sure not dealing with them
+    columns$Database <- as.character(columns$Database)
+    columns$Dataset <- as.character(columns$Dataset)
+    columns$Computation <- as.character(columns$Computation)
+
+    for(col in seq_len(nrow(columns))) {
+      dbcol <- columns$Database[col]
+      dscol <- columns$Dataset[col]
+      comp <- columns$Computation[col]
+      message(dscol, " -> ", dbcol, " ", comp)
+
+      # Apply map/computation
+      stopifnot(dscol %in% names(dat))
+      stopifnot(dscol != dbcol)
+      if(is.na(comp) | comp == "") {
+        names(dat)[which(names(dat) == dscol)] <- dbcol  # rename
+      } else {
+        dat[[dbcol]] <- with(dat, eval(parse(text = comp)))
+        dat[[dscol]] <- NULL  # remove original column
+      }
+    }
+  }
+  dat
 }
 
 #' Read a complete dataset
@@ -187,6 +248,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
                   ports = read_ports_file(dataset_name),
+                  columns = read_columns_file(dataset_name),
                   ancillary = read_ancillary_file(dataset_name)
   )
 
@@ -216,6 +278,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   utc <- dataset$description$UTC_offset
   # We could do something fancy like dispatch on instrument name, but at least
   # for now, just if-else it
+  ds <- NULL
   if(ins == "LI-8100A/raw") {
     dataset$data <- parse_LI8100_raw(df, utc)
   } else if(ins == "LI-8100A/processed") {
@@ -223,6 +286,9 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   } else {
     message("Unknown instrument for ", dataset_name)
   }
+
+  # Column mapping and computation
+  dataset$data <- map_columns(dataset$data, dataset$columns)
 
   if(log) {
     # sink(type = "message")

@@ -57,7 +57,7 @@ parse_LI8100_file <- function(filename, UTC_offset) {
       # 1 - record-level data that occur BEFORE the data table
       results$Label[i] <- extract_line(record, "Label")
       results$Port[i] <- as.integer(extract_line(record, "Port#"))
-      results$Area[i] <- extract_line(record, "Area")
+      results$Area[i] <- as.numeric(extract_line(record, "Area"))
       results$Comments[i] <- extract_line(record, "Comments")
 
       # 2 - table data
