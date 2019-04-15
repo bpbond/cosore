@@ -1,3 +1,0 @@
-# Ignore all data/ directories below this point
-# At least for now, until I figure out data requirements/Git LFS/etc.
-data/
