@@ -213,14 +213,15 @@ map_columns <- function(dat, columns) {
       dbcol <- columns$Database[col]
       dscol <- columns$Dataset[col]
       comp <- columns$Computation[col]
-      message(dscol, " -> ", dbcol, " ", comp)
 
       # Apply map/computation
       stopifnot(dscol %in% names(dat))
       stopifnot(dscol != dbcol)
       if(is.na(comp) | comp == "") {
+        message(dbcol, " <- ", dscol)
         names(dat)[which(names(dat) == dscol)] <- dbcol  # rename
       } else {
+        message(dbcol, " <- ", comp)
         dat[[dbcol]] <- with(dat, eval(parse(text = comp)))
         dat[[dscol]] <- NULL  # remove original column
       }
