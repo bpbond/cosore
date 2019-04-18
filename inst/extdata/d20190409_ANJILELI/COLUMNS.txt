@@ -18,6 +18,7 @@ Database,		Dataset,	Computation,				Notes
 CSR_AREA,		Area,
 CSR_CDRY,		Cdry,
 CSR_COMMENTS,	Comments,
+CSR_CRVFIT,		CrvFitStatus
 CSR_ERROR,		Error,
 CSR_FLUX,  		Flux,
 CSR_LABEL,		Label,

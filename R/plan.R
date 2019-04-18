@@ -43,28 +43,26 @@ combine_data <- function(datasets, ...) {
 #' csr_build("../rawdata/")  # build without raw data
 #' }
 csr_build <- function(raw_data) {
-  datasets <- list_datasets()
+  dataset_names <- list_datasets()
+  dataset_folders <- resolve_dataset(dataset_names)
 
-  if(length(datasets)) { # if no data, don't build
-    dataset_folders <- resolve_dataset(datasets)
-
+  if(length(dataset_names)) { # if no data, don't build
     csr_plan <- drake_plan(
-      datasets = list_datasets(),
       #      dss = rlang::syms(datasets),
 
       # read in datasets into individual targets
-      dat = target(read_dataset(ds, rd),
+      dat = target(read_dataset(dsn, rd),
                    # each data object is triggered by any change in the dataset directory;
                    # requires https://github.com/ropensci/drake/pull/795 (v7.1)
                    trigger = trigger(condition = file_in(dsf)),
                    # map the datasets and their directories to the targets above
-                   transform = map(ds = !!datasets, dsf = !!dataset_folders,
-                                   rd = !!raw_data, .id = ds)), #
+                   transform = map(dsn = !!dataset_names, dsf = !!dataset_folders,
+                                   rd = !!raw_data, .id = dsn)), #
       # ...and combine into a single big list
-      all = target(combine_data(datasets, dat), transform = combine(dat)),
+      all = target(combine_data(dataset_names, dat), transform = combine(dat)),
 
       trace = TRUE
     )
+    make(csr_plan)
   }
-  csr_plan
 }
