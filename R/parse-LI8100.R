@@ -10,6 +10,11 @@
 #' @export
 parse_LI8100_file <- function(filename, UTC_offset) {
 
+  # Can't use NA for timestamps below, because this is assigned a timezone of ""
+  # which means the whole vector gets changed to EDT (or wherever code is being run)
+  # Define a custom "NA" that's a valid POSIXct in UTC
+  na_timestamp <- as.POSIXct("1970-01-01", tz = "UTC")
+
   # Read file into memory and find records
   filedata <- readLines(filename)
   record_starts <- grep(pattern = "^LI-8100", filedata)
@@ -22,8 +27,7 @@ parse_LI8100_file <- function(filename, UTC_offset) {
     # Set up results data frame and fill it in as we go
     results <- data.frame(
       Record = seq_along(record_starts),
-      # can't use NA for some reason--screws up mean() timestamp computation later
-      Timestamp = as.POSIXct("1970-01-01", tz = "UTC"),
+      Timestamp = na_timestamp,
       Label = NA_character_,
       Port = NA_integer_,
       # next two are converted to numeric at end for performance
@@ -112,14 +116,14 @@ parse_LI8100_file <- function(filename, UTC_offset) {
       results$Cdry[i] <- mean(dat$Cdry[index])
 
       # 3 - record-level data AFTER the table
-      results$Flux[i] <- extract_line(record, "Exp_Flux", required = FALSE)
-      results$R2[i] <- extract_line(record, "Exp_R2", required = FALSE)
+      results$CrvFitStatus[i] <- extract_line(record, "CrvFitStatus", required = FALSE)
+      results$Flux[i] <- extract_line(record, "Exp_Flux", required = FALSE, numeric_data = TRUE)
+      results$R2[i] <- extract_line(record, "Exp_R2", required = FALSE, numeric_data = TRUE)
 
     } # for i
 
-    # Clean up and return
-    results$Flux <- as.numeric(results$Flux)
-    results$R2 <- as.numeric(results$R2)
+    # Change any untouched Timestamp fields to NA
+    results$Timestamp[results$Timestamp == na_timestamp] <- NA
     results
   }
 }
