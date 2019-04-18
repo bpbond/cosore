@@ -86,18 +86,23 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 read_description_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
-  data.frame(Site_name = extract_line(file_data, "Site_name"),
-             Longitude = extract_line(file_data, "Longitude", numeric_data = TRUE),
-             Latitude = extract_line(file_data, "Latitude", numeric_data = TRUE),
-             Elevation = extract_line(file_data, "Elevation", numeric_data = TRUE),
-             UTC_offset = extract_line(file_data, "UTC_offset", numeric_data = TRUE),
-             IGBP = extract_line(file_data, "IGBP"),
-             Instrument = extract_line(file_data, "Instrument"),
-             Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
-             Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
-             Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
-             Acknowledgment = extract_line(file_data, "Acknowledgment", required = FALSE),
-             stringsAsFactors = FALSE)
+  d <- data.frame(Site_name = extract_line(file_data, "Site_name"),
+                  Longitude = extract_line(file_data, "Longitude", numeric_data = TRUE),
+                  Latitude = extract_line(file_data, "Latitude", numeric_data = TRUE),
+                  Elevation = extract_line(file_data, "Elevation", numeric_data = TRUE),
+                  UTC_offset = extract_line(file_data, "UTC_offset", numeric_data = TRUE),
+                  IGBP = extract_line(file_data, "IGBP"),
+                  Instrument = extract_line(file_data, "Instrument"),
+                  Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
+                  Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
+                  Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
+                  Acknowledgment = extract_line(file_data, "Acknowledgment", required = FALSE),
+                  stringsAsFactors = FALSE)
+
+  if(is.na(d$UTC_offset) | d$UTC_offset == "" | abs(d$UTC_offset) >= 15) {
+    stop("Bad UTC_offset in ", dataset_name)
+  }
+  d
 }
 
 
@@ -246,7 +251,8 @@ map_columns <- function(dat, columns) {
 #' read_dataset("TEST_licordata")
 read_dataset <- function(dataset_name, raw_data, log = TRUE) {
 
-  dataset <- list(description = read_description_file(dataset_name),
+  dataset <- list(dataset_name = dataset_name,
+                  description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
                   ports = read_ports_file(dataset_name),
                   columns = read_columns_file(dataset_name),
@@ -261,7 +267,6 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   } else {
     df <- file.path(raw_data, dataset_name)
   }
-  ins <- dataset$description$Instrument
 
   if(log) {
     # tf <- tempfile()
@@ -276,19 +281,15 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     return(dataset)
   }
 
+  # Dispatch to correct parsing function based on instrument name
   utc <- dataset$description$UTC_offset
-  # We could do something fancy like dispatch on instrument name, but at least
-  # for now, just if-else it
-  ds <- NULL
-  if(ins == "LI-8100A/raw") {
-    dataset$data <- parse_LI8100_raw(df, utc)
-  } else if(ins == "LI-8100A/processed") {
-    dataset$data <- parse_LI8100_processed(df, utc)
-  } else if(ins == "d20190415_HF068") {
-    dataset$data <- parse_d20190415_HF068(df, utc)
-  }
-  else {
-    message("Unknown instrument for ", dataset_name)
+  ins <- dataset$description$Instrument
+  func <- paste0("parse_", ins)
+  if(exists(func)) {
+    dataset$data <- do.call(func, list(df, utc))
+  } else {
+    message("Unknown instrument ", ins, " in ", dataset_name)
+    dataset$data <- data.frame()
   }
 
   # Column mapping and computation

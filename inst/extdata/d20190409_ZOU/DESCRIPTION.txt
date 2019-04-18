@@ -32,7 +32,7 @@ Latitude: 52.95
 Elevation: 260
 UTC_offset: 1
 IGBP: Evergreen needleaf forest
-Instrument: LI-8100A/processed
+Instrument: LI8100A_processed
 Primary_pub:
 Other_pubs:
 Data_URL:

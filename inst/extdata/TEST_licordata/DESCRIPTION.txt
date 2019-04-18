@@ -25,7 +25,7 @@ Latitude: 38.875
 Elevation: 5
 UTC_offset: -5
 IGBP: Deciduous broadleaf forest
-Instrument: LI-8100A/raw
+Instrument: LI8100A_raw
 Primary_pub:
 Other_pub:
 Data_URL:

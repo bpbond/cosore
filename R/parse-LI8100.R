@@ -98,7 +98,6 @@ parse_LI8100_file <- function(filename, UTC_offset) {
       }
 
       # Convert to POSIXct and UTC so we can take mean timestamp
-      stopifnot(abs(UTC_offset) < 15)
       dat$Date <- as.POSIXct(dat$Date, format = "%Y-%m-%d %H:%M:%S", tz = "UTC") - UTC_offset * 60 * 60
 
       # Pull out the table-level data we're interested in
@@ -131,7 +130,7 @@ parse_LI8100_file <- function(filename, UTC_offset) {
 #' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A data frame with all data read from file(s).
 #' @export
-parse_LI8100_raw <- function(path, UTC_offset) {
+parse_LI8100A_raw <- function(path, UTC_offset) {
   files <- list.files(path, pattern = ".81x$", full.names = TRUE, recursive = TRUE)
   do.call("rbind", lapply(files, parse_LI8100_file, UTC_offset))
 }
@@ -145,7 +144,7 @@ parse_LI8100_raw <- function(path, UTC_offset) {
 #' text file with a standard set of columns.
 #' @importFrom utils read.delim
 #' @export
-parse_LI8100_processed <- function(path, UTC_offset) {
+parse_LI8100A_processed <- function(path, UTC_offset) {
   files <- list.files(path, pattern = "^[0-9]{8}.txt$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.delim, stringsAsFactors = FALSE, check.names = FALSE))
   dat$`IV Date` <- as.POSIXct(dat$`IV Date`, format = "%Y-%m-%d %H:%M:%S", tz = "UTC") - UTC_offset * 60 * 60

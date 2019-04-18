@@ -32,7 +32,7 @@ Latitude: 33.658
 Elevation: 2
 UTC_offset: -8
 IGBP: Wetland
-Instrument: LI-8100A/raw
+Instrument: LI8100A_raw
 Primary_pub: 10.1029/2018JG004640
 Other_pubs:
 Data_URL:
