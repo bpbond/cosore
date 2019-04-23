@@ -7,7 +7,9 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+theme_set(theme_bw())
 ds <- params$dataset
 ```
 
@@ -16,6 +18,18 @@ ds <- params$dataset
 ### DESCRIPTION
 
 ```{r, echo=FALSE}
-knitr::kable(unlist(ds$description), col.names = c("Value"))
+kableExtra::kable(unlist(ds$description), col.names = c("Value"))
+```
+
+### CONTRIBUTORS
+
+```{r, echo=FALSE}
+knitr::kable(unlist(ds$contributors), col.names = c("Value"))
+```
+
+
+```{r}
+ggplot(ds$data, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + geom_point()
+ggplot(ds$data, aes(x = CSR_FLUX)) + geom_histogram()
 ```
 

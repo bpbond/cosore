@@ -10,7 +10,7 @@ run_reports(all_data)
 \item{all_data}{A list of \code{cosore} datasets.}
 }
 \value{
-Nothing.
+Nothing; run for its side effects.
 }
 \description{
 Run reports

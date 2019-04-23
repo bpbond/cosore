@@ -31,8 +31,8 @@ parse_LI8100_file <- function(filename, UTC_offset) {
       Label = NA_character_,
       Port = NA_integer_,
       # next two are converted to numeric at end for performance
-      Flux = NA_character_,
-      R2 = NA_character_,
+      Flux = NA_real_,
+      R2 = NA_real_,
       Tcham = NA_real_,
       Area = NA_real_,
       V1 = NA_real_, V2 = NA_real_, V3 = NA_real_, V4 = NA_real_,

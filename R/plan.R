@@ -4,17 +4,17 @@
 #'
 #' @param all_data A list of \code{cosore} datasets.
 #' @importFrom rmarkdown render
-#' @return Nothing.
+#' @return Nothing; run for its side effects.
 #' @export
 run_reports <- function(all_data) {
   # individual dataset reports
   mf <- system.file("reports/dataset_report.Rmd", package = "cosore")
 
-  for(dsn in names(all_data)) {
-    render(mf,
-           params = list(dataset = all_data[[dsn]]),
-           output_file = paste0("Report-", dsn, ".html"),
-           output_dir = "~/Desktop/Reports/")
+  for(ds in all_data) {
+    rmarkdown::render(mf,
+                      params = list(dataset = ds),
+                      output_file = paste0("Report-", ds$dataset_name, ".html"),
+                      output_dir = "~/Desktop/Reports/")
   }
 }
 
