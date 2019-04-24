@@ -116,13 +116,15 @@ parse_LI8100_file <- function(filename, UTC_offset) {
       results$Cdry[i] <- mean(dat$Cdry[index])
 
       # 3 - record-level data AFTER the table
-      results$CrvFitStatus[i] <- extract_line(record, "CrvFitStatus", required = FALSE)
-      results$Flux[i] <- extract_line(record, "Exp_Flux", required = FALSE, numeric_data = TRUE)
-      results$R2[i] <- extract_line(record, "Exp_R2", required = FALSE, numeric_data = TRUE)
-
+      # This is tricky, as the CrvFitStatus line might or might not be there
+      cfs <- extract_line(record, "CrvFitStatus", required = FALSE)
+      if(cfs == "" | is.na(csf)) cfs <- "Lin"  # ?
+      results$CrvFitStatus[i] <- cfs
+      results$Flux[i] <- extract_line(record, paste0(cfs, "_Flux"), required = TRUE, numeric_data = TRUE)
+      results$R2[i] <- extract_line(record, paste0(cfs, "_R2"), required = TRUE, numeric_data = TRUE)
     } # for i
 
-    # Change any untouched Timestamp fields to NA
+    # Change any untouched (skipped, probably) Timestamp fields to NA
     results$Timestamp[results$Timestamp == na_timestamp] <- NA
     results
   }

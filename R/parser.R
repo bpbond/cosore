@@ -13,16 +13,28 @@
 extract_line <- function(file_data, line_label,
                          required = TRUE, sep = ":", numeric_data = FALSE) {
   rx <- paste0("^", line_label, sep)
-  file_data <- file_data[grep(rx, file_data)]
-  if(required & length(file_data) != 1) {
-    stop(length(file_data), " entries found for required label ", line_label)
+  fd <- file_data[grep(rx, file_data)]
+  if(length(fd) > 1) {
+  #  browser()
+    stop(length(fd), " entries found for required label ", line_label)
   }
-  d <- trimws(gsub(rx, "", file_data))
+  if(required & length(fd) == 0) {
+   # browser()
+    stop("No entries found for required label ", line_label)
+  }
+  if(!required & length(fd) == 0) {
+    return(NA_character_)
+  }
+
+  d <- trimws(gsub(rx, "", fd))
   if(length(d) == 0) d <- NA_character_
 
   if(numeric_data) {
     dn <- suppressWarnings(as.numeric(d))
-    if(is.na(dn)) stop(d, " could not be converted to numeric for ", line_label)
+    if(is.na(dn)) {
+  #    browser()
+      stop(d, " could not be converted to numeric for ", line_label)
+    }
     dn
   } else {
     d

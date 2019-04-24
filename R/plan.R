@@ -38,9 +38,9 @@ combine_data <- function(datasets, ...) {
 #' @importFrom drake drake_plan
 #' @export
 #' @examples
-#' csr_build("")  # build without raw data
+#' csr_build("")  # build without raw data; metadata only
 #' \dontrun{
-#' csr_build("../rawdata/")  # build without raw data
+#' csr_build("../rawdata/")  # build with raw data
 #' }
 csr_build <- function(raw_data) {
   dataset_names <- list_datasets()

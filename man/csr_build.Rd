@@ -16,8 +16,8 @@ The drake plan.
 Build the cosore dataset.
 }
 \examples{
-csr_build("")  # build without raw data
+csr_build("")  # build without raw data; metadata only
 \dontrun{
-csr_build("../rawdata/")  # build without raw data
+csr_build("../rawdata/")  # build with raw data
 }
 }
