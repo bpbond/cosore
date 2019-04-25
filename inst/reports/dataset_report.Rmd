@@ -1,13 +1,13 @@
 ---
-title: "datareport"
-date: "4/13/2019"
+title: "COSORE dataset report"
+date: "25-April-2019"
 params:
   dataset: NULL
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(ggplot2)
 theme_set(theme_bw())
 ds <- params$dataset
@@ -28,8 +28,19 @@ knitr::kable(unlist(ds$contributors), col.names = c("Value"))
 ```
 
 
-```{r}
-ggplot(ds$data, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + geom_point()
-ggplot(ds$data, aes(x = CSR_FLUX)) + geom_histogram()
+```{r map, echo=FALSE}
+library(sp)
+library(leaflet)
+df <- data.frame(lon = ds$description$Longitude, lat = ds$description$Latitude)
+coordinates(df) <- ~lon + lat
+leaflet(df) %>% 
+  addMarkers() %>% 
+  addTiles(options = providerTileOptions(minZoom = 2, maxZoom = 4))
 ```
 
+
+```{r diagnostics}
+ggplot(ds$data, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
+  geom_line() + facet_grid(CSR_PORT~.)
+ggplot(ds$data, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
+```
