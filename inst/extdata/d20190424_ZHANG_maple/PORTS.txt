@@ -1,0 +1,23 @@
+# PORTS.txt
+#
+# This comma-separated data file provides information about multiplexer ports
+# and what conditions they represent. Entries below include: 
+#
+# 	Port: Port number, numeric; "0" means all ports
+# 	Treatment: "None" or experimental manipulation
+# 	Species: optional field describing species measured
+#
+# Examples:
+# Port,	Treatment,		Species
+# 1,	None,			"Liriodendron tulipifera, Acer rubrum"
+# 2,	Heated,			Sphagnum fuscum
+#
+Port,	Treatment,		Species
+1,		Girdled,		Acer spp.
+2,		None,			Acer spp.
+3,		None,			Acer spp.
+4,		None,			Acer spp.
+5,		None,			Acer spp.
+6,		None,			Acer spp.
+7,		Girdled,		Acer spp.
+8,		None,			Acer spp.

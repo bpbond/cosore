@@ -14,7 +14,7 @@ CSR_PORT		Port/chamber number, integer
 CSR_R2			Flux computation R2, fraction
 CSR_RECORD		Record number within file, integer
 CSR_RH			Relative humidity, percent
-CSR_SM5			Soil moisture at 5 cm, volumetric (other CSR_SMx fields similar)
+CSR_SM5			Soil moisture at 0-5 cm, volumetric (other CSR_SMx fields similar)
 CSR_T5			Temperature at 5 cm, degC (other CSR_Tx fields similar)
 CSR_TAIR		Air temperature, degC
 CSR_TCHAMBER	Chamber temperature, degC
@@ -29,6 +29,8 @@ CSR_BD			Soil bulk density (g cm−3)
 CSR_BNPP		Belowground NPP (gC/m2/yr)
 CSR_CLAY		Clay (%)
 CSR_LAI			Leaf area index (m2/m2)
+CSR_MAT			Mean annual air temperature (C)
+CSR_MAP			Mean annual precipitation (mm)
 CSR_NH4			Ammonium (mg kg−1 soil)
 CSR_NO3			Nitrate (mg kg−1 soil)
 CSR_NPP			Total NPP (gC/m2/yr)

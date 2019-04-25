@@ -21,6 +21,8 @@
 # ... others can be added as needed
 #
 Variable,	Value
+CSR_MAT,	10.8
+CSR_MAP,	1094
 CSR_LAI
 CSR_NPP
 CSR_ANPP
