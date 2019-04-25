@@ -1,6 +1,6 @@
 ---
 title: "COSORE dataset report"
-date: "25-April-2019"
+date: "`r format(Sys.time(), '%d %B %Y')`"
 params:
   dataset: NULL
 output: html_document
@@ -11,22 +11,25 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(ggplot2)
 theme_set(theme_bw())
 ds <- params$dataset
+#library(drake)
+#ds <- readd("dat_.d20190415_VARNER.")
 ```
 
-## `r ds$dataset_name`
+# `r ds$dataset_name`
 
-### DESCRIPTION
 
-```{r, echo=FALSE}
-kableExtra::kable(unlist(ds$description), col.names = c("Value"))
+```{r}
+d <- ds$description
 ```
 
-### CONTRIBUTORS
+## Site information
 
-```{r, echo=FALSE}
-knitr::kable(unlist(ds$contributors), col.names = c("Value"))
-```
-
+Info          |  Value
+------------- | ----
+Site          | `r d$Site_name`
+Location      | `r d$Latitude` N, `r d$Longitude` E; `r d$Elevation` m
+UTC offset    |  `r d$UTC_offset`
+IGBP          | `r d$IGBP`
 
 ```{r map, echo=FALSE}
 library(sp)
@@ -35,12 +38,47 @@ df <- data.frame(lon = ds$description$Longitude, lat = ds$description$Latitude)
 coordinates(df) <- ~lon + lat
 leaflet(df) %>% 
   addMarkers() %>% 
-  addTiles(options = providerTileOptions(minZoom = 2, maxZoom = 4))
+  addTiles(options = providerTileOptions(minZoom = 3, maxZoom = 5))
 ```
 
+## Reference information
+
+Info            |  Value
+--------------- | ----
+Publication (URL or DOI)  | `r d$Primary_pub`
+Other publications        | `r d$Other_pubs`
+Data (URL or DOI)         | `r d$Data_URL`
+
+**Acknowledgment text**: `r d$Acknowledgment`
+
+## Contributors
+
+```{r, echo=FALSE}
+knitr::kable(unlist(ds$contributors), col.names = c("Value"))
+```
+
+## Measurement information
+
+**Instrument**: `r d$Instrument`
+
+```{r, echo=FALSE}
+knitr::kable(ds$ports)
+knitr::kable(ds$columns)
+```
+
+## Data diagnostics
+
+Info            |  Value
+--------------- | ----
+Records         | `r d$Records`
+Records (error) | `r sum(ds$data$CSR_ERROR)`
+
+**Flux summary**:
 
 ```{r diagnostics}
-ggplot(ds$data, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
+summary(ds$data$CSR_FLUX)
+dsd <- subset(ds$data, !is.na(CSR_FLUX))
+ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
   geom_line() + facet_grid(CSR_PORT~.)
-ggplot(ds$data, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
+ggplot(dsd, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
 ```
