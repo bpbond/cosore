@@ -232,7 +232,9 @@ map_columns <- function(dat, columns) {
       comp <- columns$Computation[col]
 
       # Apply map/computation
-      stopifnot(dscol %in% names(dat))
+      if(!dscol %in% names(dat)) {
+        stop("Column ", dscol, " not found in data")
+      }
       stopifnot(dscol != dbcol)
       if(is.na(comp) | comp == "") {
         message(dbcol, " <- ", dscol)
