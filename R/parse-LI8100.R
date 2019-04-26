@@ -77,18 +77,21 @@ parse_LI8100_file <- function(filename, UTC_offset) {
         next()
       }
 
-      # Find names, discarding any trailing 'Annotation' column, because if it's empty
-      # the Licor software doesn't add a trailing comma, which read.tsv can't handle
-      col_names <- strsplit(record[table_start], "\t", fixed = TRUE)[[1]]
-      col_names <- col_names[!grepl("Annotation", col_names)]
+      # Insert NA into any empty column (consecutive tabs, usually 'Annotation')
+      # Otherwise read.table() skips the column
+      record[(table_start+1):table_stop] <- gsub("\\t\\t", "\tNA\t", record[(table_start+1):table_stop])
+      # Remove any trailing "Annotation" column name, as the Licor doesn't write
+      # *anything* (/t, /tNA, etc) if it's not present
+      record[table_start] <- gsub("\\tAnnotation$", "", record[table_start])
 
-      con <- textConnection(record[(table_start+1):table_stop])
+      con <- textConnection(record[table_start:table_stop])
       dat <- try({
-        read.table(con, col.names = col_names, sep = "\t", stringsAsFactors = FALSE)
+        read.table(con, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
       }, silent = TRUE)
       close(con)
 
       if(class(dat) == "try-error") {
+        browser()
         results$Error[i] <- TRUE
         message("read.table error in ", bfn, " ", i, " ", record_starts[i], ":", record_end)
         next
@@ -118,7 +121,7 @@ parse_LI8100_file <- function(filename, UTC_offset) {
       # 3 - record-level data AFTER the table
       # This is tricky, as the CrvFitStatus line might or might not be there
       cfs <- extract_line(record, "CrvFitStatus", required = FALSE)
-      if(cfs == "" | is.na(csf)) cfs <- "Lin"  # ?
+      if(cfs == "" | is.na(cfs)) cfs <- "Lin"  # ?
       results$CrvFitStatus[i] <- cfs
       results$Flux[i] <- extract_line(record, paste0(cfs, "_Flux"), required = TRUE, numeric_data = TRUE)
       results$R2[i] <- extract_line(record, paste0(cfs, "_R2"), required = TRUE, numeric_data = TRUE)

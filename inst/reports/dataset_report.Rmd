@@ -68,10 +68,13 @@ knitr::kable(ds$columns)
 
 ## Data diagnostics
 
-Info            |  Value
---------------- | ----
-Records         | `r d$Records`
-Records (error) | `r sum(ds$data$CSR_ERROR)`
+Info                |  Value
+------------------- | ----
+Records             | `r d$Records`
+Records (error)     | `r sum(ds$data$CSR_ERROR)`
+Records (flux NA)   | `r sum(is.na(ds$data$CSR_FLUX))`
+Records (flux < 0)  | `r sum(ds$data$CSR_FLUX < 0, na.rm = TRUE)`
+Records (flux > 50) | `r sum(ds$data$CSR_FLUX > 50, na.rm = TRUE)`
 
 **Flux summary**:
 
@@ -80,5 +83,8 @@ summary(ds$data$CSR_FLUX)
 dsd <- subset(ds$data, !is.na(CSR_FLUX))
 ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
   geom_line() + facet_grid(CSR_PORT~.)
+ggplot(dsd, aes(CSR_TIMESTAMP, log(CSR_FLUX), color = CSR_PORT)) +
+  geom_point(size = 0.2) + 
+  geom_hline(yintercept = log(50), linetype = 2)
 ggplot(dsd, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
 ```

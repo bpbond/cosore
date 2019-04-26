@@ -19,7 +19,6 @@ extract_line <- function(file_data, line_label,
     stop(length(fd), " entries found for required label ", line_label)
   }
   if(required & length(fd) == 0) {
-   # browser()
     stop("No entries found for required label ", line_label)
   }
   if(!required & length(fd) == 0) {
@@ -31,8 +30,7 @@ extract_line <- function(file_data, line_label,
 
   if(numeric_data) {
     dn <- suppressWarnings(as.numeric(d))
-    if(is.na(dn)) {
-  #    browser()
+    if(d != "" & is.na(dn)) {
       stop(d, " could not be converted to numeric for ", line_label)
     }
     dn
