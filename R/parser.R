@@ -15,7 +15,7 @@ extract_line <- function(file_data, line_label,
   rx <- paste0("^", line_label, sep)
   fd <- file_data[grep(rx, file_data)]
   if(length(fd) > 1) {
-  #  browser()
+    #  browser()
     stop(length(fd), " entries found for required label ", line_label)
   }
   if(required & length(fd) == 0) {
@@ -306,6 +306,10 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
 
   # Column mapping and computation
   dataset$data <- map_columns(dataset$data, dataset$columns)
+
+  # Remove NA flux records
+  dataset$description$Records_removed <- sum(is.na(dataset$data$CSR_FLUX))
+  dataset$data <- subset(dataset$data, !is.na(CSR_FLUX))
 
   if(log) {
     # sink(type = "message")

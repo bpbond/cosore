@@ -72,7 +72,7 @@ Info                |  Value
 ------------------- | ----
 Records             | `r d$Records`
 Records (error)     | `r sum(ds$data$CSR_ERROR)`
-Records (flux NA)   | `r sum(is.na(ds$data$CSR_FLUX))`
+Records removed (no flux)   | `r d$Records_removed`
 Records (flux < 0)  | `r sum(ds$data$CSR_FLUX < 0, na.rm = TRUE)`
 Records (flux > 50) | `r sum(ds$data$CSR_FLUX > 50, na.rm = TRUE)`
 
