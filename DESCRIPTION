@@ -6,7 +6,7 @@ Author: Ben Bond-Lamberty
 Maintainer: Ben Bond-Lamberty <bondlamberty@pnnl.gov>
 Description: A database of continuous soil respiration datasets.
 Imports:
-    drake (>= 7.0),
+    drake (>= 7.1),
     rmarkdown
 Suggests: 
     testthat

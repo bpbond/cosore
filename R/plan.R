@@ -48,16 +48,14 @@ csr_build <- function(raw_data) {
 
   if(length(dataset_names)) { # if no data, don't build
     csr_plan <- drake_plan(
-      #      dss = rlang::syms(datasets),
 
       # read in datasets into individual targets
-      dat = target(read_dataset(dsn, rd),
+      dat = target(read_dataset(dsn, raw_data),
                    # each data object is triggered by any change in the dataset directory;
                    # requires https://github.com/ropensci/drake/pull/795 (v7.1)
                    trigger = trigger(condition = file_in(dsf)),
                    # map the datasets and their directories to the targets above
-                   transform = map(dsn = !!dataset_names, dsf = !!dataset_folders,
-                                   rd = !!raw_data, .id = dsn)), #
+                   transform = map(dsn = !!dataset_names, dsf = !!dataset_folders, .id = dsn)),
       # ...and combine into a single big list
       all = target(combine_data(dataset_names, dat), transform = combine(dat)),
 

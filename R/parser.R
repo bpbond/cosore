@@ -243,12 +243,12 @@ map_columns <- function(dat, columns) {
         dat[[dscol]] <- NULL  # remove original column
       }
     }
-  }
 
-  if(!"CSR_PORT" %in% names(dat)) {
-    dat$CSR_PORT <- 0
-  }
+    if(!"CSR_PORT" %in% names(dat)) {
+      dat$CSR_PORT <- 0
+    }
 
+  }
   dat
 }
 
