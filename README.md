@@ -5,7 +5,6 @@ R package: continuous soil respiration database
 ## Principles and general information
 
 Only free use data accepted.
-* You must have an [ORCID](https://orcid.org) ID to contribute?
 
 The package, and the process of contributing data, should be as focused and 
 simple as possible (but no simpler).
@@ -16,8 +15,8 @@ The database is completely open for reuse. We request that users cite the
 database definition paper, and encourage them to (i) cite all dataset primary
 publications, and (ii) involve data contributors as co-authors when possible.
 
-This database is not designed for, and should not be treated as, a permanent
-data repository. Best practice is to deposit the data and then link to it
+_This database is not designed for, and should not be treated as, a permanent
+data repository._ Best practice is to deposit the data and then link to it
 from the contributed dataset here.
 
 ## Design: what would _minimal_ (core) metadata look like?
@@ -73,10 +72,10 @@ For each multiplexer port, can define:
 When asked to build the synthesis dataset, the R package will
 * Scan the `inst/extdata` folder for installed datasets
 * For each dataset, parse the metadata, and then based on `Instrument_name` call 
-the appropriate function to parse the raw data
+the appropriate function to parse the raw data (which for size reasons are not located in the repository)
 * This is done via a [drake](https://github.com/ropensci/drake) pipeline, so we only 
 rebuild datasets when needed
-* A `list` of lists is returned, where each entry is a list of the relevant
+* Currently a `list` of lists is returned, where each entry is a list of the relevant
 dataset objects (description, contributors, etc); convenience functions generate
  data frames ready (or readier) for analysis
 * Reports are generated for the overall database and each individual dataset.
@@ -85,8 +84,3 @@ dataset objects (description, contributors, etc); convenience functions generate
 
 * KISS: start with LI-8150 (multiplexer) data parser only 
 (probably want to split this out into separate package actually)
-
-### Other long-term data
-
-* Varner R. 2008. Soil Respiration Along a Hydrological Gradient at Harvard Forest EMS Tower 2003-2006. Harvard Forest Data Archive: HF068. http://harvardforest.fas.harvard.edu:8080/exist/apps/datasets/showData.html?id=hf068
-* Erin Berryman: John Butnor's ACES system
