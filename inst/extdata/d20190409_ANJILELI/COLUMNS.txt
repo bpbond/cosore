@@ -15,19 +15,11 @@
 # CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
 #
 Database,		Dataset,	Computation,				Notes
-CSR_AREA,		Area,
-CSR_CDRY,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_CRVFIT,		CrvFitStatus
+CSR_CDRY,		CO2_IV,
 CSR_ERROR,		Error,
-CSR_FLUX,  		Flux,
-CSR_LABEL,		Label,
-CSR_PAR,		V3
-CSR_PORT,		Port,
-CSR_R2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V2
-CSR_T5,			V1
-CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP,	Timestamp
+CSR_FLUX,  		Exp_Flux,
+CSR_RH,			RH_IV,
+CSR_SM5,		VWC_IV
+CSR_T5,			V1_IV
+CSR_TCHAMBER,	Tcham_IV
+CSR_TIMESTAMP,	IV Date

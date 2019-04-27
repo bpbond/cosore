@@ -244,6 +244,11 @@ map_columns <- function(dat, columns) {
       }
     }
   }
+
+  if(!"CSR_PORT" %in% names(dat)) {
+    dat$CSR_PORT <- 0
+  }
+
   dat
 }
 
