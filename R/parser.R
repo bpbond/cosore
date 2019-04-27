@@ -300,7 +300,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   if(exists(func)) {
     dataset$data <- do.call(func, list(df, utc))
   } else {
-    message("Unknown instrument ", ins, " in ", dataset_name)
+    warning("Unknown instrument ", ins, " in ", dataset_name)
     dataset$data <- data.frame()
   }
 
@@ -308,8 +308,13 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   dataset$data <- map_columns(dataset$data, dataset$columns)
 
   # Remove NA flux records
-  dataset$description$Records_removed <- sum(is.na(dataset$data$CSR_FLUX))
+  dataset$description$Records_removed_NA <- sum(is.na(dataset$data$CSR_FLUX))
   dataset$data <- subset(dataset$data, !is.na(CSR_FLUX))
+
+  # Remove error records
+  dataset$description$Records_removed_err <- sum(dataset$data$CSR_ERROR)
+  dataset$data <- subset(dataset$data, !CSR_ERROR)
+  dataset$data$CSR_ERROR <- NULL
 
   if(log) {
     # sink(type = "message")

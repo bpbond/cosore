@@ -63,6 +63,6 @@ csr_build <- function(raw_data) {
 
       trace = TRUE
     )
-    make(csr_plan)
+    drake::make(csr_plan)
   }
 }
