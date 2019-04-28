@@ -213,42 +213,41 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
 #' columns <- data.frame(Database = "y", Dataset = "x", Computation = "x * 2")
 #' map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
 map_columns <- function(dat, columns) {
-  if(is.data.frame(dat) & is.data.frame(columns)) {
+  if(is.null(dat)) return(NULL)
 
-    if(!"Computation" %in% names(columns)) {
-      columns$Computation <- NA_character_
-    }
+  stopifnot(is.data.frame(dat))
+  stopifnot(is.data.frame(columns))
+  stopifnot(all(c("Database", "Dataset") %in% names(columns)))
 
-    # As usual, factors screw things up, so make sure not dealing with them
-    columns$Database <- as.character(columns$Database)
-    columns$Dataset <- as.character(columns$Dataset)
-    columns$Computation <- as.character(columns$Computation)
-
-    for(col in seq_len(nrow(columns))) {
-      dbcol <- columns$Database[col]
-      dscol <- columns$Dataset[col]
-      comp <- columns$Computation[col]
-
-      # Apply map/computation
-      if(!dscol %in% names(dat)) {
-        stop("Column ", dscol, " not found in data")
-      }
-      stopifnot(dscol != dbcol)
-      if(is.na(comp) | comp == "") {
-        message(dbcol, " <- ", dscol)
-        names(dat)[which(names(dat) == dscol)] <- dbcol  # rename
-      } else {
-        message(dbcol, " <- ", comp)
-        dat[[dbcol]] <- with(dat, eval(parse(text = comp)))
-        dat[[dscol]] <- NULL  # remove original column
-      }
-    }
-
-    if(!"CSR_PORT" %in% names(dat)) {
-      dat$CSR_PORT <- 0
-    }
-
+  if(!"Computation" %in% names(columns)) {
+    columns$Computation <- NA_character_
   }
+
+  # As usual, factors screw things up, so make sure not dealing with them
+  columns$Database <- as.character(columns$Database)
+  columns$Dataset <- as.character(columns$Dataset)
+  columns$Computation <- as.character(columns$Computation)
+
+  for(col in seq_len(nrow(columns))) {
+    dbcol <- columns$Database[col]
+    dscol <- columns$Dataset[col]
+    comp <- columns$Computation[col]
+
+    # Apply map/computation
+    if(!dscol %in% names(dat)) {
+      stop("Column ", dscol, " not found in data")
+    }
+    stopifnot(dscol != dbcol)
+    if(is.na(comp) | comp == "") {
+      message(dbcol, " <- ", dscol)
+      names(dat)[which(names(dat) == dscol)] <- dbcol  # rename
+    } else {
+      message(dbcol, " <- ", comp)
+      dat[[dbcol]] <- with(dat, eval(parse(text = comp)))
+      dat[[dscol]] <- NULL  # remove original column
+    }
+  }
+
   dat
 }
 
@@ -312,13 +311,20 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   # Column mapping and computation
   dataset$data <- map_columns(dataset$data, dataset$columns)
 
+  # Add port column if necessary
+  if(!"CSR_PORT" %in% names(dataset$data)) {
+    dataset$data$CSR_PORT <- 0
+  }
+
   # Remove NA flux records
-  dataset$description$Records_removed_NA <- sum(is.na(dataset$data$CSR_FLUX))
-  dataset$data <- subset(dataset$data, !is.na(CSR_FLUX))
+  na_flux <- is.na(dataset$data$CSR_FLUX)
+  dataset$description$Records_removed_NA <- sum(na_flux)
+  dataset$data <- dataset$data[!na_flux,]
 
   # Remove error records
-  dataset$description$Records_removed_err <- sum(dataset$data$CSR_ERROR)
-  dataset$data <- subset(dataset$data, !CSR_ERROR)
+  err <- dataset$data$CSR_ERROR
+  dataset$description$Records_removed_err <- sum(err)
+  dataset$data <- dataset$data[!err,]
   dataset$data$CSR_ERROR <- NULL
 
   if(log) {

@@ -43,6 +43,9 @@ combine_data <- function(datasets, ...) {
 #' csr_build("../rawdata/")  # build with raw data
 #' }
 csr_build <- function(raw_data) {
+  # silence package check notes
+  combine <- dat <- dsf <- dsn <- file_in <- map <- target <- trigger <- NULL
+
   dataset_names <- list_datasets()
   dataset_folders <- resolve_dataset(dataset_names)
 
