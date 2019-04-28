@@ -27,8 +27,9 @@ d <- ds$description
 Info          |  Value
 ------------- | ----
 Site          | `r d$Site_name`
-Location      | `r d$Latitude` N, `r d$Longitude` E; `r d$Elevation` m
-UTC offset    |  `r d$UTC_offset`
+Location      | `r d$Latitude` N, `r d$Longitude` E
+Elevation     | `r d$Elevation` m
+UTC offset    | `r d$UTC_offset`
 IGBP          | `r d$IGBP`
 
 ```{r map, echo=FALSE}
@@ -75,6 +76,7 @@ Records removed (error)     | `r d$Records_removed_err`
 Records removed (no flux)   | `r d$Records_removed_NA`
 Records (flux < 0)  | `r sum(ds$data$CSR_FLUX < 0, na.rm = TRUE)`
 Records (flux > 50) | `r sum(ds$data$CSR_FLUX > 50, na.rm = TRUE)`
+Size                | `r format(object.size(ds), "Mb")`
 
 **Flux summary**:
 
