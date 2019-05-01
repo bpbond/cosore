@@ -1,0 +1,32 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	Site_name: standard site name
+# 	Longitude: decimal degrees; positive = east, negative = west
+# 	Latitude: decimal degrees; positive = north, negative = south
+# 	Elevation: elevation above sea level, meters
+# 	UTC_offset: offset from UTC of site data, hours (standard time)
+# 	IGBP: IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	Acknowledgment: optional acknowledgment (funding or other) text
+# --------------------------------------
+Site_name: X
+Longitude: 1
+Latitude: 1
+Elevation: 1
+UTC_offset: -6
+IGBP: 1
+Instrument: eosFD
+Primary_pub:
+Other_pub:
+Data_URL: http://co2.aos.wisc.edu/data/cheas/ancillary/us-wcr/soil_respiration/
+Acknowledgment: 
