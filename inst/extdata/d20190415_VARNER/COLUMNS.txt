@@ -21,4 +21,4 @@ CSR_FLUX,  		co2flux,
 CSR_PORT,		chamber,
 CSR_T5,			avg.grndt
 CSR_TAIR,		avg.airt
-CSR_TIMESTAMP,	Timestamp
+CSR_TIMESTAMP,	datetime
