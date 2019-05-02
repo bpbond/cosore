@@ -31,6 +31,7 @@ Location      | `r d$Latitude` N, `r d$Longitude` E
 Elevation     | `r d$Elevation` m
 UTC offset    | `r d$UTC_offset`
 IGBP          | `r d$IGBP`
+Network       | `r paste(d$Network, d$Site_ID)`
 
 ```{r map, echo=FALSE}
 library(sp)

@@ -16,4 +16,4 @@
 #
 First_name,	Family_name,	Email,							ORCID,			Role
 Ankur,		Desai,			desai@aos.wisc.edu,				,				Funding acquisition
-Claire,		Phillips,		,								,				Investigation
+Claire,		Phillips,		Claire.Phillips@oregonstate.edu,,				Investigation
