@@ -12,6 +12,7 @@
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
 #		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
 #		Savannas, Grassland, Wetland, Cropland, Urban
+#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
 # 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
 # 	Primary publication: optional DOI (preferred) or other primary publication 
@@ -19,12 +20,14 @@
 # 	Other publications: optional comma-separated DOIs
 # 	Acknowledgment: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: X
-Longitude: 1
-Latitude: 1
-Elevation: 1
+Site_name: Willow Creek
+Longitude: -90.0799
+Latitude: 45.8059, 
+Elevation: 520
 UTC_offset: -6
-IGBP: 1
+IGBP: Deciduous broadleaf forest
+Network: 
+Site_ID: 
 Instrument: eosFD
 Primary_pub:
 Other_pub:

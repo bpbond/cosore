@@ -102,6 +102,8 @@ read_description_file <- function(dataset_name, file_data = NULL) {
                   Elevation = extract_line(file_data, "Elevation", numeric_data = TRUE),
                   UTC_offset = extract_line(file_data, "UTC_offset", numeric_data = TRUE),
                   IGBP = extract_line(file_data, "IGBP"),
+                  Network = extract_line(file_data, "Network", required = FALSE),
+                  Network_ID = extract_line(fild_data, "Network_ID", required = FALSE),
                   Instrument = extract_line(file_data, "Instrument"),
                   Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
                   Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
