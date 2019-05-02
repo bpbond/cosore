@@ -51,3 +51,45 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
   }
   invisible(filenum)
 }
+
+
+#' Insert new line(s) into existing metadata files.
+#'
+#' @param file Filename, character
+#' @param pattern Pattern to search for, a regular expression
+#' @param newlines New line(s) to write, character vector
+#' @param after Insert new line(s) after pattern (T) or before (F)? Logical
+#' @param path Path to search; normally the metadata are in \code{inst/extdata}
+#' @param write_files Write resulting files back out? Logical
+#' @return Nothing; run for side effects
+#' @export
+insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/extdata", write_files = TRUE) {
+  files <- list.files(path, pattern = file, full.names = TRUE, recursive = TRUE)
+  message("Found ", length(files), " files")
+
+  for(f in files) {
+    dat <- readLines(f)
+    pat <- grep(pattern, dat)
+    if(after) {
+      ip <- pat + 1
+    } else {
+      ip <- pat
+    }
+
+    if(length(ip)) {
+      # Have we already been here?
+      if(dat[ip] == newlines[1]) {
+        warning("Lines to insert already found at line ", ip, " in ", f)
+      } else {
+        message("Found insert point at line ", ip, " in ", f)
+        dat <- c(dat[1:(ip - 1)], newlines, dat[ip:length(dat)])
+        if(write_files) {
+          message("...writing")
+          writeLines(dat, f)
+        }
+      }
+    } else {
+      warning("No insert point found in ", f)
+    }
+  }
+}

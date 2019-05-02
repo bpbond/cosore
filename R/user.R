@@ -8,6 +8,8 @@
 #' @export
 csr_element <- function(all, element) {
 
+  # We want to rbind() the various data frames together, but column
+  # names may differ (for the data tables anyway). Need to handle this.
   # Almost all of this could be replaced by a single `dplyr::bind_rows()` call...
 
   all_names <- unique(unlist(lapply(all, function(x) names(x[[element]]))))
