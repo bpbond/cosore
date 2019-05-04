@@ -11,8 +11,6 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(ggplot2)
 theme_set(theme_bw())
 ds <- params$dataset
-#library(drake)
-#ds <- readd("dat_.d20190415_VARNER.")
 ```
 
 # `r ds$dataset_name`

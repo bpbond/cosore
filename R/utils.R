@@ -100,7 +100,7 @@ insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/ex
 #' @param x List of data frames
 #' @return A single \code{data.frame} with all data together
 #' @keywords internal
-rbind_all <- function(x) {
+rbind_list <- function(x) {
   stopifnot(is.list(x))
 
   all_names <- unique(unlist(lapply(x, function(x) names(x))))

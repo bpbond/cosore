@@ -15,7 +15,7 @@ parse_eosFD_Desai <- function(path, UTC_offset) {
   dat$Error <- FALSE
 
   results <- list()
-  for(p in 1:4) {
+  for(p in 1:4) {   # four separate ports in the file
     p_chr <- paste0("P", p)
     x <- dat[c("Time.UTC", "Area", "Error")]
     x$CSR_FLUX <- dat[,paste0("QCCombo.Flux.", p_chr)]
@@ -34,7 +34,7 @@ parse_eosFD_Desai <- function(path, UTC_offset) {
     results[[p_chr]] <- x
   }
 
-  rbind_all(results)
+  rbind_list(results)
 }
 
 
