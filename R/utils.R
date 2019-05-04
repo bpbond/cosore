@@ -93,3 +93,20 @@ insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/ex
     }
   }
 }
+
+
+#' Bind a list of data frames (with possibly non-identical column names) together.
+#'
+#' @param x List of data frames
+#' @return A single \code{data.frame} with all data together
+#' @keywords internal
+rbind_all <- function(x) {
+  all_names <- unique(unlist(lapply(x, function(x) names(x))))
+
+  do.call(rbind,
+          c(lapply(x, function(x_entry) {
+            data.frame(c(x_entry, sapply(setdiff(all_names, names(x_entry)),
+                                     function(y) NA)),
+                       check.names = FALSE, stringsAsFactors = FALSE)
+          }), make.row.names = FALSE, stringsAsFactors = FALSE))
+}

@@ -13,4 +13,7 @@
 # 2,	Heated,			Sphagnum fuscum
 #
 Port,	Treatment,		Species
-0,		None,			Acer saccharum
+1,		None,			Acer saccharum
+2,		None,			Acer saccharum
+3,		None,			Acer saccharum
+4,		Trenched,		Acer saccharum

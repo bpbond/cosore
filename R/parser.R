@@ -313,6 +313,11 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   # Column mapping and computation
   dataset$data <- map_columns(dataset$data, dataset$columns)
 
+  # Drop any unmapped columns
+  drops <- grep("^CSR_", names(dataset$data), invert = TRUE)
+  dataset$description$Columns_dropped <- paste(names(dataset$data)[drops], collapse = ", ")
+  dataset$data[drops] <- NULL
+
   # Add port column if necessary
   if(!"CSR_PORT" %in% names(dataset$data)) {
     dataset$data$CSR_PORT <- 0

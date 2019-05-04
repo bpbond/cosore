@@ -4,8 +4,8 @@
 \alias{insert_line}
 \title{Insert new line(s) into existing metadata files.}
 \usage{
-insert_line(file, pattern, newlines, path = "inst/extdata",
-  write_files = TRUE)
+insert_line(file, pattern, newlines, after = TRUE,
+  path = "./inst/extdata", write_files = TRUE)
 }
 \arguments{
 \item{file}{Filename, character}
@@ -13,6 +13,8 @@ insert_line(file, pattern, newlines, path = "inst/extdata",
 \item{pattern}{Pattern to search for, a regular expression}
 
 \item{newlines}{New line(s) to write, character vector}
+
+\item{after}{Insert new line(s) after pattern (T) or before (F)? Logical}
 
 \item{path}{Path to search; normally the metadata are in \code{inst/extdata}}
 

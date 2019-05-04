@@ -77,6 +77,7 @@ Records removed (error)     | `r d$Records_removed_err`
 Records removed (no flux)   | `r d$Records_removed_NA`
 Records (flux < 0)  | `r sum(ds$data$CSR_FLUX < 0, na.rm = TRUE)`
 Records (flux > 50) | `r sum(ds$data$CSR_FLUX > 50, na.rm = TRUE)`
+Columns removed     | `r d$Columns_removed`
 Size                | `r format(object.size(ds), "Mb")`
 
 **Flux summary**:

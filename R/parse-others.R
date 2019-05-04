@@ -1,49 +1,40 @@
 
-#' Parse a eofFD (forced diffusion) file.
+#' Parse a custom eofFD (forced diffusion) file from d20190430_DESAI.
 #'
 #' @param path Data directory path, character
 #' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-parse_eosFD <- function(path, UTC_offset) {
-  files <- list.files(path, pattern = ".dat$", full.names = TRUE, recursive = TRUE)
+parse_eosFD_Desai <- function(path, UTC_offset) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
 
-  readfunc <- function(f) {
-    dat <- readLines(f)
-    if(length(dat)) {
-      read.csv(textConnection(dat[c(-1, -3, -4)]), stringsAsFactors = FALSE, check.names = FALSE, na.strings = "NAN")
-    } else {
-      NULL
-    }
-  }
-
-  dat <- do.call("rbind", lapply(files, readfunc))
-  dat$TIMESTAMP <- as.POSIXct(dat$TIMESTAMP, format = "%Y-%m-%d %H:%M:%S", tz = "UTC") - UTC_offset * 60 * 60
+  dat$Time.UTC <- as.POSIXct(dat$Time.UTC, format = "%m/%d/%y %H:%M", tz = "UTC")
   dat$Area <- pi * (10 / 2) ^ 2
   dat$Error <- FALSE
 
-  # For now combine all AvgCO2_atm_, etc. columns into a single mean value
-  co2cols <- grep("^AvgCO2_atm_", names(dat))
-  dat$AvgCO2 <- rowMeans(dat[co2cols], na.rm = TRUE)
-  dat[co2cols] <- NULL
-  t10cols <- grep("^T107_C_Avg", names(dat))
-  dat$T10 <- rowMeans(dat[t10cols], na.rm = TRUE)
-  dat[t10cols] <- NULL
-  smcols <- grep("^VWC_Avg", names(dat))
-  dat$SM10 <- rowMeans(dat[smcols], na.rm = TRUE)
-  dat[smcols] <- NULL
-
-  # Treat each Flux_ column as a different port?
-  fluxcols <- grep("^Flux_", names(dat))
-  x <- dat[-fluxcols]
   results <- list()
-  for(i in seq_along(fluxcols)) {
-    x$Flux <- dat[,fluxcols[i]]
-    x$Port <- i
-    results[[i]] <- x
+  for(p in 1:4) {
+    p_chr <- paste0("P", p)
+    x <- dat[c("Time.UTC", "Area", "Error")]
+    x$CSR_FLUX <- dat[,paste0("QCCombo.Flux.", p_chr)]
+    x$CSR_PORT <- p
+
+    # Extract port-specific temperature at various depths...
+    temps <- grep(paste0("^Ts.*", p_chr), names(dat))
+    x <- cbind(x, dat[temps])
+    names(x) <- gsub(paste0("Ts\\.", p_chr, "\\."), "CSR_T", names(x))
+
+    # ...and moisture
+    sm <- grep(paste0("^VWC.*", p_chr), names(dat))
+    x <- cbind(x, dat[sm])
+    names(x) <- gsub(paste0("VWC\\.", p_chr, "\\."), "CSR_SM", names(x))
+
+    results[[p_chr]] <- x
   }
-  do.call(rbind, results)
+
+  rbind_all(results)
 }
 
 

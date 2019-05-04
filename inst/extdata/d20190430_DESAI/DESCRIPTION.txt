@@ -28,7 +28,7 @@ UTC_offset: -6
 IGBP: Deciduous broadleaf forest
 Network: Ameriflux
 Site_ID: US-WCr
-Instrument: eosFD
+Instrument: eosFD_Desai
 Primary_pub:
 Other_pub:
 Data_URL: http://co2.aos.wisc.edu/data/cheas/ancillary/us-wcr/soil_respiration/

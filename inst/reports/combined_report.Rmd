@@ -1,0 +1,69 @@
+---
+title: "COSORE report"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+params:
+  all_data: NULL
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+library(ggplot2)
+theme_set(theme_bw())
+
+desc <- csr_element(all_data, "description")
+
+```
+
+## Summary
+
+```{r table1}
+# Extract min and max date information for each dataset
+years <- lapply(all_data, function(x) data.frame(Start = min(x$data$CSR_TIMESTAMP),
+                                                 End = max(x$data$CSR_TIMESTAMP),
+                                                 Size  = format(object.size(x), "Mb")))
+years <- do.call("rbind", c(years, make.row.names = FALSE))
+years$Start <- format(years$Start, "%Y-%m")
+years$End <- format(years$End, "%Y-%m")
+
+x <- desc[c("CSR_DATASET", "Records")]
+knitr::kable(cbind(x, years), format.args = list(big.mark = ',')) %>% 
+  kableExtra::kable_styling(full_width = FALSE)
+```
+
+## Spatial coverage
+
+```{r spatial}
+library(sp)
+library(leaflet)
+df <- data.frame(lon = desc$Longitude, lat = desc$Latitude)
+coordinates(df) <- ~lon + lat
+leaflet(df) %>% 
+  addMarkers() %>% 
+  addTiles#(options = providerTileOptions(minZoom = 1, maxZoom = 2))
+```
+
+## Temporal coverage
+
+```{r temporal}
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+theme_set(theme_bw())
+coverage <- lapply(all_data, function(x) {
+    data.frame(CSR_DATASET = x$dataset_name,
+               IGBP = x$description$IGBP,
+               Year = year(x$data$CSR_TIMESTAMP), 
+               Month = month(x$data$CSR_TIMESTAMP),
+               Day = day(x$data$CSR_TIMESTAMP))
+} )
+
+do.call("rbind", c(coverage, make.row.names = FALSE)) %>% 
+  distinct(CSR_DATASET, IGBP, Year, Month, Day) %>% 
+  group_by(CSR_DATASET, IGBP, Year, Month) %>% 
+  summarise(N = n()) %>% 
+  ungroup %>% 
+  mutate(ym = lubridate::ymd(paste(Year, Month, "1"))) %>% 
+  ggplot(aes(ym, CSR_DATASET, fill = N)) + geom_tile()
+```
+

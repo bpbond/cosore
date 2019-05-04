@@ -16,11 +16,5 @@
 #
 Database,		Dataset,	Computation,				Notes
 CSR_AREA,		Area,
-CSR_CDRY,		AvgCO2,
 CSR_ERROR,		Error,
-CSR_FLUX,  		Flux,
-CSR_PORT,		Port,
-CSR_RECORD,		RECORD,
-CSR_SM10,		SM10
-CSR_T10,		T10
-CSR_TIMESTAMP,	TIMESTAMP
+CSR_TIMESTAMP,	Time.UTC
