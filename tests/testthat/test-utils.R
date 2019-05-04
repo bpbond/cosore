@@ -2,6 +2,20 @@
 
 context("utils")
 
+test_that("rbind_all", {
+  expect_equivalent(rbind_all(list(NULL)), data.frame())
+  expect_equivalent(rbind_all(list(cars, NULL)), cars)
+  expect_error(rbind_all(cars))
+
+  x <- data.frame(a = 1)
+  y <- data.frame(b = 2)
+  z <- rbind_all(list(x, y))
+  expect_is(z, "data.frame")
+  expect_identical(nrow(z), nrow(x) + nrow(y))
+  expect_identical(names(z), union(names(x), names(y)))
+  expect_identical(rbind_all(list(x, x)), rbind(x, x))
+})
+
 test_that("split_licor_file", {
   tf <- tempfile()
   nr <- "LI-8100"  # new record delimiter
