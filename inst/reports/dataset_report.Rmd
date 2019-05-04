@@ -86,9 +86,9 @@ Size                | `r format(object.size(ds), "Mb")`
 summary(ds$data$CSR_FLUX)
 dsd <- subset(ds$data, !is.na(CSR_FLUX))
 ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
-  geom_line() + facet_grid(CSR_PORT~.)
-ggplot(dsd, aes(CSR_TIMESTAMP, log(CSR_FLUX), color = CSR_PORT)) +
-  geom_point(size = 0.2) + 
-  geom_hline(yintercept = log(50), linetype = 2)
+  geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
+ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
+  geom_point(size = 0.2) + scale_y_log10() +
+  geom_hline(yintercept = 50, linetype = 2)
 ggplot(dsd, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
 ```
