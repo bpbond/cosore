@@ -2,9 +2,12 @@ Package: cosore
 Type: Package
 Title: Continuous (Automated) Soil Respiration Database
 Version: 0.1.0
-Author: Ben Bond-Lamberty
+Authors@R: c(person("Ben", "Bond-Lamberty", 
+                email = "bondlamberty@pnnl.gov", 
+                role = c("cre", "aut"), 
+                comment = c(ORCID = "0000-0001-9525-4633")))
 Maintainer: Ben Bond-Lamberty <bondlamberty@pnnl.gov>
-Description: A database of continuous soil respiration datasets.
+Description: An open database of continuous soil respiration datasets.
 Imports:
     drake (>= 7.1),
     rmarkdown

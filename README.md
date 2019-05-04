@@ -45,7 +45,7 @@ See above about simplicity...there are five metadata files, but only two of them
 
 ### `CONTRIBUTORS.txt`
 
-Information on arbitrary number (>=1) of contributors.
+Information on arbitrary number (>=1) of contributors. The first contributor listed is assumed to be the point of contact for the dataset.
 
 * First name, family name, email
 * ORCID (https://orcid.org) [optional]
@@ -57,6 +57,8 @@ For each multiplexer port, can define:
 
 * Treatment ("None" by default)
 * Species [optional]
+* Area [optional], area of chamber (cm2)
+* Depth [optional], depth of collar insertion (cm)
 
 ### `COLUMNS.txt`
 
