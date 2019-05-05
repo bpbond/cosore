@@ -1,0 +1,19 @@
+# CONTRIBUTORS.txt
+#
+# This comma-separated data file provides information about dataset
+# contributors. Entries below include: 
+# 	First_name: first name
+# 	Family_name: family (last) name
+# 	Email: email address
+# 	ORCID: optional ORCID ID (see https://orcid.org)
+# 	Role: optional CRediT role (see https://www.casrai.org/credit.html)
+#     common roles include "Funding acquisition", "Investigation", "Data curation"
+#
+# Examples:
+# First_name,	Family_name,	Email,			ORCID,					Role
+# Smith,		Jill,			js@smith.edu	0000-1111-2222-3333,	Investigation
+# Jones,		John,			jj@jones.edu	,						"Funding acquisition"
+#
+First_name,	Family_name,	Email,							ORCID,					Role
+Ben,		Bond-Lamberty,	bondlamberty@pnnl.gov,			0000-0001-9525-4633,	"Funding acquisition, Investigation"
+Stephanie,	Pennington,		stephanie.pennington@pnnl.gov,	0000-0000-0000-0000,	"Investigation, Data curation"

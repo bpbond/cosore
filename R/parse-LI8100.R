@@ -139,7 +139,7 @@ parse_LI8100_file <- function(filename, UTC_offset) {
 #' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A data frame with all data read from file(s).
 #' @export
-`parse_LI8100-A_RAW` <- function(path, UTC_offset) {
+`parse_LI-8100A_RAW` <- function(path, UTC_offset) {
   files <- list.files(path, pattern = ".81x$", full.names = TRUE, recursive = TRUE)
   do.call("rbind", lapply(files, parse_LI8100_file, UTC_offset))
 }

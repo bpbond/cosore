@@ -13,10 +13,10 @@
 
   dat$datetime <- as.POSIXct(dat$datetime, format = "%Y-%m-%dT%H:%M", tz = "UTC") - UTC_offset * 60 * 60
 
-  dat_control <- subset(dat, treatment == "C")
+  dat_control <- dat[dat$treatment == "C",]
   dat_control$CSR_T10 <- dat_control$soilt.c
   dat_control$CSR_SM10 <- dat_control$vsm.c
-  dat_trench <- subset(dat, treatment != "C")
+  dat_control <- dat[dat$treatment != "C",]
   dat_trench$CSR_T10 <- dat_trench$soilt.t
   dat_trench$CSR_SM10 <- dat_trench$vsm.t
 
