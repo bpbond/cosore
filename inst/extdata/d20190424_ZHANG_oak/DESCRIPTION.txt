@@ -28,7 +28,8 @@ UTC_offset: -5
 IGBP: Deciduous Broadleaf Forest
 Network: 
 Site_ID: 
-Instrument: IRGA_ydh
+Instrument: LI-8100
+File_format: ydh
 Primary_pub: 10.1016/j.agrformet.2018.05.005
 Other_pub:
 Data_URL:

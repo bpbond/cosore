@@ -105,6 +105,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
                   Network = extract_line(file_data, "Network", required = FALSE),
                   Site_ID = extract_line(file_data, "Site_ID", required = FALSE),
                   Instrument = extract_line(file_data, "Instrument"),
+                  File_format = extract_line(file_data, "File_format"),
                   Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
                   Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
                   Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
@@ -299,40 +300,49 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     return(dataset)
   }
 
-  # Dispatch to correct parsing function based on instrument name
+  # Dispatch to correct parsing function based on instrument name and file format
   utc <- dataset$description$UTC_offset
-  ins <- dataset$description$Instrument
-  func <- paste0("parse_", ins)
+  ins <- toupper(dataset$description$Instrument)
+  ff <- toupper(dataset$description$File_format)
+  if(ff == "CUSTOM") {
+    ff <- dataset_name
+  }
+  func <- paste0("parse_", ins, "_", ff)
   if(exists(func)) {
-    dataset$data <- do.call(func, list(df, utc))
+    dsd <- do.call(func, list(df, utc))
   } else {
-    warning("Unknown instrument ", ins, " in ", dataset_name)
-    dataset$data <- data.frame()
+    warning("Unknown instrument/format ", ins, ff, " in ", dataset_name)
+    dsd <- data.frame()
   }
 
   # Column mapping and computation
-  dataset$data <- map_columns(dataset$data, dataset$columns)
+  dsd <- map_columns(dsd, dataset$columns)
 
   # Drop any unmapped columns
-  drops <- grep("^CSR_", names(dataset$data), invert = TRUE)
-  dataset$description$Columns_dropped <- paste(names(dataset$data)[drops], collapse = ", ")
-  dataset$data[drops] <- NULL
+  drops <- grep("^CSR_", names(dsd), invert = TRUE)
+  dataset$description$Columns_dropped <- paste(names(dsd)[drops], collapse = ", ")
+  dsd[drops] <- NULL
 
   # Add port column if necessary
-  if(!"CSR_PORT" %in% names(dataset$data)) {
-    dataset$data$CSR_PORT <- 0
+  if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
+    dsd$CSR_PORT <- 0
   }
 
   # Remove NA flux records
-  na_flux <- is.na(dataset$data$CSR_FLUX)
+  na_flux <- is.na(dsd$CSR_FLUX)
   dataset$description$Records_removed_NA <- sum(na_flux)
-  dataset$data <- dataset$data[!na_flux,]
+  dsd <- dsd[!na_flux,]
 
   # Remove error records
-  err <- dataset$data$CSR_ERROR
-  dataset$description$Records_removed_err <- sum(err)
-  dataset$data <- dataset$data[!err,]
-  dataset$data$CSR_ERROR <- NULL
+  if("CSR_ERROR" %in% names(dsd)) {
+    err <- dsd$CSR_ERROR
+    dataset$description$Records_removed_err <- sum(err)
+    dsd <- dsd[!err,]
+    dsd$CSR_ERROR <- NULL
+  }
+
+  dataset$description$Records <- nrow(dsd)
+  dataset$data <- dsd
 
   if(log) {
     # sink(type = "message")
@@ -341,6 +351,5 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     # unlink(tf)
   }
 
-  dataset$description$Records <- nrow(dataset$data)
   dataset
 }

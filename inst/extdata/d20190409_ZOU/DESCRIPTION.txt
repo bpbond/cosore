@@ -28,7 +28,8 @@ UTC_offset: 1
 IGBP: Evergreen needleaf forest
 Network: 
 Site_ID: 
-Instrument: LI8100A_processed
+Instrument: LI-8100A
+File_format: Processed
 Primary_pub:
 Other_pubs:
 Data_URL:

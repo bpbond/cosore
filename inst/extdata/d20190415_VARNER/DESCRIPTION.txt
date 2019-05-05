@@ -28,7 +28,8 @@ UTC_offset: -5
 IGBP: Deciduous broadleaf forest
 Network: 
 Site_ID: 
-Instrument: d20190415_HF068
+Instrument: LI-820
+File_format: Custom
 Primary_pub: 
 Other_pubs: 
 Data_URL: 10.6073/pasta/29aae9def8e977d8ee67f1ca2f54b632

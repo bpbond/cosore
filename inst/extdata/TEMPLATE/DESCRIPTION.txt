@@ -28,7 +28,8 @@ UTC_offset:
 IGBP: 
 Network: 
 Site_ID: 
-Instrument: LI-8100A/raw
+Instrument: LI-8100A
+File_format: Processed
 Primary_pub:
 Other_pub:
 Data_URL:

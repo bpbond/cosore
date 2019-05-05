@@ -28,7 +28,8 @@ UTC_offset: -8
 IGBP: Wetland
 Network: 
 Site_ID: 
-Instrument: LI8100A_processed
+Instrument: LI-8100A
+File_format: Processed
 Primary_pub: 10.1029/2018JG004640
 Other_pubs:
 Data_URL:
