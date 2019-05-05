@@ -25,7 +25,7 @@ Longitude: -86.4131
 Latitude: 39.3232
 Elevation: 275
 UTC_offset: -5
-IGBP: Deciduous Broadleaf Forest
+IGBP: Deciduous broadleaf forest
 Network: 
 Site_ID: 
 Instrument: LI-8100
