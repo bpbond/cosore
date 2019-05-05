@@ -21,15 +21,20 @@ desc <- csr_element(all_data, "description")
 # Extract min and max date information for each dataset
 years <- lapply(all_data, function(x) data.frame(Start = min(x$data$CSR_TIMESTAMP),
                                                  End = max(x$data$CSR_TIMESTAMP),
-                                                 Size  = format(object.size(x), "Mb")))
+                                                 Size  = format(object.size(x), "Mb"),
+                                                 stringsAsFactors = FALSE))
 years <- do.call("rbind", c(years, make.row.names = FALSE))
 years$Start <- format(years$Start, "%Y-%m")
 years$End <- format(years$End, "%Y-%m")
 
-x <- desc[c("CSR_DATASET", "Records")]
-knitr::kable(cbind(x, years), format.args = list(big.mark = ',')) %>% 
+x <- cbind(desc[c("CSR_DATASET", "Records")], years)
+knitr::kable(x, format = "html", format.args = list(big.mark = ',')) %>% 
   kableExtra::kable_styling(full_width = FALSE)
 ```
+
+Total records: `r format(sum(x$Records), big.mark = ",")`
+
+Total size: `r format(object.size(all_data), "Mb")`
 
 ## Spatial coverage
 

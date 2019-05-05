@@ -1,0 +1,36 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	Site_name: standard site name
+# 	Longitude: decimal degrees; positive = east, negative = west
+# 	Latitude: decimal degrees; positive = north, negative = south
+# 	Elevation: elevation above sea level, meters
+# 	UTC_offset: offset from UTC of site data, hours (standard time)
+# 	IGBP: IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	Acknowledgment: optional acknowledgment (funding or other) text
+# --------------------------------------
+Site_name: Prospect Hill Tract (Harvard Forest)
+Longitude: -72.17
+Latitude: 42.54
+Elevation: 352.5
+UTC_offset: -5
+IGBP: Deciduous broadleaf forest
+Network: Ameriflux
+Site_ID: US-Ha1
+Instrument: LI-6252
+File_format: Custom
+Primary_pub: 10.1111/j.1365-2435.2008.01414.x
+Other_pub:
+Data_URL: 10.6073/pasta/33ba3432103297fe0644de6e0898f91f
+Acknowledgment: 
