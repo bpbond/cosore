@@ -15,5 +15,5 @@
 # Jones,		John,			jj@jones.edu	,						"Funding acquisition"
 #
 First_name,	Family_name,	Email,							ORCID,				Role
-Eric,		Davidson,		edavidson@whrc.org,				,					Funding acquisition
+Eric,		Davidson,		"edavidson@whrc.org,edavidson@umces.edu",,			Funding acquisition
 Kathleen,	Savage,			,								,					Investigation

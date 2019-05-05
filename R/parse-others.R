@@ -16,7 +16,7 @@
   dat_control <- dat[dat$treatment == "C",]
   dat_control$CSR_T10 <- dat_control$soilt.c
   dat_control$CSR_SM10 <- dat_control$vsm.c
-  dat_control <- dat[dat$treatment != "C",]
+  dat_trench <- dat[dat$treatment != "C",]
   dat_trench$CSR_T10 <- dat_trench$soilt.t
   dat_trench$CSR_SM10 <- dat_trench$vsm.t
 
