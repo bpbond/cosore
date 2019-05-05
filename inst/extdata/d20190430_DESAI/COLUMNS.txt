@@ -16,5 +16,4 @@
 #
 Database,		Dataset,	Computation,				Notes
 CSR_AREA,		Area,
-CSR_ERROR,		Error,
 CSR_TIMESTAMP,	Time.UTC

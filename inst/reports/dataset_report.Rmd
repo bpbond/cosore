@@ -60,6 +60,7 @@ knitr::kable(unlist(ds$contributors), col.names = c("Value"))
 ## Measurement information
 
 **Instrument**: `r d$Instrument`
+
 **File format**: `r d$File_format`
 
 ```{r, echo=FALSE}
