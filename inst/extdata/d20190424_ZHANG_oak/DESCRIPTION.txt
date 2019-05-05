@@ -26,10 +26,10 @@ Latitude: 39.3232
 Elevation: 275
 UTC_offset: -5
 IGBP: Deciduous broadleaf forest
-Network: 
-Site_ID: 
+Network: Ameriflux
+Site_ID: US-MMS
 Instrument: LI-8100
-File_format: ydh
+File_format: YearDOYHour
 Primary_pub: 10.1016/j.agrformet.2018.05.005
 Other_pub:
 Data_URL:

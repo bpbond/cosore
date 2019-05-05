@@ -311,7 +311,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   if(exists(func)) {
     dsd <- do.call(func, list(df, utc))
   } else {
-    warning("Unknown instrument/format ", ins, ff, " in ", dataset_name)
+    warning("Unknown instrument/format ", ins, "_", ff, " in ", dataset_name)
     dsd <- data.frame()
   }
 

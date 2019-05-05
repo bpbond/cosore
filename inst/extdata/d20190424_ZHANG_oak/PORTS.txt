@@ -6,18 +6,14 @@
 # 	Port: Port number, numeric; "0" means all ports
 # 	Treatment: "None" or experimental manipulation
 # 	Species: optional field describing species measured
+#	Area: optional chamber area, cm2
 #
-# Examples:
-# Port,	Treatment,		Species
-# 1,	None,			"Liriodendron tulipifera, Acer rubrum"
-# 2,	Heated,			Sphagnum fuscum
-#
-Port,	Treatment,		Species
-1,		Girdled,		Quercus spp.
-2,		Girdled,		Quercus spp.
-3,		None,			Quercus spp.
-4,		None,			Quercus spp.
-5,		None,			Quercus spp.
-6,		None,			Quercus spp.
-7,		Girdled,		Quercus spp.
-8,		Girdled,		Quercus spp.
+Port,	Treatment,		Species,		Area
+1,		Girdled,		Quercus spp.,	491
+2,		Girdled,		Quercus spp.,	491
+3,		None,			Quercus spp.,	491
+4,		None,			Quercus spp.,	491
+5,		None,			Quercus spp.,	491
+6,		None,			Quercus spp.,	491
+7,		Girdled,		Quercus spp.,	491
+8,		Girdled,		Quercus spp.,	491

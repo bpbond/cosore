@@ -15,4 +15,4 @@
 # Jones,		John,			jj@jones.edu	,						"Funding acquisition"
 #
 First_name,	Family_name,	Email,					ORCID,					Role
-Hassan,		Anjileli,		hassan.a@uci.edu,		0000-0001-9635-0686,	Investigation
+Junliang,	Zou,			jlzou@nwafu.edu.cn,		0000-0001-9635-0686,	Investigation

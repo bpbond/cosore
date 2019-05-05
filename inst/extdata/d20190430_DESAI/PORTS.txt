@@ -6,14 +6,10 @@
 # 	Port: Port number, numeric; "0" means all ports
 # 	Treatment: "None" or experimental manipulation
 # 	Species: optional field describing species measured
+#	Area: optional chamber area, cm2
 #
-# Examples:
-# Port,	Treatment,		Species
-# 1,	None,			"Liriodendron tulipifera, Acer rubrum"
-# 2,	Heated,			Sphagnum fuscum
-#
-Port,	Treatment,		Species
-1,		None,			Acer saccharum
-2,		None,			Acer saccharum
-3,		None,			Acer saccharum
-4,		Trenched,		Acer saccharum
+Port,	Treatment,		Species,		Area
+1,		None,			Acer saccharum,	78.5
+2,		None,			Acer saccharum,	78.5	
+3,		None,			Acer saccharum,	78.5
+4,		Trenched,		Acer saccharum,	78.5

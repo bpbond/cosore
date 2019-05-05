@@ -2,7 +2,6 @@
 
 Field name		Description and units
 
-CSR_AREA		Area of chamber, cm2
 CSR_CDRY		Mean CO2 concentration, ppmv
 CSR_COMMENTS	Comments, text
 CSR_CRVFIT		Flux computation method ("Lin" or "Exp" for linear and exponential)
@@ -19,6 +18,11 @@ CSR_T5			Temperature at 5 cm, degC (other CSR_Tx fields similar)
 CSR_TAIR		Air temperature, degC
 CSR_TCHAMBER	Chamber temperature, degC
 CSR_TIMESTAMP	Timestamp, a POSIXct class object
+
+
+# From `PORTS.txt` file
+
+CSR_AREA		Area of chamber, cm2
 
 
 # From `ANCILLARY.txt` file

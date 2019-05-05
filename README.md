@@ -58,7 +58,6 @@ For each multiplexer port, can define:
 * Treatment ("None" by default)
 * Species [optional]
 * Area [optional], area of chamber (cm2)
-* Depth [optional], depth of collar insertion (cm)
 
 ### `COLUMNS.txt`
 

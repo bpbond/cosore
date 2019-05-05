@@ -1,6 +1,6 @@
 # COLUMNS.txt
 #
-# This comma-separated data file maps columns from this dataset to 
+# This comma-separated data file maps columns from this dataset to
 # standardized column names in the main database. Entries below include:
 # 	Database: name of the standardized database column
 #	Dataset: name of the column in this dataset
@@ -15,8 +15,6 @@
 # CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
 #
 Database,		Dataset,	Computation,				Notes
-CSR_AREA,		Area,
-CSR_ERROR,		Error,
 CSR_FLUX,  		Rs,
 CSR_PORT,		Port,
 CSR_R2,			R2,
