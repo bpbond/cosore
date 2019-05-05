@@ -9,11 +9,7 @@
 # 	Role: optional CRediT role (see https://www.casrai.org/credit.html)
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
-# Examples:
-# First_name,	Family_name,	Email,			ORCID,					Role
-# Smith,		Jill,			js@smith.edu	0000-1111-2222-3333,	Investigation
-# Jones,		John,			jj@jones.edu	,						"Funding acquisition"
-#
 First_name,	Family_name,	Email,							ORCID,			Role
 Ankur,		Desai,			desai@aos.wisc.edu,				,				Funding acquisition
 Claire,		Phillips,		Claire.Phillips@oregonstate.edu,,				Investigation
+McFarlane,	Karis,			mcfarlane3@llnl.gov,			,				Funding acquisition
