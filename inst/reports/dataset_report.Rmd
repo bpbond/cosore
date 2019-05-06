@@ -54,7 +54,8 @@ Data (URL or DOI)         | `r d$Data_URL`
 ## Contributors
 
 ```{r, echo=FALSE}
-knitr::kable(unlist(ds$contributors), col.names = c("Value"))
+knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %>% 
+  kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
 
 ## Measurement information
@@ -64,8 +65,10 @@ knitr::kable(unlist(ds$contributors), col.names = c("Value"))
 **File format**: `r d$File_format`
 
 ```{r, echo=FALSE}
-knitr::kable(ds$ports)
-knitr::kable(ds$columns)
+knitr::kable(ds$ports, format = "html") %>% 
+  kableExtra::kable_styling(full_width = FALSE, position = "left")
+knitr::kable(ds$columns, format = "html") %>% 
+  kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
 
 ## Data diagnostics
