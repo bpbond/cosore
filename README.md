@@ -36,7 +36,7 @@ As much as possible, metadata are kept to a minimum. There are five metadata fil
 * Latitude
 * Elevation
 * UTC_offset
-* IGBP cover type
+* [IGBP cover type](http://www.eomf.ou.edu/static/IGBP.pdf)
 * Instrument name
 * File format
 * Primary publication DOI or URL [optional]
