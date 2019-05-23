@@ -1,0 +1,13 @@
+Dear $FIRST_NAME,
+ 
+Thanks for submitting the COSORE metadata form. If you have any feedback on it (too complicated, unclear, something it’s missing) let me know.
+ 
+To upload the data, please use this link:
+ 
+$DROPBOX_LINK
+ 
+Once you upload, I may get back to you with questions, and will definitely send you a summary report for checking. Thanks again for your willingness to contribute to the continuous soil respiration database in its testing stages!
+ 
+Kind regards,
+ 
+Ben Bond-Lamberty

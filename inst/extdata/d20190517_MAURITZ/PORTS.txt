@@ -1,0 +1,17 @@
+# PORTS.txt
+#
+# This comma-separated data file provides information about multiplexer ports
+# and what conditions they represent. Entries below include: 
+#
+# 	Port: Port number, numeric; "0" means all ports
+# 	Treatment: "None" or experimental manipulation
+# 	Species: optional field describing species measured
+#	Area: optional chamber area, cm2
+#
+# Examples:
+# Port,	Treatment,		Species
+# 1,	None,			"Liriodendron tulipifera, Acer rubrum"
+# 2,	Heated,			Sphagnum fuscum
+#
+Port,	Treatment,		Species,	Area
+0,		None,			"Artemisia californica, Eriogonum fasciculatum and Salvia mellifera; intershrub spaces contain invasive annual grasses Bromus madritensis var. rubens and forbs Centaurea solstitialis and Hirschfeldia incana",	314
