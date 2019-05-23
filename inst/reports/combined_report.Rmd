@@ -19,10 +19,17 @@ desc <- csr_element(all_data, "description")
 
 ```{r table1}
 # Extract min and max date information for each dataset
-years <- lapply(all_data, function(x) data.frame(Start = min(x$data$CSR_TIMESTAMP),
-                                                 End = max(x$data$CSR_TIMESTAMP),
-                                                 Size  = format(object.size(x), "Mb"),
-                                                 stringsAsFactors = FALSE))
+years <- lapply(all_data, function(x) {
+  if(is.data.frame(x$data)) {
+    data.frame(Start = min(x$data$CSR_TIMESTAMP),
+               End = max(x$data$CSR_TIMESTAMP),
+               Size  = format(object.size(x), "Mb"),
+               stringsAsFactors = FALSE)
+  } else {
+    data.frame(Start = NA, End = NA, Size = 0, stringsAsFactors = FALSE)    
+  }
+}
+)
 years <- do.call("rbind", c(years, make.row.names = FALSE))
 years$Start <- format(years$Start, "%Y-%m")
 years$End <- format(years$End, "%Y-%m")
@@ -58,12 +65,19 @@ library(lubridate)
 library(ggplot2)
 theme_set(theme_bw())
 coverage <- lapply(all_data, function(x) {
+  if(is.data.frame(x$data)) {
     data.frame(CSR_DATASET = x$dataset_name,
                IGBP = x$description$IGBP,
                Year = year(x$data$CSR_TIMESTAMP), 
                Month = month(x$data$CSR_TIMESTAMP),
                Day = day(x$data$CSR_TIMESTAMP),
                stringsAsFactors = FALSE)
+  } else {
+    data.frame(CSR_DATASET = x$dataset_name,
+               IGBP = x$description$IGBP,
+               Year = NA, Month = NA, Day = NA,
+               stringsAsFactors = FALSE)
+  }
 } )
 
 do.call("rbind", c(coverage, make.row.names = FALSE)) %>% 
@@ -80,10 +94,17 @@ do.call("rbind", c(coverage, make.row.names = FALSE)) %>%
 
 ```{r igbp}
 coverage <- lapply(all_data, function(x) {
+  if(is.data.frame(x$data)) {
     data.frame(CSR_DATASET = x$dataset_name,
                IGBP = x$description$IGBP,
                CSR_FLUX = x$data$CSR_FLUX,
                stringsAsFactors = FALSE)
+  } else {
+    data.frame(CSR_DATASET = x$dataset_name,
+               IGBP = x$description$IGBP,
+               CSR_FLUX = NA,
+               stringsAsFactors = FALSE)
+  }
 })
 
 bind_rows(coverage) %>% 

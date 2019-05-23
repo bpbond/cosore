@@ -53,7 +53,7 @@ Data (URL or DOI)         | `r d$Data_URL`
 
 ## Contributors
 
-```{r, echo=FALSE}
+```{r contrib_table, echo=FALSE}
 knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
@@ -64,11 +64,21 @@ knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %
 
 **File format**: `r d$File_format`
 
-```{r, echo=FALSE}
+```{r msmt_table, echo=FALSE}
 knitr::kable(ds$ports, format = "html") %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "left")
 knitr::kable(ds$columns, format = "html") %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "left")
+```
+
+```{r diagnostics}
+if(is.data.frame(ds$data)) {
+  rlt0 <- sum(ds$data$CSR_FLUX < 0, na.rm = TRUE)
+  rgt50 <- sum(ds$data$CSR_FLUX > 50, na.rm = TRUE)
+} else {
+  rlt0 <- 0
+  rgt50 <- 0
+}
 ```
 
 ## Data diagnostics
@@ -78,20 +88,22 @@ Info                |  Value
 Records             | `r d$Records`
 Records removed (error)     | `r d$Records_removed_err`
 Records removed (no flux)   | `r d$Records_removed_NA`
-Records (flux < 0)  | `r sum(ds$data$CSR_FLUX < 0, na.rm = TRUE)`
-Records (flux > 50) | `r sum(ds$data$CSR_FLUX > 50, na.rm = TRUE)`
+Records (flux < 0)  | `r rlt0`
+Records (flux > 50) | `r rgt50`
 Columns dropped     | `r d$Columns_dropped`
 Size                | `r format(object.size(ds), "Mb")`
 
 **Flux summary**:
 
-```{r diagnostics}
-summary(ds$data$CSR_FLUX)
-dsd <- subset(ds$data, !is.na(CSR_FLUX))
-ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
-  geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
-ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
-  geom_point(size = 0.2) + scale_y_log10() +
-  geom_hline(yintercept = 50, linetype = 2)
-ggplot(dsd, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
+```{r flux-graphs}
+if(is.data.frame(ds$data)) {
+  summary(ds$data$CSR_FLUX)
+  dsd <- subset(ds$data, !is.na(CSR_FLUX))
+  ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
+    geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
+  ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
+    geom_point(size = 0.2) + scale_y_log10() +
+    geom_hline(yintercept = 50, linetype = 2)
+  ggplot(dsd, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
+}
 ```

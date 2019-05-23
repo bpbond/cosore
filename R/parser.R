@@ -297,6 +297,9 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   if(!dir.exists(df)) {
     message("No data folder found for ", dataset_name)
     dataset$description$Records <- 0
+    dataset$description$Columns_dropped <- ""
+    dataset$description$Records_removed_NA <- 0
+    dataset$description$Records_removed_err <- 0
     return(dataset)
   }
 
