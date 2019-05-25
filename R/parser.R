@@ -325,7 +325,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   # Column mapping and computation
   dsd <- map_columns(dsd, dataset$columns)
 
-  # Change the timestamp column to a datetime object
+  # Change the timestamp column to a datetime object in UTC
   dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
                                   format = dataset$description$Timestamp_format,
                                   tz = "UTC") - dataset$description$UTC_offset * 60 * 60

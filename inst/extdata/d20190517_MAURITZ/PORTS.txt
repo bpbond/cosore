@@ -14,4 +14,19 @@
 # 2,	Heated,			Sphagnum fuscum
 #
 Port,	Treatment,		Species,	Area
-0,		None,			"Artemisia californica, Eriogonum fasciculatum and Salvia mellifera; intershrub spaces contain invasive annual grasses Bromus madritensis var. rubens and forbs Centaurea solstitialis and Hirschfeldia incana",	314
+1,		Root exclusion,	"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
+2,		None,			"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
+3,		Root exclusion,	"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
+4,		None,			"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
+5,		Root exclusion,	"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
+6,		None,			"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
+7,		Root exclusion,	"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
+8,		None,			"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
+9,		Root exclusion,	"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
+10,		None,			"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
+11,		Root exclusion,	"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
+12,		None,			"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
+13,		Root exclusion,	"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
+14,		None,			"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
+15,		Root exclusion,	"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
+16,		None,			"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314

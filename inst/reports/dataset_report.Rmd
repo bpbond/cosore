@@ -17,8 +17,8 @@ library(lubridate)
 ds <- params$dataset
 quick <- params$quick
 
-#all <- drake::readd("all")
-#ds <- all$d20190520_RUEHR
+all <- drake::readd("all")
+ds <- all$d20190517_MAURITZ
 ```
 
 # `r ds$dataset_name`
@@ -76,8 +76,6 @@ knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %
 
 ```{r msmt_table, echo=FALSE}
 knitr::kable(ds$ports, format = "html") %>% 
-  kableExtra::kable_styling(full_width = FALSE, position = "left")
-knitr::kable(ds$columns, format = "html") %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
 

@@ -99,6 +99,17 @@ parse_EOSFD_d20190430_DESAI <- function(path, UTC_offset) {
   dat
 }
 
+#' Parse a file from d20190517_MAURITZ dataset--fractional hours in separate column.
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @importFrom utils read.csv
+`parse_LI-8100A_d20190517_MAURITZ` <- function(path) {
+  dat <- `parse_LI-820_PROCESSED_CSV`(path)
+  dat$Timestamp <- paste(dat$Date, dat$Time)
+  dat
+}
+
 #' Parse a file with timestamp in year-doy-hour format.
 #'
 #' @param path Data directory path, character

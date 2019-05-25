@@ -29,8 +29,8 @@ IGBP: Open shrubland
 Network: 
 Site_ID: 
 Instrument: LI-8100A
-File_format: Processed
-Timestamp_format: xxx
+File_format: Custom
+Timestamp_format: %m/%d/%y %H
 Primary_pub:
 Other_pub: 10.5194/bgd-10-6335-2013
 Data_URL:
