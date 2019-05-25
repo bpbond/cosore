@@ -30,6 +30,7 @@ Network:
 Site_ID: 
 Instrument: LI-8100A
 File_format: Raw
+Timestamp_format: %Y-%m-%d %H:%M:%S
 Primary_pub:
 Other_pub:
 Data_URL:

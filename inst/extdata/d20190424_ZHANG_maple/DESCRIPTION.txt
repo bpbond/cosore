@@ -30,6 +30,7 @@ Network: Ameriflux
 Site_ID: US-MMS
 Instrument: LI-8100
 File_format: YearDOYHour
+Timestamp_format: %Y %j %H
 Primary_pub: 10.1016/j.agrformet.2018.05.005
 Other_pub:
 Data_URL:

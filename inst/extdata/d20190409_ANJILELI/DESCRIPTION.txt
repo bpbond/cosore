@@ -30,6 +30,7 @@ Network:
 Site_ID: 
 Instrument: LI-8100A
 File_format: Processed
+Timestamp_format: %Y-%m-%d %H:%M:%S
 Primary_pub: 10.1029/2018JG004640
 Other_pubs:
 Data_URL:

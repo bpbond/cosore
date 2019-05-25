@@ -11,8 +11,6 @@
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
 
-  dat$datetime <- as.POSIXct(dat$datetime, format = "%Y-%m-%dT%H:%M", tz = "UTC") - UTC_offset * 60 * 60
-
   dat_control <- dat[dat$treatment == "C",]
   dat_control$CSR_T10 <- dat_control$soilt.c
   dat_control$CSR_SM10 <- dat_control$vsm.c
@@ -34,8 +32,6 @@
 `parse_LI-6252_d20190504_DAVIDSON_hf006-03` <- function(path, UTC_offset) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
-
-  dat$datetime <- as.POSIXct(dat$datetime, format = "%Y-%m-%dT%H:%M", tz = "UTC") - UTC_offset * 60 * 60
 
   # Temperature and soil moisture data
   names(dat) <- gsub("^temp\\.ll", "CSR_T0", names(dat))
@@ -66,8 +62,6 @@ parse_EOSFD_d20190430_DESAI <- function(path, UTC_offset) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
 
-  dat$Time.UTC <- as.POSIXct(dat$Time.UTC, format = "%m/%d/%y %H:%M", tz = "UTC")
-
   results <- list()
   for(p in 1:4) {   # four separate ports in the file
     p_chr <- paste0("P", p)
@@ -96,31 +90,25 @@ parse_EOSFD_d20190430_DESAI <- function(path, UTC_offset) {
 #' Parse a file from Harvard Forest HF068 dataset.
 #'
 #' @param path Data directory path, character
-#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
-#' @export
-`parse_LI-820_d20190415_VARNER` <- function(path, UTC_offset) {
-  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+`parse_LI-820_PROCESSED_CSV` <- function(path) {
+  files <- list.files(path, pattern = ".(txt|csv)$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
-  dat$datetime <- as.POSIXct(dat$datetime, format = "%Y-%m-%dT%H:%M", tz = "UTC") - UTC_offset * 60 * 60
-  dat$CSR_ERROR <- FALSE
+  dat$Error <- FALSE
   dat
 }
 
 #' Parse a file with timestamp in year-doy-hour format.
 #'
 #' @param path Data directory path, character
-#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-`parse_LI-8100_YEARDOYHOUR` <- function(path, UTC_offset) {
+`parse_LI-8100_YEARDOYHOUR` <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv,
                                  na.strings = "-9999", stringsAsFactors = FALSE, check.names = FALSE))
-  dat$Timestamp <- as.POSIXct(paste(dat$year, dat$doy, dat$hour),
-                              format = "%Y %j %H", tz = "UTC") - UTC_offset * 60 * 60
-  dat$year <- dat$doy <- dat$hour <- NULL
+  dat$Timestamp <- paste(dat$year, dat$doy, dat$hour)
   dat
 }

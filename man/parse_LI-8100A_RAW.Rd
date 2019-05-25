@@ -4,12 +4,10 @@
 \alias{parse_LI-8100A_RAW}
 \title{Loop through directory and read raw multiplexed Licor-8100 data}
 \usage{
-"parse_LI-8100A_RAW"(path, UTC_offset)
+"parse_LI-8100A_RAW"(path)
 }
 \arguments{
 \item{path}{Data directory path, character}
-
-\item{UTC_offset}{Offset from UTC in hours, numeric}
 }
 \value{
 A data frame with all data read from file(s).

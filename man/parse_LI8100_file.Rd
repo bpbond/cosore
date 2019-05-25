@@ -4,12 +4,10 @@
 \alias{parse_LI8100_file}
 \title{Parse a LI-8100 (with LI-8150 multiplexer) data file.}
 \usage{
-parse_LI8100_file(filename, UTC_offset)
+parse_LI8100_file(filename)
 }
 \arguments{
 \item{filename}{Filename, character}
-
-\item{UTC_offset}{Offset from UTC in hour, numeric}
 }
 \value{
 A \code{data.frame} containing extracted data.

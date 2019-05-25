@@ -4,12 +4,10 @@
 \alias{parse_LI-8100A_PROCESSED}
 \title{Loop through directory and read processed multiplexed Licor-8100 data}
 \usage{
-"parse_LI-8100A_PROCESSED"(path, UTC_offset)
+"parse_LI-8100A_PROCESSED"(path)
 }
 \arguments{
 \item{path}{Data directory path, character}
-
-\item{UTC_offset}{Offset from UTC in hours, numeric}
 }
 \value{
 A data frame with all data read from file(s).

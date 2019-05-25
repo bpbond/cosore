@@ -4,16 +4,10 @@
 #' Parse a LI-8100 (with LI-8150 multiplexer) data file.
 #'
 #' @param filename Filename, character
-#' @param UTC_offset Offset from UTC in hour, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.table
 #' @export
-parse_LI8100_file <- function(filename, UTC_offset) {
-
-  # Can't use NA for timestamps below, because this is assigned a timezone of ""
-  # which means the whole vector gets changed to EDT (or wherever code is being run)
-  # Define a custom "NA" that's a valid POSIXct in UTC
-  na_timestamp <- as.POSIXct("1970-01-01", tz = "UTC")
+parse_LI8100_file <- function(filename) {
 
   # Read file into memory and find records
   filedata <- readLines(filename)
@@ -27,7 +21,7 @@ parse_LI8100_file <- function(filename, UTC_offset) {
     # Set up results data frame and fill it in as we go
     results <- data.frame(
       Record = seq_along(record_starts),
-      Timestamp = na_timestamp,
+      Date = NA_character_,
       Label = NA_character_,
       Port = NA_integer_,
       # next two are converted to numeric at end for performance
@@ -104,12 +98,9 @@ parse_LI8100_file <- function(filename, UTC_offset) {
         next()
       }
 
-      # Convert to POSIXct and UTC so we can take mean timestamp
-      dat$Date <- as.POSIXct(dat$Date, format = "%Y-%m-%d %H:%M:%S", tz = "UTC") - UTC_offset * 60 * 60
-
       # Pull out the table-level data we're interested in
       index <- which(dat$Type == 1)
-      results$Timestamp[i] <- mean(dat$Date)
+      results$Date[i] <- dat$Date[1]  # first timestamp
       results$Tcham[i] <- mean(dat$Tcham[index])
       results$V1[i] <- mean(dat$V1[index])
       results$V2[i] <- mean(dat$V2[index])
@@ -127,8 +118,6 @@ parse_LI8100_file <- function(filename, UTC_offset) {
       results$R2[i] <- extract_line(record, paste0(cfs, "_R2"), required = TRUE, numeric_data = TRUE)
     } # for i
 
-    # Change any untouched (skipped, probably) Timestamp fields to NA
-    results$Timestamp[results$Timestamp == na_timestamp] <- NA
     results
   }
 }
@@ -136,27 +125,39 @@ parse_LI8100_file <- function(filename, UTC_offset) {
 #' Loop through directory and read raw multiplexed Licor-8100 data
 #'
 #' @param path Data directory path, character
-#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A data frame with all data read from file(s).
 #' @export
-`parse_LI-8100A_RAW` <- function(path, UTC_offset) {
+`parse_LI-8100A_RAW` <- function(path) {
   files <- list.files(path, pattern = ".81x$", full.names = TRUE, recursive = TRUE)
-  do.call("rbind", lapply(files, parse_LI8100_file, UTC_offset))
+  do.call("rbind", lapply(files, parse_LI8100_file))
 }
 
 #' Loop through directory and read processed multiplexed Licor-8100 data
 #'
 #' @param path Data directory path, character
-#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A data frame with all data read from file(s).
 #' @note Processed (in the Licor application) data consists of a tab-delimited
 #' text file with a standard set of columns.
 #' @importFrom utils read.delim
 #' @export
-`parse_LI-8100A_PROCESSED` <- function(path, UTC_offset) {
-  files <- list.files(path, pattern = "[0-9]{8}.txt$", full.names = TRUE, recursive = TRUE)
+`parse_LI-8100A_PROCESSED` <- function(path) {
+  files <- list.files(path, pattern = ".(txt|csv)$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.delim, stringsAsFactors = FALSE, check.names = FALSE))
-  dat$`IV Date` <- as.POSIXct(dat$`IV Date`, format = "%Y-%m-%d %H:%M:%S", tz = "UTC") - UTC_offset * 60 * 60
+  dat$Error <- FALSE
+  dat
+}
+
+#' Loop through directory and read processed multiplexed Licor-8100 data
+#'
+#' @param path Data directory path, character
+#' @return A data frame with all data read from file(s).
+#' @note Processed (in the Licor application) data consists of a tab-delimited
+#' text file with a standard set of columns.
+#' @importFrom utils read.delim
+#' @export
+`parse_LI-8100A_PROCESSED_CSV` <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
   dat$Error <- FALSE
   dat
 }

@@ -4,12 +4,10 @@
 \alias{parse_LI-8100_YEARDOYHOUR}
 \title{Parse a file with timestamp in year-doy-hour format.}
 \usage{
-"parse_LI-8100_YEARDOYHOUR"(path, UTC_offset)
+"parse_LI-8100_YEARDOYHOUR"(path)
 }
 \arguments{
 \item{path}{Data directory path, character}
-
-\item{UTC_offset}{Offset from UTC in hours, numeric}
 }
 \value{
 A \code{data.frame} containing extracted data.

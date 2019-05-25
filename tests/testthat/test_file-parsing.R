@@ -67,8 +67,8 @@ test_that("read_csv_data", {
 
 test_that("read_description_file", {
   # description file
-  labels <- c("Site_name", "Longitude", "Latitude", "Elevation", "UTC_offset", "Instrument", "File_format", "IGBP")
-  dat <- c("site", "1", "2", "3", "-1", "ins", "ff", "et")
+  labels <- c("Site_name", "Longitude", "Latitude", "Elevation", "UTC_offset", "Instrument", "File_format", "IGBP", "Timestamp_format")
+  dat <- c("site", "1", "2", "3", "-1", "ins", "ff", "et", "tsf")
   fd <- paste(labels, dat, sep = ":")
 
   x <- read_description_file("x", file_data = fd)

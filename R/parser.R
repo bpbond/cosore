@@ -106,6 +106,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
                   Site_ID = extract_line(file_data, "Site_ID", required = FALSE),
                   Instrument = extract_line(file_data, "Instrument"),
                   File_format = extract_line(file_data, "File_format"),
+                  Timestamp_format = extract_line(file_data, "Timestamp_format"),
                   Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
                   Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
                   Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
@@ -308,11 +309,11 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   ins <- toupper(dataset$description$Instrument)
   ff <- toupper(dataset$description$File_format)
   if(ff == "CUSTOM") {
-    ff <- dataset_name
+    ff <- dataset_name   # if "Custom" that means there's custom code for this dataset
   }
   func <- paste0("parse_", ins, "_", ff)
   if(exists(func)) {
-    dsd <- do.call(func, list(df, utc))
+    dsd <- do.call(func, list(df))
   } else {
     warning("Unknown instrument/format ", ins, "_", ff, " in ", dataset_name)
     dsd <- data.frame()
@@ -320,6 +321,11 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
 
   # Column mapping and computation
   dsd <- map_columns(dsd, dataset$columns)
+
+  # Change the timestamp column to a datetime object
+  dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
+                                  format = dataset$description$Timestamp_format,
+                                  tz = "UTC") - dataset$description$UTC_offset * 60 * 60
 
   # Drop any unmapped columns
   drops <- grep("^CSR_", names(dsd), invert = TRUE)
