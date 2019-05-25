@@ -8,6 +8,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+library(dplyr)
 library(ggplot2)
 theme_set(theme_bw())
 
