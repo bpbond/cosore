@@ -3,6 +3,7 @@ title: "COSORE dataset report"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 params:
   dataset: NULL
+  quick: FALSE
 output: html_document
 ---
 
@@ -10,7 +11,14 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(ggplot2)
 theme_set(theme_bw())
+library(dplyr)
+library(lubridate)
+
 ds <- params$dataset
+quick <- params$quick
+
+#all <- drake::readd("all")
+#ds <- all$d20190520_RUEHR
 ```
 
 # `r ds$dataset_name`
@@ -64,6 +72,8 @@ knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %
 
 **File format**: `r d$File_format`
 
+**Timestamp format**: `r d$Timestamp_format`
+
 ```{r msmt_table, echo=FALSE}
 knitr::kable(ds$ports, format = "html") %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "left")
@@ -71,15 +81,13 @@ knitr::kable(ds$columns, format = "html") %>%
   kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
 
-```{r diagnostics}
-if(is.data.frame(ds$data)) {
-  rlt0 <- sum(ds$data$CSR_FLUX < 0, na.rm = TRUE)
-  rgt50 <- sum(ds$data$CSR_FLUX > 50, na.rm = TRUE)
-} else {
-  rlt0 <- 0
-  rgt50 <- 0
-}
+## Column mapping
+
+```{r mapping, echo=FALSE}
+knitr::kable(ds$columns, format = "html") %>% 
+  kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
+
 
 ## Data diagnostics
 
@@ -88,22 +96,59 @@ Info                |  Value
 Records             | `r d$Records`
 Records removed (error)     | `r d$Records_removed_err`
 Records removed (no flux)   | `r d$Records_removed_NA`
-Records (flux < 0)  | `r rlt0`
-Records (flux > 50) | `r rgt50`
+Records (flux < `r d$Flux_lowbound`)  | `r d$Records_removed_toolow`
+Records (flux > `r d$Flux_highbound`) | `r d$Records_removed_toohigh`
 Columns dropped     | `r d$Columns_dropped`
 Size                | `r format(object.size(ds), "Mb")`
 
 **Flux summary**:
 
 ```{r flux-graphs}
-if(is.data.frame(ds$data)) {
-  summary(ds$data$CSR_FLUX)
-  dsd <- subset(ds$data, !is.na(CSR_FLUX))
-  ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
+if(is.data.frame(ds$data) & !quick) {
+  print(summary(ds$data$CSR_FLUX))
+  
+  dsd <- subset(ds$data, !is.na(CSR_FLUX) & CSR_FLUX > 0)
+  # flux over time
+  p1 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
     geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
-  ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
-    geom_point(size = 0.2) + scale_y_log10() +
-    geom_hline(yintercept = 50, linetype = 2)
-  ggplot(dsd, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
+  print(p1)
+  p2 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
+    geom_point(size = 0.2) + scale_y_log10()
+  print(p2)
+  dsd %>% 
+    mutate(Month = month(CSR_TIMESTAMP)) %>% 
+    group_by(CSR_PORT, Month) %>% 
+    summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
+    ggplot(aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + geom_line() ->
+    p3
+  print(p3)
+  # histogram
+  p4 <- ggplot(dsd, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
+  print(p4)
 }
 ```
+
+**Temperature sensitivity**:
+
+```{r tsensitivity}
+tcols <- grep("^CSR_T(CHAMBER|[0-9]+)", names(ds$data))
+if(length(tcols)) {
+  fluxcol <- grep("CSR_FLUX", names(ds$data))
+  results <- list()
+  for(col in tcols) {
+    x <- ds$data[fluxcol]
+    x$Temperature <- ds$data[,col]
+    x$Which_temp <- names(ds$data)[col]
+    results[[as.character(col)]] <- x
+  }
+  results <- bind_rows(results)
+  
+  p1 <- ggplot(results, aes(Temperature, CSR_FLUX)) + 
+    geom_point(size = 0.2, alpha = I(0.25)) + 
+    geom_smooth(method = "lm") +
+    facet_wrap(~Which_temp, scales = "free_y")
+  print(p1)
+}
+
+```
+

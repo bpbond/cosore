@@ -81,3 +81,9 @@ csr_build <- function(raw_data) {
     drake::make(csr_plan)
   }
 }
+
+# csr_build("../rawdata/")
+# all <- drake::readd("all")
+# run_reports(all)
+# combined_report(all)
+

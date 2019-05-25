@@ -295,12 +295,15 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     # sink(zz, type = "message")
   }
 
+  dataset$description$Records <- 0
+  dataset$description$Columns_dropped <- ""
+  dataset$description$Records_removed_NA <- 0
+  dataset$description$Records_removed_err <- 0
+  dataset$description$Records_removed_toolow <- 0
+  dataset$description$Records_removed_toohigh <- 0
+
   if(!dir.exists(df)) {
     message("No data folder found for ", dataset_name)
-    dataset$description$Records <- 0
-    dataset$description$Columns_dropped <- ""
-    dataset$description$Records_removed_NA <- 0
-    dataset$description$Records_removed_err <- 0
     return(dataset)
   }
 
@@ -349,6 +352,16 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     dsd <- dsd[!err,]
     dsd$CSR_ERROR <- NULL
   }
+
+  # Remove records with flux data way out of anything possible
+  fl <- c(-1, 50)
+  dataset$description$Flux_lowbound <- min(fl)
+  dataset$description$Flux_highbound <- max(fl)
+  toolow <- dsd$CSR_FLUX < min(fl)
+  dataset$description$Records_removed_toolow <- sum(toolow, na.rm = TRUE)
+  toohigh <- dsd$CSR_FLUX > max(fl)
+  dataset$description$Records_removed_toohigh <- sum(toohigh, na.rm = TRUE)
+  dsd <- dsd[!toolow & !toohigh,]
 
   dataset$description$Records <- nrow(dsd)
   dataset$data <- dsd

@@ -30,7 +30,7 @@ Network: Ameriflux
 Site_ID: US-Ha1
 Instrument: LI-820
 File_format: Processed_csv
-Timestamp_format: %Y-%m-%d %H:%M:%S
+Timestamp_format: %Y-%m-%dT%H:%M
 Primary_pub: 
 Other_pubs: 
 Data_URL: 10.6073/pasta/29aae9def8e977d8ee67f1ca2f54b632
