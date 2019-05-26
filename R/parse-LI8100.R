@@ -142,7 +142,10 @@ parse_LI8100_file <- function(filename) {
 #' @export
 `parse_PROCESSED` <- function(path) {
   files <- list.files(path, pattern = ".(txt|csv)$", full.names = TRUE, recursive = TRUE)
-  dat <- do.call("rbind", lapply(files, read.delim, stringsAsFactors = FALSE, check.names = FALSE))
+  dat <- do.call("rbind", lapply(files, read.delim,
+                                 na.strings = c("NA", "-9999"),
+                                 stringsAsFactors = FALSE,
+                                 check.names = FALSE))
   dat$CSR_ERROR <- FALSE
   dat
 }
@@ -157,7 +160,10 @@ parse_LI8100_file <- function(filename) {
 #' @export
 `parse_PROCESSED_CSV` <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
-  dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
+  dat <- do.call("rbind", lapply(files, read.csv,
+                                 na.strings = c("NA", "-9999"),
+                                 stringsAsFactors = FALSE,
+                                 check.names = FALSE))
   dat$CSR_ERROR <- FALSE
   dat
 }
