@@ -61,10 +61,7 @@ leaflet(df) %>%
 ## Temporal coverage
 
 ```{r temporal}
-library(dplyr)
 library(lubridate)
-library(ggplot2)
-theme_set(theme_bw())
 coverage <- lapply(all_data, function(x) {
   if(is.data.frame(x$data)) {
     data.frame(CSR_DATASET = x$dataset_name,
@@ -113,5 +110,28 @@ bind_rows(coverage) %>%
   ggplot(aes(x = CSR_FLUX)) + geom_histogram(bins = 30) +
   facet_wrap(~IGBP) 
 
+```
+
+### Latitude and elevation
+
+```{r lat_elev}
+le <- lapply(all_data, function(x) {
+  if(is.data.frame(x$data)) {
+    data.frame(CSR_DATASET = x$dataset_name,
+               Latitude = x$description$Latitude,
+               Elevation = x$description$Elevation,
+               IGBP = x$description$IGBP,
+               CSR_FLUX_sd = sd(x$data$CSR_FLUX, na.rm = TRUE),
+               CSR_FLUX = mean(x$data$CSR_FLUX, na.rm = TRUE),
+               stringsAsFactors = FALSE)
+  }
+})
+le <- bind_rows(le)
+
+p <- ggplot(le, aes(Latitude, CSR_FLUX, color = Elevation)) + 
+  geom_jitter() + facet_wrap(~IGBP) +
+  geom_errorbar(aes(ymin = CSR_FLUX - CSR_FLUX_sd,
+                    ymax = CSR_FLUX + CSR_FLUX_sd))
+print(p)
 ```
 

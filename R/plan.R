@@ -57,6 +57,7 @@ combine_data <- function(datasets, ...) {
 #' Build the cosore dataset.
 #'
 #' @param raw_data The raw data folder to use, character path
+#' @param return_all_data Return all data generated (invisibly)?, Logical
 #' @return The drake plan.
 #' @importFrom drake drake_plan
 #' @export
@@ -65,7 +66,7 @@ combine_data <- function(datasets, ...) {
 #' \dontrun{
 #' csr_build("../rawdata/")  # build with raw data
 #' }
-csr_build <- function(raw_data) {
+csr_build <- function(raw_data, return_all_data = TRUE) {
   # silence package check notes
   combine <- dat <- dsf <- dsn <- file_in <- map <- target <- trigger <- NULL
 
@@ -88,6 +89,10 @@ csr_build <- function(raw_data) {
       trace = TRUE
     )
     drake::make(csr_plan)
+
+    if(return_all_data) {
+      return(drake::readd("all"))
+    }
   }
 }
 

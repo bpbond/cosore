@@ -4,10 +4,12 @@
 \alias{csr_build}
 \title{Build the cosore dataset.}
 \usage{
-csr_build(raw_data)
+csr_build(raw_data, return_all_data = TRUE)
 }
 \arguments{
 \item{raw_data}{The raw data folder to use, character path}
+
+\item{return_all_data}{Return all data generated (invisibly)?, Logical}
 }
 \value{
 The drake plan.
