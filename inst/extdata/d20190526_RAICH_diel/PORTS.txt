@@ -1,0 +1,12 @@
+# PORTS.txt
+#
+# This comma-separated data file provides information about multiplexer ports
+# and what conditions they represent. Entries below include: 
+#
+# 	Port: Port number, numeric; "0" means all ports
+# 	Treatment: "None" or experimental manipulation
+# 	Species: optional field describing species measured
+#	Area: optional chamber area, cm2
+#
+Port,	Treatment,		Species,		Area
+0,		None,			"Pinus patula subsp. tecunumanii (Eguiluz & J. P. Perry) Styles; Hieronyma alchorneoides Allemao; Pentaclethra macroloba (Willd.) Kuntze; Virola koschnyi Warb.; Vochysia ferruginea Mart.; and Vochysia guatemalensis Donn. Sm. Pentachlethra is a Mimosoid legume with occasionally nodulated roots; Pinus patula",	314
