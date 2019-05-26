@@ -2,7 +2,7 @@
 % Please edit documentation in R/plan.R
 \name{csr_build}
 \alias{csr_build}
-\title{Build the cosore dataset.}
+\title{Build the cosore dataset}
 \usage{
 csr_build(raw_data, return_all_data = TRUE)
 }
@@ -12,10 +12,10 @@ csr_build(raw_data, return_all_data = TRUE)
 \item{return_all_data}{Return all data generated (invisibly)?, Logical}
 }
 \value{
-The drake plan.
+All the built data, invisibly
 }
 \description{
-Build the cosore dataset.
+Build the cosore dataset
 }
 \examples{
 csr_build("")  # build without raw data; metadata only

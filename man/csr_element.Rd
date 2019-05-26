@@ -2,7 +2,7 @@
 % Please edit documentation in R/user.R
 \name{csr_element}
 \alias{csr_element}
-\title{Extract one part (\code{description}, \code{data}, etc.) of all datasets.}
+\title{Extract one part (\code{description}, \code{data}, etc.) of all datasets}
 \usage{
 csr_element(all, element)
 }
@@ -15,5 +15,5 @@ csr_element(all, element)
 A \code{\link{data.frame}}.
 }
 \description{
-Extract one part (\code{description}, \code{data}, etc.) of all datasets.
+Extract one part (\code{description}, \code{data}, etc.) of all datasets
 }

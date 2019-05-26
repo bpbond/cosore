@@ -2,7 +2,7 @@
 % Please edit documentation in R/plan.R
 \name{combine_data}
 \alias{combine_data}
-\title{Title}
+\title{Combine all datasets into a single list}
 \usage{
 combine_data(datasets, ...)
 }
@@ -12,8 +12,8 @@ combine_data(datasets, ...)
 \item{...}{Dataset objects}
 }
 \value{
-x
+A single list with all datasets
 }
 \description{
-Title
+Combine all datasets into a single list
 }

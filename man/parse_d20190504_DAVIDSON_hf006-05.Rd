@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse-others.R
 \name{parse_d20190504_DAVIDSON_hf006-05}
 \alias{parse_d20190504_DAVIDSON_hf006-05}
-\title{Parse a custom file from d20190504_DAVIDSON_hf006-05.}
+\title{Parse a custom file from d20190504_DAVIDSON_hf006-05}
 \usage{
 "parse_d20190504_DAVIDSON_hf006-05"(path)
 }
@@ -13,5 +13,5 @@
 A \code{data.frame} containing extracted data.
 }
 \description{
-Parse a custom file from d20190504_DAVIDSON_hf006-05.
+Parse a custom file from d20190504_DAVIDSON_hf006-05
 }

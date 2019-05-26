@@ -1,6 +1,6 @@
 # User-side convenience functions
 
-#' Extract one part (\code{description}, \code{data}, etc.) of all datasets.
+#' Extract one part (\code{description}, \code{data}, etc.) of all datasets
 #'
 #' @param all All data, a list of lists
 #' @param element Name of table to extract, character
@@ -16,7 +16,7 @@ csr_element <- function(all, element) {
   rbind_list(lapply(all, extract, element = element))
 }
 
-#' Extract all the \code{data} tables from the COSORE dataset.
+#' Extract all the \code{data} tables from the COSORE dataset
 #'
 #' @param all All data, a list of lists
 #' @return A \code{\link{data.frame}}.
@@ -25,7 +25,7 @@ csr_data <- function(all) {
   csr_element(all, "data")
 }
 
-#' Extract all the \code{description} tables from the COSORE dataset.
+#' Extract all the \code{description} tables from the COSORE dataset
 #'
 #' @param all All data, a list of lists
 #' @return A \code{\link{data.frame}}.

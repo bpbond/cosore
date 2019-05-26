@@ -2,7 +2,7 @@
 % Please edit documentation in R/user.R
 \name{csr_data}
 \alias{csr_data}
-\title{Extract all the \code{data} tables from the COSORE dataset.}
+\title{Extract all the \code{data} tables from the COSORE dataset}
 \usage{
 csr_data(all)
 }
@@ -13,5 +13,5 @@ csr_data(all)
 A \code{\link{data.frame}}.
 }
 \description{
-Extract all the \code{data} tables from the COSORE dataset.
+Extract all the \code{data} tables from the COSORE dataset
 }

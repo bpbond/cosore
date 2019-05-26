@@ -1,6 +1,6 @@
 # Some datasets need custom processing
 
-#' Parse a custom file from d20190504_DAVIDSON_hf006-05.
+#' Parse a custom file from d20190504_DAVIDSON_hf006-05
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
@@ -48,7 +48,7 @@
 }
 
 
-#' Parse a custom eofFD (forced diffusion) file from d20190430_DESAI.
+#' Parse a custom eofFD (forced diffusion) file from d20190430_DESAI
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.

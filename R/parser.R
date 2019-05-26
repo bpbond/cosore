@@ -353,7 +353,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   }
 
   # Remove records with flux data way out of anything possible
-  fl <- c(-1, 50)
+  fl <- c(-1, 50)   # flux limits
   dataset$description$Flux_lowbound <- min(fl)
   dataset$description$Flux_highbound <- max(fl)
   toolow <- dsd$CSR_FLUX < min(fl)

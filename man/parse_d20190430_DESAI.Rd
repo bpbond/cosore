@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse-others.R
 \name{parse_d20190430_DESAI}
 \alias{parse_d20190430_DESAI}
-\title{Parse a custom eofFD (forced diffusion) file from d20190430_DESAI.}
+\title{Parse a custom eofFD (forced diffusion) file from d20190430_DESAI}
 \usage{
 parse_d20190430_DESAI(path)
 }
@@ -13,5 +13,5 @@ parse_d20190430_DESAI(path)
 A \code{data.frame} containing extracted data.
 }
 \description{
-Parse a custom eofFD (forced diffusion) file from d20190430_DESAI.
+Parse a custom eofFD (forced diffusion) file from d20190430_DESAI
 }
