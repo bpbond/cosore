@@ -26,7 +26,7 @@ Longitude: -76.552
 Latitude: 38.875
 Elevation: 5
 UTC_offset: -5
-Timestamp: America/New_York
+Timezone: America/New_York
 IGBP: Deciduous broadleaf forest
 Network: 
 Site_ID: 

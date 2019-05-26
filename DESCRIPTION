@@ -1,6 +1,6 @@
 Package: cosore
 Type: Package
-Title: Continuous (Automated) Soil Respiration Database
+Title: Continuous Soil Respiration Database
 Version: 0.1.0
 Authors@R: c(person("Ben", "Bond-Lamberty", 
                 email = "bondlamberty@pnnl.gov", 
@@ -9,10 +9,16 @@ Authors@R: c(person("Ben", "Bond-Lamberty",
 Maintainer: Ben Bond-Lamberty <bondlamberty@pnnl.gov>
 Description: An open database of continuous soil respiration datasets.
 Imports:
+    rmarkdown,
+    knitr,
     drake (>= 7.1),
-    rmarkdown
 Suggests: 
-    testthat
+    testthat,
+    dplyr,
+    lubridate,
+    leaflet,
+    ggplot2,
+    sp
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
