@@ -307,18 +307,16 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     return(dataset)
   }
 
-  # Dispatch to correct parsing function based on instrument name and file format
-  utc <- dataset$description$UTC_offset
-  ins <- toupper(dataset$description$Instrument)
+  # Dispatch to correct parsing function based on file format
   ff <- toupper(dataset$description$File_format)
   if(ff == "CUSTOM") {
     ff <- dataset_name   # if "Custom" that means there's custom code for this dataset
   }
-  func <- paste0("parse_", ins, "_", ff)
+  func <- paste("parse", ff, sep = "_")
   if(exists(func)) {
     dsd <- do.call(func, list(df))
   } else {
-    warning("Unknown instrument/format ", ins, "_", ff, " in ", dataset_name)
+    warning("Unknown format ", ff, " in ", dataset_name)
     dsd <- data.frame()
   }
 
@@ -326,9 +324,10 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   dsd <- map_columns(dsd, dataset$columns)
 
   # Change the timestamp column to a datetime object in UTC
+  utc <- dataset$description$UTC_offset
   dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
                                   format = dataset$description$Timestamp_format,
-                                  tz = "UTC") - dataset$description$UTC_offset * 60 * 60
+                                  tz = "UTC") - utc * 60 * 60
 
   # Drop any unmapped columns
   drops <- grep("^CSR_", names(dsd), invert = TRUE)

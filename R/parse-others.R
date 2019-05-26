@@ -7,7 +7,7 @@
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-`parse_LI-6252_d20190504_DAVIDSON_hf006-05` <- function(path, UTC_offset) {
+`parse_d20190504_DAVIDSON_hf006-05` <- function(path, UTC_offset) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
 
@@ -29,7 +29,7 @@
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-`parse_LI-6252_d20190504_DAVIDSON_hf006-03` <- function(path, UTC_offset) {
+`parse_d20190504_DAVIDSON_hf006-03` <- function(path, UTC_offset) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
 
@@ -58,7 +58,7 @@
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-parse_EOSFD_d20190430_DESAI <- function(path, UTC_offset) {
+parse_d20190430_DESAI <- function(path, UTC_offset) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
 
@@ -87,25 +87,13 @@ parse_EOSFD_d20190430_DESAI <- function(path, UTC_offset) {
 }
 
 
-#' Parse a file from Harvard Forest HF068 dataset.
-#'
-#' @param path Data directory path, character
-#' @return A \code{data.frame} containing extracted data.
-#' @importFrom utils read.csv
-`parse_LI-820_PROCESSED_CSV` <- function(path) {
-  files <- list.files(path, pattern = ".(txt|csv)$", full.names = TRUE, recursive = TRUE)
-  dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
-  dat$Error <- FALSE
-  dat
-}
-
 #' Parse a file from d20190517_MAURITZ dataset--fractional hours in separate column.
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
-`parse_LI-8100A_d20190517_MAURITZ` <- function(path) {
-  dat <- `parse_LI-820_PROCESSED_CSV`(path)
+`parse_d20190517_MAURITZ` <- function(path) {
+  dat <- `parse_PROCESSED_CSV`(path)
   dat$Timestamp <- paste(dat$Date, dat$Time)
   dat
 }
@@ -116,7 +104,7 @@ parse_EOSFD_d20190430_DESAI <- function(path, UTC_offset) {
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-`parse_LI-8100_YEARDOYHOUR` <- function(path) {
+`parse_YEARDOYHOUR` <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv,
                                  na.strings = "-9999", stringsAsFactors = FALSE, check.names = FALSE))

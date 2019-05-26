@@ -91,7 +91,7 @@ csr_build <- function(raw_data, return_all_data = TRUE) {
     drake::make(csr_plan)
 
     if(return_all_data) {
-      return(drake::readd("all"))
+      invisible(drake::readd("all"))
     }
   }
 }
