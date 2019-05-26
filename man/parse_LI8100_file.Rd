@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse-LI8100.R
 \name{parse_LI8100_file}
 \alias{parse_LI8100_file}
-\title{Parse a LI-8100 (with LI-8150 multiplexer) data file.}
+\title{Parse a LI-8100 (with LI-8150 multiplexer) data file}
 \usage{
 parse_LI8100_file(filename)
 }
@@ -13,5 +13,5 @@ parse_LI8100_file(filename)
 A \code{data.frame} containing extracted data.
 }
 \description{
-Parse a LI-8100 (with LI-8150 multiplexer) data file.
+Parse a LI-8100 (with LI-8150 multiplexer) data file
 }

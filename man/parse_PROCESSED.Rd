@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse-LI8100.R
 \name{parse_PROCESSED}
 \alias{parse_PROCESSED}
-\title{Loop through directory and read processed multiplexed Licor-8100 data}
+\title{Read processed data in whitespace-delimited format}
 \usage{
 parse_PROCESSED(path)
 }
@@ -13,7 +13,7 @@ parse_PROCESSED(path)
 A data frame with all data read from file(s).
 }
 \description{
-Loop through directory and read processed multiplexed Licor-8100 data
+Read processed data in whitespace-delimited format
 }
 \note{
 Processed (in the Licor application) data consists of a tab-delimited

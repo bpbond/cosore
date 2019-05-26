@@ -4,12 +4,10 @@
 \alias{parse_d20190504_DAVIDSON_hf006-03}
 \title{Parse a custom file from d20190504_DAVIDSON_hf006-03.}
 \usage{
-"parse_d20190504_DAVIDSON_hf006-03"(path, UTC_offset)
+"parse_d20190504_DAVIDSON_hf006-03"(path)
 }
 \arguments{
 \item{path}{Data directory path, character}
-
-\item{UTC_offset}{Offset from UTC in hours, numeric}
 }
 \value{
 A \code{data.frame} containing extracted data.

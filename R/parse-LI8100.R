@@ -1,7 +1,7 @@
 # parse-LI8100.R
 
 
-#' Parse a LI-8100 (with LI-8150 multiplexer) data file.
+#' Parse a LI-8100 (with LI-8150 multiplexer) data file
 #'
 #' @param filename Filename, character
 #' @return A \code{data.frame} containing extracted data.
@@ -122,7 +122,7 @@ parse_LI8100_file <- function(filename) {
   }
 }
 
-#' Loop through directory and read raw multiplexed Licor-8100 data
+#' Read raw multiplexed Licor-8100 data
 #'
 #' @param path Data directory path, character
 #' @return A data frame with all data read from file(s).
@@ -132,7 +132,7 @@ parse_LI8100_file <- function(filename) {
   do.call("rbind", lapply(files, parse_LI8100_file))
 }
 
-#' Loop through directory and read processed multiplexed Licor-8100 data
+#' Read processed data in whitespace-delimited format
 #'
 #' @param path Data directory path, character
 #' @return A data frame with all data read from file(s).
@@ -143,11 +143,11 @@ parse_LI8100_file <- function(filename) {
 `parse_PROCESSED` <- function(path) {
   files <- list.files(path, pattern = ".(txt|csv)$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.delim, stringsAsFactors = FALSE, check.names = FALSE))
-  dat$Error <- FALSE
+  dat$CSR_ERROR <- FALSE
   dat
 }
 
-#' Loop through directory and read processed multiplexed Licor-8100 data
+#' Read processed data in CSV format
 #'
 #' @param path Data directory path, character
 #' @return A data frame with all data read from file(s).
@@ -158,6 +158,6 @@ parse_LI8100_file <- function(filename) {
 `parse_PROCESSED_CSV` <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
-  dat$Error <- FALSE
+  dat$CSR_ERROR <- FALSE
   dat
 }

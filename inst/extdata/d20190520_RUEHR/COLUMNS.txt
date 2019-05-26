@@ -17,7 +17,6 @@
 Database,		Dataset,	Computation,				Notes
 CSR_CDRY,		Cdry,
 CSR_COMMENTS,	Comments,
-CSR_ERROR,		Error,
 CSR_FLUX,  		Exp_Flux,
 CSR_LABEL,		Label,
 CSR_PORT,		Port.,

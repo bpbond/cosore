@@ -9,7 +9,6 @@
 #
 Database,		Dataset,	Computation,				Notes
 CSR_CDRY,		CO2_IV,
-CSR_ERROR,		Error,
 CSR_FLUX,  		Exp_Flux,
 CSR_RH,			RH_IV,
 CSR_SM5,		VWC_IV

@@ -20,4 +20,4 @@ CSR_PORT,		Port,
 CSR_R2,			R2,
 CSR_SM30,		SWC
 CSR_T5,			Ts
-CSR_TIMESTAMP,	Timestamp
+CSR_TIMESTAMP,	year,		"paste(year, doy, hour)"

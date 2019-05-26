@@ -4,12 +4,10 @@
 \alias{parse_d20190430_DESAI}
 \title{Parse a custom eofFD (forced diffusion) file from d20190430_DESAI.}
 \usage{
-parse_d20190430_DESAI(path, UTC_offset)
+parse_d20190430_DESAI(path)
 }
 \arguments{
 \item{path}{Data directory path, character}
-
-\item{UTC_offset}{Offset from UTC in hours, numeric}
 }
 \value{
 A \code{data.frame} containing extracted data.

@@ -1,15 +1,13 @@
-
+# Some datasets need custom processing
 
 #' Parse a custom file from d20190504_DAVIDSON_hf006-05.
 #'
 #' @param path Data directory path, character
-#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-`parse_d20190504_DAVIDSON_hf006-05` <- function(path, UTC_offset) {
-  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
-  dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
+`parse_d20190504_DAVIDSON_hf006-05` <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
 
   dat_control <- dat[dat$treatment == "C",]
   dat_control$CSR_T10 <- dat_control$soilt.c
@@ -25,13 +23,11 @@
 #' Parse a custom file from d20190504_DAVIDSON_hf006-03.
 #'
 #' @param path Data directory path, character
-#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-`parse_d20190504_DAVIDSON_hf006-03` <- function(path, UTC_offset) {
-  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
-  dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
+`parse_d20190504_DAVIDSON_hf006-03` <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
 
   # Temperature and soil moisture data
   names(dat) <- gsub("^temp\\.ll", "CSR_T0", names(dat))
@@ -51,16 +47,15 @@
   rbind_list(results)
 }
 
+
 #' Parse a custom eofFD (forced diffusion) file from d20190430_DESAI.
 #'
 #' @param path Data directory path, character
-#' @param UTC_offset Offset from UTC in hours, numeric
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @export
-parse_d20190430_DESAI <- function(path, UTC_offset) {
-  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
-  dat <- do.call("rbind", lapply(files, read.csv, stringsAsFactors = FALSE, check.names = FALSE))
+parse_d20190430_DESAI <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
 
   results <- list()
   for(p in 1:4) {   # four separate ports in the file
@@ -84,30 +79,4 @@ parse_d20190430_DESAI <- function(path, UTC_offset) {
   }
 
   rbind_list(results)
-}
-
-
-#' Parse a file from d20190517_MAURITZ dataset--fractional hours in separate column.
-#'
-#' @param path Data directory path, character
-#' @return A \code{data.frame} containing extracted data.
-#' @importFrom utils read.csv
-`parse_d20190517_MAURITZ` <- function(path) {
-  dat <- `parse_PROCESSED_CSV`(path)
-  dat$Timestamp <- paste(dat$Date, dat$Time)
-  dat
-}
-
-#' Parse a file with timestamp in year-doy-hour format.
-#'
-#' @param path Data directory path, character
-#' @return A \code{data.frame} containing extracted data.
-#' @importFrom utils read.csv
-#' @export
-`parse_YEARDOYHOUR` <- function(path) {
-  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
-  dat <- do.call("rbind", lapply(files, read.csv,
-                                 na.strings = "-9999", stringsAsFactors = FALSE, check.names = FALSE))
-  dat$Timestamp <- paste(dat$year, dat$doy, dat$hour)
-  dat
 }

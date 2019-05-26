@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse-LI8100.R
 \name{parse_LI-8100A_RAW}
 \alias{parse_LI-8100A_RAW}
-\title{Loop through directory and read raw multiplexed Licor-8100 data}
+\title{Read raw multiplexed Licor-8100 data}
 \usage{
 "parse_LI-8100A_RAW"(path)
 }
@@ -13,5 +13,5 @@
 A data frame with all data read from file(s).
 }
 \description{
-Loop through directory and read raw multiplexed Licor-8100 data
+Read raw multiplexed Licor-8100 data
 }
