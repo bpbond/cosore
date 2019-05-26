@@ -28,6 +28,7 @@ Longitude: -84.21
 Latitude: 10.43
 Elevation: 65
 UTC_offset: -6
+Timezone: America/Costa_Rica
 IGBP: Evergreen broadleaf forest
 Network: 
 Site_ID: 

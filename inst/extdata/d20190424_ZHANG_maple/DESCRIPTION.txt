@@ -25,6 +25,7 @@ Longitude: -86.4131
 Latitude: 39.3232
 Elevation: 275
 UTC_offset: -5
+Timezone: America/Indiana/Indianapolis
 IGBP: Deciduous broadleaf forest
 Network: Ameriflux
 Site_ID: US-MMS

@@ -93,6 +93,7 @@ Info                |  Value
 ------------------- | ----
 Records             | `r d$Records`
 Records removed (error)     | `r d$Records_removed_err`
+Records removed (invalid timestamp)     | `r d$Records_removed_timestamp`
 Records removed (no flux)   | `r d$Records_removed_NA`
 Records (flux < `r d$Flux_lowbound`)  | `r d$Records_removed_toolow`
 Records (flux > `r d$Flux_highbound`) | `r d$Records_removed_toohigh`

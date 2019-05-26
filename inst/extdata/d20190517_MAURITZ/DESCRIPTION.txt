@@ -25,6 +25,7 @@ Longitude: -117.1641667
 Latitude: 33.44163333
 Elevation: 393
 UTC_offset: -8
+Timezone: America/Los_Angeles
 IGBP: Open shrubland
 Network: 
 Site_ID: 

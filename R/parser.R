@@ -101,6 +101,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
                   Latitude = extract_line(file_data, "Latitude", numeric_data = TRUE),
                   Elevation = extract_line(file_data, "Elevation", numeric_data = TRUE),
                   UTC_offset = extract_line(file_data, "UTC_offset", numeric_data = TRUE),
+                  Timezone = extract_line(file_data, "Timezone"),
                   IGBP = extract_line(file_data, "IGBP"),
                   Network = extract_line(file_data, "Network", required = FALSE),
                   Site_ID = extract_line(file_data, "Site_ID", required = FALSE),
@@ -301,6 +302,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   dataset$description$Records_removed_err <- 0
   dataset$description$Records_removed_toolow <- 0
   dataset$description$Records_removed_toohigh <- 0
+  dataset$description$Records_removed_timestamp <- 0
 
   if(!dir.exists(df)) {
     message("No data folder found for ", dataset_name)
@@ -324,10 +326,18 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   dsd <- map_columns(dsd, dataset$columns)
 
   # Change the timestamp column to a datetime object in UTC
-  utc <- dataset$description$UTC_offset
+  original_ts <- dsd$CSR_TIMESTAMP
   dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
                                   format = dataset$description$Timestamp_format,
-                                  tz = "UTC") - utc * 60 * 60
+                                  tz = dataset$description$Timezone)
+  nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
+  dataset$description$Records_removed_timestamp <- sum(nats)
+  dsd <- dsd[!nats,]
+
+  if(nrow(dsd) == 0) {
+    stop("Timestamps could not be parsed with ", dataset$description$Timestamp_format,
+         " and tz ", dataset$description$Timezone)
+  }
 
   # Drop any unmapped columns
   drops <- grep("^CSR_", names(dsd), invert = TRUE)

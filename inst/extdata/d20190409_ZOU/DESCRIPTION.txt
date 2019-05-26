@@ -25,6 +25,7 @@ Longitude: -7.25
 Latitude: 52.95
 Elevation: 260
 UTC_offset: 1
+Timezone: Europe/Dublin
 IGBP: Evergreen needleaf forest
 Network: 
 Site_ID: 

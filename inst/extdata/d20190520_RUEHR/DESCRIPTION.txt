@@ -25,6 +25,7 @@ Longitude: -121.6078
 Latitude: 44.3232842
 Elevation: 998
 UTC_offset: -8
+Timezone: America/Los_Angeles
 IGBP: Evergreen needleleaf forest
 Network: Ameriflux
 Site_ID: US-ME6

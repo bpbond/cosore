@@ -7,6 +7,7 @@
 # 	Latitude: decimal degrees; positive = north, negative = south
 # 	Elevation: elevation above sea level, meters
 # 	UTC_offset: offset from UTC of site data, hours (standard time)
+#	Timezone: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 # 	IGBP: IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
@@ -25,6 +26,7 @@ Longitude: -117.849
 Latitude: 33.658
 Elevation: 2
 UTC_offset: -8
+Timezone: America/Los_Angeles
 IGBP: Wetland
 Network: 
 Site_ID: 

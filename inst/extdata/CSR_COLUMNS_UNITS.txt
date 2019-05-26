@@ -19,6 +19,11 @@ CSR_TAIR		Air temperature, degC
 CSR_TCHAMBER	Chamber temperature, degC
 CSR_TIMESTAMP	Timestamp, a POSIXct class object
 
+# From `DESCRIPTION.txt` file
+
+UTC_offset		Offset from UTC, hours, standard time
+Timestamp		Timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
 
 # From `PORTS.txt` file
 
