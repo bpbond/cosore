@@ -1,26 +1,55 @@
 # Copied from the baad repository...
 
-make_release_cosore_data_zip <- function(dest) {
+make_cosore_release <- function(all_data, dest) {
   path <- file.path(tempfile(), "cosore_data")
-  dir.create(path, FALSE, TRUE)
-  to_copy <- list.files("export", "(csv|bib)$", full.names = TRUE)
-  file.copy(to_copy, path)
-  colophon(path)
-#  remake:::zip_dir(path, dest)
+  path <- "~/Desktop/temp/"
+  dir.create(path, showWarnings = TRUE, recursive = TRUE)
+
+  # saveRDS the object
+  message("Saving database...")
+  saveRDS(all_data, file = file.path(path, "cosore_data.RDS"))
+
+  # invert structure and write each table as a csv
+
+  # copy column metadata file
+  message("Saving metadata...")
+  f <- "CSR_COLUMNS_UNITS.txt"
+  md <- system.file(file.path("extdata", f),
+                    package = "cosore", mustWork = TRUE)
+  file.copy(md, file.path(path, f))
+
+  # run combined_report and copy it there
+
+  #colophon(path)
+  #  remake:::zip_dir(path, dest)
+  message("Zipping...")
+  utils::zip(file.path(path, "cosore.zip"),
+             list.files(path, full.names = TRUE),
+             flags = "-j")
 }
 
-make_release_cosore_code_zip <- function(dest, force = FALSE) {
-  if (force || length(system("git status --porcelain", intern = TRUE)) > 0) {
-    stop("release not allowed: git working directory is not clean")
-  }
-  path <- file.path(tempfile(), "cosore")
-  dir.create(path, FALSE, TRUE)
-  system(paste0("git clone . ", path))
-  unlink(file.path(path, ".git"), recursive = TRUE)
-#  remake::make_script("export", filename = file.path(path, "remake.R"))
-  colophon(path)
-#  remake:::zip_dir(path, dest)
+## Core data:
+mydata_info <- function(path) {
+  datastorr::github_release_info("bpbond/cosore",
+                                 filename = NULL,
+                                 read = readRDS,
+                                 path = path)
 }
+
+
+##' Maintainer-only function for releasing data.  This will look at
+##' the version in the DESCRIPTION file and make a data release if the
+##' GitHub repository contains the same version as we have locally.
+##' Requires the \code{GITHUB_TOKEN} environment variable to be set.
+##'
+##' @title Make a data release.
+##' @param ... Parameters passed through to \code{\link{github_release_create}}
+##' @param path Path to the data (see \code{\link{cosore}}).
+##' @export
+mydata_release <- function(..., path = NULL) {
+  datastorr::github_release_create(mydata_info(path), ...)
+}
+
 
 colophon <- function(path) {
   git_sha <- system("git rev-parse HEAD", intern = TRUE)
