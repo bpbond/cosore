@@ -1,0 +1,22 @@
+# COLUMNS.txt
+#
+# This comma-separated data file maps columns from this dataset to
+# standardized column names in the main database. Entries below include:
+# 	Database: name of the standardized database column
+#	Dataset: name of the column in this dataset
+#	Computation: optional R-parseable computation to change units, etc.
+#	Notes: optional; generally to explain the computation
+#
+# Examples:
+#
+# Database,	Dataset,	Computation,					Notes
+# CSR_T5	V1,
+# CSR_FLUX, Flux, 		Flux / 12 * 10^6 / 24/60/60, 	gC/day to µmol/s - all ports
+# CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
+#
+Database,		Dataset,	Computation,				Notes
+CSR_FLUX,  		CO2_Flux,
+CSR_LABEL,		Vegetation,
+CSR_PORT,		Chamber,
+CSR_TCHAMBER,	T_chamber_air
+CSR_TIMESTAMP,	Timestamp

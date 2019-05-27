@@ -1,0 +1,42 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	Site_name: standard site name
+# 	Longitude: decimal degrees; positive = east, negative = west
+# 	Latitude: decimal degrees; positive = north, negative = south
+# 	Elevation: elevation above sea level, meters
+# 	UTC_offset: offset from UTC of site data, hours (standard time)
+#	Timezone: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# 	IGBP: IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+#	File_format: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
+#	Timestamp_format. See ?strptime, but briefly:
+		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	Acknowledgment: optional acknowledgment (funding or other) text
+# --------------------------------------
+Site_name: FLONA Tapajós km 83 Tower
+Longitude: -54.9707
+Latitude: -3.017
+Elevation: 
+UTC_offset: -3
+Timezone: America/Santarem
+IGBP: Evergreen broadleaf forest
+Network: LBA
+Site_ID: km 83 Logged Forest Tower
+Instrument: LI-6262
+File_format: Custom
+Timestamp_format: %Y-%m-%d %H:%M:%S
+Primary_pub: 10.1890/02-6008
+Other_pub: 10.1093/treephys/17.8-9.537
+Data_URL: http://dx.doi.org/10.3334/ORNLDAAC/1039
+Acknowledgment: 

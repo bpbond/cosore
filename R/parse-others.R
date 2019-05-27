@@ -1,5 +1,27 @@
 # Some datasets need custom processing
 
+
+#' Parse a custom file from d20190527_GOULDEN
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @importFrom utils read.csv
+#' @export
+parse_d20190527_GOULDEN <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  # File has header lines, and records time as fractional days since noon on 2001-01-01
+  dat <- do.call("rbind", lapply(files, read.csv,
+                                 skip = 14,
+                                 na.strings = c("NA", "-999"),
+                                 stringsAsFactors = FALSE,
+                                 check.names = FALSE))
+  dat$Timestamp <- as.POSIXct("2001-01-01 12:00", format = "%Y-%m-%d %H:%M")  + dat$Day_of_study * 24 * 60 * 60
+  dat$Timestamp <- as.character(dat$Timestamp)
+  dat$CSR_ERROR <- FALSE
+  dat[dat$Vegetation == "forest",]
+}
+
+
 #' Parse a custom file from d20190504_DAVIDSON_hf006-05
 #'
 #' @param path Data directory path, character
