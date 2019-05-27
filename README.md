@@ -9,15 +9,14 @@ Only free use data accepted.
 The package, and the process of contributing data, should be as focused and 
 simple as possible (but no simpler).
 
-All contributors will be included on database definition paper.
+All contributors will be included on a database definition paper.
 
 The database is completely open for reuse. We request that users cite the 
-database definition paper, and encourage them to (i) cite all dataset primary
+database definition paper, and strongly encourage them to (i) cite all dataset primary
 publications, and (ii) involve data contributors as co-authors when possible.
 
 **This database is not designed for, and should not be treated as, a permanent
-data repository.** Best practice is to deposit the data and then link to it
-from the contributed dataset here.
+data repository.** COSORE is a community database, but not an institutionally-backed repository like Figshare, DataONE, ESS-DIVE, etc. We recommend depositing your data in one of these first, and providing its DOI in metadata.
 
 ## Database design
 
@@ -26,19 +25,20 @@ A _dataset_ is one or more files of continuous (automated) soil respiration data
 with accompanying metadata, with all measurements taken at a single _site_ and with
 constant _treatment_ assignments.
 
-As much as possible, metadata are kept to a minimum. There are five metadata files, but only two of them
-(ten pieces of information in total) absolutely need to be filled out:
+As much as possible, metadata are kept to a minimum. There are five metadata files, but only two of them absolutely need to be filled out:
 
 ### `DESCRIPTION.txt`
 
 * Site name
 * Longitude
 * Latitude
-* Elevation
+* Elevation [optional]
 * UTC_offset
+* Timezone
 * [IGBP cover type](http://www.eomf.ou.edu/static/IGBP.pdf)
 * Instrument name
 * File format
+* Timestamp format
 * Primary publication DOI or URL [optional]
 * Other publications DOI or URL [optional]
 * Data DOI or URL [optional]
@@ -63,7 +63,7 @@ For each multiplexer port, can define:
 ### `COLUMNS.txt`
 
 Ths maps between _dataset_ fields and standardized _database_ fields.
-It include an optional compute-on-columns capability (e.g. to change units).
+It include an optional compute-on-columns capability (e.g. to change units or combine columns).
 
 ### `ANCILLARY.txt`
 
@@ -82,9 +82,12 @@ dataset objects (description, contributors, etc);
 * User-side convenience functions generate data frames ready (or readier) for analysis
 * Reports are generated for the overall database and each individual dataset.
 
+## Data access
+
+* Following the example of [BAAD](https://github.com/dfalster/baad), there is a lightweight [cosore.data](https://github.com/bpbond/cosore.data) package intended to provide data access to users. **It does not work yet.**
+
 ## Priorities
 
-* Processed LI-8100A data
-* Other structured/standardized IRGA data
+* Structured/standardized continuous IRGA data
 * Raw LI-8100A data
-* Other data
+* Other data, e.g. long term survey measurements
