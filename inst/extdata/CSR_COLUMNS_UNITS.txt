@@ -7,6 +7,7 @@ CSR_COMMENTS	Comments, text
 CSR_CRVFIT		Flux computation method ("Lin" or "Exp" for linear and exponential)
 CSR_ERROR		Error raised by instrument or during import, logical
 CSR_FLUX  		Soil respiration flux, µmol CO2/m2/s
+CSR_FLUX_SE		Standard error of soil respiration flux, µmol CO2/m2/s
 CSR_LABEL		Port/chamber label, text
 CSR_PAR			Photosynthetically active radiation,  μmol photons/m2/s
 CSR_PORT		Port/chamber number, integer

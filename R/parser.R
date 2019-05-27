@@ -218,9 +218,8 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
 #' columns <- data.frame(Database = "y", Dataset = "x", Computation = "x * 2")
 #' map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
 map_columns <- function(dat, columns) {
-  if(is.null(dat)) return(NULL)
+  if(!is.data.frame(dat)) return(NULL)
 
-  stopifnot(is.data.frame(dat))
   stopifnot(is.data.frame(columns))
   stopifnot(all(c("Database", "Dataset") %in% names(columns)))
 

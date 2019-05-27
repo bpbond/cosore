@@ -17,8 +17,8 @@ library(lubridate)
 ds <- params$dataset
 quick <- params$quick
 
-all <- drake::readd("all")
-ds <- all$d20190517_MAURITZ
+#all <- drake::readd("all")
+#ds <- all$d20190517_MAURITZ
 ```
 
 # `r ds$dataset_name`

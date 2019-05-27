@@ -24,19 +24,19 @@
 # 	Other publications: optional comma-separated DOIs
 # 	Acknowledgment: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: 
-Longitude: 
-Latitude: 
+Site_name: Eight Mile Lake (EML)
+Longitude: -148.325677
+Latitude: 63.880123
 Elevation: 
-UTC_offset: 
-Timezone: 
-IGBP: 
+UTC_offset: -9
+Timezone: America/Anchorage
+IGBP: Evergreen needleleaf forest
 Network: 
 Site_ID: 
-Instrument: LI-8100A
-File_format: Processed
-Timestamp_format: %Y-%m-%dT%H:%M:%SZ
-Primary_pub:
-Other_pub:
-Data_URL:
-Acknowledgment: 
+Instrument: eosFD
+File_format: Processed_csv
+Timestamp_format: %Y-%m-%d %H:%M:%S
+Primary_pub: 10.1016/j.scitotenv.2016.05.052
+Other_pub: 10.1016/j.agrformet.2011.06.020
+Data_URL: 10.3334/ORNLDAAC/1620
+Acknowledgment: This research was funded by NASA grant number NNX15AT81A.

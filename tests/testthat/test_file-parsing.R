@@ -88,8 +88,8 @@ test_that("read_description_file", {
 test_that("map_columns", {
   # handles missing input
   expect_null(map_columns(NULL, data.frame()))
-  expect_error(map_columns(data.frame, NULL)) # not a data frame
-  expect_error(map_columns(data.frame, data.frame())) # not correct columns
+  expect_error(map_columns(data.frame(), NULL)) # not a data frame
+  expect_error(map_columns(data.frame(), data.frame())) # not correct columns
 
   # renames columns
   dat <- data.frame(x = 1:2, y = 2:3)
