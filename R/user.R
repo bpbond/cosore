@@ -1,19 +1,20 @@
 # User-side convenience functions
 
-#' Extract one part (\code{description}, \code{data}, etc.) of all datasets
+#' Extract one table (\code{description}, \code{data}, etc.) of all datasets
 #'
 #' @param all All data, a list of lists
-#' @param element Name of table to extract, character
+#' @param table Name of table to extract, character
 #' @return A \code{\link{data.frame}}.
 #' @export
-csr_element <- function(all, element) {
+csr_table <- function(all, table) {
 
-  extract <- function(x, element) {
-    x[[element]]$CSR_DATASET <- x$dataset_name
-    x[[element]]
+  extract <- function(x, table) {
+    stopifnot(table %in% names(x))
+    x[[table]]$CSR_DATASET <- x$dataset_name
+    x[[table]]
   }
 
-  rbind_list(lapply(all, extract, element = element))
+  rbind_list(lapply(all, extract, table = table))
 }
 
 #' Extract all the \code{data} tables from the COSORE dataset
@@ -22,7 +23,7 @@ csr_element <- function(all, element) {
 #' @return A \code{\link{data.frame}}.
 #' @export
 csr_data <- function(all) {
-  csr_element(all, "data")
+  csr_table(all, "data")
 }
 
 #' Extract all the \code{description} tables from the COSORE dataset
@@ -31,5 +32,5 @@ csr_data <- function(all) {
 #' @return A \code{\link{data.frame}}.
 #' @export
 csr_description <- function(all) {
-  csr_element(all, "description")
+  csr_table(all, "description")
 }
