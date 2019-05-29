@@ -1,5 +1,11 @@
 # Copied from the baad repository...
 
+#' Make a new COSORE release
+#'
+#' @param all_data A list of \code{cosore} datasets.
+#' @param dest Dest
+#' @return Nothing; run for its side effects.
+#' @export
 make_cosore_release <- function(all_data, dest) {
   path <- file.path(tempfile(), "cosore_data")
   path <- "~/Desktop/temp/"
@@ -8,8 +14,19 @@ make_cosore_release <- function(all_data, dest) {
   # saveRDS the object
   message("Saving database...")
   saveRDS(all_data, file = file.path(path, "cosore_data.RDS"))
+  #browser()
 
   # invert structure and write each table as a csv
+  # data is really big so not writing it for now--just in RDS file above
+  nms <- c("description", "contributors", "ports", "columns", "ancillary") #, "data" )
+
+  for(nm in nms) {
+    message("Extracting ", nm)
+    x <- csr_table(all_data, nm) # extract table with name "n"
+    fn <- paste0(nm, ".csv")
+    message("Writing ", fn)
+    write.csv(x, file.path(path, fn), row.names = FALSE)
+  }
 
   # copy column metadata file
   message("Saving metadata...")
@@ -19,11 +36,11 @@ make_cosore_release <- function(all_data, dest) {
   file.copy(md, file.path(path, f))
 
   # run combined_report and copy it there
+  combined_report(all_data, output_dir = path)
 
-  #colophon(path)
-  #  remake:::zip_dir(path, dest)
   message("Zipping...")
-  utils::zip(file.path(path, "cosore.zip"),
+  release_file <- file.path(path, "cosore.zip")
+  utils::zip(release_file,
              list.files(path, full.names = TRUE),
              flags = "-j")
 }
@@ -48,29 +65,4 @@ mydata_info <- function(path) {
 ##' @export
 mydata_release <- function(..., path = NULL) {
   datastorr::github_release_create(mydata_info(path), ...)
-}
-
-
-colophon <- function(path) {
-  git_sha <- system("git rev-parse HEAD", intern = TRUE)
-  git_url <- paste0("https://github.com/dfalster/cosore/commit/", git_sha)
-  file <- "colophon.Rmd"
-  str <-
-    c("# cosore: a Biomass And Allometry Database for woody plants",
-      "",
-      sprintf("**Release 1.0.1** git SHA: [%s](%s)", git_sha, git_url),
-      "",
-      "Session info used to generate this version:",
-      "",
-      "```{r}",
-      "devtools::session_info()",
-      "```")
-  ## Working directories are a bit of a disaster zone in knitr, so
-  ## we'll work around it here:
-  owd <- setwd(path)
-  on.exit(setwd(owd))
-  writeLines(str, file)
-  knitr::knit(file, quiet = TRUE)
-  file.remove(file)
-  invisible(file.path(path, file))
 }

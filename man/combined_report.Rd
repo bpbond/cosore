@@ -4,10 +4,12 @@
 \alias{combined_report}
 \title{Run all individual dataset reports}
 \usage{
-combined_report(all_data)
+combined_report(all_data, output_dir = "~/Desktop/Reports/")
 }
 \arguments{
 \item{all_data}{A list of \code{cosore} datasets.}
+
+\item{output_dir}{Output directory}
 }
 \value{
 Nothing; run for its side effects.

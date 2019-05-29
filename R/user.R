@@ -9,7 +9,8 @@
 csr_table <- function(all, table) {
 
   extract <- function(x, table) {
-    stopifnot(table %in% names(x))
+    if(is.null(x[[table]])) { return(NULL) }
+
     x[[table]]$CSR_DATASET <- x$dataset_name
     x[[table]]
   }

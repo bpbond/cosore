@@ -2,16 +2,17 @@
 #' Run all individual dataset reports
 #'
 #' @param all_data A list of \code{cosore} datasets.
+#' @param output_dir Output directory
 #' @importFrom rmarkdown render
 #' @return Nothing; run for its side effects.
 #' @export
-combined_report <- function(all_data) {
+combined_report <- function(all_data, output_dir = "~/Desktop/Reports/") {
   mf <- system.file("reports/combined_report.Rmd", package = "cosore")
 
   rmarkdown::render(mf,
                     params = list(all_data = all_data),
                     output_file = paste0("Report-all.html"),
-                    output_dir = "~/Desktop/Reports/")
+                    output_dir = output_dir)
 }
 
 
