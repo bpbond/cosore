@@ -8,12 +8,12 @@
 # 	Species: optional field describing species measured
 #	Area: optional chamber area, cm2
 #
-Port,	Treatment,		Species,		Area
-1,		Girdled,		Quercus spp.,	491
-2,		Girdled,		Quercus spp.,	491
-3,		None,			Quercus spp.,	491
-4,		None,			Quercus spp.,	491
-5,		None,			Quercus spp.,	491
-6,		None,			Quercus spp.,	491
-7,		Girdled,		Quercus spp.,	491
-8,		Girdled,		Quercus spp.,	491
+Port,	Treatment,	Area,	Depth,	Species
+1,		Girdled,	491,	,		Quercus spp.
+2,		Girdled,	491,	,		Quercus spp.
+3,		None,		491,	,		Quercus spp.
+4,		None,		491,	,		Quercus spp.
+5,		None,		491,	,		Quercus spp.
+6,		None,		491,	,		Quercus spp.
+7,		Girdled,	491,	,		Quercus spp.
+8,		Girdled,	491,	,		Quercus spp.

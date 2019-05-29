@@ -8,5 +8,5 @@
 # 	Species: optional field describing species measured
 #	Area: optional chamber area, cm2
 #
-Port,	Treatment,		Species,			Area
-0,		None,			Picea sitchensis
+Port,	Treatment,	Area,	Depth,	Species
+0,		None,		,		,		Picea sitchensis

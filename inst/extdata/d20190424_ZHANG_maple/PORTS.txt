@@ -8,12 +8,12 @@
 # 	Species: optional field describing species measured
 #	Area: optional chamber area, cm2
 #
-Port,	Treatment,		Species,	Area
-1,		Girdled,		Acer spp.,	491
-2,		None,			Acer spp.,	491
-3,		None,			Acer spp.,	491
-4,		None,			Acer spp.,	491
-5,		None,			Acer spp.,	491
-6,		None,			Acer spp.,	491
-7,		Girdled,		Acer spp.,	491
-8,		None,			Acer spp.,	491
+Port,	Treatment,	Area,	Depth,	Species
+1,		Girdled,	491,	,		Acer spp.
+2,		None,		491,	,		Acer spp.
+3,		None,		491,	,		Acer spp.
+4,		None,		491,	,		Acer spp.
+5,		None,		491,	,		Acer spp.
+6,		None,		491,	,		Acer spp.
+7,		Girdled,	491,	,		Acer spp.
+8,		None,		491,	,		Acer spp.

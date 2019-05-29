@@ -8,8 +8,8 @@
 # 	Species: optional field describing species measured
 #	Area: optional chamber area, cm2
 #
-Port,	Treatment,		Species,		Area
-1,		None,			Acer saccharum,	78.5
-2,		None,			Acer saccharum,	78.5	
-3,		None,			Acer saccharum,	78.5
-4,		Trenched,		Acer saccharum,	78.5
+Port,	Treatment,	Area,	Depth,	Species
+1,		None,		78.5,	,		Acer saccharum
+2,		None,		78.5,	,		Acer saccharum
+3,		None,		78.5,	,		Acer saccharum
+4,		Trenched,	78.5,	,		Acer saccharum

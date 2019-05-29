@@ -13,20 +13,20 @@
 # 1,	None,			"Liriodendron tulipifera, Acer rubrum"
 # 2,	Heated,			Sphagnum fuscum
 #
-Port,	Treatment,		Species,	Area
-1,		Root exclusion,	"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
-2,		None,			"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
-3,		Root exclusion,	"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
-4,		None,			"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
-5,		Root exclusion,	"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
-6,		None,			"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
-7,		Root exclusion,	"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
-8,		None,			"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
-9,		Root exclusion,	"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
-10,		None,			"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
-11,		Root exclusion,	"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
-12,		None,			"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
-13,		Root exclusion,	"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
-14,		None,			"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana",	314
-15,		Root exclusion,	"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
-16,		None,			"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera",	314
+Port,	Treatment,		Area,	Depth,	Species
+1,		Root exclusion,	314,	,		"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera"
+2,		None,			314,	,		"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera"
+3,		Root exclusion,	314,	,		"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana"
+4,		None,			314,	,		"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana"
+5,		Root exclusion,	314,	,		"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera"
+6,		None,			314,	,		"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera"
+7,		Root exclusion,	314,	,		"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana"
+8,		None,			314,	,		"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana"
+9,		Root exclusion,	314,	,		"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera"
+10,		None,			314,	,		"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera"
+11,		Root exclusion,	314,	,		"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana"
+12,		None,			314,	,		"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana"
+13,		Root exclusion,	314,	,		"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana"
+14,		None,			314,	,		"Bromus madritensis var. rubens, Centaurea solstitialis, Hirschfeldia incana"
+15,		Root exclusion,	314,	,		"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera"
+16,		None,			314,	,		"Artemisia californica, Eriogonum fasciculatum, Salvia mellifera"

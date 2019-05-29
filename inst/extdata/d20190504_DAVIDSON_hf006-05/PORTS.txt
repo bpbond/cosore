@@ -12,12 +12,12 @@
 # 1,	None,			"Liriodendron tulipifera, Acer rubrum"
 # 2,	Heated,			Sphagnum fuscum
 #
-Port,	Treatment,		Species
-1,		Trenched,		Quercus rubra
-2,		None,			Quercus rubra
-3,		Trenched,		Quercus rubra
-4,		None,			Quercus rubra
-5,		Trenched,		Quercus rubra
-6,		None,			Quercus rubra
-7,		Trenched,		Quercus rubra
-8,		None,			Quercus rubra
+Port,	Treatment,	Area,	Depth,	Species
+1,		Trenched,	,		,		Quercus rubra
+2,		None,		,		,		Quercus rubra
+3,		Trenched,	,		,		Quercus rubra
+4,		None,		,		,		Quercus rubra
+5,		Trenched,	,		,		Quercus rubra
+6,		None,		,		,		Quercus rubra
+7,		Trenched,	,		,		Quercus rubra
+8,		None,		,		,		Quercus rubra

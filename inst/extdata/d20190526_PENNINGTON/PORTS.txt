@@ -7,12 +7,12 @@
 # 	Treatment: "None" or experimental manipulation
 # 	Species: optional field describing species measured
 #
-Port,	Treatment,		Species
-1,		None,			Acer rubrum
-2,		None,			Acer rubrum
-3,		None,			Acer rubrum
-4,		None,			Acer rubrum
-5,		None,			Liriodendron tulipifera
-6,		None,			Liriodendron tulipifera
-7,		None,			Liriodendron tulipifera
-8,		None,			Liriodendron tulipifera
+Port,	Treatment,	Area,	Depth,	Species
+1,		None,		314,	,		Acer rubrum
+2,		None,		314,	,		Acer rubrum
+3,		None,		314,	,		Acer rubrum
+4,		None,		314,	,		Acer rubrum
+5,		None,		314,	,		Liriodendron tulipifera
+6,		None,		314,	,		Liriodendron tulipifera
+7,		None,		314,	,		Liriodendron tulipifera
+8,		None,		314,	,		Liriodendron tulipifera

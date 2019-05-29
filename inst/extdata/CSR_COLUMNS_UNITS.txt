@@ -1,4 +1,4 @@
-# From IRGA/instrument output
+# From IRGA/instrument data
 
 Field name		Description and units
 
@@ -20,6 +20,7 @@ CSR_TAIR		Air temperature, degC
 CSR_TCHAMBER	Chamber temperature, degC
 CSR_TIMESTAMP	Timestamp, a POSIXct class object
 
+
 # From `DESCRIPTION.txt` file
 
 UTC_offset		Offset from UTC, hours, standard time
@@ -28,7 +29,9 @@ Timestamp		Timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time
 
 # From `PORTS.txt` file
 
-CSR_AREA		Area of chamber, cm2
+Area			Area of measurement chamber, cm2
+Depth			Depth of collar insertion, cm
+Treatment		Collar treatment
 
 
 # From `ANCILLARY.txt` file
