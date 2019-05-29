@@ -12,5 +12,5 @@
 # 1,	None,			"Liriodendron tulipifera, Acer rubrum"
 # 2,	Heated,			Sphagnum fuscum
 #
-Port,	Treatment,		Species
-0,		None,			"Liriodendron tulipifera, Acer rubrum"
+Port,	Treatment,	Area,	Depth,	Species
+0,		None,		314,	,		"Liriodendron tulipifera, Acer rubrum"

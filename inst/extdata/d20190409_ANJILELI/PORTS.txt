@@ -9,4 +9,4 @@
 #	Area: optional chamber area, cm2
 #
 Port,	Treatment,	Area,	Depth,	Species
-0,		None,		324
+0,		None,		324,	6

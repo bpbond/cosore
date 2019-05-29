@@ -9,4 +9,4 @@
 #	Area: optional chamber area, cm2
 #
 Port,	Treatment,	Area,	Depth,	Species
-0,		None,		314,	,		"Pinus patula subsp. tecunumanii (Eguiluz & J. P. Perry) Styles; Hieronyma alchorneoides Allemao; Pentaclethra macroloba (Willd.) Kuntze; Virola koschnyi Warb.; Vochysia ferruginea Mart.; and Vochysia guatemalensis Donn. Sm. Pentachlethra is a Mimosoid legume with occasionally nodulated roots; Pinus patula"
+0,		None,		314,	2,		"Pinus patula subsp. tecunumanii (Eguiluz & J. P. Perry) Styles; Hieronyma alchorneoides Allemao; Pentaclethra macroloba (Willd.) Kuntze; Virola koschnyi Warb.; Vochysia ferruginea Mart.; and Vochysia guatemalensis Donn. Sm. Pentachlethra is a Mimosoid legume with occasionally nodulated roots; Pinus patula"

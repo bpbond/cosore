@@ -14,4 +14,4 @@
 # 2,	Heated,			Sphagnum fuscum
 #
 Port,	Treatment,	Area,	Depth,	Species
-0,		None,		317.8,	,		Pinus ponderosa
+0,		None,		317.8,	2,		Pinus ponderosa

@@ -13,11 +13,11 @@
 # 2,	Heated,			Sphagnum fuscum
 #
 Port,	Treatment,	Area,	Depth,	Species
-1,		Trenched,	,		,		Quercus rubra
-2,		None,		,		,		Quercus rubra
-3,		Trenched,	,		,		Quercus rubra
-4,		None,		,		,		Quercus rubra
-5,		Trenched,	,		,		Quercus rubra
-6,		None,		,		,		Quercus rubra
-7,		Trenched,	,		,		Quercus rubra
-8,		None,		,		,		Quercus rubra
+1,		Trenched,	,		5,		Quercus rubra
+2,		None,		,		5,		Quercus rubra
+3,		Trenched,	,		5,		Quercus rubra
+4,		None,		,		5,		Quercus rubra
+5,		Trenched,	,		5,		Quercus rubra
+6,		None,		,		5,		Quercus rubra
+7,		Trenched,	,		5,		Quercus rubra
+8,		None,		,		5,		Quercus rubra

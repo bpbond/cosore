@@ -14,4 +14,4 @@
 # 2,	Heated,			Sphagnum fuscum
 #
 Port,	Treatment,	Area,	Depth,	Species
-0,		None,			
+0,		None,		44.2	
