@@ -12,7 +12,7 @@ library(dplyr)
 library(ggplot2)
 theme_set(theme_bw())
 
-desc <- csr_element(all_data, "description")
+desc <- csr_table(all_data, "description")
 
 ```
 

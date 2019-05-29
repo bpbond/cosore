@@ -4,10 +4,12 @@
 \alias{run_reports}
 \title{Run all individual dataset reports}
 \usage{
-run_reports(all_data)
+run_reports(all_data, run_combined = TRUE)
 }
 \arguments{
 \item{all_data}{A list of \code{cosore} datasets.}
+
+\item{run_combined}{When done, run the combined (entire database) report?}
 }
 \value{
 Nothing; run for its side effects.

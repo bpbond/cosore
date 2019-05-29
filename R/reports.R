@@ -33,10 +33,15 @@ run_single_report <- function(ds) {
 #' Run all individual dataset reports
 #'
 #' @param all_data A list of \code{cosore} datasets.
+#' @param run_combined When done, run the combined (entire database) report?
 #' @return Nothing; run for its side effects.
 #' @export
-run_reports <- function(all_data) {
+run_reports <- function(all_data, run_combined = TRUE) {
   for(ds in all_data) {
     run_single_report(ds)
+  }
+
+  if(run_combined) {
+    combined_report(all_data)
   }
 }
