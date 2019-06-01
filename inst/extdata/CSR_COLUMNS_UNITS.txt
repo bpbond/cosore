@@ -1,3 +1,6 @@
+# Metadata for COSORE version %VERSION
+# %DATE
+
 # From IRGA/instrument data
 
 Field name		Description and units

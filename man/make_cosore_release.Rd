@@ -4,16 +4,28 @@
 \alias{make_cosore_release}
 \title{Make a new COSORE release}
 \usage{
-make_cosore_release(all_data, dest)
+make_cosore_release(all_data, path, force = FALSE)
 }
 \arguments{
-\item{all_data}{A list of \code{cosore} datasets.}
+\item{all_data}{A list of \code{cosore} datasets}
 
-\item{dest}{Dest}
+\item{path}{Path to write files to; must already exist}
+
+\item{force}{Ignore git dirty status? Logical}
 }
 \value{
-Nothing; run for its side effects.
+Fully qualified name of zip file containg release.
 }
 \description{
 Make a new COSORE release
+}
+\details{
+To make a new release, the git working directory
+must be clean (unless \code{force = TRUE}), a \code{path} must
+be specified, and there should be file descriptors (in the code)
+for all files that will be zipped into the release;
+this information is inserted into the \code{README.md} file.
+Dynamic information like the current date, git commit hash,
+database version, and
+database size are all copied into \code{README.md} as well.
 }
