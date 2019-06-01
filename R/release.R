@@ -75,6 +75,7 @@ make_cosore_release <- function(all_data, path, force = FALSE) {
     f_data <- gsub("%VERSION", packageVersion("cosore"), f_data)
     f_data <- gsub("%DATE", Sys.Date(), f_data)
     git_sha <- system2("git", args = "rev-parse HEAD", stdout = TRUE)
+    git_sha <- substr(git_sha, 1, 10)
     f_data <- gsub("%GIT_SHA", git_sha, f_data)
     f_data <- gsub("%DATABASE_SIZE", format(object.size(all_data), "Mb"), f_data)
     f_data <- gsub("%FILELIST", paste(

@@ -38,6 +38,9 @@ In summary, please do your part to balance open data and open science with ensur
 data contributors receive tangible benefits from participating in COSORE. Your synthesis
 depends on the labor of many, many people; recognize them.
 
+Finally: for reproducibility please _always_ include the version (%VERSION) and, ideally, 
+the commit number (%GIT_SHA) in your methods section.
+
 
 ## Files included in this release:
 
