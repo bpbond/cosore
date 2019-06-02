@@ -4,12 +4,15 @@
 \alias{make_cosore_release}
 \title{Make a new COSORE release}
 \usage{
-make_cosore_release(all_data, path, force = FALSE)
+make_cosore_release(all_data, path, vignette_rebuilt = FALSE,
+  force = FALSE)
 }
 \arguments{
 \item{all_data}{A list of \code{cosore} datasets}
 
 \item{path}{Path to write files to; must already exist}
+
+\item{vignette_rebuilt}{Has vignette been rebuilt? Logical}
 
 \item{force}{Ignore git dirty status? Logical}
 }

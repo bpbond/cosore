@@ -3,6 +3,7 @@
 #'
 #' @param all_data A list of \code{cosore} datasets
 #' @param path Path to write files to; must already exist
+#' @param vignette_rebuilt Has vignette been rebuilt? Logical
 #' @param force Ignore git dirty status? Logical
 #' @return Fully qualified name of zip file containg release.
 #' @importFrom utils packageVersion write.csv object.size
@@ -15,7 +16,8 @@
 #' database version, and
 #' database size are all copied into \code{README.md} as well.
 #' @export
-make_cosore_release <- function(all_data, path, force = FALSE) {
+make_cosore_release <- function(all_data, path,
+                                vignette_rebuilt = FALSE, force = FALSE) {
 
   if(!force & length(system2("git", args = c("status", "--porcelain"), stdout = TRUE))) {
     stop("Not allowed: git working directory is not clean")
@@ -23,6 +25,10 @@ make_cosore_release <- function(all_data, path, force = FALSE) {
 
   if(!dir.exists(path)) {
     stop("Path ", path, " doesn't exist")
+  }
+
+  if(!vignette_rebuilt) {
+    stop("Vignette rebuilt via devtools::build_vignettes(), then copy html to inst/extdata?")
   }
 
   # saveRDS the object
@@ -62,10 +68,11 @@ make_cosore_release <- function(all_data, path, force = FALSE) {
     "datasets" = "A folder containing the various `data` tables for each dataset",
     "CSR_COLUMNS_UNITS.txt" = "Metadata for all database fields",
     "Report-all.html" = "A summary report on the various datasets",
+    "cosore-data-example.html" = "A vignette showing how to load and work with the database",
     "README.md" = "This file."
   )
 
-  filelist <- c("CSR_COLUMNS_UNITS.txt", "README.md")
+  filelist <- c("CSR_COLUMNS_UNITS.txt", "README.md", "cosore-data-example.html")
   for(f in filelist) {
     f_path <- system.file(file.path("extdata", f),
                           package = "cosore", mustWork = TRUE)
@@ -95,8 +102,13 @@ make_cosore_release <- function(all_data, path, force = FALSE) {
   all_files <- list.files(path, recursive = FALSE)
   missing <- !all_files %in% names(file_descriptions)
   if(any(missing)) {
-    stop("Missing file descriptions for: ",
+    stop("Missing description for files: ",
          paste(all_files[missing], collapse = ", "))
+  }
+  extra <- !names(file_descriptions) %in% all_files
+  if(any(missing)) {
+    stop("Missing file for descriptions: ",
+         paste(all_files[extra], collapse = ", "))
   }
 
   # Almost done! Zip everything up into a single file

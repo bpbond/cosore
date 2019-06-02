@@ -58,7 +58,7 @@ cosore <- readRDS("cosore_data.RDS")
 This will load the entire database (currently %DATABASE_SIZE) into memory. It's
 structured as a list of lists: the first level is broken up by dataset, and the
 second level by the `description`, `contributors`, `ports`, etc., tables. See the
-[vignette](TODO) (in R, type `vignette("cosore-data")`) for a detailed example.
+vignette (included here; or in R, type `vignette("cosore-data")`) for a detailed example.
 
 All the data are also written out as `csv` files (see list above),
 which can be read by almost any data analysis tool. Most tables
