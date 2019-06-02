@@ -15,3 +15,4 @@ A \code{data.frame} containing extracted data.
 \description{
 Parse a custom eofFD (forced diffusion) file from d20190430_DESAI
 }
+\keyword{internal}

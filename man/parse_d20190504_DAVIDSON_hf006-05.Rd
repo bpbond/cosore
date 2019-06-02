@@ -15,3 +15,4 @@ A \code{data.frame} containing extracted data.
 \description{
 Parse a custom file from d20190504_DAVIDSON_hf006-05
 }
+\keyword{internal}

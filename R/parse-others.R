@@ -6,7 +6,7 @@
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
-#' @export
+#' @keywords internal
 parse_d20190527_GOULDEN <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   # File has header lines, and records time as fractional days since noon on 2001-01-01
@@ -27,7 +27,7 @@ parse_d20190527_GOULDEN <- function(path) {
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
-#' @export
+#' @keywords internal
 `parse_d20190504_DAVIDSON_hf006-05` <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
@@ -47,7 +47,7 @@ parse_d20190527_GOULDEN <- function(path) {
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
-#' @export
+#' @keywords internal
 `parse_d20190504_DAVIDSON_hf006-03` <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
@@ -75,7 +75,7 @@ parse_d20190527_GOULDEN <- function(path) {
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
-#' @export
+#' @keywords internal
 parse_d20190430_DESAI <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
