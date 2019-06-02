@@ -22,13 +22,13 @@ parse_d20190527_GOULDEN <- function(path) {
 }
 
 
-#' Parse a custom file from d20190504_DAVIDSON_hf006-05
+#' Parse a custom file from d20190504_SAVAGE_hf006-05
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @keywords internal
-`parse_d20190504_DAVIDSON_hf006-05` <- function(path) {
+`parse_d20190504_SAVAGE_hf006-05` <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
   dat_control <- dat[dat$treatment == "C",]
@@ -42,13 +42,13 @@ parse_d20190527_GOULDEN <- function(path) {
 }
 
 
-#' Parse a custom file from d20190504_DAVIDSON_hf006-03.
+#' Parse a custom file from d20190504_SAVAGE_hf006-03.
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @keywords internal
-`parse_d20190504_DAVIDSON_hf006-03` <- function(path) {
+`parse_d20190504_SAVAGE_hf006-03` <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
   # Temperature and soil moisture data
