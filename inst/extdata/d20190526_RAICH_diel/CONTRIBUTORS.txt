@@ -14,5 +14,5 @@
 # Smith,		Jill,			js@smith.edu	0000-1111-2222-3333,	Investigation
 # Jones,		John,			jj@jones.edu	,						"Funding acquisition"
 #
-First_name,	Family_name,	Email,							ORCID,					Role
-James,		Raich,			jraich@iastate.edu,
+First_name,	Family_name,	Email,					ORCID,					Role
+James,		Raich,			jraich@iastate.edu,		0000-0002-7637-299X

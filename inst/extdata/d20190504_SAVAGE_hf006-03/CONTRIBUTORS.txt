@@ -14,6 +14,6 @@
 # Smith,		Jill,			js@smith.edu	0000-1111-2222-3333,	Investigation
 # Jones,		John,			jj@jones.edu	,						"Funding acquisition"
 #
-First_name,	Family_name,	Email,							ORCID,				Role
-Eric,		Davidson,		"edavidson@whrc.org,edavidson@umces.edu",,			Funding acquisition
-Kathleen,	Savage,			,								,					Investigation
+First_name,	Family_name,	Email,					ORCID,					Role
+Kathleen,	Savage,			savage@whrc.org,		0000-0002-1649-5314,	"Investigation, Data curation"
+Eric,		Davidson,		edavidson@umces.edu,	0000-0002-8525-8697,	Funding acquisition

@@ -16,4 +16,4 @@
 #
 First_name,	Family_name,	Email,							ORCID,					Role
 Nadine,		Ruehr,			nadine.ruehr@kit.edu,			0000-0001-5989-7463,	"Funding acquisition, Investigation, Data curation"
-Beverly,	Law,			bev.law@oregonstate.edu
+Beverly,	Law,			bev.law@oregonstate.edu,		0000-0002-1605-1203
