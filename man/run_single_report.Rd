@@ -4,10 +4,14 @@
 \alias{run_single_report}
 \title{Run a single dataset report}
 \usage{
-run_single_report(ds)
+run_single_report(ds, output_dir = "~/Desktop/Reports/", quiet = FALSE)
 }
 \arguments{
 \item{ds}{The dataset for which to generate a report.}
+
+\item{output_dir}{Output directory, character}
+
+\item{quiet}{Passed on to \code{rmarkdown::render}}
 }
 \value{
 Nothing; run for its side effects.

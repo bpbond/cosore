@@ -39,6 +39,7 @@ cosore
  |   |- columns table
  |   |- ancillary table
  |   |- data table
+ |   |- diagnostics table
  |- dataset 2
  |   |- description table
  |   |- contributors table
@@ -46,6 +47,7 @@ cosore
  |   |- columns table
  |   |- ancillary table
  |   |- data table
+ |   |- diagnostics table
  |- dataset 3
  |   |- etc.
 ```

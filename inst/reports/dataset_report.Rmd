@@ -26,6 +26,7 @@ quick <- params$quick
 
 ```{r}
 d <- ds$description
+diag <- ds$diagnostics
 ```
 
 ## Site information
@@ -87,17 +88,17 @@ knitr::kable(ds$columns, format = "html") %>%
 ```
 
 
-## Data diagnostics
+## Data processing diagnostics
 
 Info                |  Value
 ------------------- | ----
-Records             | `r d$Records`
-Records removed (error)     | `r d$Records_removed_err`
-Records removed (invalid timestamp)     | `r d$Records_removed_timestamp`
-Records removed (no flux)   | `r d$Records_removed_NA`
-Records (flux < `r d$Flux_lowbound`)  | `r d$Records_removed_toolow`
-Records (flux > `r d$Flux_highbound`) | `r d$Records_removed_toohigh`
-Columns dropped     | `r d$Columns_dropped`
+Records             | `r diag$Records`
+Records removed (error)     | `r diag$Records_removed_err`
+Records removed (invalid timestamp)     | `r diag$Records_removed_timestamp`
+Records removed (no flux)   | `r diag$Records_removed_NA`
+Records (flux < `r diag$Flux_lowbound`)  | `r diag$Records_removed_toolow`
+Records (flux > `r diag$Flux_highbound`) | `r diag$Records_removed_toohigh`
+Columns dropped     | `r diag$Columns_dropped`
 Size                | `r format(object.size(ds), "Mb")`
 
 **Flux summary**:
@@ -137,7 +138,7 @@ if(length(tcols)) {
   results <- list()
   for(col in tcols) {
     x <- ds$data[fluxcol]
-    x$Temperature <- ds$data[,col]
+    x$Temperature <- pull(ds$data, col)#ds$data[,col]
     x$Which_temp <- names(ds$data)[col]
     results[[as.character(col)]] <- x
   }
@@ -149,6 +150,5 @@ if(length(tcols)) {
     facet_wrap(~Which_temp, scales = "free_y")
   print(p1)
 }
-
 ```
 

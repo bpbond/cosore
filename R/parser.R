@@ -295,13 +295,15 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     # sink(zz, type = "message")
   }
 
-  dataset$description$Records <- 0
-  dataset$description$Columns_dropped <- ""
-  dataset$description$Records_removed_NA <- 0
-  dataset$description$Records_removed_err <- 0
-  dataset$description$Records_removed_toolow <- 0
-  dataset$description$Records_removed_toohigh <- 0
-  dataset$description$Records_removed_timestamp <- 0
+  # Processing statistics table
+  diag <- tibble(CSR_DATASET = dataset_name,
+                 Records = 0,
+                 Columns_dropped = "",
+                 Records_removed_NA = 0,
+                 Records_removed_err = 0,
+                 Records_removed_toolow = 0,
+                 Records_removed_toohigh = 0,
+                 Records_removed_timestamp = 0)
 
   if(!dir.exists(df)) {
     message("No data folder found for ", dataset_name)
@@ -332,7 +334,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
                                   format = dataset$description$Timestamp_format,
                                   tz = dataset$description$Timezone)
   nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
-  dataset$description$Records_removed_timestamp <- sum(nats)
+  diag$Records_removed_timestamp <- sum(nats)
   dsd <- dsd[!nats,]
 
   if(nrow(dsd) == 0) {
@@ -342,7 +344,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
 
   # Drop any unmapped columns
   drops <- grep("^CSR_", names(dsd), invert = TRUE)
-  dataset$description$Columns_dropped <- paste(names(dsd)[drops], collapse = ", ")
+  diag$Columns_dropped <- paste(names(dsd)[drops], collapse = ", ")
   dsd[drops] <- NULL
 
   # Add port column if necessary
@@ -352,28 +354,31 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
 
   # Remove NA flux records
   na_flux <- is.na(dsd$CSR_FLUX)
-  dataset$description$Records_removed_NA <- sum(na_flux)
+  diag$Records_removed_NA <- sum(na_flux)
   dsd <- dsd[!na_flux,]
 
   # Remove error records
   if("CSR_ERROR" %in% names(dsd)) {
     err <- dsd$CSR_ERROR
-    dataset$description$Records_removed_err <- sum(err)
+    diag$Records_removed_err <- sum(err)
     dsd <- dsd[!err,]
     dsd$CSR_ERROR <- NULL
   }
 
   # Remove records with flux data way out of anything possible
   fl <- c(-1, 50)   # flux limits
-  dataset$description$Flux_lowbound <- min(fl)
-  dataset$description$Flux_highbound <- max(fl)
+  diag$Flux_lowbound <- min(fl)
+  diag$Flux_highbound <- max(fl)
   toolow <- dsd$CSR_FLUX < min(fl)
-  dataset$description$Records_removed_toolow <- sum(toolow, na.rm = TRUE)
+  diag$Records_removed_toolow <- sum(toolow, na.rm = TRUE)
   toohigh <- dsd$CSR_FLUX > max(fl)
-  dataset$description$Records_removed_toohigh <- sum(toohigh, na.rm = TRUE)
+  diag$Records_removed_toohigh <- sum(toohigh, na.rm = TRUE)
   dsd <- dsd[!toolow & !toohigh,]
 
-  dataset$description$Records <- nrow(dsd)
+  diag$Records <- nrow(dsd)
+
+  # Add new tables to the dataset structure and return
+  dataset$diagnostics <- diag
   dataset$data <- dsd
 
   if(log) {
