@@ -11,16 +11,69 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
+  echo = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+Let's 
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+```r
+cosore <- readRDS("cosore_date.RDS")
+```
+
+```{r}
+# For the vignette, we just read from the drake cache, not use readRDS as above
+cosore <- drake::readd("all")
+```
+
+The `cosore` data are structured as a nested list:
+
+```
+cosore
+ |- dataset 1
+ |   |- description table (a data.frame)
+ |   |- contributors table (same...)
+ |   |- ports table
+ |   |- columns table
+ |   |- ancillary table
+ |   |- data table
+ |- dataset 2
+ |   |- description table
+ |   |- contributors table
+ |   |- ports table
+ |   |- columns table
+ |   |- ancillary table
+ |   |- data table
+ |- dataset 3
+ |   |- etc.
+```
+
+There are various packages for dealing with nested lists, but we can write our own short extractor function:
+
+```{r, echo=TRUE}
+csr_table <- function(cosore, table_name) {
+
+  extract <- function(x, table_name) {
+    if(is.null(x[[table_name]])) { return(NULL) }
+
+    x[[table_name]]$CSR_DATASET <- x$dataset_name
+    x[[table_name]]
+  }
+
+  dplyr::bind_rows(lapply(cosore, extract, table_name = table_name))
+}
+```
+
+With this in place, we extract a combined `description` table for the entire database:
+
+```{r}
+desc <- csr_table(cosore, "description")
+head(desc)
+```
+
+
 
 ## Figures
 
