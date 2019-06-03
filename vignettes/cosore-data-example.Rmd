@@ -11,7 +11,7 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  echo = FALSE,
+  echo = TRUE,
   collapse = TRUE,
   comment = "#>"
 )
@@ -23,12 +23,12 @@ Let's
 cosore <- readRDS("cosore_date.RDS")
 ```
 
-```{r}
+```{r, echo=FALSE}
 # For the vignette, we just read from the drake cache, not use readRDS as above
 cosore <- drake::readd("all")
 ```
 
-The `cosore` data are structured as a nested list:
+The `cosore` data are structured as a two-level nested list of data frames:
 
 ```
 cosore
@@ -50,7 +50,7 @@ cosore
  |   |- etc.
 ```
 
-There are various packages for dealing with nested lists, but we can write our own short extractor function:
+For most analyses we want to extract one or more of these pieces and combine them--for example, to get a single table of contributors. There are [various](https://cran.r-project.org/package=purrr) [packages](https://cran.r-project.org/package=rlist) for dealing with nested lists, but we can also write our own short extractor function:
 
 ```{r, echo=TRUE}
 csr_table <- function(cosore, table_name) {
@@ -66,11 +66,11 @@ csr_table <- function(cosore, table_name) {
 }
 ```
 
-With this in place, we extract a combined `description` table for the entire database:
+With this in place, we extract a combined `description` table for the entire database and take a look at it:
 
 ```{r}
 desc <- csr_table(cosore, "description")
-head(desc)
+tibble::glimpse(desc)
 ```
 
 

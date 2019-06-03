@@ -105,14 +105,16 @@ rbind_list <- function(x) {
 
   all_names <- unique(unlist(lapply(x, function(x) names(x))))
 
-  do.call(rbind,
-          c(lapply(x, function(x_entry) {
-            if(is.null(x_entry)) {
-              data.frame()
-            } else {
-              data.frame(c(x_entry, sapply(setdiff(all_names, names(x_entry)),
-                                           function(y) NA)),
-                         check.names = FALSE, stringsAsFactors = FALSE)
-            }
-          }), make.row.names = FALSE, stringsAsFactors = FALSE))
+  tibble::as_tibble(
+    do.call(rbind,
+            c(lapply(x, function(x_entry) {
+              if(is.null(x_entry)) {
+                data.frame()
+              } else {
+                data.frame(c(x_entry, sapply(setdiff(all_names, names(x_entry)),
+                                             function(y) NA)),
+                           check.names = FALSE, stringsAsFactors = FALSE)
+              }
+            }), make.row.names = FALSE, stringsAsFactors = FALSE))
+  )
 }

@@ -11,6 +11,7 @@ Description: An open database of continuous soil respiration datasets.
 Imports:
     rmarkdown,
     knitr,
+    tibble,
     drake (>= 7.1),
 Suggests: 
     testthat,

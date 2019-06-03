@@ -84,6 +84,7 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 #' @param dataset_name Dataset name, character
 #' @param file_data File data, character vector; optional for testing
 #' @keywords internal
+#' @importFrom tibble tibble
 #' @return A \code{data.frame} with the following columns:
 #' \item{Dataset}{Dataset name, character}
 #' \item{Site_name}{Site name, character}
@@ -96,23 +97,22 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 read_description_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
-  d <- data.frame(Site_name = extract_line(file_data, "Site_name"),
-                  Longitude = extract_line(file_data, "Longitude", numeric_data = TRUE),
-                  Latitude = extract_line(file_data, "Latitude", numeric_data = TRUE),
-                  Elevation = extract_line(file_data, "Elevation", numeric_data = TRUE),
-                  UTC_offset = extract_line(file_data, "UTC_offset", numeric_data = TRUE),
-                  Timezone = extract_line(file_data, "Timezone"),
-                  IGBP = extract_line(file_data, "IGBP"),
-                  Network = extract_line(file_data, "Network", required = FALSE),
-                  Site_ID = extract_line(file_data, "Site_ID", required = FALSE),
-                  Instrument = extract_line(file_data, "Instrument"),
-                  File_format = extract_line(file_data, "File_format"),
-                  Timestamp_format = extract_line(file_data, "Timestamp_format"),
-                  Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
-                  Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
-                  Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
-                  Acknowledgment = extract_line(file_data, "Acknowledgment", required = FALSE),
-                  stringsAsFactors = FALSE)
+  d <- tibble(Site_name = extract_line(file_data, "Site_name"),
+              Longitude = extract_line(file_data, "Longitude", numeric_data = TRUE),
+              Latitude = extract_line(file_data, "Latitude", numeric_data = TRUE),
+              Elevation = extract_line(file_data, "Elevation", numeric_data = TRUE),
+              UTC_offset = extract_line(file_data, "UTC_offset", numeric_data = TRUE),
+              Timezone = extract_line(file_data, "Timezone"),
+              IGBP = extract_line(file_data, "IGBP"),
+              Network = extract_line(file_data, "Network", required = FALSE),
+              Site_ID = extract_line(file_data, "Site_ID", required = FALSE),
+              Instrument = extract_line(file_data, "Instrument"),
+              File_format = extract_line(file_data, "File_format"),
+              Timestamp_format = extract_line(file_data, "Timestamp_format"),
+              Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
+              Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
+              Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
+              Acknowledgment = extract_line(file_data, "Acknowledgment", required = FALSE))
 
   if(is.na(d$UTC_offset) | d$UTC_offset == "" | abs(d$UTC_offset) >= 15) {
     stop("Bad UTC_offset in ", dataset_name)
@@ -157,7 +157,7 @@ read_csv_data <- function(file_data, required = NULL) {
       stop("Column ", req, " is required but has empty entries: ", empty)
     }
   }
-  x
+  tibble::as_tibble(x)
 }
 
 
@@ -320,6 +320,8 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     warning("Unknown format ", ff, " in ", dataset_name)
     dsd <- data.frame()
   }
+
+  dsd <- tibble::as_tibble(dsd)
 
   # Column mapping and computation
   dsd <- map_columns(dsd, dataset$columns)

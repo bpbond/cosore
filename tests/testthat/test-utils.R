@@ -13,7 +13,7 @@ test_that("rbind_list", {
   expect_is(z, "data.frame")
   expect_identical(nrow(z), nrow(x) + nrow(y))
   expect_identical(names(z), union(names(x), names(y)))
-  expect_identical(rbind_list(list(x, x)), rbind(x, x))
+  expect_equivalent(rbind_list(list(x, x)), rbind(x, x))
 })
 
 test_that("split_licor_file", {
