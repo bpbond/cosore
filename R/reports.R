@@ -19,16 +19,19 @@ combined_report <- function(all_data, output_dir = "~/Desktop/Reports/") {
 #' Run a single dataset report
 #'
 #' @param ds The dataset for which to generate a report.
+#' @param output_dir Output directory, character
+#' @param quiet Passed on to \code{rmarkdown::render}
 #' @importFrom rmarkdown render
 #' @return Nothing; run for its side effects.
 #' @export
-run_single_report <- function(ds) {
+run_single_report <- function(ds, output_dir = "~/Desktop/Reports/", quiet = FALSE) {
   mf <- system.file("reports/dataset_report.Rmd", package = "cosore")
 
   rmarkdown::render(mf,
                     params = list(dataset = ds, quick = FALSE),
                     output_file = paste0("Report-", ds$dataset_name, ".html"),
-                    output_dir = "~/Desktop/Reports/")
+                    output_dir = output_dir,
+                    quiet = quiet)
 }
 
 #' Run all individual dataset reports
