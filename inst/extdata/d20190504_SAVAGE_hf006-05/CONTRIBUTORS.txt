@@ -15,5 +15,6 @@
 # Jones,		John,			jj@jones.edu	,						"Funding acquisition"
 #
 First_name,	Family_name,	Email,					ORCID,					Role
+Debjani,	Sihi,			sihid@ornl.gov,			0000-0002-5513-8862,	Data curation
 Kathleen,	Savage,			savage@whrc.org,		0000-0002-1649-5314,	"Investigation, Data curation"
 Eric,		Davidson,		edavidson@umces.edu,	0000-0002-8525-8697,	Funding acquisition
