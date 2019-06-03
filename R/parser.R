@@ -305,77 +305,79 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
                  Records_removed_toohigh = 0,
                  Records_removed_timestamp = 0)
 
-  if(!dir.exists(df)) {
-    message("No data folder found for ", dataset_name)
-    return(dataset)
-  }
+  dsd <- data.frame()   # start with empty dataset data
 
-  # Dispatch to correct parsing function based on file format
-  ff <- toupper(dataset$description$File_format)
-  if(ff == "CUSTOM") {
-    ff <- dataset_name   # if "Custom" that means there's custom code for this dataset
-  }
-  func <- paste("parse", ff, sep = "_")
-  if(exists(func)) {
-    dsd <- do.call(func, list(df))
+  if(!dir.exists(df)) {
+    warning("No data folder found for ", dataset_name)
   } else {
-    warning("Unknown format ", ff, " in ", dataset_name)
-    dsd <- data.frame()
+    # Dispatch to correct parsing function based on file format
+    ff <- toupper(dataset$description$File_format)
+    if(ff == "CUSTOM") {
+      ff <- dataset_name   # if "Custom" that means there's custom code for this dataset
+    }
+    func <- paste("parse", ff, sep = "_")
+    if(exists(func)) {
+      dsd <- do.call(func, list(df))
+    } else {
+      warning("Unknown format ", ff, " in ", dataset_name)
+    }
   }
 
   dsd <- tibble::as_tibble(dsd)
 
-  # Column mapping and computation
-  dsd <- map_columns(dsd, dataset$columns)
+  if(nrow(dsd)) {
+    # Column mapping and computation
+    dsd <- map_columns(dsd, dataset$columns)
 
-  # Change the timestamp column to a datetime object
-  original_ts <- dsd$CSR_TIMESTAMP
-  dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
-                                  format = dataset$description$Timestamp_format,
-                                  tz = dataset$description$Timezone)
-  nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
-  diag$Records_removed_timestamp <- sum(nats)
-  dsd <- dsd[!nats,]
+    # Change the timestamp column to a datetime object
+    original_ts <- dsd$CSR_TIMESTAMP
+    dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
+                                    format = dataset$description$Timestamp_format,
+                                    tz = dataset$description$Timezone)
+    nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
+    diag$Records_removed_timestamp <- sum(nats)
+    dsd <- dsd[!nats,]
 
-  if(nrow(dsd) == 0) {
-    stop("Timestamps could not be parsed with ", dataset$description$Timestamp_format,
-         " and tz ", dataset$description$Timezone)
+    if(nrow(dsd) == 0) {
+      stop("Timestamps could not be parsed with ", dataset$description$Timestamp_format,
+           " and tz ", dataset$description$Timezone)
+    }
+
+    # Drop any unmapped columns
+    drops <- grep("^CSR_", names(dsd), invert = TRUE)
+    diag$Columns_dropped <- paste(names(dsd)[drops], collapse = ", ")
+    dsd[drops] <- NULL
+
+    # Add port column if necessary
+    if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
+      dsd$CSR_PORT <- 0
+    }
+
+    # Remove NA flux records
+    na_flux <- is.na(dsd$CSR_FLUX)
+    diag$Records_removed_NA <- sum(na_flux)
+    dsd <- dsd[!na_flux,]
+
+    # Remove error records
+    if("CSR_ERROR" %in% names(dsd)) {
+      err <- dsd$CSR_ERROR
+      diag$Records_removed_err <- sum(err)
+      dsd <- dsd[!err,]
+      dsd$CSR_ERROR <- NULL
+    }
+
+    # Remove records with flux data way out of anything possible
+    fl <- c(-1, 50)   # flux limits
+    diag$Flux_lowbound <- min(fl)
+    diag$Flux_highbound <- max(fl)
+    toolow <- dsd$CSR_FLUX < min(fl)
+    diag$Records_removed_toolow <- sum(toolow, na.rm = TRUE)
+    toohigh <- dsd$CSR_FLUX > max(fl)
+    diag$Records_removed_toohigh <- sum(toohigh, na.rm = TRUE)
+    dsd <- dsd[!toolow & !toohigh,]
+
+    diag$Records <- nrow(dsd)
   }
-
-  # Drop any unmapped columns
-  drops <- grep("^CSR_", names(dsd), invert = TRUE)
-  diag$Columns_dropped <- paste(names(dsd)[drops], collapse = ", ")
-  dsd[drops] <- NULL
-
-  # Add port column if necessary
-  if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
-    dsd$CSR_PORT <- 0
-  }
-
-  # Remove NA flux records
-  na_flux <- is.na(dsd$CSR_FLUX)
-  diag$Records_removed_NA <- sum(na_flux)
-  dsd <- dsd[!na_flux,]
-
-  # Remove error records
-  if("CSR_ERROR" %in% names(dsd)) {
-    err <- dsd$CSR_ERROR
-    diag$Records_removed_err <- sum(err)
-    dsd <- dsd[!err,]
-    dsd$CSR_ERROR <- NULL
-  }
-
-  # Remove records with flux data way out of anything possible
-  fl <- c(-1, 50)   # flux limits
-  diag$Flux_lowbound <- min(fl)
-  diag$Flux_highbound <- max(fl)
-  toolow <- dsd$CSR_FLUX < min(fl)
-  diag$Records_removed_toolow <- sum(toolow, na.rm = TRUE)
-  toohigh <- dsd$CSR_FLUX > max(fl)
-  diag$Records_removed_toohigh <- sum(toohigh, na.rm = TRUE)
-  dsd <- dsd[!toolow & !toohigh,]
-
-  diag$Records <- nrow(dsd)
 
   # Add new tables to the dataset structure and return
   dataset$diagnostics <- diag

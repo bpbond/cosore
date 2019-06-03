@@ -36,7 +36,7 @@ make_cosore_release <- function(all_data, path,
   saveRDS(all_data, file = file.path(path, "cosore_data.RDS"))
 
   # Invert structure and write each table (except data) as a single csv
-  nms <- c("description", "contributors", "ports", "columns", "ancillary")
+  nms <- c("description", "contributors", "ports", "columns", "ancillary", "diagnostics")
   for(nm in nms) {
     message("Extracting ", nm)
     x <- csr_table(all_data, nm) # extract table with name "n"
@@ -64,6 +64,7 @@ make_cosore_release <- function(all_data, path,
     "columns.csv" = "Column mapping data table",
     "contributors.csv" = "Information on data contributors",
     "description.csv" = "General information about sites, instruments, and **citation information**",
+    "diagnostics.csv" = "Diagnostics on data processing: records removed, etc.",
     "ports.csv" = "Port-specific information: species, collar areas and depths, treatments",
     "datasets" = "A folder containing the various `data` tables for each dataset",
     "CSR_COLUMNS_UNITS.txt" = "Metadata for all database fields",

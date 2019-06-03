@@ -108,19 +108,23 @@ if(is.data.frame(ds$data) & !quick) {
   print(summary(ds$data$CSR_FLUX))
   
   dsd <- subset(ds$data, !is.na(CSR_FLUX) & CSR_FLUX > 0)
+  
   # flux over time
   p1 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
     geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
   print(p1)
+  
   p2 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
     geom_point(size = 0.2) + scale_y_log10()
   print(p2)
+  
   dsd %>% 
     mutate(CSR_PORT = as.factor(CSR_PORT),
            Month = month(CSR_TIMESTAMP)) %>% 
     group_by(CSR_PORT, Month) %>% 
     summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
-    ggplot(aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + geom_line() ->
+    ggplot(aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + 
+    geom_line() ->
     p3
   print(p3)
   # histogram

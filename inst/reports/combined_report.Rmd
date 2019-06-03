@@ -12,8 +12,9 @@ library(dplyr)
 library(ggplot2)
 theme_set(theme_bw())
 
+#all_data <- readd("all")
 desc <- csr_table(all_data, "description")
-
+diag <- csr_table(all_data, "diagnostics")
 ```
 
 ## Summary
@@ -21,13 +22,15 @@ desc <- csr_table(all_data, "description")
 ```{r table1}
 # Extract min and max date information for each dataset
 years <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data)) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
     data.frame(Start = min(x$data$CSR_TIMESTAMP),
                End = max(x$data$CSR_TIMESTAMP),
                Size  = format(object.size(x), "Mb"),
                stringsAsFactors = FALSE)
   } else {
-    data.frame(Start = NA, End = NA, Size = 0, stringsAsFactors = FALSE)    
+    data.frame(Start = NA, End = NA, 
+               Size = format(object.size(NULL), "Mb"), 
+               stringsAsFactors = FALSE)    
   }
 }
 )
@@ -35,7 +38,7 @@ years <- do.call("rbind", c(years, make.row.names = FALSE))
 years$Start <- format(years$Start, "%Y-%m")
 years$End <- format(years$End, "%Y-%m")
 
-x <- cbind(desc[c("CSR_DATASET", "Records")], years)
+x <- cbind(diag[c("CSR_DATASET", "Records")], years)
 knitr::kable(x, format = "html", format.args = list(big.mark = ',')) %>% 
   kableExtra::kable_styling(full_width = FALSE)
 ```
@@ -63,7 +66,7 @@ leaflet(df) %>%
 ```{r temporal}
 library(lubridate)
 coverage <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data)) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
     data.frame(CSR_DATASET = x$dataset_name,
                IGBP = x$description$IGBP,
                Year = year(x$data$CSR_TIMESTAMP), 
@@ -92,7 +95,7 @@ do.call("rbind", c(coverage, make.row.names = FALSE)) %>%
 
 ```{r igbp}
 coverage <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data)) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
     data.frame(CSR_DATASET = x$dataset_name,
                IGBP = x$description$IGBP,
                CSR_FLUX = x$data$CSR_FLUX,
@@ -116,7 +119,7 @@ bind_rows(coverage) %>%
 
 ```{r lat_elev}
 le <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data)) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
     data.frame(CSR_DATASET = x$dataset_name,
                Latitude = x$description$Latitude,
                Elevation = x$description$Elevation,
