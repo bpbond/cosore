@@ -29,7 +29,7 @@ run_single_report <- function(ds, output_dir = "~/Desktop/Reports/", quiet = FAL
 
   rmarkdown::render(mf,
                     params = list(dataset = ds, quick = FALSE),
-                    output_file = paste0("Report-", ds$dataset_name, ".html"),
+                    output_file = paste0("Report-", ds$description$CSR_DATASET, ".html"),
                     output_dir = output_dir,
                     quiet = quiet)
 }

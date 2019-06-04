@@ -11,7 +11,7 @@ csr_table <- function(all, table) {
   extract <- function(x, table) {
     if(is.null(x[[table]])) { return(NULL) }
 
-    x[[table]]$CSR_DATASET <- x$dataset_name
+    x[[table]]$CSR_DATASET <- x$description$CSR_DATASET
     x[[table]]
   }
 

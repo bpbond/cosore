@@ -11,5 +11,4 @@ test_that("user utilities work", {
   x <- csr_table(all_data, "data")
   expect_is(x, "data.frame")
   expect_identical(nrow(x), nrow(cars) * length(all_data))
-  expect_true("CSR_DATASET" %in% names(x))
-  })
+})

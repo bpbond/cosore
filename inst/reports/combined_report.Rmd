@@ -67,14 +67,14 @@ leaflet(df) %>%
 library(lubridate)
 coverage <- lapply(all_data, function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
-    data.frame(CSR_DATASET = x$dataset_name,
+    data.frame(CSR_DATASET = x$description$CSR_DATASET,
                IGBP = x$description$IGBP,
                Year = year(x$data$CSR_TIMESTAMP), 
                Month = month(x$data$CSR_TIMESTAMP),
                Day = day(x$data$CSR_TIMESTAMP),
                stringsAsFactors = FALSE)
   } else {
-    data.frame(CSR_DATASET = x$dataset_name,
+    data.frame(CSR_DATASET = x$description$CSR_DATASET,
                IGBP = x$description$IGBP,
                Year = NA, Month = NA, Day = NA,
                stringsAsFactors = FALSE)
@@ -96,12 +96,12 @@ do.call("rbind", c(coverage, make.row.names = FALSE)) %>%
 ```{r igbp}
 coverage <- lapply(all_data, function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
-    data.frame(CSR_DATASET = x$dataset_name,
+    data.frame(CSR_DATASET = x$description$CSR_DATASET,
                IGBP = x$description$IGBP,
                CSR_FLUX = x$data$CSR_FLUX,
                stringsAsFactors = FALSE)
   } else {
-    data.frame(CSR_DATASET = x$dataset_name,
+    data.frame(CSR_DATASET = x$description$CSR_DATASET,
                IGBP = x$description$IGBP,
                CSR_FLUX = NA,
                stringsAsFactors = FALSE)
@@ -120,7 +120,7 @@ bind_rows(coverage) %>%
 ```{r lat_elev}
 le <- lapply(all_data, function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
-    data.frame(CSR_DATASET = x$dataset_name,
+    data.frame(CSR_DATASET = x$description$CSR_DATASET,
                Latitude = x$description$Latitude,
                Elevation = x$description$Elevation,
                IGBP = x$description$IGBP,

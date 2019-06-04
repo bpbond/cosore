@@ -21,7 +21,7 @@ quick <- params$quick
 #ds <- all$d20190517_MAURITZ
 ```
 
-# `r ds$dataset_name`
+# `r ds$description$CSR_DATASET`
 
 
 ```{r}

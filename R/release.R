@@ -52,7 +52,7 @@ make_cosore_release <- function(all_data, path,
   lapply(all_data, function(x) {
     if(is.data.frame(x$data)) {
       write.csv(x$data,
-                file = file.path(p, paste0("data_", x$dataset_name, ".csv")),
+                file = file.path(p, paste0("data_", x$description$CSR_DATASET, ".csv")),
                 row.names = FALSE)
     }
   })
