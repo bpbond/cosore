@@ -4,20 +4,22 @@ author: "Ben Bond-Lamberty"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Working with COSORE data}
+%\VignetteIndexEntry{Working with COSORE data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
----
-
-```{r setup, include = FALSE}
+  ---
+  
+  ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  echo = TRUE,
-  collapse = TRUE,
-  comment = "#>"
+echo = TRUE,
+collapse = TRUE,
+comment = "#>"
 )
 ```
 
-Let's 
+# Introduction
+
+TODO. 
 
 ```r
 cosore <- readRDS("cosore_date.RDS")
@@ -32,65 +34,98 @@ The `cosore` data are structured as a two-level nested list of data frames:
 
 ```
 cosore
- |- dataset 1
- |   |- description table (a data.frame)
- |   |- contributors table (same...)
- |   |- ports table
- |   |- columns table
- |   |- ancillary table
- |   |- data table
- |   |- diagnostics table
- |- dataset 2
- |   |- description table
- |   |- contributors table
- |   |- ports table
- |   |- columns table
- |   |- ancillary table
- |   |- data table
- |   |- diagnostics table
- |- dataset 3
- |   |- etc.
+|- dataset 1
+|   |- description table (a data.frame)
+|   |- contributors table (same...)
+|   |- ports table
+|   |- columns table
+|   |- ancillary table
+|   |- data table
+|   |- diagnostics table
+|- dataset 2
+|   |- description table
+|   |- contributors table
+|   |- ports table
+|   |- columns table
+|   |- ancillary table
+|   |- data table
+|   |- diagnostics table
+|- dataset 3
+|   |- etc.
 ```
 
 For most analyses we want to extract one or more of these pieces and combine them--for example, to get a single table of contributors. There are [various](https://cran.r-project.org/package=purrr) [packages](https://cran.r-project.org/package=rlist) for dealing with nested lists, but we can also write our own short extractor function:
 
-```{r, echo=TRUE}
+```{r extractor, echo=TRUE}
 csr_table <- function(cosore, table_name) {
-
+  
   extract <- function(x, table_name) {
     if(is.null(x[[table_name]])) { return(NULL) }
-
-    x[[table_name]]$CSR_DATASET <- x$dataset_name
+    # Add an identifier field so we can track things as tables get combined
+    x[[table_name]]$CSR_DATASET <- x$description$CSR_DATASET
     x[[table_name]]
   }
-
+  
   dplyr::bind_rows(lapply(cosore, extract, table_name = table_name))
 }
 ```
 
 With this in place, we extract a combined `description` table for the entire database and take a look at it:
 
-```{r}
+```{r description-table}
 desc <- csr_table(cosore, "description")
 tibble::glimpse(desc)
 ```
 
+More - TODO.
 
+# Exploring a single dataset
 
-## Figures
+Let's pick a single dataset (`d20190415_VARNER`), get some information about it, and plot it.
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r desc-varner}
+varner <- cosore$d20190415_VARNER
+tibble::glimpse(varner$description)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+The `description` table gives the basic information about this dataset: where it was measured,
+the time zone that the `data` table timestamps are in, instrument used, and citation and acknowledgment information.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+```{r sr-varner}
+sr <- varner$data
+nrow(sr)
+summary(sr)
+```
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+This dataset has `r nrow(sr)` observations; extends from April 2003 to December 2006; and soil respiration was measured on eight ports, along with air and 5 cm soil temperature. Visualize it:
 
+```{r visualize-varner}
+library(ggplot2)
+ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
+  geom_point() + ggtitle("Flux over time")
+library(lubridate, warn.conflicts = FALSE)
+ggplot(sr, aes(CSR_T5, CSR_FLUX)) + facet_wrap(~month(CSR_TIMESTAMP)) +
+  geom_point() + ggtitle("5 cm soil temp vs. flux, by month")
+```
+
+Did these eight different ports (chambers) represent different treatments? We might want to 
+exclude treatment collars, or color them differently in the plots above.
+
+```{r ports-varner}
+varner$ports
+```
+
+From this we see that the only `Port` entry is zero, with `Treatment` of "None", i.e. all ports/collars had the same treatment, and there _wasn't_ any treatment. Also, the collars were 1886 cm2.
+
+Finally, we can use the `description` table information to get a full citation:
+
+```{r pub-varner}
+doi <- varner$description$Primary_pub
+print(doi)
+library(rcrossref)
+cr_cn(dois = doi, format = "text")
+```
+
+# Selecting and combining multiple datasets
+
+Time for something more ambitious.

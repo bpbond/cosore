@@ -112,7 +112,8 @@ read_description_file <- function(dataset_name, file_data = NULL) {
               Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
               Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
               Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
-              Acknowledgment = extract_line(file_data, "Acknowledgment", required = FALSE))
+              Acknowledgment = extract_line(file_data, "Acknowledgment", required = FALSE),
+              CSR_DATASET = dataset_name)
 
   if(is.na(d$UTC_offset) | d$UTC_offset == "" | abs(d$UTC_offset) >= 15) {
     stop("Bad UTC_offset in ", dataset_name)
