@@ -77,7 +77,7 @@ desc <- csr_table(cosore, "description")
 tibble::glimpse(desc)
 ```
 
-Lots of information! (Note much of this is summarized in the `Report-all.html` file included with the data download.) But let's start with a single dataset and work our way up to multi-data analyses.
+Lots of information! (Note much of this is summarized in the `Report-all.html` file included with the data download.) Let's start with a single dataset and work our way up to multi-data analyses.
 
 # Exploring a single dataset
 
@@ -89,7 +89,7 @@ tibble::glimpse(varner$description)
 ```
 
 The `description` table gives the basic information about this dataset: where it was measured,
-the time zone that the `data` table timestamps are in, instrument used, and citation and acknowledgment information.
+the time zone that the `data` timestamps are in, instrument used, and citation and acknowledgment information.
 
 ```{r sr-varner}
 sr <- varner$data
@@ -97,15 +97,16 @@ nrow(sr)
 summary(sr)
 ```
 
-This dataset has `r nrow(sr)` observations; extends from April 2003 to December 2006; and soil respiration was measured on eight ports, along with air and 5 cm soil temperature. Visualize it:
+This dataset has `r nrow(sr)` observations; extends from April 2003 to December 2006; and soil respiration was measured on eight ports, along with air and 5 cm soil temperature. Visualizing it:
 
 ```{r visualize-varner}
 library(ggplot2)
 ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
-  geom_point() + ggtitle("Flux over time")
+  geom_point(size = 0.5) + ggtitle("Flux over time")
 library(lubridate, warn.conflicts = FALSE)
 ggplot(sr, aes(CSR_T5, CSR_FLUX)) + facet_wrap(~month(CSR_TIMESTAMP), scales = "free") +
-  geom_point() + ggtitle("5 cm soil temp vs. flux, by month")
+  geom_point(size = 0.5, alpha = 0.5) +
+  ggtitle("5 cm soil temp vs. flux, by month")
 ```
 
 Did these eight different ports (chambers) represent different treatments? We might want to 
@@ -115,7 +116,7 @@ exclude treatment collars, or color them differently in the plots above.
 varner$ports
 ```
 
-From this we see that the only `Port` entry is zero, with `Treatment` of "None", i.e. all ports/collars had the same treatment, and there _wasn't_ any treatment. Also, the collars were 1886 cm2.
+From this we see that the only `Port` entry is zero, with `Treatment` of "None", i.e. all ports/collars had the same treatment, and there _wasn't_ any treatment. Also, the collars were `r varner$ports$Area` cm2.
 
 Finally, we can use the `description` table information to get a full citation:
 
@@ -129,3 +130,57 @@ cr_cn(dois = doi, format = "text")
 # Selecting and combining multiple datasets
 
 Time for something more ambitious.
+
+Let's examine how soil respiration varies over the course of the day in temperate deciduous forests.
+
+```{r dbf-map}
+# The dplyr package is really good for this kind of filter-and-join thing,
+# but all the steps below can be replicated with base R commands too of course
+library(dplyr, warn.conflicts = FALSE)
+desc %>%   # our combined 'description' table, from above
+  filter(IGBP == "Deciduous broadleaf forest") ->
+  tdf
+
+# Make a map of these datasets
+library(sp)
+library(leaflet)
+map <- data.frame(lon = tdf$Longitude, lat = tdf$Latitude)
+coordinates(map) <- ~lon + lat
+leaflet(map) %>% 
+  addMarkers() %>% 
+  addTiles()
+```
+
+There are `r nrow(tdf)` datasets here; let's extract them.
+
+```{r dbf-data}
+cosore_tdf <- cosore[tdf$CSR_DATASET]
+tdf_dat <- csr_table(cosore_tdf, "data")
+tdf_dat %>% 
+  ggplot(aes(yday(CSR_TIMESTAMP), CSR_FLUX, group = CSR_PORT, color = year(CSR_TIMESTAMP))) + 
+  geom_point(size = 0.5) + 
+  facet_wrap(~CSR_DATASET, scales = "free") +
+  scale_color_continuous("Year") +
+  coord_cartesian(ylim = c(0, 20))
+```
+
+The original question we were interested in was how respiration varies over the course of the day. (Note for simplicity below we're assuming that data timestamps are in local time, but that might not be true; see the `description` table.)
+
+```{r dbf-day}
+tdf_dat %>% 
+  # join two tables together
+  left_join(select(tdf, CSR_DATASET, Site_name, Latitude), by = "CSR_DATASET") %>% 
+  # add some new fields
+  mutate(Hour = hour(CSR_TIMESTAMP),
+         Month = month(CSR_TIMESTAMP), 
+         Year = year(CSR_TIMESTAMP)) %>% 
+  # for each month, compute mean flux for each hour of the day
+  group_by(CSR_DATASET, Latitude, Year, Month, Hour) %>% 
+  summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
+  
+  ggplot(aes(Hour, CSR_FLUX, color = Latitude)) + 
+  geom_point(size = 0.5) + facet_wrap(~Month) +
+  ggtitle("Flux by hour of day and month of year")
+```
+
+Finish up / more...TODO.
