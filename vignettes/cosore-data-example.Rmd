@@ -77,11 +77,11 @@ desc <- csr_table(cosore, "description")
 tibble::glimpse(desc)
 ```
 
-More - TODO.
+Lots of information! (Note much of this is summarized in the `Report-all.html` file included with the data download.) But let's start with a single dataset and work our way up to multi-data analyses.
 
 # Exploring a single dataset
 
-Let's pick a single dataset (`d20190415_VARNER`), get some information about it, and plot it.
+To begin, we pick a single dataset (`d20190415_VARNER`), get some information about it, and plot it.
 
 ```{r desc-varner}
 varner <- cosore$d20190415_VARNER
@@ -104,7 +104,7 @@ library(ggplot2)
 ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
   geom_point() + ggtitle("Flux over time")
 library(lubridate, warn.conflicts = FALSE)
-ggplot(sr, aes(CSR_T5, CSR_FLUX)) + facet_wrap(~month(CSR_TIMESTAMP)) +
+ggplot(sr, aes(CSR_T5, CSR_FLUX)) + facet_wrap(~month(CSR_TIMESTAMP), scales = "free") +
   geom_point() + ggtitle("5 cm soil temp vs. flux, by month")
 ```
 
