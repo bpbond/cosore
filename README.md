@@ -62,7 +62,7 @@ For each multiplexer port, can define:
 
 ### `COLUMNS.txt`
 
-Ths maps between _dataset_ fields and standardized _database_ fields.
+This maps between _dataset_ fields and standardized _database_ fields.
 It include an optional compute-on-columns capability (e.g. to change units or combine columns).
 
 ### `ANCILLARY.txt`
