@@ -26,8 +26,9 @@ CSR_TIMESTAMP	Timestamp, a POSIXct class object
 
 # From `DESCRIPTION.txt` file
 
-UTC_offset		Offset from UTC, hours, standard time
-Timestamp		Timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+UTC_offset			Offset from UTC, hours, standard time
+Timezone			Location timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+Timestamp_timezone	Instrument timestamp timezone; normally same as `Timezone`
 
 
 # From `PORTS.txt` file

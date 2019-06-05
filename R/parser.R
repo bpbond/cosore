@@ -109,6 +109,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
               Instrument = extract_line(file_data, "Instrument"),
               File_format = extract_line(file_data, "File_format"),
               Timestamp_format = extract_line(file_data, "Timestamp_format"),
+              Timestamp_timezone = extract_line(file_data, "Timestamp_timezone"),
               Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
               Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
               Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
@@ -334,14 +335,14 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     original_ts <- dsd$CSR_TIMESTAMP
     dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
                                     format = dataset$description$Timestamp_format,
-                                    tz = dataset$description$Timezone)
+                                    tz = dataset$description$Timestamp_timezone)
     nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
     diag$Records_removed_timestamp <- sum(nats)
     dsd <- dsd[!nats,]
 
     if(nrow(dsd) == 0) {
       stop("Timestamps could not be parsed with ", dataset$description$Timestamp_format,
-           " and tz ", dataset$description$Timezone)
+           " and tz ", dataset$description$Timestamp_timezone)
     }
 
     # Drop any unmapped columns

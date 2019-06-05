@@ -33,12 +33,11 @@ As much as possible, metadata are kept to a minimum. There are five metadata fil
 * Longitude
 * Latitude
 * Elevation [optional]
-* UTC_offset
-* Timezone
+* Site UTC_offset and timezone
 * [IGBP cover type](http://www.eomf.ou.edu/static/IGBP.pdf)
 * Instrument name
 * File format
-* Timestamp format
+* Timestamp format and timezone
 * Primary publication DOI or URL [optional]
 * Other publications DOI or URL [optional]
 * Data DOI or URL [optional]
@@ -59,6 +58,7 @@ For each multiplexer port, can define:
 * Treatment ("None" by default)
 * Species [optional]
 * Chamber area [optional]
+* Collar depth [optional]
 
 ### `COLUMNS.txt`
 

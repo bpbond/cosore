@@ -75,6 +75,8 @@ knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %
 
 **Timestamp format**: `r d$Timestamp_format`
 
+**Timestamp timezone**: `r d$Timestamp_timezone`
+
 ```{r msmt_table, echo=FALSE}
 knitr::kable(ds$ports, format = "html") %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "left")

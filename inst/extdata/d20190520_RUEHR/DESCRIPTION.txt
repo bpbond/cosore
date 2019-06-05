@@ -32,6 +32,7 @@ Site_ID: US-ME6
 Instrument: LI-8100A
 File_format: Processed_csv
 Timestamp_format: %m/%d/%y %H:%M 
+Timestamp_timezone: America/Los_Angeles
 Primary_pub: 10.1016/j.agrformet.2012.05.015
 Other_pub: 10.5194/bg-11-4139-2014
 Data_URL:

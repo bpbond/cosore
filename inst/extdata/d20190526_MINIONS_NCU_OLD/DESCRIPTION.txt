@@ -36,6 +36,7 @@ Site_ID:
 Instrument: eosFD
 File_format: Processed_csv
 Timestamp_format: %Y-%m-%d %H:%M:%S
+Timestamp_timezone: America/Anchorage
 Primary_pub: 10.1016/j.scitotenv.2016.05.052
 Other_pub: 10.1016/j.agrformet.2011.06.020
 Data_URL: 10.3334/ORNLDAAC/1620

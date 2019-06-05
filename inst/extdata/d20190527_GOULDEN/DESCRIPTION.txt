@@ -36,6 +36,7 @@ Site_ID: km 83 Logged Forest Tower
 Instrument: LI-6262
 File_format: Custom
 Timestamp_format: %Y-%m-%d %H:%M:%S
+Timestamp_timezone: America/Santarem
 Primary_pub: 10.1890/02-6008
 Other_pub: 10.1093/treephys/17.8-9.537
 Data_URL: http://dx.doi.org/10.3334/ORNLDAAC/1039

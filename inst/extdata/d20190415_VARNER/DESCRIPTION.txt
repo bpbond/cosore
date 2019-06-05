@@ -32,6 +32,7 @@ Site_ID: US-Ha1
 Instrument: LI-820
 File_format: Processed_csv
 Timestamp_format: %Y-%m-%dT%H:%M
+Timestamp_timezone: America/New_York
 Primary_pub: 10.1029/2008JG000858
 Other_pubs: 10.1890/ES13.00183.1
 Data_URL: 10.6073/pasta/29aae9def8e977d8ee67f1ca2f54b632

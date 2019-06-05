@@ -32,6 +32,7 @@ Site_ID: US-MMS
 Instrument: LI-8100
 File_format: Processed_csv
 Timestamp_format: %Y %j %H
+Timestamp_timezone: America/Indiana/Indianapolis
 Primary_pub: 10.1016/j.agrformet.2018.05.005
 Other_pub:
 Data_URL:

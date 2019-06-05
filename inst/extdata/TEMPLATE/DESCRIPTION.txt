@@ -36,6 +36,7 @@ Site_ID:
 Instrument: LI-8100A
 File_format: Processed
 Timestamp_format: %Y-%m-%dT%H:%M:%SZ
+Timestamp_timezone: 
 Primary_pub:
 Other_pub:
 Data_URL:

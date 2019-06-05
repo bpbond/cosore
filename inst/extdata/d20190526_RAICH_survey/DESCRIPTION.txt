@@ -35,6 +35,7 @@ Site_ID:
 Instrument: LI-8100A
 File_format: Processed_csv
 Timestamp_format: %Y%m%d %H:%M
+Timestamp_timezone: America/Costa_Rica
 Primary_pub: 10.3390/f8020040
 Other_pub: 10.1016/j.foreco.2006.11.016, 10.1890/09-0635.110.1139/X07-057
 Data_URL: http://dx.doi.org/10.3334/ORNLDAAC/1373
