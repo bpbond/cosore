@@ -4,34 +4,49 @@ author: "Ben Bond-Lamberty"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteIndexEntry{Working with COSORE data}
+  %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  ---
-  
-  ```{r setup, include = FALSE}
+---
+
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-echo = TRUE,
-collapse = TRUE,
-comment = "#>"
-)
+  echo = TRUE,
+  collapse = TRUE,
+  comment = "#>"
+  )
 ```
 
 # Introduction
-
+  
 Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
-
+  
 The database is distributed as a zip file, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files (including a version of this vignette).
-
+  
 But how do we work with this database, exactly? Let's start by loading it into R:
-
+  
 ```r
-cosore <- readRDS("cosore_date.RDS")
+cosore <- readRDS("cosore_data.RDS")
 ```
 
 ```{r, echo=FALSE}
 # For the vignette, we just read from the drake cache, not use readRDS as above
 cosore <- drake::readd("all")
+
+if(!is.list(cosore)) {   # no database available; create a fake one
+  cosore <- list(
+    d20190415_VARNER = list(
+      description = data.frame(CSR_DATASET = "d20190415_VARNER",
+                               Site_name = "1",
+                               IGBP = "Deciduous broadleaf forest",
+                               Longitude = 1,
+                               Latitude = 1),
+      data = data.frame(CSR_TIMESTAMP = lubridate::ymd_hm("2019-06-05 07:12"),
+                        CSR_FLUX = 1,
+                        CSR_PORT = 1,
+                        CSR_T5 = 1))
+  )
+}
 ```
 
 This database is comprised of a collection of datasets, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements taken at a single site and with constant treatment assignments.
@@ -94,8 +109,9 @@ varner <- cosore$d20190415_VARNER
 tibble::glimpse(varner$description)
 ```
 
-The `description` table gives the basic information about this dataset: where it was measured,
-the time zone that the `data` timestamps are in, instrument used, and citation and acknowledgment information.
+The `description` table gives the basic information about this dataset:
+where it was measured, the time zone that the `data` timestamps are in, 
+instrument used, and citation and acknowledgment information.
 
 ```{r sr-varner}
 sr <- varner$data
@@ -107,16 +123,21 @@ This dataset has `r nrow(sr)` observations; extends from April 2003 to December 
 
 ```{r visualize-varner}
 library(ggplot2)
-ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
-  geom_point(size = 0.5) + ggtitle("Flux over time")
-library(lubridate, warn.conflicts = FALSE)
-ggplot(sr, aes(CSR_T5, CSR_FLUX)) + facet_wrap(~month(CSR_TIMESTAMP), scales = "free") +
-  geom_point(size = 0.5, alpha = 0.5) +
-  ggtitle("5 cm soil temp vs. flux, by month")
+if(is.data.frame(sr)) {
+  ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
+    geom_point(size = 0.5) + ggtitle("Flux over time")
+  
+  library(lubridate, warn.conflicts = FALSE)
+  ggplot(sr, aes(CSR_T5, CSR_FLUX)) + 
+    facet_wrap(~month(CSR_TIMESTAMP), scales = "free") +
+    geom_point(size = 0.5, alpha = 0.5) +
+    ggtitle("5 cm soil temp vs. flux, by month")
+}
 ```
 
-Did these eight different ports (chambers) represent different treatments? We might want to 
-exclude treatment collars, or color them differently in the plots above.
+Did these eight different ports (chambers) represent different treatments?
+We might want to exclude treatment collars, or color them differently 
+in the plots above.
 
 ```{r ports-varner}
 varner$ports
@@ -163,14 +184,15 @@ There are `r nrow(tdf)` datasets here; let's extract them.
 cosore_tdf <- cosore[tdf$CSR_DATASET]
 tdf_dat <- csr_table(cosore_tdf, "data")
 tdf_dat %>% 
-  ggplot(aes(yday(CSR_TIMESTAMP), CSR_FLUX, group = CSR_PORT, color = year(CSR_TIMESTAMP))) + 
+  mutate(Yday = yday(CSR_TIMESTAMP), Year = year(CSR_TIMESTAMP)) %>% 
+  ggplot(aes(Yday, CSR_FLUX, group = CSR_PORT, color = Year)) + 
   geom_point(size = 0.5) + 
   facet_wrap(~CSR_DATASET, scales = "free") +
   scale_color_continuous("Year") +
   coord_cartesian(ylim = c(0, 20))
 ```
 
-The original question we were interested in was how respiration varies over the course of the day. (Note for simplicity below we're assuming that data timestamps are in local time, but that might not be true; see the `description` table.)
+The original question we were interested in was how respiration varies over the course of the day. (Note for simplicity below we're assuming that data timestamps are in local time, but that might not be true, e.g. if an instrument is set to UTC; see the `description` table.)
 
 ```{r dbf-day}
 tdf_dat %>% 
