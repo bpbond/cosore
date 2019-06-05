@@ -19,7 +19,11 @@ comment = "#>"
 
 # Introduction
 
-TODO. 
+Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
+
+The database is distributed as a zip file, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files (including a version of this vignette).
+
+But how do we work with this database, exactly? Let's start by loading it into R:
 
 ```r
 cosore <- readRDS("cosore_date.RDS")
@@ -30,7 +34,9 @@ cosore <- readRDS("cosore_date.RDS")
 cosore <- drake::readd("all")
 ```
 
-The `cosore` data are structured as a two-level nested list of data frames:
+This database is comprised of a collection of datasets, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements taken at a single site and with constant treatment assignments.
+
+In practice, the `COSORE` database is structured as a two-level nested list of data frames:
 
 ```
 cosore
@@ -124,7 +130,7 @@ Finally, we can use the `description` table information to get a full citation:
 doi <- varner$description$Primary_pub
 print(doi)
 library(rcrossref)
-cr_cn(dois = doi, format = "text")
+try(cr_cn(dois = doi, format = "text"))
 ```
 
 # Selecting and combining multiple datasets
@@ -183,4 +189,19 @@ tdf_dat %>%
   ggtitle("Flux by hour of day and month of year")
 ```
 
-Finish up / more...TODO.
+Plot the data in a different way...TODO.
+
+# Other tables and data
+
+This vignette has mostly focused on the `description` and `data` tables, and briefly mentioned `ports`. Others include:
+
+* the `ancillary` table: ancillary, site-level data such as leaf area index (LAI), net primary production (NPP), soil texture, etc.
+* `contributors`: dataset contributors. The first person listed should be considered the primary point of contact.
+* `columns`: describes how columns in the original dataset (as contributed) were mapped to the COSORE standard fields, including any unit changes or transormations.
+* `diagnostics`: metadata about the data ingestion process: rows and columns removed, errors, etc.
+
+These can all be extracted using a method like the `csr_table()` function above.
+
+# Feedback and data contributions
+
+Feedback is welcome on any aspects of the database design, strengths, limitations, formats, documentation...please [open a GitHub issue](https://github.com/bpbond/cosore/issues/new) or email; see the README.

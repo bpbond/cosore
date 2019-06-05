@@ -28,7 +28,7 @@ make_cosore_release <- function(all_data, path,
   }
 
   if(!vignette_rebuilt) {
-    stop("Vignette rebuilt via devtools::build_vignettes(), then copy html to inst/extdata?")
+    stop("Vignette rebuilt via devtools::build_vignettes()?")
   }
 
   # saveRDS the object
@@ -73,7 +73,7 @@ make_cosore_release <- function(all_data, path,
     "README.md" = "This file."
   )
 
-  filelist <- c("CSR_COLUMNS_UNITS.txt", "README.md", "cosore-data-example.html")
+  filelist <- c("CSR_COLUMNS_UNITS.txt", "README.md")
   for(f in filelist) {
     f_path <- system.file(file.path("extdata", f),
                           package = "cosore", mustWork = TRUE)
@@ -95,6 +95,9 @@ make_cosore_release <- function(all_data, path,
     message("Writing ", f, "...")
     writeLines(f_data, file.path(path, f))
   }
+
+  # Copy vignette file
+  file.copy("doc/cosore-data-example.html", to = path)
 
   # Run combined_report and copy it there
   combined_report(all_data, output_dir = path)
