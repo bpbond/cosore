@@ -305,9 +305,11 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
                  Records_removed_err = 0,
                  Records_removed_toolow = 0,
                  Records_removed_toohigh = 0,
+                 Flux_lowbound = NA,
+                 Flux_highbound = NA,
                  Records_removed_timestamp = 0)
 
-  dsd <- data.frame()   # start with empty dataset data
+  dsd <- NULL  # dataset data
 
   if(!dir.exists(df)) {
     warning("No data folder found for ", dataset_name)
@@ -325,9 +327,8 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     }
   }
 
-  dsd <- tibble::as_tibble(dsd)
-
-  if(nrow(dsd)) {
+  if(!is.null(dsd)) {
+    dsd <- tibble::as_tibble(dsd)
     # Column mapping and computation
     dsd <- map_columns(dsd, dataset$columns)
 
