@@ -4,36 +4,43 @@ author: "Ben Bond-Lamberty"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+%\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
----
-
-```{r setup, include = FALSE}
+  ---
+  
+  ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  echo = TRUE,
-  collapse = TRUE,
-  comment = "#>"
-  )
+echo = TRUE,
+collapse = TRUE,
+comment = "#>"
+)
 ```
 
 # Introduction
-  
+
 Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
-  
+
 The database is distributed as a zip file, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files (including a version of this vignette).
-  
+
 But how do we work with this database, exactly? Let's start by loading it into R:
-  
+
 ```r
 cosore <- readRDS("cosore_data.RDS")
 ```
 
 ```{r, echo=FALSE}
 # For the vignette, we just read from the drake cache, not use readRDS as above
-cosore <- drake::readd("all")
+try(cosore <- drake::readd("all"))
 
-if(!is.list(cosore)) {   # no database available; create a fake one
+# I don't understand why, but when devtools::check runs this at its
+# 'checking re-building of vignette outputs' step, it will load the
+# cosore data structure but not the `data` elements of each dataset
+# list, throwing an error when things bomb below. Huh?!?
+# Check for this and create a fake database if necessary
+data_loaded <- is.data.frame(cosore$d20190415_VARNER$data)
+
+if(!data_loaded) {   # no database available; create a fake one
   cosore <- list(
     d20190415_VARNER = list(
       description = data.frame(CSR_DATASET = "d20190415_VARNER",
@@ -122,17 +129,17 @@ summary(sr)
 This dataset has `r nrow(sr)` observations; extends from April 2003 to December 2006; and soil respiration was measured on eight ports, along with air and 5 cm soil temperature. Visualizing it:
 
 ```{r visualize-varner}
+writeLines(capture.output(str(sr)), "~/Desktop/str-sr.txt")
+
 library(ggplot2)
-if(is.data.frame(sr)) {
-  ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
-    geom_point(size = 0.5) + ggtitle("Flux over time")
-  
-  library(lubridate, warn.conflicts = FALSE)
-  ggplot(sr, aes(CSR_T5, CSR_FLUX)) + 
-    facet_wrap(~month(CSR_TIMESTAMP), scales = "free") +
-    geom_point(size = 0.5, alpha = 0.5) +
-    ggtitle("5 cm soil temp vs. flux, by month")
-}
+ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
+  geom_point(size = 0.5) + ggtitle("Flux over time")
+
+library(lubridate, warn.conflicts = FALSE)
+ggplot(sr, aes(CSR_T5, CSR_FLUX)) + 
+  facet_wrap(~month(CSR_TIMESTAMP), scales = "free") +
+  geom_point(size = 0.5, alpha = 0.5) +
+  ggtitle("5 cm soil temp vs. flux, by month")
 ```
 
 Did these eight different ports (chambers) represent different treatments?

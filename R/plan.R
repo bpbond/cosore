@@ -57,5 +57,5 @@ csr_build <- function(raw_data, return_all_data = TRUE) {
 # csr_build("../rawdata/")
 # all <- drake::readd("all")
 # run_reports(all)
-# combined_report(all)
+# run_combined_report(all)
 

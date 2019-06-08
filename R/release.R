@@ -100,7 +100,7 @@ make_cosore_release <- function(all_data, path,
   file.copy("doc/cosore-data-example.html", to = path)
 
   # Run combined_report and copy it there
-  combined_report(all_data, output_dir = path)
+  run_combined_report(all_data, output_dir = path)
 
   # Check: all the files should be included in the file description list
   all_files <- list.files(path, recursive = FALSE)

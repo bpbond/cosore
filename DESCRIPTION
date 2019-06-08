@@ -19,7 +19,8 @@ Suggests:
     lubridate,
     leaflet,
     ggplot2,
-    sp
+    sp,
+    rcrossref
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
