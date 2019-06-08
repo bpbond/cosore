@@ -307,6 +307,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
                  Records_removed_toohigh = 0,
                  Flux_lowbound = NA,
                  Flux_highbound = NA,
+                 Bad_Tchamber_removed = 0,
                  Records_removed_timestamp = 0)
 
   dsd <- NULL  # dataset data
@@ -378,11 +379,18 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     toohigh <- dsd$CSR_FLUX > max(fl)
     diag$Records_removed_toohigh <- sum(toohigh, na.rm = TRUE)
     dsd <- dsd[!toolow & !toohigh,]
+  }
 
-    diag$Records <- nrow(dsd)
+  # Remove bad chamber temperature values
+  if("CSR_TCHAMBER" %in% names(dsd)) {
+    tl <- c(-50, 100)  # temperature limits
+    bad_temps <- dsd$CSR_TCHAMBER < min(tl) | dsd$CSR_TCHAMBER > max(tl)
+    dsd$CSR_TCHAMBER[bad_temps] <- NA
+    diag$Bad_Tchamber_removed <- sum(bad_temps, na.rm = TRUE)
   }
 
   # Add new tables to the dataset structure and return
+  diag$Records <- nrow(dsd)
   dataset$diagnostics <- diag
   dataset$data <- dsd
 
