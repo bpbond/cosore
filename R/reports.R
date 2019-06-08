@@ -6,7 +6,7 @@
 #' @importFrom rmarkdown render
 #' @return Nothing; run for its side effects.
 #' @export
-combined_report <- function(all_data, output_dir = "~/Desktop/Reports/") {
+run_combined_report <- function(all_data, output_dir = "~/Desktop/Reports/") {
   mf <- system.file("reports/combined_report.Rmd", package = "cosore")
 
   rmarkdown::render(mf,
@@ -46,6 +46,6 @@ run_reports <- function(all_data, run_combined = TRUE) {
   }
 
   if(run_combined) {
-    combined_report(all_data)
+    run_combined_report(all_data)
   }
 }
