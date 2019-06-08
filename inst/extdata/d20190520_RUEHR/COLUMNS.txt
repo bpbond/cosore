@@ -16,11 +16,9 @@
 #
 Database,		Dataset,	Computation,				Notes
 CSR_CDRY,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_FLUX,  		Exp_Flux,
+CSR_FLUX,  		Lin_Flux,
 CSR_LABEL,		Label,
 CSR_PORT,		Port.,
-CSR_R2,			Exp_R2,
-CSR_RH,			RH,
+CSR_R2,			Lin_R2,
 CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP,	Date_original
+CSR_TIMESTAMP,	Date
