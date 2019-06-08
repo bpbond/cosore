@@ -153,7 +153,7 @@ if(length(tcols)) {
   p1 <- ggplot(results, aes(Temperature, CSR_FLUX)) + 
     geom_point(size = 0.2, alpha = I(0.25)) + 
     geom_smooth(method = "lm") +
-    facet_wrap(~Which_temp, scales = "free_y")
+    facet_wrap(~Which_temp, scales = "free")
   print(p1)
 }
 ```
