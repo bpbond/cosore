@@ -64,7 +64,7 @@ For each multiplexer port, can define:
 ### `COLUMNS.txt`
 
 This maps between _dataset_ fields and standardized _database_ fields.
-It include an optional compute-on-columns capability (e.g. to change units or combine columns).
+It include an optional compute-on-columns capability (e.g. to change units or combine columns). See `?map_columns` for more information.
 
 ### `ANCILLARY.txt`
 
@@ -74,18 +74,18 @@ This file contains ancillary data: stand structure, carbon cycle, disturbance, e
 
 When asked (via `csr_build()` to build the synthesis dataset, the `cosore` R package
 * Scans its `inst/extdata` folder for metadata on all installed datasets
-* Parses the metadata, and then based on `Instrument_name` and `File_format` calls 
-the appropriate function to parse the raw data (which for size reasons are not located in the repository)
+* Parses the metadata, and then based on `File_format` calls 
+the appropriate function to parse the raw data (which for size reasons are not currently included in the repository)
 * This is done via a [drake](https://github.com/ropensci/drake) pipeline, so we only 
 rebuild datasets when needed
-* Currently a `list` of lists is returned, where each entry is a list of the relevant
-dataset objects (description, contributors, etc); 
+* Currently a `list` is returned, in which each entry is an individual dataset, itself
+a list comprised of dataset objects (the description, contributors, etc., tables)
 * User-side convenience functions generate data frames ready (or readier) for analysis
 * Reports are generated for the overall database and each individual dataset.
 
 ## Data access
 
-* Following the example of [BAAD](https://github.com/dfalster/baad), there is a lightweight [cosore.data](https://github.com/bpbond/cosore.data) package intended to provide data access to users. **It does not work yet.**
+* The easiest way to get the data is on the [Releases](https://github.com/bpbond/cosore/releases) page.
 
 ## Priorities
 
