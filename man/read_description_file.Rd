@@ -18,12 +18,11 @@ A \code{data.frame} with the following columns:
 \item{CSR_LONGITUDE}{Decimal longitude (degrees), numeric}
 \item{CSR_LATITUDE}{Decimal latitude (degrees), numeric}
 \item{CSR_ELEVATION}{Elevation (m), numeric}
-\item{UTC_offset}{Offset from UTC (hours), numeric}
 \item{CSR_TIMEZONE}{Timezone, character}
 \item{CSR_IGBP}{IGBP class, character}
 \item{CSR_NETWORK}{Site network name, character}
 \item{CSR_SITE_ID}{Site ID in network, character}
-\item{CSR_INSTRUMENT}{Measurement instrument type, character}
+\item{CSR_INSTRUMENT}{Measurement instrument, character}
 \item{CSR_FILE_FORMAT}{Data file format, character}
 \item{CSR_TIMESTAMP_FORMAT}{Data timestamp format (see \code{\link{strptime}}), character}
 \item{CSR_TIMESTAMP_TZ}{Data timestamp timezone, character}

@@ -36,7 +36,6 @@ Info          |  Value
 Site          | `r d$CSR_SITE_NAME`
 Location      | `r d$CSR_LATITUDE` N, `r d$CSR_LONGITUDE` E
 Elevation     | `r d$CSR_ELEVATION` m
-UTC offset    | `r d$UTC_offset`
 IGBP          | `r d$CSR_IGBP`
 Network       | `r paste(d$CSR_NETWORK, d$CSR_SITE_ID)`
 

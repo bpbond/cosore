@@ -6,7 +6,6 @@
 # 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
 # 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
 # 	CSR_ELEVATION: elevation above sea level, meters
-# 	UTC_offset: offset from UTC of site data, hours (standard time)
 #	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 # 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
@@ -28,7 +27,6 @@ CSR_SITE_NAME:
 CSR_LONGITUDE: 
 CSR_LATITUDE: 
 CSR_ELEVATION: 
-UTC_offset: 
 CSR_TIMEZONE: 
 CSR_IGBP: 
 CSR_NETWORK: 

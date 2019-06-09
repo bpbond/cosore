@@ -91,12 +91,11 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 #' \item{CSR_LONGITUDE}{Decimal longitude (degrees), numeric}
 #' \item{CSR_LATITUDE}{Decimal latitude (degrees), numeric}
 #' \item{CSR_ELEVATION}{Elevation (m), numeric}
-#' \item{UTC_offset}{Offset from UTC (hours), numeric}
 #' \item{CSR_TIMEZONE}{Timezone, character}
 #' \item{CSR_IGBP}{IGBP class, character}
 #' \item{CSR_NETWORK}{Site network name, character}
 #' \item{CSR_SITE_ID}{Site ID in network, character}
-#' \item{CSR_INSTRUMENT}{Measurement instrument type, character}
+#' \item{CSR_INSTRUMENT}{Measurement instrument, character}
 #' \item{CSR_FILE_FORMAT}{Data file format, character}
 #' \item{CSR_TIMESTAMP_FORMAT}{Data timestamp format (see \code{\link{strptime}}), character}
 #' \item{CSR_TIMESTAMP_TZ}{Data timestamp timezone, character}
@@ -107,29 +106,23 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 read_description_file <- function(dataset_name, file_data = NULL) {
   f <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
-  d <- tibble(CSR_DATASET = dataset_name,
-              CSR_SITE_NAME = extract_line(f, "CSR_SITE_NAME"),
-              CSR_LONGITUDE = extract_line(f, "CSR_LONGITUDE", numeric_data = TRUE),
-              CSR_LATITUDE = extract_line(f, "CSR_LATITUDE", numeric_data = TRUE),
-              CSR_ELEVATION = extract_line(f, "CSR_ELEVATION", numeric_data = TRUE),
-              UTC_offset = extract_line(f, "UTC_offset", numeric_data = TRUE, required = TRUE),
-              CSR_TIMEZONE = extract_line(f, "CSR_TIMEZONE"),
-              CSR_IGBP = extract_line(f, "CSR_IGBP"),
-              CSR_NETWORK = extract_line(f, "CSR_NETWORK", required = FALSE),
-              CSR_SITE_ID = extract_line(f, "CSR_SITE_ID", required = FALSE),
-              CSR_INSTRUMENT = extract_line(f, "CSR_INSTRUMENT"),
-              CSR_FILE_FORMAT = extract_line(f, "CSR_FILE_FORMAT"),
-              CSR_TIMESTAMP_FORMAT = extract_line(f, "CSR_TIMESTAMP_FORMAT"),
-              CSR_TIMESTAMP_TZ = extract_line(f, "CSR_TIMESTAMP_TZ"),
-              CSR_PRIMARY_PUB = extract_line(f, "CSR_PRIMARY_PUB", required = FALSE),
-              CSR_OTHER_PUBS = extract_line(f, "CSR_OTHER_PUBS", required = FALSE),
-              CSR_DATA_URL = extract_line(f, "CSR_DATA_URL", required = FALSE),
-              CSR_ACKNOWLEDGMENT = extract_line(f, "CSR_ACKNOWLEDGMENT", required = FALSE))
-
-  if(is.na(d$UTC_offset) | d$UTC_offset == "" | abs(d$UTC_offset) >= 15) {
-    stop("Bad UTC_offset in ", dataset_name)
-  }
-  d
+  tibble(CSR_DATASET = dataset_name,
+         CSR_SITE_NAME = extract_line(f, "CSR_SITE_NAME"),
+         CSR_LONGITUDE = extract_line(f, "CSR_LONGITUDE", numeric_data = TRUE),
+         CSR_LATITUDE = extract_line(f, "CSR_LATITUDE", numeric_data = TRUE),
+         CSR_ELEVATION = extract_line(f, "CSR_ELEVATION", numeric_data = TRUE),
+         CSR_TIMEZONE = extract_line(f, "CSR_TIMEZONE"),
+         CSR_IGBP = extract_line(f, "CSR_IGBP"),
+         CSR_NETWORK = extract_line(f, "CSR_NETWORK", required = FALSE),
+         CSR_SITE_ID = extract_line(f, "CSR_SITE_ID", required = FALSE),
+         CSR_INSTRUMENT = extract_line(f, "CSR_INSTRUMENT"),
+         CSR_FILE_FORMAT = extract_line(f, "CSR_FILE_FORMAT"),
+         CSR_TIMESTAMP_FORMAT = extract_line(f, "CSR_TIMESTAMP_FORMAT"),
+         CSR_TIMESTAMP_TZ = extract_line(f, "CSR_TIMESTAMP_TZ"),
+         CSR_PRIMARY_PUB = extract_line(f, "CSR_PRIMARY_PUB", required = FALSE),
+         CSR_OTHER_PUBS = extract_line(f, "CSR_OTHER_PUBS", required = FALSE),
+         CSR_DATA_URL = extract_line(f, "CSR_DATA_URL", required = FALSE),
+         CSR_ACKNOWLEDGMENT = extract_line(f, "CSR_ACKNOWLEDGMENT", required = FALSE))
 }
 
 

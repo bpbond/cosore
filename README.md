@@ -33,7 +33,7 @@ As much as possible, metadata are kept to a minimum. There are five metadata fil
 * Longitude
 * Latitude
 * Elevation [optional]
-* Site UTC_offset and timezone
+* Site timezone
 * Site [timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 * [IGBP cover type](http://www.eomf.ou.edu/static/IGBP.pdf)
 * Instrument name

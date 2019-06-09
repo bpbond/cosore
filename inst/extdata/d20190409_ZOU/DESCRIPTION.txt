@@ -6,7 +6,6 @@
 # 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
 # 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
 # 	CSR_ELEVATION: elevation above sea level, meters
-# 	UTC_offset: offset from UTC of site data, hours (standard time)
 # 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
@@ -24,7 +23,6 @@ CSR_SITE_NAME: Dooary Forest
 CSR_LONGITUDE: -7.25
 CSR_LATITUDE: 52.95
 CSR_ELEVATION: 260
-UTC_offset: 1
 CSR_TIMEZONE: Europe/Dublin
 CSR_IGBP: Evergreen needleaf forest
 CSR_NETWORK: 

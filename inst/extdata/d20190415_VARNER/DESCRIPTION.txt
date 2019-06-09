@@ -6,7 +6,6 @@
 # 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
 # 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
 # 	CSR_ELEVATION: elevation above sea level, meters
-# 	UTC_offset: offset from UTC of site data, hours (standard time)
 # 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
@@ -24,7 +23,6 @@ CSR_SITE_NAME: Prospect Hill Tract (Harvard Forest)
 CSR_LONGITUDE: -72.17
 CSR_LATITUDE: 42.54
 CSR_ELEVATION: 340
-UTC_offset: -5
 CSR_TIMEZONE: America/New_York
 CSR_IGBP: Deciduous broadleaf forest
 CSR_NETWORK: Ameriflux

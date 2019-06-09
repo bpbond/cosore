@@ -26,9 +26,22 @@ CSR_TIMESTAMP	Timestamp, a POSIXct class object
 
 # From `DESCRIPTION.txt` file
 
-UTC_offset			Offset from UTC, hours, standard time
-Timezone			Location timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-Timestamp_timezone	Instrument timestamp timezone; normally same as `Timezone`
+CSR_SITE_NAME         Site name, character
+CSR_LONGITUDE         Decimal longitude (degrees), numeric
+CSR_LATITUDE          Decimal latitude (degrees), numeric
+CSR_ELEVATION         Elevation (m), numeric
+CSR_TIMEZONE		      Timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+CSR_IGBP              IGBP class, character
+CSR_NETWORK           Site network name, character
+CSR_SITE_ID           Site ID in network, character
+CSR_INSTRUMENT        Measurement instrument, character
+CSR_FILE_FORMAT       Data file format, character
+CSR_TIMESTAMP_FORMAT  Data timestamp format, in `strptime()` format
+CSR_TIMETAMP_TZ	      Instrument timestamp timezone; normally same as `CSR_TIMEZONE`
+CSR_PRIMARY_PUB       Primary publication, character
+CSR_OTHER_PUBS        Other publications, character
+CSR_DATA_URL          Data URL or DOI, character
+CSR_ACKNOWLEDGMENT    Acknowledgment text, character
 
 
 # From `PORTS.txt` file
