@@ -389,7 +389,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   }
 
   # Add new tables to the dataset structure and return
-  diag$Records <- nrow(dsd)
+  diag$CSR_RECORDS <- nrow(dsd)
   dataset$diagnostics <- diag
   dataset$data <- dsd
 
