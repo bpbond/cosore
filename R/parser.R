@@ -169,12 +169,14 @@ read_csv_data <- function(file_data, required = NULL) {
 #' @param file_data File data, character vector; optional for testing
 #' @keywords internal
 #' @return A \code{data.frame} with the following columns:
-#' \item{Port}{Port number, numeric; 0 = all ports}
-#' \item{Treatment}{Treatment, character; by default "None"}
-#' \item{Species}{Species, character}
+#' \item{CSR_PORT}{Port number, numeric; 0 = all ports}
+#' \item{CSR_TREATMENT}{Treatment, character; by default "None"}
+#' \item{CSR_SPECIES}{Species, character}
+#' \item{CSR_DEPTH}{Depth of collar, cm}
+#' \item{CSR_AREA}{Ground area of chamber, cm2}
 read_ports_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "PORTS.txt", file_data)
-  read_csv_data(file_data, required = c("Port", "Treatment"))
+  read_csv_data(file_data, required = c("CSR_PORT", "CSR_TREATMENT"))
 }
 
 
@@ -273,8 +275,7 @@ map_columns <- function(dat, columns) {
 #' read_dataset("TEST_licordata")
 read_dataset <- function(dataset_name, raw_data, log = TRUE) {
 
-  dataset <- list(dataset_name = dataset_name,
-                  description = read_description_file(dataset_name),
+  dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
                   ports = read_ports_file(dataset_name),
                   columns = read_columns_file(dataset_name),
@@ -378,6 +379,8 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     toohigh <- dsd$CSR_FLUX > max(fl)
     diag$CSR_RECORDS_REMOVED_TOOHIGH <- sum(toohigh, na.rm = TRUE)
     dsd <- dsd[!toolow & !toohigh,]
+
+    diag$CSR_RECORDS <- nrow(dsd)
   }
 
   # Remove bad chamber temperature values
@@ -389,7 +392,6 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   }
 
   # Add new tables to the dataset structure and return
-  diag$CSR_RECORDS <- nrow(dsd)
   dataset$diagnostics <- diag
   dataset$data <- dsd
 

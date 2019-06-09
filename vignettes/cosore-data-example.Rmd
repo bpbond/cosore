@@ -150,7 +150,7 @@ in the plots above.
 varner$ports
 ```
 
-From this we see that the only `Port` entry is zero, with `Treatment` of "None", i.e. all ports/collars had the same treatment, and there _wasn't_ any treatment. Also, the collars were `r varner$ports$Area` cm2.
+From this we see that the only `Port` entry is zero, with `Treatment` of "None", i.e. all ports/collars had the same treatment, and there _wasn't_ any treatment. Also, the collars were `r varner$ports$CSR_AREA` cm2.
 
 Finally, we can use the `description` table information to get a full citation:
 
