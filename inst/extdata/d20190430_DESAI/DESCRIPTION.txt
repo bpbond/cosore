@@ -2,38 +2,38 @@
 #
 # This key-value data file holds the minimal metadata for each dataset.
 # Most entries  be filled out for each dataset. Entries below include:
-# 	Site_name: standard site name
-# 	Longitude: decimal degrees; positive = east, negative = west
-# 	Latitude: decimal degrees; positive = north, negative = south
-# 	Elevation: elevation above sea level, meters
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
 # 	UTC_offset: offset from UTC of site data, hours (standard time)
-# 	IGBP: IGBP land cover type. Common types include:
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
 #		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
 #		Savannas, Grassland, Wetland, Cropland, Urban
-#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
-# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
 # 	Primary publication: optional DOI (preferred) or other primary publication 
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
-# 	Acknowledgment: optional acknowledgment (funding or other) text
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: Willow Creek
-Longitude: -90.0799
-Latitude: 45.8059
-Elevation: 520
+CSR_SITE_NAME: Willow Creek
+CSR_LONGITUDE: -90.0799
+CSR_LATITUDE: 45.8059
+CSR_ELEVATION: 520
 UTC_offset: -6
-Timezone: America/Chicago
-IGBP: Deciduous broadleaf forest
-Network: Ameriflux
-Site_ID: US-WCr
-Instrument: eosFD
-File_format: Custom
-Timestamp_format: %m/%d/%y %H:%M
-Timestamp_timezone: America/Chicago
-Primary_pub: 10.5194/bg-10-7999-2013
-Other_pub: 10.1002/2014JG002773, 10.1007/s11104-016-3084-x
-Data_URL: http://co2.aos.wisc.edu/data/cheas/ancillary/us-wcr/soil_respiration/
-Acknowledgment: 
+CSR_TIMEZONE: America/Chicago
+CSR_IGBP: Deciduous broadleaf forest
+CSR_NETWORK: Ameriflux
+CSR_SITE_ID: US-WCr
+CSR_INSTRUMENT: eosFD
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %m/%d/%y %H:%M
+CSR_TIMESTAMP_TZ: America/Chicago
+CSR_PRIMARY_PUB: 10.5194/bg-10-7999-2013
+CSR_OTHER_PUB: 10.1002/2014JG002773, 10.1007/s11104-016-3084-x
+CSR_DATA_URL: http://co2.aos.wisc.edu/data/cheas/ancillary/us-wcr/soil_respiration/
+CSR_ACKNOWLEDGMENT: 

@@ -2,42 +2,42 @@
 #
 # This key-value data file holds the minimal metadata for each dataset.
 # Most entries  be filled out for each dataset. Entries below include:
-# 	Site_name: standard site name
-# 	Longitude: decimal degrees; positive = east, negative = west
-# 	Latitude: decimal degrees; positive = north, negative = south
-# 	Elevation: elevation above sea level, meters
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
 # 	UTC_offset: offset from UTC of site data, hours (standard time)
-#	Timezone: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-# 	IGBP: IGBP land cover type. Common types include:
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
 #		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
 #		Savannas, Grassland, Wetland, Cropland, Urban
-#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
-# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
-#	File_format: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
-#	Timestamp_format. See ?strptime, but briefly:
+#	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
+#	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
 		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
 # 	Primary publication: optional DOI (preferred) or other primary publication 
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
-# 	Acknowledgment: optional acknowledgment (funding or other) text
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: 
-Longitude: 
-Latitude: 
-Elevation: 
+CSR_SITE_NAME: 
+CSR_LONGITUDE: 
+CSR_LATITUDE: 
+CSR_ELEVATION: 
 UTC_offset: 
-Timezone: 
-IGBP: 
-Network: 
-Site_ID: 
-Instrument: LI-8100A
-File_format: Processed
-Timestamp_format: %Y-%m-%dT%H:%M:%SZ
-Timestamp_timezone: 
-Primary_pub:
-Other_pub:
-Data_URL:
-Acknowledgment: 
+CSR_TIMEZONE: 
+CSR_IGBP: 
+CSR_NETWORK: 
+CSR_SITE_ID: 
+CSR_INSTRUMENT: LI-8100A
+CSR_FILE_FORMAT: Processed
+CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_TIMESTAMP_TZ: 
+CSR_PRIMARY_PUB:
+CSR_OTHER_PUB:
+CSR_DATA_URL:
+CSR_ACKNOWLEDGMENT: 

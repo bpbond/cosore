@@ -2,38 +2,38 @@
 #
 # This key-value data file holds the minimal metadata for each dataset.
 # Most entries  be filled out for each dataset. Entries below include:
-# 	Site_name: standard site name
-# 	Longitude: decimal degrees; positive = east, negative = west
-# 	Latitude: decimal degrees; positive = north, negative = south
-# 	Elevation: elevation above sea level, meters
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
 # 	UTC_offset: offset from UTC of site data, hours (standard time)
-# 	IGBP: IGBP land cover type. Common types include:
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
 #		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
 #		Savannas, Grassland, Wetland, Cropland, Urban
-#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
-# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
 # 	Primary publication: optional DOI (preferred) or other primary publication 
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
-# 	Acknowledgment: optional acknowledgment (funding or other) text
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: SDSU Santa Margarita Ecological Reserve
-Longitude: -117.1641667
-Latitude: 33.44163333
-Elevation: 393
+CSR_SITE_NAME: SDSU Santa Margarita Ecological Reserve
+CSR_LONGITUDE: -117.1641667
+CSR_LATITUDE: 33.44163333
+CSR_ELEVATION: 393
 UTC_offset: -8
-Timezone: America/Los_Angeles
-IGBP: Open shrubland
-Network: 
-Site_ID: 
-Instrument: LI-8100A
-File_format: Processed_csv
-Timestamp_format: %m/%d/%y %H
-Timestamp_timezone: America/Los_Angeles
-Primary_pub:
-Other_pub: 10.5194/bgd-10-6335-2013
-Data_URL:
-Acknowledgment: This data was originally collected and analysed by Marguerite Mauritz and David Lipson to investigate soil respiration patterns in semi-arid shrubland invaded by annual grasses and forbs. The LI-8100 was kindly loaned by Walt Oechel.
+CSR_TIMEZONE: America/Los_Angeles
+CSR_IGBP: Open shrubland
+CSR_NETWORK: 
+CSR_SITE_ID: 
+CSR_INSTRUMENT: LI-8100A
+CSR_FILE_FORMAT: Processed_csv
+CSR_TIMESTAMP_FORMAT: %m/%d/%y %H
+CSR_TIMESTAMP_TZ: America/Los_Angeles
+CSR_PRIMARY_PUB:
+CSR_OTHER_PUB: 10.5194/bgd-10-6335-2013
+CSR_DATA_URL:
+CSR_ACKNOWLEDGMENT: This data was originally collected and analysed by Marguerite Mauritz and David Lipson to investigate soil respiration patterns in semi-arid shrubland invaded by annual grasses and forbs. The LI-8100 was kindly loaned by Walt Oechel.

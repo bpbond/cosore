@@ -2,42 +2,42 @@
 #
 # This key-value data file holds the minimal metadata for each dataset.
 # Most entries  be filled out for each dataset. Entries below include:
-# 	Site_name: standard site name
-# 	Longitude: decimal degrees; positive = east, negative = west
-# 	Latitude: decimal degrees; positive = north, negative = south
-# 	Elevation: elevation above sea level, meters
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
 # 	UTC_offset: offset from UTC of site data, hours (standard time)
-#	Timezone: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-# 	IGBP: IGBP land cover type. Common types include:
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
 #		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
 #		Savannas, Grassland, Wetland, Cropland, Urban
-#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
-# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
-#	File_format: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
-#	Timestamp_format. See ?strptime, but briefly:
+#	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
+#	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
 		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
 # 	Primary publication: optional DOI (preferred) or other primary publication 
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
-# 	Acknowledgment: optional acknowledgment (funding or other) text
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: Bonanza Creek (BNZ)
-Longitude: -148.325677
-Latitude: 64.695999
-Elevation: 
+CSR_SITE_NAME: Bonanza Creek (BNZ)
+CSR_LONGITUDE: -148.325677
+CSR_LATITUDE: 64.695999
+CSR_ELEVATION: 
 UTC_offset: -9
-Timezone: America/Anchorage
-IGBP: Evergreen needleleaf forest
-Network: 
-Site_ID: 
-Instrument: eosFD
-File_format: Processed_csv
-Timestamp_format: %Y-%m-%d %H:%M:%S
-Timestamp_timezone: America/Anchorage
-Primary_pub: 10.1016/j.scitotenv.2016.05.052
-Other_pub: 10.1016/j.agrformet.2011.06.020
-Data_URL: 10.3334/ORNLDAAC/1620
-Acknowledgment: This research was funded by NASA grant number NNX15AT81A.
+CSR_TIMEZONE: America/Anchorage
+CSR_IGBP: Evergreen needleleaf forest
+CSR_NETWORK: 
+CSR_SITE_ID: 
+CSR_INSTRUMENT: eosFD
+CSR_FILE_FORMAT: Processed_csv
+CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
+CSR_TIMESTAMP_TZ: America/Anchorage
+CSR_PRIMARY_PUB: 10.1016/j.scitotenv.2016.05.052
+CSR_OTHER_PUB: 10.1016/j.agrformet.2011.06.020
+CSR_DATA_URL: 10.3334/ORNLDAAC/1620
+CSR_ACKNOWLEDGMENT: This research was funded by NASA grant number NNX15AT81A.

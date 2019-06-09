@@ -87,33 +87,44 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 #' @importFrom tibble tibble
 #' @return A \code{data.frame} with the following columns:
 #' \item{Dataset}{Dataset name, character}
-#' \item{Site_name}{Site name, character}
-#' \item{Longitude}{Decimal Longitude, numeric}
-#' \item{Latitude}{Decimal latitude, numeric}
-#' \item{Instrument}{Instrument type, character}
-#' \item{Ecosystem_type}{Ecosystem type, character}
-#' \item{Primary_pub}{Primary publication, character}
-#' \item{Other_pubs}{Other publications, character}
+#' \item{CSR_SITE_NAME}{Site name, character}
+#' \item{CSR_LONGITUDE}{Decimal longitude (degrees), numeric}
+#' \item{CSR_LATITUDE}{Decimal latitude (degrees), numeric}
+#' \item{CSR_ELEVATION}{Elevation (m), numeric}
+#' \item{UTC_offset}{Offset from UTC (hours), numeric}
+#' \item{CSR_TIMEZONE}{Timezone, character}
+#' \item{CSR_IGBP}{IGBP class, character}
+#' \item{CSR_NETWORK}{Site network name, character}
+#' \item{CSR_SITE_ID}{Site ID in network, character}
+#' \item{CSR_INSTRUMENT}{Measurement instrument type, character}
+#' \item{CSR_FILE_FORMAT}{Data file format, character}
+#' \item{CSR_TIMESTAMP_FORMAT}{Data timestamp format (see \code{\link{strptime}}), character}
+#' \item{CSR_TIMESTAMP_TZ}{Data timestamp timezone, character}
+#' \item{CSR_PRIMARY_PUB}{Primary publication, character}
+#' \item{CSR_OTHER_PUBS}{Other publications, character}
+#' \item{CSR_DATA_URL}{Data URL or DOI, character}
+#' \item{CSR_ACKNOWLEDGMENT}{Acknowledgment text, character}
+#' \item{CSR_DATASET}{Dataset name (internal to COSORE), character}
 read_description_file <- function(dataset_name, file_data = NULL) {
-  file_data <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
+  f <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
-  d <- tibble(Site_name = extract_line(file_data, "Site_name"),
-              Longitude = extract_line(file_data, "Longitude", numeric_data = TRUE),
-              Latitude = extract_line(file_data, "Latitude", numeric_data = TRUE),
-              Elevation = extract_line(file_data, "Elevation", numeric_data = TRUE),
-              UTC_offset = extract_line(file_data, "UTC_offset", numeric_data = TRUE),
-              Timezone = extract_line(file_data, "Timezone"),
-              IGBP = extract_line(file_data, "IGBP"),
-              Network = extract_line(file_data, "Network", required = FALSE),
-              Site_ID = extract_line(file_data, "Site_ID", required = FALSE),
-              Instrument = extract_line(file_data, "Instrument"),
-              File_format = extract_line(file_data, "File_format"),
-              Timestamp_format = extract_line(file_data, "Timestamp_format"),
-              Timestamp_timezone = extract_line(file_data, "Timestamp_timezone"),
-              Primary_pub = extract_line(file_data, "Primary_pub", required = FALSE),
-              Other_pubs = extract_line(file_data, "Other_pub", required = FALSE),
-              Data_URL = extract_line(file_data, "Data_URL", required = FALSE),
-              Acknowledgment = extract_line(file_data, "Acknowledgment", required = FALSE),
+  d <- tibble(CSR_SITE_NAME = extract_line(f, "CSR_SITE_NAME"),
+              CSR_LONGITUDE = extract_line(f, "CSR_LONGITUDE", numeric_data = TRUE),
+              CSR_LATITUDE = extract_line(f, "CSR_LATITUDE", numeric_data = TRUE),
+              CSR_ELEVATION = extract_line(f, "CSR_ELEVATION", numeric_data = TRUE),
+              UTC_offset = extract_line(f, "UTC_offset", numeric_data = TRUE, required = TRUE),
+              CSR_TIMEZONE = extract_line(f, "CSR_TIMEZONE"),
+              CSR_IGBP = extract_line(f, "CSR_IGBP"),
+              CSR_NETWORK = extract_line(f, "CSR_NETWORK", required = FALSE),
+              CSR_SITE_ID = extract_line(f, "CSR_SITE_ID", required = FALSE),
+              CSR_INSTRUMENT = extract_line(f, "CSR_INSTRUMENT"),
+              CSR_FILE_FORMAT = extract_line(f, "CSR_FILE_FORMAT"),
+              CSR_TIMESTAMP_FORMAT = extract_line(f, "CSR_TIMESTAMP_FORMAT"),
+              CSR_TIMESTAMP_TZ = extract_line(f, "CSR_TIMESTAMP_TZ"),
+              CSR_PRIMARY_PUB = extract_line(f, "CSR_PRIMARY_PUB", required = FALSE),
+              CSR_OTHER_PUBS = extract_line(f, "CSR_OTHER_PUBS", required = FALSE),
+              CSR_DATA_URL = extract_line(f, "CSR_DATA_URL", required = FALSE),
+              CSR_ACKNOWLEDGMENT = extract_line(f, "CSR_ACKNOWLEDGMENT", required = FALSE),
               CSR_DATASET = dataset_name)
 
   if(is.na(d$UTC_offset) | d$UTC_offset == "" | abs(d$UTC_offset) >= 15) {
@@ -131,11 +142,11 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 #' @note For information about ORCID see \url{https://orcid.org}. For
 #' CRediT roles, see \url{https://www.casrai.org/credit.html}.
 #' @return A \code{data.frame} with the following columns:
-#' \item{CSR_FIRST_NAME}{Site name, character}
-#' \item{CSR_FAMILY_NAME}{Decimal Longitude, numeric}
-#' \item{CSR_EMAIL}{Decimal latitude, numeric}
-#' \item{CSR_ORCID}{Instrument type, character}
-#' \item{CSR_ROLE}{Role, character}
+#' \item{CSR_FIRST_NAME}{First (personal) name, character}
+#' \item{CSR_FAMILY_NAME}{Family name, character}
+#' \item{CSR_EMAIL}{Email address, character}
+#' \item{CSR_ORCID}{ORCID identifier, character}
+#' \item{CSR_ROLE}{CRediT role, character}
 read_contributors_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "CONTRIBUTORS.txt", file_data)
   read_csv_data(file_data, required = c("CSR_FIRST_NAME", "CSR_FAMILY_NAME"))
@@ -316,7 +327,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     warning("No data folder found for ", dataset_name)
   } else {
     # Dispatch to correct parsing function based on file format
-    ff <- toupper(dataset$description$File_format)
+    ff <- toupper(dataset$description$CSR_FILE_FORMAT)
     if(ff == "CUSTOM") {
       ff <- dataset_name   # if "Custom" that means there's custom code for this dataset
     }
@@ -336,15 +347,15 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     # Change the timestamp column to a datetime object
     original_ts <- dsd$CSR_TIMESTAMP
     dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
-                                    format = dataset$description$Timestamp_format,
-                                    tz = dataset$description$Timestamp_timezone)
+                                    format = dataset$description$CSR_TIMESTAMP_FORMAT,
+                                    tz = dataset$description$CSR_TIMESTAMP_TZ)
     nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
     diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(nats)
     dsd <- dsd[!nats,]
 
     if(nrow(dsd) == 0) {
-      stop("Timestamps could not be parsed with ", dataset$description$Timestamp_format,
-           " and tz ", dataset$description$Timestamp_timezone)
+      stop("Timestamps could not be parsed with ", dataset$description$CSR_TIMESTAMP_FORMAT,
+           " and tz ", dataset$description$CSR_TIMESTAMP_TZ)
     }
 
     # Drop any unmapped columns

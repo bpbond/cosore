@@ -2,38 +2,38 @@
 #
 # This key-value data file holds the minimal metadata for each dataset.
 # Most entries  be filled out for each dataset. Entries below include:
-# 	Site_name: standard site name
-# 	Longitude: decimal degrees; positive = east, negative = west
-# 	Latitude: decimal degrees; positive = north, negative = south
-# 	Elevation: elevation above sea level, meters
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
 # 	UTC_offset: offset from UTC of site data, hours (standard time)
-# 	IGBP: IGBP land cover type. Common types include:
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
 #		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
 #		Savannas, Grassland, Wetland, Cropland, Urban
-#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
-# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
 # 	Primary publication: optional DOI (preferred) or other primary publication 
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
-# 	Acknowledgment: optional acknowledgment (funding or other) text
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: Young pine plantation; US-ME6
-Longitude: -121.6078
-Latitude: 44.3232842
-Elevation: 998
+CSR_SITE_NAME: Young pine plantation; US-ME6
+CSR_LONGITUDE: -121.6078
+CSR_LATITUDE: 44.3232842
+CSR_ELEVATION: 998
 UTC_offset: -8
-Timezone: America/Los_Angeles
-IGBP: Evergreen needleleaf forest
-Network: Ameriflux
-Site_ID: US-ME6
-Instrument: LI-8100A
-File_format: Processed_csv
-Timestamp_format: %m/%d/%y %H:%M 
-Timestamp_timezone: America/Los_Angeles
-Primary_pub: 10.1016/j.agrformet.2012.05.015
-Other_pub: 10.5194/bg-11-4139-2014
-Data_URL:
-Acknowledgment: 
+CSR_TIMEZONE: America/Los_Angeles
+CSR_IGBP: Evergreen needleleaf forest
+CSR_NETWORK: Ameriflux
+CSR_SITE_ID: US-ME6
+CSR_INSTRUMENT: LI-8100A
+CSR_FILE_FORMAT: Processed_csv
+CSR_TIMESTAMP_FORMAT: %m/%d/%y %H:%M 
+CSR_TIMESTAMP_TZ: America/Los_Angeles
+CSR_PRIMARY_PUB: 10.1016/j.agrformet.2012.05.015
+CSR_OTHER_PUB: 10.5194/bg-11-4139-2014
+CSR_DATA_URL:
+CSR_ACKNOWLEDGMENT: 

@@ -2,38 +2,38 @@
 #
 # This key-value data file holds the minimal metadata for each dataset.
 # Most entries  be filled out for each dataset. Entries below include:
-# 	Site_name: standard site name
-# 	Longitude: decimal degrees; positive = east, negative = west
-# 	Latitude: decimal degrees; positive = north, negative = south
-# 	Elevation: elevation above sea level, meters
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
 # 	UTC_offset: offset from UTC of site data, hours (standard time)
-# 	IGBP: IGBP land cover type. Common types include:
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
 #		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
 #		Savannas, Grassland, Wetland, Cropland, Urban
-#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
-# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
 # 	Primary publication: optional DOI (preferred) or other primary publication 
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
-# 	Acknowledgment: optional acknowledgment (funding or other) text
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: Prospect Hill Tract (Harvard Forest)
-Longitude: -72.17
-Latitude: 42.54
-Elevation: 352.5
+CSR_SITE_NAME: Prospect Hill Tract (Harvard Forest)
+CSR_LONGITUDE: -72.17
+CSR_LATITUDE: 42.54
+CSR_ELEVATION: 352.5
 UTC_offset: -5
-Timezone: America/New_York
-IGBP: Deciduous broadleaf forest
-Network: Ameriflux
-Site_ID: US-Ha1
-Instrument: LI-6252
-File_format: Custom
-Timestamp_format: %Y-%m-%dT%H:%M
-Timestamp_timezone: America/New_York
-Primary_pub: 10.1111/j.1365-2435.2008.01414.x
-Other_pub:
-Data_URL: 10.6073/pasta/33ba3432103297fe0644de6e0898f91f
-Acknowledgment: 
+CSR_TIMEZONE: America/New_York
+CSR_IGBP: Deciduous broadleaf forest
+CSR_NETWORK: Ameriflux
+CSR_SITE_ID: US-Ha1
+CSR_INSTRUMENT: LI-6252
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M
+CSR_TIMESTAMP_TZ: America/New_York
+CSR_PRIMARY_PUB: 10.1111/j.1365-2435.2008.01414.x
+CSR_OTHER_PUB:
+CSR_DATA_URL: 10.6073/pasta/33ba3432103297fe0644de6e0898f91f
+CSR_ACKNOWLEDGMENT: 

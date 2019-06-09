@@ -33,17 +33,17 @@ diag <- ds$diagnostics
 
 Info          |  Value
 ------------- | ----
-Site          | `r d$Site_name`
-Location      | `r d$Latitude` N, `r d$Longitude` E
-Elevation     | `r d$Elevation` m
+Site          | `r d$CSR_SITE_NAME`
+Location      | `r d$CSR_LATITUDE` N, `r d$CSR_LONGITUDE` E
+Elevation     | `r d$CSR_ELEVATION` m
 UTC offset    | `r d$UTC_offset`
-IGBP          | `r d$IGBP`
-Network       | `r paste(d$Network, d$Site_ID)`
+IGBP          | `r d$CSR_IGBP`
+Network       | `r paste(d$CSR_NETWORK, d$CSR_SITE_ID)`
 
 ```{r map, echo=FALSE}
 library(sp)
 library(leaflet)
-df <- data.frame(lon = ds$description$Longitude, lat = ds$description$Latitude)
+df <- data.frame(lon = ds$description$CSR_LONGITUDE, lat = ds$description$CSR_LATITUDE)
 coordinates(df) <- ~lon + lat
 leaflet(df) %>% 
   addMarkers() %>% 
@@ -54,11 +54,11 @@ leaflet(df) %>%
 
 Info            |  Value
 --------------- | ----
-Publication (URL or DOI)  | `r d$Primary_pub`
-Other publications        | `r d$Other_pubs`
-Data (URL or DOI)         | `r d$Data_URL`
+Publication (URL or DOI)  | `r d$CSR_PRIMARY_PUB`
+Other publications        | `r d$CSR_OTHER_PUBS`
+Data (URL or DOI)         | `r d$CSR_DATA_URL`
 
-**Acknowledgment text**: `r d$Acknowledgment`
+**Acknowledgment text**: `r d$CSR_ACKNOWLEDGMENT`
 
 ## Contributors
 
@@ -69,13 +69,13 @@ knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %
 
 ## Measurement information
 
-**Instrument**: `r d$Instrument`
+**Instrument**: `r d$CSR_INSTRUMENT`
 
-**File format**: `r d$File_format`
+**File format**: `r d$CSR_FILE_FORMAT`
 
-**Timestamp format**: `r d$Timestamp_format`
+**Timestamp format**: `r d$CSR_TIMESTAMP_FORMAT`
 
-**Timestamp timezone**: `r d$Timestamp_timezone`
+**Timestamp timezone**: `r d$CSR_TIMESTAMP_TZ`
 
 ```{r msmt_table, echo=FALSE}
 knitr::kable(ds$ports, format = "html") %>% 

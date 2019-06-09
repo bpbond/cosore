@@ -67,10 +67,14 @@ test_that("read_csv_data", {
 
 test_that("read_description_file", {
   # description file
-  labels <- c("Site_name", "Longitude", "Latitude", "Elevation", "UTC_offset",
-              "Timezone", "Instrument", "File_format", "IGBP", "Timestamp_format",
-              "Timestamp_timezone")
-  dat <- c("site", "1", "2", "3", "-1", "America/New_York", "ins", "ff", "et", "tsf", "tstz")
+  labels <- c("CSR_SITE_NAME", "CSR_LONGITUDE", "CSR_LATITUDE", "CSR_ELEVATION",
+              "UTC_offset", "CSR_TIMEZONE", "CSR_IGBP",
+              "CSR_INSTRUMENT",
+              "CSR_FILE_FORMAT", "CSR_TIMESTAMP_FORMAT", "CSR_TIMESTAMP_TZ")
+  dat <- c("site", "1", "2", "3",
+           -5, "America/New_York", "igbp",
+           "ins",
+           "ff", "tsf", "tstz")
   fd <- paste(labels, dat, sep = ":")
 
   x <- read_description_file("x", file_data = fd)

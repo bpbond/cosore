@@ -54,7 +54,7 @@ Total size: `r format(object.size(all_data), "Mb")`
 ```{r spatial}
 library(sp)
 library(leaflet)
-df <- data.frame(lon = desc$Longitude, lat = desc$Latitude)
+df <- data.frame(lon = desc$CSR_LONGITUDE, lat = desc$CSR_LATITUDE)
 coordinates(df) <- ~lon + lat
 leaflet(df) %>% 
   addMarkers() %>% 
@@ -68,22 +68,22 @@ library(lubridate)
 coverage <- lapply(all_data, function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
     data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               IGBP = x$description$IGBP,
+               CSR_IGBP = x$description$CSR_IGBP,
                Year = year(x$data$CSR_TIMESTAMP), 
                Month = month(x$data$CSR_TIMESTAMP),
                Day = day(x$data$CSR_TIMESTAMP),
                stringsAsFactors = FALSE)
   } else {
     data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               IGBP = x$description$IGBP,
+               CSR_IGBP = x$description$CSR_IGBP,
                Year = NA, Month = NA, Day = NA,
                stringsAsFactors = FALSE)
   }
 } )
 
 do.call("rbind", c(coverage, make.row.names = FALSE)) %>% 
-  distinct(CSR_DATASET, IGBP, Year, Month, Day) %>% 
-  group_by(CSR_DATASET, IGBP, Year, Month) %>% 
+  distinct(CSR_DATASET, CSR_IGBP, Year, Month, Day) %>% 
+  group_by(CSR_DATASET, CSR_IGBP, Year, Month) %>% 
   summarise(N = n()) %>% 
   ungroup %>% 
   mutate(Time = lubridate::ymd(paste(Year, Month, "1"))) %>% 
@@ -97,12 +97,12 @@ do.call("rbind", c(coverage, make.row.names = FALSE)) %>%
 coverage <- lapply(all_data, function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
     data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               IGBP = x$description$IGBP,
+               CSR_IGBP = x$description$CSR_IGBP,
                CSR_FLUX = x$data$CSR_FLUX,
                stringsAsFactors = FALSE)
   } else {
     data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               IGBP = x$description$IGBP,
+               CSR_IGBP = x$description$CSR_IGBP,
                CSR_FLUX = NA,
                stringsAsFactors = FALSE)
   }
@@ -111,7 +111,7 @@ coverage <- lapply(all_data, function(x) {
 bind_rows(coverage) %>% 
   filter(CSR_FLUX > -1 & CSR_FLUX < 20) %>% 
   ggplot(aes(x = CSR_FLUX)) + geom_histogram(bins = 30) +
-  facet_wrap(~IGBP) 
+  facet_wrap(~CSR_IGBP) 
 
 ```
 
@@ -121,9 +121,9 @@ bind_rows(coverage) %>%
 le <- lapply(all_data, function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
     data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               Latitude = x$description$Latitude,
-               Elevation = x$description$Elevation,
-               IGBP = x$description$IGBP,
+               CSR_LATITUDE = x$description$CSR_LATITUDE,
+               CSR_ELEVATION = x$description$CSR_ELEVATION,
+               CSR_IGBP = x$description$CSR_IGBP,
                CSR_FLUX_sd = sd(x$data$CSR_FLUX, na.rm = TRUE),
                CSR_FLUX = mean(x$data$CSR_FLUX, na.rm = TRUE),
                stringsAsFactors = FALSE)
@@ -131,8 +131,8 @@ le <- lapply(all_data, function(x) {
 })
 le <- bind_rows(le)
 
-p <- ggplot(le, aes(Latitude, CSR_FLUX, color = Elevation)) + 
-  geom_jitter() + facet_wrap(~IGBP) +
+p <- ggplot(le, aes(CSR_LATITUDE, CSR_FLUX, color = CSR_ELEVATION)) + 
+  geom_jitter() + facet_wrap(~CSR_IGBP) +
   geom_errorbar(aes(ymin = CSR_FLUX - CSR_FLUX_sd,
                     ymax = CSR_FLUX + CSR_FLUX_sd))
 print(p)

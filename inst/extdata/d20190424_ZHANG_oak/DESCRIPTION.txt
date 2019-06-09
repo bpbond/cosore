@@ -2,38 +2,38 @@
 #
 # This key-value data file holds the minimal metadata for each dataset.
 # Most entries  be filled out for each dataset. Entries below include:
-# 	Site_name: standard site name
-# 	Longitude: decimal degrees; positive = east, negative = west
-# 	Latitude: decimal degrees; positive = north, negative = south
-# 	Elevation: elevation above sea level, meters
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
 # 	UTC_offset: offset from UTC of site data, hours (standard time)
-# 	IGBP: IGBP land cover type. Common types include:
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
 #		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
 #		Savannas, Grassland, Wetland, Cropland, Urban
-#	Network and Site_ID: Optional network (e.g. "Ameriflux") and site ID in network
-# 	Instrument: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
 # 	Primary publication: optional DOI (preferred) or other primary publication 
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
-# 	Acknowledgment: optional acknowledgment (funding or other) text
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-Site_name: Morgan Monroe State Forest
-Longitude: -86.4131
-Latitude: 39.3232
-Elevation: 275
+CSR_SITE_NAME: Morgan Monroe State Forest
+CSR_LONGITUDE: -86.4131
+CSR_LATITUDE: 39.3232
+CSR_ELEVATION: 275
 UTC_offset: -5
-Timezone: America/Indiana/Indianapolis
-IGBP: Deciduous broadleaf forest
-Network: Ameriflux
-Site_ID: US-MMS
-Instrument: LI-8100
-File_format: Processed_csv
-Timestamp_format: %Y %j %H
-Timestamp_timezone: America/Indiana/Indianapolis
-Primary_pub: 10.1016/j.agrformet.2018.05.005
-Other_pub:
-Data_URL:
-Acknowledgment: This work was supported by the AmeriFlux Management Project, administered by the US Department of Energy, and by the USDA Forest Service – Southern Research Station. Q. Zhang acknowledges support from the National Natural Science Foundation of China (Project NO. 51509187)
+CSR_TIMEZONE: America/Indiana/Indianapolis
+CSR_IGBP: Deciduous broadleaf forest
+CSR_NETWORK: Ameriflux
+CSR_SITE_ID: US-MMS
+CSR_INSTRUMENT: LI-8100
+CSR_FILE_FORMAT: Processed_csv
+CSR_TIMESTAMP_FORMAT: %Y %j %H
+CSR_TIMESTAMP_TZ: America/Indiana/Indianapolis
+CSR_PRIMARY_PUB: 10.1016/j.agrformet.2018.05.005
+CSR_OTHER_PUB:
+CSR_DATA_URL:
+CSR_ACKNOWLEDGMENT: This work was supported by the AmeriFlux Management Project, administered by the US Department of Energy, and by the USDA Forest Service – Southern Research Station. Q. Zhang acknowledges support from the National Natural Science Foundation of China (Project NO. 51509187)

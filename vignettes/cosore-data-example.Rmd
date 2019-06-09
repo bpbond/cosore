@@ -44,10 +44,10 @@ if(!data_loaded) {   # no database available; create a fake one
   cosore <- list(
     d20190415_VARNER = list(
       description = data.frame(CSR_DATASET = "d20190415_VARNER",
-                               Site_name = "1",
-                               IGBP = "Deciduous broadleaf forest",
-                               Longitude = 1,
-                               Latitude = 1),
+                               CSR_SITE_NAME = "1",
+                               CSR_IGBP = "Deciduous broadleaf forest",
+                               CSR_LONGITUDE = 1,
+                               CSR_LATITUDE = 1),
       data = data.frame(CSR_TIMESTAMP = lubridate::ymd_hm("2019-06-05 07:12"),
                         CSR_FLUX = 1,
                         CSR_PORT = 1,
@@ -129,8 +129,6 @@ summary(sr)
 This dataset has `r nrow(sr)` observations; extends from April 2003 to December 2006; and soil respiration was measured on eight ports, along with air and 5 cm soil temperature. Visualizing it:
 
 ```{r visualize-varner}
-writeLines(capture.output(str(sr)), "~/Desktop/str-sr.txt")
-
 library(ggplot2)
 ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
   geom_point(size = 0.5) + ggtitle("Flux over time")
@@ -155,7 +153,7 @@ From this we see that the only `Port` entry is zero, with `Treatment` of "None",
 Finally, we can use the `description` table information to get a full citation:
 
 ```{r pub-varner}
-doi <- varner$description$Primary_pub
+doi <- varner$description$CSR_PRIMARY_PUB
 print(doi)
 library(rcrossref)
 try(cr_cn(dois = doi, format = "text"))
@@ -172,13 +170,13 @@ Let's examine how soil respiration varies over the course of the day in temperat
 # but all the steps below can be replicated with base R commands too of course
 library(dplyr, warn.conflicts = FALSE)
 desc %>%   # our combined 'description' table, from above
-  filter(IGBP == "Deciduous broadleaf forest") ->
+  filter(CSR_IGBP == "Deciduous broadleaf forest") ->
   tdf
 
 # Make a map of these datasets
 library(sp)
 library(leaflet)
-map <- data.frame(lon = tdf$Longitude, lat = tdf$Latitude)
+map <- data.frame(lon = tdf$CSR_LONGITUDE, lat = tdf$CSR_LATITUDE)
 coordinates(map) <- ~lon + lat
 leaflet(map) %>% 
   addMarkers() %>% 
@@ -204,16 +202,16 @@ The original question we were interested in was how respiration varies over the 
 ```{r dbf-day}
 tdf_dat %>% 
   # join two tables together
-  left_join(select(tdf, CSR_DATASET, Site_name, Latitude), by = "CSR_DATASET") %>% 
+  left_join(select(tdf, CSR_DATASET, CSR_SITE_NAME, CSR_LATITUDE), by = "CSR_DATASET") %>% 
   # add some new fields
   mutate(Hour = hour(CSR_TIMESTAMP),
          Month = month(CSR_TIMESTAMP), 
          Year = year(CSR_TIMESTAMP)) %>% 
   # for each month, compute mean flux for each hour of the day
-  group_by(CSR_DATASET, Latitude, Year, Month, Hour) %>% 
+  group_by(CSR_DATASET, CSR_LATITUDE, Year, Month, Hour) %>% 
   summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
   
-  ggplot(aes(Hour, CSR_FLUX, color = Latitude)) + 
+  ggplot(aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
   geom_point(size = 0.5) + facet_wrap(~Month) +
   ggtitle("Flux by hour of day and month of year")
 ```
@@ -224,8 +222,11 @@ Plot the data in a different way...TODO.
 
 This vignette has mostly focused on the `description` and `data` tables, and briefly mentioned `ports`. Others include:
 
-* the `ancillary` table: ancillary, site-level data such as leaf area index (LAI), net primary production (NPP), soil texture, etc.
-* `contributors`: dataset contributors. The first person listed should be considered the primary point of contact.
+* the `contributors` table: dataset contributors. The first person listed should be considered the primary point of contact.
+* `ancillary`: ancillary site-level data such as leaf area index, net primary production, soil texture, etc. All optional.
+
+Two additional tables that provide information about the processing of raw data into standardized COSORE datasets:
+
 * `columns`: describes how columns in the original dataset (as contributed) were mapped to the COSORE standard fields, including any unit changes or transormations.
 * `diagnostics`: metadata about the data ingestion process: rows and columns removed, errors, etc.
 

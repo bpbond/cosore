@@ -14,13 +14,24 @@ read_description_file(dataset_name, file_data = NULL)
 \value{
 A \code{data.frame} with the following columns:
 \item{Dataset}{Dataset name, character}
-\item{Site_name}{Site name, character}
-\item{Longitude}{Decimal Longitude, numeric}
-\item{Latitude}{Decimal latitude, numeric}
-\item{Instrument}{Instrument type, character}
-\item{Ecosystem_type}{Ecosystem type, character}
-\item{Primary_pub}{Primary publication, character}
-\item{Other_pubs}{Other publications, character}
+\item{CSR_SITE}{Site name, character}
+\item{CSR_LONGITUDE}{Decimal longitude (degrees), numeric}
+\item{CSR_LATITUDE}{Decimal latitude (degrees), numeric}
+\item{CSR_ELEVATION}{Elevation (m), numeric}
+\item{UTC_offset}{Offset from UTC (hours), numeric}
+\item{CSR_TIMEZONE}{Timezone, character}
+\item{CSR_IGBP}{IGBP class, character}
+\item{CSR_NETWORK}{Site network name, character}
+\item{CSR_SITE_ID}{Site ID in network, character}
+\item{CSR_INSTRUMENT}{Measurement instrument type, character}
+\item{CSR_FILE_FORMAT}{Data file format, character}
+\item{CSR_TIMESTAMP_FORMAT}{Data timestamp format (see \code{\link{strptime}}), character}
+\item{CSR_TIMESTAMP_TZ}{Data timestamp timezone, character}
+\item{CSR_PRIMARY_PUB}{Primary publication, character}
+\item{CSR_OTHER_PUBS}{Other publications, character}
+\item{CSR_DATA_URL}{Data URL or DOI, character}
+\item{CRS_ACKNOWLEDGMENT}{Acknowledgment text, character}
+\item{CSR_DATASET}{Dataset name (internal to COSORE), character}
 }
 \description{
 Read dataset DESCRIPTION file
