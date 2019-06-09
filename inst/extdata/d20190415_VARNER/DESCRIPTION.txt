@@ -34,6 +34,6 @@ CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M
 CSR_TIMESTAMP_TZ: America/New_York
 CSR_PRIMARY_PUB: 10.1029/2008JG000858
-CSR_OTHER_PUBs: 10.1890/ES13.00183.1
+CSR_OTHER_PUBSs: 10.1890/ES13.00183.1
 CSR_DATA_URL: 10.6073/pasta/29aae9def8e977d8ee67f1ca2f54b632
 CSR_ACKNOWLEDGMENT: Varner R. 2008. Soil Respiration Along a Hydrological Gradient at Harvard Forest EMS Tower 2003-2006. Harvard Forest Data Archive: HF068

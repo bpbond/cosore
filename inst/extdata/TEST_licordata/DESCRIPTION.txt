@@ -35,6 +35,6 @@ CSR_FILE_FORMAT: LI-8100A_raw
 CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 CSR_TIMESTAMP_TZ: America/New_York
 CSR_PRIMARY_PUB:
-CSR_OTHER_PUB:
+CSR_OTHER_PUBS:
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: This research was supported by the Smithsonian Environmental Research Center.

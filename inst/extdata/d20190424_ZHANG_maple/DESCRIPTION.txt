@@ -34,6 +34,6 @@ CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y %j %H
 CSR_TIMESTAMP_TZ: America/Indiana/Indianapolis
 CSR_PRIMARY_PUB: 10.1016/j.agrformet.2018.05.005
-CSR_OTHER_PUB:
+CSR_OTHER_PUBS:
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: This work was supported by the AmeriFlux Management Project, administered by the US Department of Energy, and by the USDA Forest Service – Southern Research Station. Q. Zhang acknowledges support from the National Natural Science Foundation of China (Project NO. 51509187)

@@ -37,7 +37,7 @@ CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y%m%d %H:%M
 CSR_TIMESTAMP_TZ: America/Costa_Rica
 CSR_PRIMARY_PUB: 10.3390/f8020040
-CSR_OTHER_PUB: 10.1016/j.foreco.2006.11.016, 10.1890/09-0635.110.1139/X07-057
+CSR_OTHER_PUBS: 10.1016/j.foreco.2006.11.016, 10.1890/09-0635.110.1139/X07-057
 CSR_DATA_URL: http://dx.doi.org/10.3334/ORNLDAAC/1373
 CSR_ACKNOWLEDGMENT: This work was funded by the U.S. National Science Foundation grants DEB-0236502 and 630 DEB-0703561.
 Note: Litterfall data also available in dataset.

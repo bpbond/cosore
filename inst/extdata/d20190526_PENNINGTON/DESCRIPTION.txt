@@ -34,6 +34,6 @@ CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
 CSR_TIMESTAMP_TZ: America/New_York
 CSR_PRIMARY_PUB:
-CSR_OTHER_PUB:
+CSR_OTHER_PUBS:
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: This research was supported by the Smithsonian Environmental Research Center.

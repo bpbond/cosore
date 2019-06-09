@@ -34,6 +34,6 @@ CSR_FILE_FORMAT: Processed
 CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 CSR_TIMESTAMP_TZ: Europe/Dublin
 CSR_PRIMARY_PUB:
-CSR_OTHER_PUBs:
+CSR_OTHER_PUBSs:
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: Supported by a joint Ph.D programme grant (201206300050) from the China Scholarship Council (CSC) and University College Dublin (UCD). Coillte allowed the project almost unlimited access to its properties.
