@@ -56,7 +56,7 @@ if(!data_loaded) {   # no database available; create a fake one
 }
 ```
 
-This database is comprised of a collection of datasets, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements taken at a single site and with constant treatment assignments.
+This database is comprised of a collection of _datasets_, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements taken at a single site and with constant treatment assignments.
 
 In practice, the `COSORE` database is structured as a two-level nested list of data frames:
 
@@ -64,7 +64,7 @@ In practice, the `COSORE` database is structured as a two-level nested list of d
 cosore
 |- dataset 1
 |   |- description table (a data.frame)
-|   |- contributors table (same...)
+|   |- contributors table (ditto...)
 |   |- ports table
 |   |- columns table
 |   |- ancillary table
@@ -105,7 +105,7 @@ desc <- csr_table(cosore, "description")
 tibble::glimpse(desc)
 ```
 
-Lots of information! (Note much of this is summarized in the `Report-all.html` file included with the data download.) Let's start with a single dataset and work our way up to multi-data analyses.
+Lots of information; note much of this is summarized in the `Report-all.html` file included with the data download.
 
 # Exploring a single dataset
 
@@ -142,13 +142,13 @@ ggplot(sr, aes(CSR_T5, CSR_FLUX)) +
 
 Did these eight different ports (chambers) represent different treatments?
 We might want to exclude treatment collars, or color them differently 
-in the plots above.
+in the plots above. The `ports` table holds this information.
 
 ```{r ports-varner}
 varner$ports
 ```
 
-From this we see that the only `Port` entry is zero, with `Treatment` of "None", i.e. all ports/collars had the same treatment, and there _wasn't_ any treatment. Also, the collars were `r varner$ports$CSR_AREA` cm2.
+From this we see that the only `CSR_PORT` entry is zero, and has a `CSR_TREATMENT` of "None", i.e. all ports/collars had the same treatment, and there _wasn't_ any treatment. Also, the collars were `r varner$ports$CSR_AREA` cm2.
 
 Finally, we can use the `description` table information to get a full citation:
 
@@ -161,9 +161,7 @@ try(cr_cn(dois = doi, format = "text"))
 
 # Selecting and combining multiple datasets
 
-Time for something more ambitious.
-
-Let's examine how soil respiration varies over the course of the day in temperate deciduous forests.
+Time for something more ambitious: let's examine how soil respiration varies over the course of the day in temperate deciduous forests.
 
 ```{r dbf-map}
 # The dplyr package is really good for this kind of filter-and-join thing,
@@ -183,21 +181,19 @@ leaflet(map) %>%
   addTiles()
 ```
 
-There are `r nrow(tdf)` datasets here; let's extract them.
+There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 
 ```{r dbf-data}
 cosore_tdf <- cosore[tdf$CSR_DATASET]
 tdf_dat <- csr_table(cosore_tdf, "data")
 tdf_dat %>% 
-  mutate(Yday = yday(CSR_TIMESTAMP), Year = year(CSR_TIMESTAMP)) %>% 
-  ggplot(aes(Yday, CSR_FLUX, group = CSR_PORT, color = Year)) + 
+  ggplot(aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_DATASET)) + 
   geom_point(size = 0.5) + 
-  facet_wrap(~CSR_DATASET, scales = "free") +
-  scale_color_continuous("Year") +
-  coord_cartesian(ylim = c(0, 20))
+  coord_cartesian(ylim = c(0, 20)) +
+  ggtitle("Flux over time, colored by dataset")
 ```
 
-The original question we were interested in was how respiration varies over the course of the day. (Note for simplicity below we're assuming that data timestamps are in local time, but that might not be true, e.g. if an instrument is set to UTC; see the `description` table.)
+The original question we were interested in was how respiration varies over the course of the day. Say we're also interested in site latitude as a possible covariate, requiring us to join together two of the tables we've extracted.
 
 ```{r dbf-day}
 tdf_dat %>% 
@@ -216,18 +212,18 @@ tdf_dat %>%
   ggtitle("Flux by hour of day and month of year")
 ```
 
-Plot the data in a different way...TODO.
+(Note that for simplicity, we're assuming above that data timestamps are in _local_ time, but that might not be true, e.g. if an instrument is set to UTC; see the `description` table.)
 
 # Other tables and data
 
 This vignette has mostly focused on the `description` and `data` tables, and briefly mentioned `ports`. Others include:
 
-* the `contributors` table: dataset contributors. The first person listed should be considered the primary point of contact.
+* The `contributors` table: dataset contributors. The first person listed should be considered the primary point of contact.
 * `ancillary`: ancillary site-level data such as leaf area index, net primary production, soil texture, etc. All optional.
 
-Two additional tables that provide information about the processing of raw data into standardized COSORE datasets:
+Two additional tables provide information about the processing of raw data into standardized COSORE datasets:
 
-* `columns`: describes how columns in the original dataset (as contributed) were mapped to the COSORE standard fields, including any unit changes or transormations.
+* `columns`: describes how columns in the original dataset (i.e. as contributed) were mapped to the COSORE standard fields, including any unit changes or transformations.
 * `diagnostics`: metadata about the data ingestion process: rows and columns removed, errors, etc.
 
 These can all be extracted using a method like the `csr_table()` function above.
