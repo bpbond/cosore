@@ -13,11 +13,11 @@ read_contributors_file(dataset_name, file_data = NULL)
 }
 \value{
 A \code{data.frame} with the following columns:
-\item{First_name}{Site name, character}
-\item{Family_name}{Decimal Longitude, numeric}
-\item{Email}{Decimal latitude, numeric}
-\item{ORCID}{Instrument type, character}
-\item{Role}{Role, character}
+\item{CSR_FIRST_NAME}{Site name, character}
+\item{CSR_FAMILY_NAME}{Decimal Longitude, numeric}
+\item{CSR_EMAIL}{Decimal latitude, numeric}
+\item{CSR_ORCID}{Instrument type, character}
+\item{CSR_ROLE}{Role, character}
 }
 \description{
 Read dataset CONTRIBUTORS file

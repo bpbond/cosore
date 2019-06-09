@@ -7,7 +7,8 @@ Authors@R: c(person("Ben", "Bond-Lamberty",
                 role = c("cre", "aut"), 
                 comment = c(ORCID = "0000-0001-9525-4633")))
 Maintainer: Ben Bond-Lamberty <bondlamberty@pnnl.gov>
-Description: An open database of continuous soil respiration datasets.
+Description: An open-science database of continuous soil respiration datasets,
+    intended as a community resource for syntheses and reference.
 Imports:
     rmarkdown,
     knitr,

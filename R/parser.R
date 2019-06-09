@@ -131,14 +131,14 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 #' @note For information about ORCID see \url{https://orcid.org}. For
 #' CRediT roles, see \url{https://www.casrai.org/credit.html}.
 #' @return A \code{data.frame} with the following columns:
-#' \item{First_name}{Site name, character}
-#' \item{Family_name}{Decimal Longitude, numeric}
-#' \item{Email}{Decimal latitude, numeric}
-#' \item{ORCID}{Instrument type, character}
-#' \item{Role}{Role, character}
+#' \item{CSR_FIRST_NAME}{Site name, character}
+#' \item{CSR_FAMILY_NAME}{Decimal Longitude, numeric}
+#' \item{CSR_EMAIL}{Decimal latitude, numeric}
+#' \item{CSR_ORCID}{Instrument type, character}
+#' \item{CSR_ROLE}{Role, character}
 read_contributors_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "CONTRIBUTORS.txt", file_data)
-  read_csv_data(file_data, required = c("First_name", "Family_name"))
+  read_csv_data(file_data, required = c("CSR_FIRST_NAME", "CSR_FAMILY_NAME"))
 }
 
 
