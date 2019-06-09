@@ -16,7 +16,7 @@ Release date: %DATE
 
 ## Table of contents
 
-1. Data use policy, citations, and co-authorship   **<– read this please**
+1. Data use policy, citations, and co-authorship
 2. Files included in this release
 3. How to access the data
 4. Feedback and problems
@@ -30,7 +30,7 @@ completely open for reuse. It's published under the permissive
 or citations are required for papers using these data for analysis.
 
 **But, scientists need incentives and rewards to contribute data and maintain the database.** So, we
-* **_strongly request_** that you cite the main database paper [when it is published].
+* **_strongly request_** that you cite the main database paper (when it is published; until then link to the [GitHub page](https://github.com/bpbond/cosor)).
 * _request_ that you cite all "primary publication" studies found in the `DESCRIPTION` table (see below).
 * _encourage_ you to involve data contributors as co-authors whenever possible. 
 
@@ -38,8 +38,8 @@ In summary, please do your part to balance open data and open science with ensur
 data contributors receive tangible benefits from participating in COSORE. Your synthesis
 depends on the labor of many, many people; recognize them.
 
-Finally: for reproducibility please _always_ include the version (%VERSION) and, ideally, 
-the commit number (%GIT_SHA) in your methods section.
+Finally: for reproducibility please _always_ include the version and, ideally, 
+the commit number in your methods section.
 
 
 ## Files included in this release:
@@ -58,7 +58,7 @@ cosore <- readRDS("cosore_data.RDS")
 This will load the entire database (currently %DATABASE_SIZE) into memory. It's
 structured as a list of lists: the first level is broken up by dataset, and the
 second level by the `description`, `contributors`, `ports`, etc., tables. See the
-vignette (included here; or in R, type `vignette("cosore-data")`) for a detailed example.
+vignette (included in this download; or in R, type `vignette("cosore-data")`) for a detailed example.
 
 All the data are also written out as `csv` files (see list above),
 which can be read by almost any data analysis tool. Most tables
