@@ -13,7 +13,7 @@ read_description_file(dataset_name, file_data = NULL)
 }
 \value{
 A \code{data.frame} with the following columns:
-\item{Dataset}{Dataset name, character}
+\item{CSR_DATASET}{Dataset name (internal to COSORE), character}
 \item{CSR_SITE_NAME}{Site name, character}
 \item{CSR_LONGITUDE}{Decimal longitude (degrees), numeric}
 \item{CSR_LATITUDE}{Decimal latitude (degrees), numeric}
@@ -31,7 +31,6 @@ A \code{data.frame} with the following columns:
 \item{CSR_OTHER_PUBS}{Other publications, character}
 \item{CSR_DATA_URL}{Data URL or DOI, character}
 \item{CSR_ACKNOWLEDGMENT}{Acknowledgment text, character}
-\item{CSR_DATASET}{Dataset name (internal to COSORE), character}
 }
 \description{
 Read dataset DESCRIPTION file

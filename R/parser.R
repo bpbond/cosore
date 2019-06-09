@@ -86,7 +86,7 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 #' @keywords internal
 #' @importFrom tibble tibble
 #' @return A \code{data.frame} with the following columns:
-#' \item{Dataset}{Dataset name, character}
+#' \item{CSR_DATASET}{Dataset name (internal to COSORE), character}
 #' \item{CSR_SITE_NAME}{Site name, character}
 #' \item{CSR_LONGITUDE}{Decimal longitude (degrees), numeric}
 #' \item{CSR_LATITUDE}{Decimal latitude (degrees), numeric}
@@ -104,7 +104,6 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 #' \item{CSR_OTHER_PUBS}{Other publications, character}
 #' \item{CSR_DATA_URL}{Data URL or DOI, character}
 #' \item{CSR_ACKNOWLEDGMENT}{Acknowledgment text, character}
-#' \item{CSR_DATASET}{Dataset name (internal to COSORE), character}
 read_description_file <- function(dataset_name, file_data = NULL) {
   f <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
