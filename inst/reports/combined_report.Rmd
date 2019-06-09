@@ -38,14 +38,14 @@ years <- do.call("rbind", c(years, make.row.names = FALSE))
 years$Start <- format(years$Start, "%Y-%m")
 years$End <- format(years$End, "%Y-%m")
 
-x <- cbind(diag[c("CSR_DATASET", "Records")], years)
+x <- cbind(diag[c("CSR_DATASET", "CSR_RECORDS")], years)
 knitr::kable(x, format = "html", format.args = list(big.mark = ',')) %>% 
   kableExtra::kable_styling(full_width = FALSE)
 ```
 
 Datasets: `r length(all_data)`
 
-Total records: `r format(sum(x$Records), big.mark = ",")`
+Total records: `r format(sum(x$CSR_RECORDS), big.mark = ",")`
 
 Total size: `r format(object.size(all_data), "Mb")`
 

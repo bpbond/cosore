@@ -94,13 +94,14 @@ knitr::kable(ds$columns, format = "html") %>%
 
 Info                |  Value
 ------------------- | ----
-Records             | `r diag$Records`
-Records removed (error)     | `r diag$Records_removed_err`
-Records removed (invalid timestamp)     | `r diag$Records_removed_timestamp`
-Records removed (no flux)   | `r diag$Records_removed_NA`
-Records (flux < `r diag$Flux_lowbound`)  | `r diag$Records_removed_toolow`
-Records (flux > `r diag$Flux_highbound`) | `r diag$Records_removed_toohigh`
-Columns dropped     | `r diag$Columns_dropped`
+Records             | `r diag$CSR_RECORDS`
+Records removed (error)     | `r diag$CSR_RECORDS_REMOVED_ERR`
+Records removed (invalid timestamp)     | `r diag$CSR_RECORDS_REMOVED_TIMESTAMP`
+Records removed (no flux)   | `r diag$CSR_RECORDS_REMOVED_NA`
+Records (flux < `r diag$CSR_FLUX_LOWBOUND`)  | `r diag$CSR_RECORDS_REMOVED_TOOLOW`
+Records (flux > `r diag$CSR_FLUX_HIGHBOUND`) | `r diag$CSR_RECORDS_REMOVED_TOOHIGH`
+Columns dropped     | `r diag$CSR_COLUMNS_DROPPED`
+Bad `Tchamber` values removed | `r diag$CSR_BAD_TCHAMBER`
 Size                | `r format(object.size(ds), "Mb")`
 
 **Flux summary**:

@@ -298,17 +298,16 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   }
 
   # Processing statistics table
-  diag <- tibble(CSR_DATASET = dataset_name,
-                 Records = 0,
-                 Columns_dropped = "",
-                 Records_removed_NA = 0,
-                 Records_removed_err = 0,
-                 Records_removed_toolow = 0,
-                 Records_removed_toohigh = 0,
-                 Flux_lowbound = NA,
-                 Flux_highbound = NA,
-                 Bad_Tchamber_removed = 0,
-                 Records_removed_timestamp = 0)
+  diag <- tibble(CSR_RECORDS = 0,
+                 CSR_COLUMNS_DROPPED = "",
+                 CSR_RECORDS_REMOVED_NA = 0,
+                 CSR_RECORDS_REMOVED_ERR = 0,
+                 CSR_RECORDS_REMOVED_TOOLOW = 0,
+                 CSR_RECORDS_REMOVED_TOOHIGH = 0,
+                 CSR_FLUX_LOWBOUND = NA,
+                 CSR_FLUX_HIGHBOUND = NA,
+                 CSR_BAD_TCHAMBER = 0,
+                 CSR_RECORDS_REMOVED_TIMESTAMP = 0)
 
   dsd <- NULL  # dataset data
 
@@ -339,7 +338,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
                                     format = dataset$description$Timestamp_format,
                                     tz = dataset$description$Timestamp_timezone)
     nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
-    diag$Records_removed_timestamp <- sum(nats)
+    diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(nats)
     dsd <- dsd[!nats,]
 
     if(nrow(dsd) == 0) {
@@ -349,7 +348,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
 
     # Drop any unmapped columns
     drops <- grep("^CSR_", names(dsd), invert = TRUE)
-    diag$Columns_dropped <- paste(names(dsd)[drops], collapse = ", ")
+    diag$CSR_COLUMNS_DROPPED <- paste(names(dsd)[drops], collapse = ", ")
     dsd[drops] <- NULL
 
     # Add port column if necessary
@@ -359,25 +358,25 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
 
     # Remove NA flux records
     na_flux <- is.na(dsd$CSR_FLUX)
-    diag$Records_removed_NA <- sum(na_flux)
+    diag$CSR_RECORDS_REMOVED_NA <- sum(na_flux)
     dsd <- dsd[!na_flux,]
 
     # Remove error records
     if("CSR_ERROR" %in% names(dsd)) {
       err <- dsd$CSR_ERROR
-      diag$Records_removed_err <- sum(err)
+      diag$CSR_RECORDS_REMOVED_ERR <- sum(err)
       dsd <- dsd[!err,]
       dsd$CSR_ERROR <- NULL
     }
 
     # Remove records with flux data way out of anything possible
     fl <- c(-1, 50)   # flux limits
-    diag$Flux_lowbound <- min(fl)
-    diag$Flux_highbound <- max(fl)
+    diag$CSR_FLUX_LOWBOUND <- min(fl)
+    diag$CSR_FLUX_HIGHBOUND <- max(fl)
     toolow <- dsd$CSR_FLUX < min(fl)
-    diag$Records_removed_toolow <- sum(toolow, na.rm = TRUE)
+    diag$CSR_RECORDS_REMOVED_TOOLOW <- sum(toolow, na.rm = TRUE)
     toohigh <- dsd$CSR_FLUX > max(fl)
-    diag$Records_removed_toohigh <- sum(toohigh, na.rm = TRUE)
+    diag$CSR_RECORDS_REMOVED_TOOHIGH <- sum(toohigh, na.rm = TRUE)
     dsd <- dsd[!toolow & !toohigh,]
   }
 
@@ -386,7 +385,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     tl <- c(-50, 100)  # temperature limits
     bad_temps <- dsd$CSR_TCHAMBER < min(tl) | dsd$CSR_TCHAMBER > max(tl)
     dsd$CSR_TCHAMBER[bad_temps] <- NA
-    diag$Bad_Tchamber_removed <- sum(bad_temps, na.rm = TRUE)
+    diag$CSR_BAD_TCHAMBER <- sum(bad_temps, na.rm = TRUE)
   }
 
   # Add new tables to the dataset structure and return
