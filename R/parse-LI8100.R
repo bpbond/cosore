@@ -143,7 +143,7 @@ parse_LI8100_file <- function(filename) {
 `parse_PROCESSED` <- function(path) {
   files <- list.files(path, pattern = ".(txt|csv)$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.delim,
-                                 na.strings = c("NA", "-9999"),
+                                 na.strings = c("NA", "-9999", "#VALUE!"),
                                  stringsAsFactors = FALSE,
                                  check.names = FALSE))
   dat$CSR_ERROR <- FALSE
@@ -161,7 +161,7 @@ parse_LI8100_file <- function(filename) {
 `parse_PROCESSED_CSV` <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv,
-                                 na.strings = c("NA", "-9999"),
+                                 na.strings = c("NA", "-9999", "#VALUE!"),
                                  stringsAsFactors = FALSE,
                                  check.names = FALSE))
   dat$CSR_ERROR <- FALSE
