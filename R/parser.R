@@ -359,6 +359,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
       dsd$CSR_PORT <- 0
     }
+    dsd$CSR_PORT <- as.numeric(dsd$CSR_PORT)
 
     # Remove NA flux records
     na_flux <- is.na(dsd$CSR_FLUX)
