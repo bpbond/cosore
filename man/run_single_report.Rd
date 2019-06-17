@@ -17,5 +17,6 @@ run_single_report(ds, output_dir = "~/Desktop/Reports/", quiet = FALSE)
 Nothing; run for its side effects.
 }
 \description{
-Run a single dataset report
+Run a single dataset report, writing the resulting \code{html}
+file into a specified directory.
 }

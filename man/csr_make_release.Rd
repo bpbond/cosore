@@ -17,7 +17,7 @@ csr_make_release(all_data, path, vignette_rebuilt = FALSE,
 \item{force}{Ignore git dirty status? Logical}
 }
 \value{
-Fully qualified name of zip file containg release.
+Fully qualified name of zip file containing release.
 }
 \description{
 Make a new COSORE release

@@ -5,7 +5,7 @@
 #' @param path Path to write files to; must already exist
 #' @param vignette_rebuilt Has vignette been rebuilt? Logical
 #' @param force Ignore git dirty status? Logical
-#' @return Fully qualified name of zip file containg release.
+#' @return Fully qualified name of zip file containing release.
 #' @importFrom utils packageVersion write.csv object.size
 #' @details To make a new release, the git working directory
 #' must be clean (unless \code{force = TRUE}), a \code{path} must

@@ -12,7 +12,7 @@ csr_build(raw_data, return_all_data = TRUE)
 \item{return_all_data}{Return all data generated (invisibly)?, Logical}
 }
 \value{
-All the built data, invisibly
+All the built data, invisibly.
 }
 \description{
 Build the cosore dataset
@@ -20,6 +20,7 @@ Build the cosore dataset
 \examples{
 csr_build("")  # build without raw data; metadata only
 \dontrun{
-csr_build("../rawdata/")  # build with raw data
+all_data <- csr_build("../rawdata/")  # build with raw data
+run_all_reports(all_data)
 }
 }

@@ -18,6 +18,9 @@ run_combined_report <- function(all_data, output_dir = "~/Desktop/Reports/") {
 
 #' Run a single dataset report
 #'
+#' Run a single dataset report, writing the resulting \code{html}
+#' file into a specified directory.
+#'
 #' @param ds The dataset for which to generate a report.
 #' @param output_dir Output directory, character
 #' @param quiet Passed on to \code{rmarkdown::render}

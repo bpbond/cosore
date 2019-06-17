@@ -16,13 +16,14 @@ combine_data <- function(datasets, ...) {
 #'
 #' @param raw_data The raw data folder to use, character path
 #' @param return_all_data Return all data generated (invisibly)?, Logical
-#' @return All the built data, invisibly
+#' @return All the built data, invisibly.
 #' @importFrom drake drake_plan
 #' @export
 #' @examples
 #' csr_build("")  # build without raw data; metadata only
 #' \dontrun{
-#' csr_build("../rawdata/")  # build with raw data
+#' all_data <- csr_build("../rawdata/")  # build with raw data
+#' run_all_reports(all_data)
 #' }
 csr_build <- function(raw_data, return_all_data = TRUE) {
   # silence package check notes
@@ -54,8 +55,7 @@ csr_build <- function(raw_data, return_all_data = TRUE) {
   }
 }
 
-# csr_build("../rawdata/")
-# all <- drake::readd("all")
-# run_reports(all)
-# run_combined_report(all)
+# all_data <- csr_build("../rawdata/")
+# run_reports(all_data)
+# run_combined_report(all_data)
 
