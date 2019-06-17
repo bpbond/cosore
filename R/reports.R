@@ -1,5 +1,5 @@
 
-#' Run all individual dataset reports
+#' Run a summary report on the entire COSORE database
 #'
 #' @param all_data A list of \code{cosore} datasets.
 #' @param output_dir Output directory
@@ -40,7 +40,7 @@ run_single_report <- function(ds, output_dir = "~/Desktop/Reports/", quiet = FAL
 #' @param run_combined When done, run the combined (entire database) report?
 #' @return Nothing; run for its side effects.
 #' @export
-run_reports <- function(all_data, run_combined = TRUE) {
+run_all_reports <- function(all_data, run_combined = TRUE) {
   for(ds in all_data) {
     run_single_report(ds)
   }

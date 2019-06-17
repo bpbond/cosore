@@ -2,7 +2,7 @@
 % Please edit documentation in R/parser.R
 \name{read_dataset}
 \alias{read_dataset}
-\title{Read a complete dataset}
+\title{Read a complete dataset from raw files}
 \usage{
 read_dataset(dataset_name, raw_data, log = TRUE)
 }
@@ -22,7 +22,7 @@ A list with (at least) elements:
 \item{ancillary}{Ancillary site information}
 }
 \description{
-Read a complete dataset
+Read a complete dataset from raw files
 }
 \examples{
 read_dataset("TEST_licordata")

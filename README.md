@@ -1,6 +1,10 @@
 # cosore
 
-R package: continuous soil respiration database
+A package of oftware tools and metadata for COSORE, a reproducibility-oriented 
+community database for continuous soil respiration data.
+
+**To download the COSORE database, click on the
+[Releases](https://github.com/bpbond/cosore/releases) tab above.**
 
 ## Principles and general information
 

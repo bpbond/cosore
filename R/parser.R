@@ -40,10 +40,14 @@ extract_line <- function(file_data, line_label,
 }
 
 
-#' List available datasets
+#' List datasets available to build
 #'
 #' @param path Path name
 #' @return Character vector of datasets.
+#' @details This returns a vector of metadata folder names available in
+#' the package's \code{inst/exdata} folder. The \code{\link{csr_build}}
+#' function uses these names, in combination with a user-specified raw
+#' data folder, to build the database.
 #' @export
 #' @examples
 #' list_datasets()
@@ -55,7 +59,7 @@ list_datasets <- function(path = resolve_dataset("")) {
 #' Get the full path of a dataset folder(s)
 #'
 #' @param dataset_name Dataset name(s), character
-#' @export
+#' @keywords internal
 #' @return Fully-qualified filename(s) of dataset folder in \code{inst/extdata}
 #'  (\code{extdata/} in built package).
 resolve_dataset <- function(dataset_name) {
@@ -219,11 +223,13 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
 #' @param columns Column mapping data from the \code{COLUMNS.txt} file, a \code{data.frame}
 #' @return The \code{dat} data frame with column names transformed, and possibly
 #' computed, as defined by \code{columns}.
-#' @export
+#' @keywords internal
 #' @examples
+#' \dontrun{
 #' dat <- data.frame(x = 1:3)
 #' columns <- data.frame(Database = "y", Dataset = "x", Computation = "x * 2")
 #' map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
+#' }
 map_columns <- function(dat, columns) {
   if(!is.data.frame(dat)) return(NULL)
 
@@ -262,7 +268,7 @@ map_columns <- function(dat, columns) {
   dat
 }
 
-#' Read a complete dataset
+#' Read a complete dataset from raw files
 #'
 #' @param dataset_name Dataset name, character
 #' @param raw_data Path to the raw data folder (not in package)

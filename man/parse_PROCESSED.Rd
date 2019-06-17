@@ -19,3 +19,4 @@ Read processed data in whitespace-delimited format
 Processed (in the Licor application) data consists of a tab-delimited
 text file with a standard set of columns.
 }
+\keyword{internal}

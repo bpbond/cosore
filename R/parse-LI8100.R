@@ -6,7 +6,7 @@
 #' @param filename Filename, character
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.table
-#' @export
+#' @keywords internal
 parse_LI8100_file <- function(filename) {
 
   # Read file into memory and find records
@@ -126,7 +126,7 @@ parse_LI8100_file <- function(filename) {
 #'
 #' @param path Data directory path, character
 #' @return A data frame with all data read from file(s).
-#' @export
+#' @keywords internal
 `parse_LI-8100A_RAW` <- function(path) {
   files <- list.files(path, pattern = ".81x$", full.names = TRUE, recursive = TRUE)
   do.call("rbind", lapply(files, parse_LI8100_file))
@@ -139,7 +139,7 @@ parse_LI8100_file <- function(filename) {
 #' @note Processed (in the Licor application) data consists of a tab-delimited
 #' text file with a standard set of columns.
 #' @importFrom utils read.delim
-#' @export
+#' @keywords internal
 `parse_PROCESSED` <- function(path) {
   files <- list.files(path, pattern = ".(txt|csv)$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.delim,
@@ -157,7 +157,7 @@ parse_LI8100_file <- function(filename) {
 #' @note Processed (in the Licor application) data consists of a tab-delimited
 #' text file with a standard set of columns.
 #' @importFrom utils read.csv
-#' @export
+#' @keywords internal
 `parse_PROCESSED_CSV` <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.csv,

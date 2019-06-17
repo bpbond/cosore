@@ -17,21 +17,3 @@ csr_table <- function(all, table) {
 
   rbind_list(lapply(all, extract, table = table))
 }
-
-#' Extract all the \code{data} tables from the COSORE dataset
-#'
-#' @param all All data, a list of lists
-#' @return A \code{\link{data.frame}}.
-#' @export
-csr_data <- function(all) {
-  csr_table(all, "data")
-}
-
-#' Extract all the \code{description} tables from the COSORE dataset
-#'
-#' @param all All data, a list of lists
-#' @return A \code{\link{data.frame}}.
-#' @export
-csr_description <- function(all) {
-  csr_table(all, "description")
-}

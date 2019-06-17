@@ -16,3 +16,4 @@ Fully-qualified filename(s) of dataset folder in \code{inst/extdata}
 \description{
 Get the full path of a dataset folder(s)
 }
+\keyword{internal}

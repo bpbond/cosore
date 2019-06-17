@@ -2,7 +2,7 @@
 % Please edit documentation in R/reports.R
 \name{run_combined_report}
 \alias{run_combined_report}
-\title{Run all individual dataset reports}
+\title{Run a summary report on the entire COSORE database}
 \usage{
 run_combined_report(all_data, output_dir = "~/Desktop/Reports/")
 }
@@ -15,5 +15,5 @@ run_combined_report(all_data, output_dir = "~/Desktop/Reports/")
 Nothing; run for its side effects.
 }
 \description{
-Run all individual dataset reports
+Run a summary report on the entire COSORE database
 }

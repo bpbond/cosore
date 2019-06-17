@@ -228,6 +228,23 @@ Two additional tables provide information about the processing of raw data into 
 
 These can all be extracted using a method like the `csr_table()` function above.
 
-# Feedback and data contributions
+# Using the _database_ versus using the _package_
+
+Note that it's not necessary to install the `cosore` package to use the 
+COSORE database. The former is composed of software tools used to parse dataset 
+metadata, read and normalize raw data, and generate the database, while latter is
+a collection of files available for download via the package's
+[Releases](https://github.com/bpbond/cosore/releases) page.
+
+The package does include a few functions that might be handy for users:
+
+* `csr_table()`, the code for which is provided near the top of this vignette.
+* `run_single_report()`, to generate an html report on a single dataset. A  `run_all_reports()` function will generate reports for all datasets.
+* `run_combined_report()` provides a summary report, included in the release
+download, on the entire database.
+
+# Feedback and contributions
 
 Feedback is welcome on any aspects of the database design, strengths, limitations, formats, documentation...please [open a GitHub issue](https://github.com/bpbond/cosore/issues/new) or email; see the README.
+
+Interested in contributing data to COSORE? Pleae [contact the maintainer](mailto:bondlamberty@pnnl.gov) or open a GitHub issue.

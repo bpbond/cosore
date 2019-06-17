@@ -2,7 +2,7 @@
 % Please edit documentation in R/parser.R
 \name{list_datasets}
 \alias{list_datasets}
-\title{List available datasets}
+\title{List datasets available to build}
 \usage{
 list_datasets(path = resolve_dataset(""))
 }
@@ -13,7 +13,13 @@ list_datasets(path = resolve_dataset(""))
 Character vector of datasets.
 }
 \description{
-List available datasets
+List datasets available to build
+}
+\details{
+This returns a vector of metadata folder names available in
+the package's \code{inst/exdata} folder. The \code{\link{csr_build}}
+function uses these names, in combination with a user-specified raw
+data folder, to build the database.
 }
 \examples{
 list_datasets()

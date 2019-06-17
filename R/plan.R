@@ -5,7 +5,7 @@
 #' @param ... Dataset objects
 #' @return A single list with all datasets
 #' @importFrom drake drake_plan
-#' @export
+#' @keywords internal
 combine_data <- function(datasets, ...) {
   x <-  list(...)
   names(x) <- datasets

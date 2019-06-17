@@ -16,8 +16,8 @@
 #' database version, and
 #' database size are all copied into \code{README.md} as well.
 #' @export
-make_cosore_release <- function(all_data, path,
-                                vignette_rebuilt = FALSE, force = FALSE) {
+csr_make_release <- function(all_data, path,
+                             vignette_rebuilt = FALSE, force = FALSE) {
 
   if(!force & length(system2("git", args = c("status", "--porcelain"), stdout = TRUE))) {
     stop("Not allowed: git working directory is not clean")

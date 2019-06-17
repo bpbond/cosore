@@ -15,3 +15,4 @@ A data frame with all data read from file(s).
 \description{
 Read raw multiplexed Licor-8100 data
 }
+\keyword{internal}

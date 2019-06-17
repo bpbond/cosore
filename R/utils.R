@@ -62,7 +62,7 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
 #' @param path Path to search; normally the metadata are in \code{inst/extdata}
 #' @param write_files Write resulting files back out? Logical
 #' @return Nothing; run for side effects
-#' @export
+#' @keywords internal
 insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/extdata", write_files = TRUE) {
   files <- list.files(path, pattern = file, full.names = TRUE, recursive = TRUE)
   message("Found ", length(files), " files")

@@ -15,3 +15,4 @@ A \code{data.frame} containing extracted data.
 \description{
 Parse a LI-8100 (with LI-8150 multiplexer) data file
 }
+\keyword{internal}
