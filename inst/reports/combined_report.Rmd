@@ -19,7 +19,7 @@ diag <- csr_table(all_data, "diagnostics")
 
 ## Summary
 
-```{r table1}
+```{r gen-table1}
 # Extract min and max date information for each dataset
 years <- lapply(all_data, function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
@@ -39,8 +39,6 @@ years$Start <- format(years$Start, "%Y-%m")
 years$End <- format(years$End, "%Y-%m")
 
 x <- cbind(diag[c("CSR_DATASET", "CSR_RECORDS")], years)
-knitr::kable(x, format = "html", format.args = list(big.mark = ',')) %>% 
-  kableExtra::kable_styling(full_width = FALSE)
 ```
 
 Datasets: `r length(all_data)`
@@ -48,6 +46,11 @@ Datasets: `r length(all_data)`
 Total records: `r format(sum(x$CSR_RECORDS), big.mark = ",")`
 
 Total size: `r format(object.size(all_data), "Mb")`
+
+```{r table1}
+knitr::kable(x, format = "html", format.args = list(big.mark = ',')) %>% 
+  kableExtra::kable_styling(full_width = FALSE)
+```
 
 ## Spatial coverage
 
@@ -81,7 +84,7 @@ coverage <- lapply(all_data, function(x) {
   }
 } )
 
-do.call("rbind", c(coverage, make.row.names = FALSE)) %>% 
+bind_rows(coverage) %>% 
   distinct(CSR_DATASET, CSR_IGBP, Year, Month, Day) %>% 
   group_by(CSR_DATASET, CSR_IGBP, Year, Month) %>% 
   summarise(N = n()) %>% 
@@ -114,27 +117,3 @@ bind_rows(coverage) %>%
   facet_wrap(~CSR_IGBP) 
 
 ```
-
-### Latitude and elevation
-
-```{r lat_elev}
-le <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
-    data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               CSR_LATITUDE = x$description$CSR_LATITUDE,
-               CSR_ELEVATION = x$description$CSR_ELEVATION,
-               CSR_IGBP = x$description$CSR_IGBP,
-               CSR_FLUX_sd = sd(x$data$CSR_FLUX, na.rm = TRUE),
-               CSR_FLUX = mean(x$data$CSR_FLUX, na.rm = TRUE),
-               stringsAsFactors = FALSE)
-  }
-})
-le <- bind_rows(le)
-
-p <- ggplot(le, aes(CSR_LATITUDE, CSR_FLUX, color = CSR_ELEVATION)) + 
-  geom_jitter() + facet_wrap(~CSR_IGBP) +
-  geom_errorbar(aes(ymin = CSR_FLUX - CSR_FLUX_sd,
-                    ymax = CSR_FLUX + CSR_FLUX_sd))
-print(p)
-```
-
