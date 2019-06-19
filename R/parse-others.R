@@ -35,6 +35,10 @@ parse_d20190617_SCOTT_SRM <- function(path) {
     dp$CSR_T5 <- dat[,paste0("T5_", p)]
     out <- rbind(out, dp)
   }
+
+  # Per email from Ross Bryan, NA out T5 values >60 C
+  out$CSR_T5[out$CSR_T5 > 60] <- NA
+
   out$CSR_ERROR <- FALSE
   out
 }
