@@ -1,5 +1,27 @@
 # utils.R
 
+
+#' fractional_doy
+#'
+#' Convert a day of year (DOY) given as xxx.xxx to a day of year + time of day.
+#' This can vary due to leap years, so we need the year in question as well.
+#'
+#' @param year Year, integer
+#' @param doy Day of year, numeric (xxx.xxx)
+#' @return A string giving day of year and time in \code{\%j \%T} format; see \code{\link{strptime}}.
+#' @keywords internal
+fractional_doy <- function(year, doy) {
+  stopifnot(all(doy >= 1, na.rm = TRUE))
+  stopifnot(all(doy < 367, na.rm = TRUE))
+
+  doy_floor <- floor(doy)
+  start <- strptime(paste(year, doy_floor, "00:00:00"), "%Y %j %T")
+  frac <- doy - doy_floor
+  end <- start + frac * 24 * 60 * 60
+  format(end, "%j %T")
+}
+
+
 rename_col <- function(x, old, new) {
   stopifnot(old %in% names(x))
   colnames(x)[colnames(x) == old] <- new

@@ -21,6 +21,9 @@ parse_d20190617_SCOTT_SRM <- function(path) {
                         na.strings = c("NaN"),
                         stringsAsFactors = FALSE))
 
+  # Change the DOY column from fractional day of year to a string
+  dat$DOY <- fractional_doy(dat$Year, dat$DOY)
+
   # Convert from wide to long format
   out <- data.frame()
   d <- dat[c("Year", "DOY")]
