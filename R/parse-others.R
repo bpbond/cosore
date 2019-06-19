@@ -1,6 +1,42 @@
 # Some datasets need custom processing
 
 
+#' Parse a custom file from d20190617_SCOTT_SRM
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @importFrom utils read.csv
+#' @keywords internal
+parse_d20190617_SCOTT_SRM <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  # File has header lines need to skip, and is in wide format
+  dat <- do.call("rbind",
+                 lapply(files, read.table,
+                        sep = ",",
+                        header = FALSE,
+                        col.names = c("Year", "DOY", "SR_1", "SM_1", "T5_1",
+                                      "SR_2", "SM_2", "T5_2",
+                                      "SR_3", "SM_3", "T5_3"),
+                        skip = 10,
+                        na.strings = c("NaN"),
+                        stringsAsFactors = FALSE))
+
+  # Convert from wide to long format
+  out <- data.frame()
+  d <- dat[c("Year", "DOY")]
+  for(p in 1:3) {
+    dp <- d
+    dp$CSR_PORT <- p
+    dp$CSR_FLUX <- dat[,paste0("SR_", p)]
+    dp$CSR_SM5 <- dat[,paste0("SM_", p)]
+    dp$CSR_T5 <- dat[,paste0("T5_", p)]
+    out <- rbind(out, dp)
+  }
+  out$CSR_ERROR <- FALSE
+  out
+}
+
+
 #' Parse a custom file from d20190527_GOULDEN
 #'
 #' @param path Data directory path, character

@@ -15,16 +15,4 @@
 # CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
 #
 Database,		Dataset,	Computation,				Notes
-CSR_CDRY,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_ERROR,		Error,
-CSR_FLUX,  		Flux,
-CSR_LABEL,		Label,
-CSR_PORT,		Port,
-CSR_R2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V4
-CSR_T5,			V3
-CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP,	Timestamp
+CSR_TIMESTAMP,	Year,		"paste(Year, floor(DOY), DOY %% 1 * 24)"

@@ -158,3 +158,26 @@ if(length(tcols)) {
 }
 ```
 
+**Soil moisture sensitivity**:
+
+```{r smsensitivity}
+tcols <- grep("^CSR_SM[0-9]+", names(ds$data))
+if(length(tcols)) {
+  fluxcol <- grep("CSR_FLUX", names(ds$data))
+  results <- list()
+  for(col in tcols) {
+    x <- ds$data[fluxcol]
+    x$`Soil moisture` <- pull(ds$data, col)#ds$data[,col]
+    x$Which_temp <- names(ds$data)[col]
+    results[[as.character(col)]] <- x
+  }
+  results <- bind_rows(results)
+  
+  p1 <- ggplot(results, aes(`Soil moisture`, CSR_FLUX)) + 
+    geom_point(size = 0.2, alpha = I(0.25)) + 
+    geom_smooth(method = "lm") +
+    facet_wrap(~Which_temp, scales = "free")
+  print(p1)
+}
+```
+
