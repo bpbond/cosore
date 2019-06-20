@@ -17,3 +17,13 @@ csr_table <- function(all, table) {
 
   rbind_list(lapply(all, extract, table = table))
 }
+
+
+#' Extract contact emails
+#'
+#' @param all All data, a list of lists
+#' @return A pasted string of emails, separated by semicolons.
+#' @export
+csr_emails <- function(all) {
+  paste(sapply(all, function(x) x$contributors$CSR_EMAIL[1]), collapse = ";")
+}

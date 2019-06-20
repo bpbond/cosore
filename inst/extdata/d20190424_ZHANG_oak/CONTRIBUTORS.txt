@@ -15,6 +15,6 @@
 # Jones,		John,			jj@jones.edu	,						"Funding acquisition"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,						CSR_ORCID,					CSR_ROLE
-Quan,		Zhang,			"quan.zhang@whu.edu.cn, quazhang@indiana.edu", ,	"Investigation, Data curation"
+Quan,		Zhang,			quan.zhang@whu.edu.cn; quazhang@indiana.edu, ,	"Investigation, Data curation"
 Kimberly,	Novick,			knovick@indiana.edu,		,						Funding acquisition
 Richard,	Phillips,		rpp6@indiana.edu,			,						Funding acquisition
