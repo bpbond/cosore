@@ -7,8 +7,6 @@
 # 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
 # 	CSR_ELEVATION: elevation above sea level, meters
 #	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-#		For US sites, a corresponding Central American timezone is used if 
-#		the instrument does not follow daylight savings 
 # 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
@@ -25,19 +23,20 @@
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-CSR_SITE_NAME: 
-CSR_LONGITUDE: 
-CSR_LATITUDE: 
-CSR_ELEVATION: 
-CSR_TIMEZONE: 
-CSR_IGBP: 
-CSR_NETWORK: 
-CSR_SITE_ID: 
+CSR_SITE_NAME: MOFLUX
+CSR_LONGITUDE: 38.7441
+CSR_LATITUDE: -92.2000
+CSR_ELEVATION: 219.40
+CSR_TIMEZONE: America/Chicago
+CSR_IGBP: Deciduous broadleaf forest
+CSR_NETWORK: AmeriFlux
+CSR_SITE_ID: US-MOz
 CSR_INSTRUMENT: LI-8100A
 CSR_FILE_FORMAT: Processed
 CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
-CSR_TIMESTAMP_TZ: 
+CSR_TIMESTAMP_TZ: America/Costa_Rica
 CSR_PRIMARY_PUB:
 CSR_OTHER_PUBS:
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: 
+CSR_NOTES: Local standard time, no daylight saving

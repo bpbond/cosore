@@ -1,14 +1,15 @@
-COSORE submission - upload link
+COSORE submission - [questions and] upload link
 
 Dear $FIRST_NAME,
  
 Thanks for your interest and submitting the COSORE metadata form. If you have any feedback on it (too complicated, unclear, something it’s missing) let me know. 
 
-To upload the data, please use this link:
+Reviewing the metadata, I do have some questions:
+1. ...
+
+**To upload the data**, please use this link: $DROPBOX_LINK
  
-$DROPBOX_LINK
- 
-Once you upload, I may get back to you with questions, and will definitely send you a summary report for checking. Thanks again for your willingness to contribute to the continuous soil respiration database in its testing stages!
+Once you upload, I may get back to you with [further] questions, and will definitely send you a summary report for checking. Thanks again for your willingness to contribute to the continuous soil respiration database in its testing stages!
  
 Kind regards,
  
