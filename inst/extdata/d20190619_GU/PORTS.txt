@@ -9,10 +9,5 @@
 #	CSR_DEPTH: optional collar insertion depth, cm
 # 	CSR_SPECIES: optional field describing species measured
 #
-# Examples:
-# CSR_PORT,	CSR_TREATMENT,		CSR_SPECIES
-# 1,	None,			"Liriodendron tulipifera, Acer rubrum"
-# 2,	Heated,			Sphagnum fuscum
-#
 CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			None,			,			,			Quercus spp.	
+0,			None,			314.7,		,			Quercus spp.	
