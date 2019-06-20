@@ -342,7 +342,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     # Column mapping and computation
     dsd <- map_columns(dsd, dataset$columns)
 
-    # Change the timestamp column to a datetime object
+    # Change the timestamp column to a datetime object...
     original_ts <- dsd$CSR_TIMESTAMP
     dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
                                     format = dataset$description$CSR_TIMESTAMP_FORMAT,
@@ -352,9 +352,15 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     dsd <- dsd[!nats,]
 
     if(nrow(dsd) == 0) {
-      stop("Timestamps could not be parsed with ", dataset$description$CSR_TIMESTAMP_FORMAT,
+      stop("Timestamps could not be parsed with ",
+           dataset$description$CSR_TIMESTAMP_FORMAT,
            " and tz ", dataset$description$CSR_TIMESTAMP_TZ)
     }
+
+    # ...and to the site's timezone
+    dsd$CSR_TIMESTAMP <- format(dsd$CSR_TIMESTAMP,
+                                tz = dataset$DESCRIPTION$CSR_TIMEZONE,
+                                usetz = TRUE)
 
     # Drop any unmapped columns
     drops <- grep("^CSR_", names(dsd), invert = TRUE)
