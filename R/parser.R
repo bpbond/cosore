@@ -280,6 +280,7 @@ map_columns <- function(dat, columns) {
 #' \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
 #' \item{ancillary}{Ancillary site information}
 #' @export
+#' @importFrom utils head
 #' @examples
 #' read_dataset("TEST_licordata")
 read_dataset <- function(dataset_name, raw_data, log = TRUE) {
