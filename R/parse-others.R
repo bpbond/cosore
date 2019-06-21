@@ -1,33 +1,38 @@
 # Some datasets need custom processing
 
 
-#' Parse a custom file from d20190617_SCOTT_SRM
+#' Parse one of the d20190617_SCOTT custom files
 #'
 #' @param path Data directory path, character
+#' @param skip Lines to skip, integer
+#' @param path Ports, an integer vector
 #' @return A \code{data.frame} containing extracted data.
 #' @importFrom utils read.csv
 #' @keywords internal
-parse_d20190617_SCOTT_SRM <- function(path) {
+parse_d20190617_SCOTT_xxx <- function(path, skip, ports) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   # File has header lines need to skip, and is in wide format
+  # Build the column names
+  cnames <- c("Year", "DOY")
+  for(p in ports) {
+    cnames <- c(cnames, paste(c("SR", "SM", "T5"), p, sep = "_"))
+  }
   dat <- do.call("rbind",
                  lapply(files, read.table,
                         sep = ",",
                         header = FALSE,
-                        col.names = c("Year", "DOY", "SR_1", "SM_1", "T5_1",
-                                      "SR_2", "SM_2", "T5_2",
-                                      "SR_3", "SM_3", "T5_3"),
-                        skip = 10,
+                        col.names = cnames,
+                        skip = skip,
                         na.strings = c("NaN"),
                         stringsAsFactors = FALSE))
 
-  # Change the DOY column from fractional day of year to a string
+  # Change the DOY column from fractional day of year to a "DOY time" string
   dat$DOY <- fractional_doy(dat$Year, dat$DOY)
 
   # Convert from wide to long format
   out <- data.frame()
   d <- dat[c("Year", "DOY")]
-  for(p in 1:3) {
+  for(p in ports) {
     dp <- d
     dp$CSR_PORT <- p
     dp$CSR_FLUX <- dat[,paste0("SR_", p)]
@@ -36,11 +41,26 @@ parse_d20190617_SCOTT_SRM <- function(path) {
     out <- rbind(out, dp)
   }
 
-  # Per email from Ross Bryan, NA out T5 values >60 C
-  out$CSR_T5[out$CSR_T5 > 60] <- NA
-
   out$CSR_ERROR <- FALSE
   out
+}
+
+#' Parse a custom file from d20190617_SCOTT_SRM
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20190617_SCOTT_SRM <- function(path) {
+  parse_d20190617_SCOTT_xxx(path, skip = 10, ports = 1:3)
+}
+
+#' Parse a custom file from d20190617_SCOTT_WKG
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20190617_SCOTT_WKG <- function(path) {
+  parse_d20190617_SCOTT_xxx(path, skip = 11, ports = 1:7)
 }
 
 
