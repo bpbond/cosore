@@ -316,8 +316,9 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
                  CSR_RECORDS_REMOVED_TOOHIGH = 0,
                  CSR_FLUX_LOWBOUND = NA,
                  CSR_FLUX_HIGHBOUND = NA,
-                 CSR_BAD_TCHAMBER = 0,
-                 CSR_RECORDS_REMOVED_TIMESTAMP = 0)
+                 CSR_BAD_TEMPERATURE = 0,
+                 CSR_RECORDS_REMOVED_TIMESTAMP = 0,
+                 CSR_EXAMPLE_BAD_TIMESTAMPS = "")
 
   dsd <- NULL  # dataset data
 
@@ -349,6 +350,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
                                     tz = dataset$description$CSR_TIMESTAMP_TZ)
     nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
     diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(nats)
+    diag$CSR_EXAMPLE_BAD_TIMESTAMPS <- paste(head(original_ts[nats]), collapse = ", ")
     dsd <- dsd[!nats,]
 
     if(nrow(dsd) == 0) {
@@ -358,9 +360,10 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     }
 
     # ...and to the site's timezone
-    dsd$CSR_TIMESTAMP <- format(dsd$CSR_TIMESTAMP,
-                                tz = dataset$DESCRIPTION$CSR_TIMEZONE,
-                                usetz = TRUE)
+    # This attribute-changing makes me nervous, but apparently it's the
+    # only way to change timezone without either using lubridate::with_tz(),
+    # or using format() to a string and then casting back
+    attr(dsd$CSR_TIMESTAMP, "tzone") <- dataset$DESCRIPTION$CSR_TIMEZONE
 
     # Drop any unmapped columns
     drops <- grep("^CSR_", names(dsd), invert = TRUE)
@@ -399,12 +402,17 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     diag$CSR_RECORDS <- nrow(dsd)
   }
 
-  # Remove bad chamber temperature values
-  if("CSR_TCHAMBER" %in% names(dsd)) {
-    tl <- c(-50, 100)  # temperature limits
-    bad_temps <- dsd$CSR_TCHAMBER < min(tl) | dsd$CSR_TCHAMBER > max(tl)
-    dsd$CSR_TCHAMBER[bad_temps] <- NA
-    diag$CSR_BAD_TCHAMBER <- sum(bad_temps, na.rm = TRUE)
+  # Remove bad temperature values
+  tl <- c(-50, 60)  # temperature limits
+  for(tmp in c("CSR_TCHAMBER", "CSR_T5")) {
+    if(tmp %in% names(dsd)) {
+      tmpvals <- dsd[tmp]
+      bad_temps <- tmpvals < min(tl) | tmpvals > max(tl)
+      bad_temps[is.na(bad_temps)] <- FALSE
+      dsd[bad_temps, tmp] <- NA  # NA out bad values
+      diag$CSR_BAD_TEMPERATURE <- diag$CSR_BAD_TEMPERATURE +
+        sum(bad_temps, na.rm = TRUE)
+    }
   }
 
   # Add new tables to the dataset structure and return

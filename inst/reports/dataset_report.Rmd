@@ -38,6 +38,7 @@ Location      | `r d$CSR_LATITUDE` N, `r d$CSR_LONGITUDE` E
 Elevation     | `r d$CSR_ELEVATION` m
 IGBP          | `r d$CSR_IGBP`
 Network       | `r paste(d$CSR_NETWORK, d$CSR_SITE_ID)`
+Timezone      | `r d$CSR_TIMEZONE`
 
 ```{r map, echo=FALSE}
 library(sp)
@@ -96,11 +97,12 @@ Info                |  Value
 Records             | `r diag$CSR_RECORDS`
 Records removed (error)     | `r diag$CSR_RECORDS_REMOVED_ERR`
 Records removed (invalid timestamp)     | `r diag$CSR_RECORDS_REMOVED_TIMESTAMP`
+Bad timestamp examples     | `r diag$CSR_EXAMPLE_BAD_TIMESTAMPS`
 Records removed (no flux)   | `r diag$CSR_RECORDS_REMOVED_NA`
 Records (flux < `r diag$CSR_FLUX_LOWBOUND`)  | `r diag$CSR_RECORDS_REMOVED_TOOLOW`
 Records (flux > `r diag$CSR_FLUX_HIGHBOUND`) | `r diag$CSR_RECORDS_REMOVED_TOOHIGH`
 Columns dropped     | `r diag$CSR_COLUMNS_DROPPED`
-Bad `Tchamber` values removed | `r diag$CSR_BAD_TCHAMBER`
+Bad temperature values removed | `r diag$CSR_BAD_TEMPERATURE`
 Size                | `r format(object.size(ds), "Mb")`
 
 **Flux summary**:
@@ -161,23 +163,23 @@ if(length(tcols)) {
 **Soil moisture sensitivity**:
 
 ```{r smsensitivity}
-tcols <- grep("^CSR_SM[0-9]+", names(ds$data))
-if(length(tcols)) {
+smcols <- grep("^CSR_SM[0-9]+", names(ds$data))
+if(length(smcols)) {
   fluxcol <- grep("CSR_FLUX", names(ds$data))
   results <- list()
-  for(col in tcols) {
+  for(col in smcols) {
     x <- ds$data[fluxcol]
-    x$`Soil moisture` <- pull(ds$data, col)#ds$data[,col]
-    x$Which_temp <- names(ds$data)[col]
+    x$SM <- pull(ds$data, col)#ds$data[,col]
+    x$Which_sm <- names(ds$data)[col]
     results[[as.character(col)]] <- x
   }
   results <- bind_rows(results)
   
-  p1 <- ggplot(results, aes(`Soil moisture`, CSR_FLUX)) + 
+  p1 <- ggplot(results, aes(SM, CSR_FLUX)) + 
     geom_point(size = 0.2, alpha = I(0.25)) + 
     geom_smooth(method = "lm") +
-    facet_wrap(~Which_temp, scales = "free")
+    facet_wrap(~Which_sm, scales = "free") +
+    xlab("Soil moisture")
   print(p1)
 }
 ```
-
