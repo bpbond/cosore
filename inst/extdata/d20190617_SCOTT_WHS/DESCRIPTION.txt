@@ -23,7 +23,7 @@
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-CSR_SITE_NAME: Walnut Gultch Lucky Hills Shrub
+CSR_SITE_NAME: Walnut Gulch Lucky Hills Shrub
 CSR_LONGITUDE: -110.05202
 CSR_LATITUDE: 31.74390
 CSR_ELEVATION: 1370
@@ -34,7 +34,7 @@ CSR_SITE_ID: US-WHS
 CSR_INSTRUMENT: LI-8100A
 CSR_FILE_FORMAT: Processed
 CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
-CSR_TIMESTAMP_TZ: America/Denver
+CSR_TIMESTAMP_TZ: America/Phoenix
 CSR_PRIMARY_PUB: 10.1002/2013JG002495
 CSR_OTHER_PUBS: 10.1016/j.agrformet.2018.05.005
 CSR_DATA_URL:

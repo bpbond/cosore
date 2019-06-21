@@ -23,7 +23,7 @@
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-CSR_SITE_NAME: Walnut Gultch Kendall Grasslands
+CSR_SITE_NAME: Walnut Gulch Kendall Grasslands
 CSR_LONGITUDE: -109.94185
 CSR_LATITUDE: 31.73652
 CSR_ELEVATION: 1531
@@ -32,11 +32,10 @@ CSR_IGBP: Grassland
 CSR_NETWORK: Ameriflux
 CSR_SITE_ID: US-WKG
 CSR_INSTRUMENT: LI-8100A
-CSR_FILE_FORMAT: Processed
-CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
-CSR_TIMESTAMP_TZ: America/Denver
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %Y %j %T
+CSR_TIMESTAMP_TZ: America/Phoenix
 CSR_PRIMARY_PUB: 10.3390/soilsystems3010006
 CSR_OTHER_PUBS: 
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: 
-CSR_NOTES: Ports 1-4 under shrub, Ports 5-8 open

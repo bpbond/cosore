@@ -30,7 +30,8 @@ CSR_SITE_ID:
 CSR_INSTRUMENT: LI-8100A
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %m/%d/%y %H
-CSR_TIMESTAMP_TZ: America/Los_Angeles
+# Following timestamp is -0800 under both standard and daylight savings
+CSR_TIMESTAMP_TZ: Pacific/Pitcairn
 CSR_PRIMARY_PUB:
 CSR_OTHER_PUBS: 10.5194/bgd-10-6335-2013
 CSR_DATA_URL:

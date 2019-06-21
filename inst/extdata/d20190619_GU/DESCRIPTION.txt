@@ -24,8 +24,8 @@
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
 CSR_SITE_NAME: MOFLUX
-CSR_LONGITUDE: 38.7441
-CSR_LATITUDE: -92.2000
+CSR_LONGITUDE: -92.2000
+CSR_LATITUDE: 38.7441
 CSR_ELEVATION: 219.40
 CSR_TIMEZONE: America/Chicago
 CSR_IGBP: Deciduous broadleaf forest
