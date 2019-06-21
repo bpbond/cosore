@@ -30,7 +30,8 @@ CSR_SITE_ID: CH-Lae
 CSR_INSTRUMENT: LI-8100A
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %m/%d/%y %H:%M 
-CSR_TIMESTAMP_TZ: Europe/Vienna
+# Following timezone is +0100 under both standard time and daylight savings
+CSR_TIMESTAMP_TZ: Africa/Tunis
 CSR_PRIMARY_PUB: 10.1007/s10533-009-9383-z
 CSR_OTHER_PUBS: 10.1093/treephys/tpp106
 CSR_DATA_URL:

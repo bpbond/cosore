@@ -30,7 +30,8 @@ CSR_SITE_ID: US-MMS
 CSR_INSTRUMENT: LI-8100
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y %j %H
-CSR_TIMESTAMP_TZ: America/Indiana/Indianapolis
+# Following timestamp is -0500 under both standard and daylight savings
+CSR_TIMESTAMP_TZ: America/Jamaica
 CSR_PRIMARY_PUB: 10.1016/j.agrformet.2018.05.005
 CSR_OTHER_PUBS:
 CSR_DATA_URL:
