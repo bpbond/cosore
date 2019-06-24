@@ -60,7 +60,7 @@ parse_d20190617_SCOTT_SRM <- function(path) {
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
 parse_d20190617_SCOTT_WKG <- function(path) {
-  parse_d20190617_SCOTT_xxx(path, skip = 11, ports = 1:7)
+  parse_d20190617_SCOTT_xxx(path, skip = 10, ports = 1:7)
 }
 
 
