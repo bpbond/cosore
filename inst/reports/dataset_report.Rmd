@@ -108,10 +108,12 @@ Size                | `r format(object.size(ds), "Mb")`
 **Flux summary**:
 
 ```{r flux-graphs}
-if(is.data.frame(ds$data) & !quick) {
-  print(summary(ds$data$CSR_FLUX))
+dsd <- ds$data
+if(is.data.frame(dsd) & !quick) {
+  dsd <- subset(dsd, !is.na(CSR_FLUX) & CSR_FLUX > 0)
+  dsd$CSR_PORT <- as.factor(dsd$CSR_PORT)
   
-  dsd <- subset(ds$data, !is.na(CSR_FLUX) & CSR_FLUX > 0)
+  print(summary(ds$data$CSR_FLUX))
   
   # flux over time
   p1 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
@@ -123,8 +125,7 @@ if(is.data.frame(ds$data) & !quick) {
   print(p2)
   
   dsd %>% 
-    mutate(CSR_PORT = as.factor(CSR_PORT),
-           Month = month(CSR_TIMESTAMP)) %>% 
+    mutate(Month = month(CSR_TIMESTAMP)) %>% 
     group_by(CSR_PORT, Month) %>% 
     summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
     ggplot(aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + 
@@ -140,46 +141,48 @@ if(is.data.frame(ds$data) & !quick) {
 **Temperature sensitivity**:
 
 ```{r tsensitivity}
-tcols <- grep("^CSR_T(CHAMBER|[0-9]+)", names(ds$data))
-if(length(tcols)) {
-  fluxcol <- grep("CSR_FLUX", names(ds$data))
-  results <- list()
-  for(col in tcols) {
-    x <- ds$data[fluxcol]
-    x$Temperature <- pull(ds$data, col)#ds$data[,col]
-    x$Which_temp <- names(ds$data)[col]
-    results[[as.character(col)]] <- x
+if(is.data.frame(dsd) & !quick) {
+  tcols <- grep("^CSR_T(CHAMBER|[0-9]+)", names(dsd))
+  if(length(tcols)) {
+    results <- list()
+    for(col in tcols) {
+      x <- dsd[c("CSR_FLUX", "CSR_PORT")]
+      x$Temperature <- pull(dsd, col)#ds$data[,col]
+      x$Which_temp <- names(dsd)[col]
+      results[[as.character(col)]] <- x
+    }
+    results <- bind_rows(results)
+    
+    p1 <- ggplot(results, aes(Temperature, CSR_FLUX, color = CSR_PORT)) + 
+      geom_point(size = 0.2, alpha = I(0.25)) + 
+      geom_smooth(method = "lm", se = FALSE) +
+      facet_wrap(~Which_temp, scales = "free")
+    print(p1)
   }
-  results <- bind_rows(results)
-  
-  p1 <- ggplot(results, aes(Temperature, CSR_FLUX)) + 
-    geom_point(size = 0.2, alpha = I(0.25)) + 
-    geom_smooth(method = "lm") +
-    facet_wrap(~Which_temp, scales = "free")
-  print(p1)
 }
 ```
 
 **Soil moisture sensitivity**:
 
 ```{r smsensitivity}
-smcols <- grep("^CSR_SM[0-9]+", names(ds$data))
-if(length(smcols)) {
-  fluxcol <- grep("CSR_FLUX", names(ds$data))
-  results <- list()
-  for(col in smcols) {
-    x <- ds$data[fluxcol]
-    x$SM <- pull(ds$data, col)#ds$data[,col]
-    x$Which_sm <- names(ds$data)[col]
-    results[[as.character(col)]] <- x
+if(is.data.frame(ds$data) & !quick) {
+  smcols <- grep("^CSR_SM[0-9]+", names(dsd))
+  if(length(smcols)) {
+    results <- list()
+    for(col in smcols) {
+      x <- dsd[c("CSR_FLUX", "CSR_PORT")]
+      x$SM <- pull(dsd, col)#ds$data[,col]
+      x$Which_sm <- names(dsd)[col]
+      results[[as.character(col)]] <- x
+    }
+    results <- bind_rows(results)
+    
+    p1 <- ggplot(results, aes(SM, CSR_FLUX, color = CSR_PORT)) + 
+      geom_point(size = 0.2, alpha = I(0.25)) + 
+      geom_smooth(method = "lm", se = FALSE) +
+      facet_wrap(~Which_sm, scales = "free") +
+      xlab("Soil moisture")
+    print(p1)
   }
-  results <- bind_rows(results)
-  
-  p1 <- ggplot(results, aes(SM, CSR_FLUX)) + 
-    geom_point(size = 0.2, alpha = I(0.25)) + 
-    geom_smooth(method = "lm") +
-    facet_wrap(~Which_sm, scales = "free") +
-    xlab("Soil moisture")
-  print(p1)
 }
 ```
