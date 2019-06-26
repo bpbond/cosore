@@ -34,7 +34,8 @@ CSR_SITE_ID: US-Ho1
 CSR_INSTRUMENT: LI-6252
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y %j %H:%M:%S %p
-CSR_TIMESTAMP_TZ: America/New_York
+# Following timezone is EST all year
+CSR_TIMESTAMP_TZ: America/Panama
 CSR_PRIMARY_PUB: 10.1016/j.agrformet.2018.01.026
 CSR_OTHER_PUBS: 10.1002/2016JG003386
 CSR_DATA_URL: https://github.com/trevorkeenan/FoBAAR-DAMM
