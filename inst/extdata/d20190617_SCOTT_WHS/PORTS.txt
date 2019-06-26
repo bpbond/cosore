@@ -9,10 +9,12 @@
 #	CSR_DEPTH: optional collar insertion depth, cm
 # 	CSR_SPECIES: optional field describing species measured
 #
-# Examples:
-# CSR_PORT,	CSR_TREATMENT,		CSR_SPECIES
-# 1,	None,			"Liriodendron tulipifera, Acer rubrum"
-# 2,	Heated,			Sphagnum fuscum
-#
 CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			None,			317.8,		5,			"Parthenium incanum, Larrea tridentate, Acacia constricta"		
+1,			None,			317.8,		5,			None		
+2,			None,			317.8,		5,			None		
+3,			None,			317.8,		5,			None		
+4,			None,			317.8,		5,			None		
+5,			None,			317.8,		5,			"Parthenium incanum, Larrea tridentate, Acacia constricta"		
+6,			None,			317.8,		5,			"Parthenium incanum, Larrea tridentate, Acacia constricta"		
+7,			None,			317.8,		5,			"Parthenium incanum, Larrea tridentate, Acacia constricta"		
+8,			None,			317.8,		5,			"Parthenium incanum, Larrea tridentate, Acacia constricta"		

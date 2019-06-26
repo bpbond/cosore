@@ -63,6 +63,14 @@ parse_d20190617_SCOTT_WKG <- function(path) {
   parse_d20190617_SCOTT_xxx(path, skip = 10, ports = 1:7)
 }
 
+#' Parse a custom file from d20190617_SCOTT_WHS
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20190617_SCOTT_WHS <- function(path) {
+  parse_d20190617_SCOTT_xxx(path, skip = 10, ports = 1:8)
+}
 
 #' Parse a custom file from d20190527_GOULDEN
 #'
