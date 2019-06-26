@@ -104,6 +104,8 @@ csr_make_release <- function(all_data, path,
 
   # Check: all the files should be included in the file description list
   all_files <- list.files(path, recursive = FALSE)
+  release_file <- paste0("cosore-", packageVersion("cosore"), ".zip")
+  all_files <- setdiff(all_files, release_file)
   missing <- !all_files %in% names(file_descriptions)
   if(any(missing)) {
     stop("Missing description for files: ",
@@ -117,7 +119,6 @@ csr_make_release <- function(all_data, path,
 
   # Almost done! Zip everything up into a single file
   message("Zipping...")
-  release_file <- paste0("cosore-", packageVersion("cosore"), ".zip")
   wd <- getwd()
   setwd(path)
   utils::zip(release_file,
