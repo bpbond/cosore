@@ -34,8 +34,8 @@ CSR_IGBP: Deciduous broadleaf forest
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: Gradient
-CSR_FILE_FORMAT: Processed
-CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_FILE_FORMAT: Processed_csv
+CSR_TIMESTAMP_FORMAT: %Y %j %H
 CSR_TIMESTAMP_TZ: America/Panama
 CSR_PRIMARY_PUB: http://iopscience.iop.org/1748-9326/7/3/035704
 CSR_OTHER_PUBS: https://doi.org/10.1029/2007JG000620

@@ -78,9 +78,11 @@ knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %
 **Timestamp timezone**: `r d$CSR_TIMESTAMP_TZ`
 
 ```{r msmt_table, echo=FALSE}
-knitr::kable(ds$ports, format = "html") %>% 
+dsp <- ds$ports
+knitr::kable(dsp, format = "html") %>% 
   kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
+
 
 ## Column mapping
 
