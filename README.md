@@ -1,6 +1,6 @@
 # cosore
 
-A package of oftware tools and metadata for COSORE, a reproducibility-oriented 
+A package of software tools and metadata for COSORE, a reproducibility-oriented 
 community database for continuous soil respiration data.
 
 **To download the COSORE database, click on the
