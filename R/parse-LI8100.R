@@ -145,6 +145,7 @@ parse_LI8100_file <- function(filename) {
   dat <- do.call("rbind", lapply(files, read.delim,
                                  na.strings = c("NA", "-9999", "#VALUE!", "#REF!"),
                                  stringsAsFactors = FALSE,
+                                 strip.white = TRUE,
                                  check.names = FALSE))
   dat$CSR_ERROR <- FALSE
   dat

@@ -36,7 +36,7 @@ CSR_NETWORK: ICOS
 CSR_SITE_ID: BE-Lcr
 CSR_INSTRUMENT: LI-8100A
 CSR_FILE_FORMAT: Processed
-CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 CSR_TIMESTAMP_TZ: Africa/Casablanca
 CSR_PRIMARY_PUB: 10.5194/bg-13-1949-2016
 CSR_OTHER_PUBS: http://uahost.uantwerpen.be/popfull/index.php?page=publications&lang=en
