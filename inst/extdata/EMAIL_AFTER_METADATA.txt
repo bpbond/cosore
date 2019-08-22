@@ -1,8 +1,8 @@
 COSORE submission - [questions and] upload link
 
-Dear $FIRST_NAME,
+Dear Dr. $LAST_NAME,
  
-Thanks for your interest and submitting the COSORE metadata form. If you have any feedback on it (too complicated, unclear, something is missing) let me know. 
+Thanks for your interest and submitting the COSORE metadata form. If you have any feedback on it (too complicated, unclear, something is missing) please let me know. 
 
 Reviewing the metadata, I do have some questions:
 1. ...
