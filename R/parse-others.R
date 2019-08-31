@@ -22,8 +22,8 @@ parse_d20190830_LIANG <- function(path) {
 
   for(f in seq_along(co2files)) {
     fn <- files[co2files][f]
-    message(f, "/", length(co2files), " ", fn)
-#    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
+    #    message(f, "/", length(co2files), " ", fn)
+    #    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
 
     # Find and parse the header; its location varies by file
     top <- readLines(fn, n = 50)
@@ -42,6 +42,7 @@ parse_d20190830_LIANG <- function(path) {
 
     dat$TS <- as.POSIXct(dat$TIMESTAMP, format = "%Y-%m-%d %H:%M:%S")
     dat <- dat[!is.na(dat$CO2) & !is.na(dat$TS),]
+    dat <- dat[dat$Chamber > 0,]
 
     # Find new-chamber rows
     newchamber <- which(head(dat$Chamber, -1) != tail(dat$Chamber, -1)) + 1
