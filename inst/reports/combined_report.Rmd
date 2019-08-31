@@ -91,10 +91,25 @@ bind_rows(coverage) %>%
   ungroup %>% 
   mutate(Time = lubridate::ymd(paste(Year, Month, "1"))) %>% 
   ggplot(aes(Time, CSR_DATASET, fill = N)) + geom_tile() +
-  scale_fill_continuous("Days per month")
+  scale_fill_continuous("Days per month",
+                        high = "#132B43", low = "#56B1F7")
 ```
 
 ### IGBP coverage
+
+```{r, temporal-igbp}
+bind_rows(coverage) %>% 
+  distinct(CSR_DATASET, CSR_IGBP, Year, Month, Day) %>% 
+  group_by(CSR_IGBP, Year, Month) %>% 
+  summarise(N = n()) %>% 
+  ungroup %>% 
+  mutate(Time = lubridate::ymd(paste(Year, Month, "1"))) %>% 
+  ggplot(aes(Time, CSR_IGBP, fill = N)) + geom_tile() +
+  scale_fill_continuous("Days per month",
+                        high = "#132B43", low = "#56B1F7")
+```
+
+### Flux distribution
 
 ```{r igbp}
 coverage <- lapply(all_data, function(x) {
