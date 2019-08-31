@@ -15,10 +15,15 @@ A \code{data.frame} containing extracted data.
 \description{
 Parse a custom file from d20190830_LIANG
 }
-\note{
+\details{
 This is a complicated one: the authors posted their data on
 Figshare (good), but provide only raw CO2 concentration data (good
 but a pain). Need to read each file, compute the flux for each
 chamber at each timestep, and stitch together. This is slow.
+}
+\note{
+One of the files had a corrupted character: in
+\code{Miyazaki_Efflux_txt_Stage_2/Efflux_2/Miyazaki201205.dat} had
+to change a stray "(" to "," line 365560.
 }
 \keyword{internal}

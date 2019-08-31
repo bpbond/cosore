@@ -5,13 +5,17 @@
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
-#' @note This is a complicated one: the authors posted their data on
+#' @details This is a complicated one: the authors posted their data on
 #' Figshare (good), but provide only raw CO2 concentration data (good
 #' but a pain). Need to read each file, compute the flux for each
 #' chamber at each timestep, and stitch together. This is slow.
+#' @note One of the files had a corrupted character: in
+#' \code{Miyazaki_Efflux_txt_Stage_2/Efflux_2/Miyazaki201205.dat} had
+#' to change a stray "(" to "," line 365560.
+
 parse_d20190830_LIANG <- function(path) {
   files <- list.files(path, pattern = ".dat$", full.names = TRUE, recursive = TRUE)
-  co2files <- grep("Environ", files, invert = TRUE)
+  co2files <- grep("Environ", files, invert = TRUE)[43:75]
   results <- list()
 
   for(f in seq_along(co2files)) {
@@ -42,6 +46,7 @@ parse_d20190830_LIANG <- function(path) {
 
     # This is an expensive step; create one d.f. per file
     resultsdf <- tibble(TIMESTAMP = rep(NA_character_, length(newchamber) - 1),
+                        RECORD = NA_integer_,
                         Chamber = NA_integer_,
                         CO2 = NA_real_,
                         Tsoil = NA_real_,
@@ -54,35 +59,29 @@ parse_d20190830_LIANG <- function(path) {
 
     for(i in seq_along(tail(newchamber, -1))) {
       d <- dat[newchamber[i]:(newchamber[i+1] - 1),]
-      d$secs <- d$TS - d$TS[1]
 
       # Metadata says to use Equation 2 from https://www.nature.com/articles/sdata201726
       # Rs = 60.14 * Pair / (Tair + 273.15) * deltaC / deltaT
+      d$secs <- d$TS - d$TS[1]
       m <- try(lm(CO2 ~ secs, data = d), silent = TRUE)
       if(class(m) == "lm") {
-        flux <- 60.14 * 99.79 / (mean(d$Tair + 273.15)) * m$coefficients["secs"]
-        r2 <- summary(m)$r.squared
+        resultsdf$Flux[i] <- 60.14 * 99.79 / (mean(d$Tair + 273.15)) * m$coefficients["secs"]
+        resultsdf$R2[i] <- summary(m)$r.squared
       } else {
-        flux <- NA
-        r2 <- NA
         resultsdf$Error[i] <- TRUE
       }
 
       if("Humity" %in% names(d)) {
-        hum <- mean(d$Humity)
-      } else {
-        hum <- NA
+        resultsdf$Humity[i] <- mean(d$Humity)
       }
 
       resultsdf$TIMESTAMP[i] <- d$TIMESTAMP[1]
+      resultsdf$RECORD[i] <- d$RECORD[1]
       resultsdf$Chamber[i] <- d$Chamber[1]
       resultsdf$CO2[i] <- mean(d$CO2)
       resultsdf$Tsoil[i] <- mean(d$Tsoil)
       resultsdf$Tair[i] <- mean(d$Tair)
       resultsdf$N[i] <- nrow(d)
-      resultsdf$R2[i] <- r2
-      resultsdf$Humity[i] <- hum
-      resultsdf$Flux[i] <- d$Chamber[1]
     }
     results[[f]] <- resultsdf
   }
