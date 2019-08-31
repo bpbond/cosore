@@ -17,7 +17,7 @@ parse_d20190830_LIANG <- function(path) {
   for(f in seq_along(co2files)) {
     fn <- files[co2files][f]
     message(f, "/", length(co2files), " ", fn)
-#    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
+    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
 
     # Find the TIMESTAMP header - location varies by file
     top <- readLines(fn, n = 50)
@@ -34,27 +34,38 @@ parse_d20190830_LIANG <- function(path) {
                       stringsAsFactors = FALSE)
 
     dat$TS <- as.POSIXct(dat$TIMESTAMP, format = "%Y-%m-%d %H:%M:%S")
-    # Metadata says to use Equation 2 from https://www.nature.com/articles/sdata201726
-    # Rs = 60.14 * Pair / (Tair + 273.15) * deltaC / deltaT
+    dat <- dat[!is.na(dat$CO2) & !is.na(dat$TS),]
 
     # Find new-chamber rows
     newchamber <- which(head(dat$Chamber, -1) != tail(dat$Chamber, -1)) + 1
     newchamber <- c(1, newchamber, nrow(dat) + 1)
 
+    # This is an expensive step; create one d.f. per file
+    resultsdf <- tibble(TIMESTAMP = rep(NA_character_, length(newchamber) - 1),
+                        Chamber = NA_integer_,
+                        CO2 = NA_real_,
+                        Tsoil = NA_real_,
+                        Tair = NA_real_,
+                        N = NA_integer_,
+                        R2 = NA_real_,
+                        Humity = NA_real_,
+                        Flux = NA_real_,
+                        Error = FALSE)
+
     for(i in seq_along(tail(newchamber, -1))) {
       d <- dat[newchamber[i]:(newchamber[i+1] - 1),]
-      d <- d[!is.na(d$CO2) & !is.na(d$TS),]
       d$secs <- d$TS - d$TS[1]
 
+      # Metadata says to use Equation 2 from https://www.nature.com/articles/sdata201726
+      # Rs = 60.14 * Pair / (Tair + 273.15) * deltaC / deltaT
       m <- try(lm(CO2 ~ secs, data = d), silent = TRUE)
       if(class(m) == "lm") {
         flux <- 60.14 * 99.79 / (mean(d$Tair + 273.15)) * m$coefficients["secs"]
         r2 <- summary(m)$r.squared
-        err <- FALSE
       } else {
         flux <- NA
         r2 <- NA
-        err <- TRUE
+        resultsdf$Error[i] <- TRUE
       }
 
       if("Humity" %in% names(d)) {
@@ -62,17 +73,18 @@ parse_d20190830_LIANG <- function(path) {
       } else {
         hum <- NA
       }
-      results[[paste(f, i)]] <- tibble(TIMESTAMP = d$TIMESTAMP[1],
-                                       Chamber = d$Chamber[1],
-                                       CO2 = mean(d$CO2),
-                                       Tsoil = mean(d$Tsoil),
-                                       Tair = mean(d$Tair),
-                                       N = nrow(d),
-                                       R2 = r2,
-                                       Humity = hum,
-                                       Flux = flux,
-                                       Error = err)
+
+      resultsdf$TIMESTAMP[i] <- d$TIMESTAMP[1]
+      resultsdf$Chamber[i] <- d$Chamber[1]
+      resultsdf$CO2[i] <- mean(d$CO2)
+      resultsdf$Tsoil[i] <- mean(d$Tsoil)
+      resultsdf$Tair[i] <- mean(d$Tair)
+      resultsdf$N[i] <- nrow(d)
+      resultsdf$R2[i] <- r2
+      resultsdf$Humity[i] <- hum
+      resultsdf$Flux[i] <- d$Chamber[1]
     }
+    results[[f]] <- resultsdf
   }
   rbind_list(results)
 }
