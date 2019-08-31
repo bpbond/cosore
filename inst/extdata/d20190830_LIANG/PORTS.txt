@@ -1,0 +1,28 @@
+# PORTS.txt
+#
+# This comma-separated data file provides information about multiplexer ports
+# and what conditions they represent. Entries below include: 
+#
+# 	CSR_PORT: CSR_PORT number, numeric; "0" means all ports
+# 	CSR_TREATMENT: "None" or experimental manipulation
+#	CSR_AREA: optional chamber area, cm2
+#	CSR_DEPTH: optional collar insertion depth, cm
+# 	CSR_SPECIES: optional field describing species measured
+#	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
+#
+CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+1,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+2,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+3,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+4,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+5,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+6,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+7,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+8,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+9,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+10,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+11,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+12,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+13,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+14,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+15,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii

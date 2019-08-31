@@ -1,5 +1,81 @@
 # Some datasets need custom processing
 
+#' Parse a custom file from d20190830_LIANG
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @note This is a complicated one: the authors posted their data on
+#' Figshare (good), but provide only raw CO2 concentration data (good
+#' but a pain). Need to read each file, compute the flux for each
+#' chamber at each timestep, and stitch together. This is slow.
+parse_d20190830_LIANG <- function(path) {
+  files <- list.files(path, pattern = ".dat$", full.names = TRUE, recursive = TRUE)
+  co2files <- grep("Environ", files, invert = TRUE)
+  results <- list()
+
+  for(f in seq_along(co2files)) {
+    fn <- files[co2files][f]
+    message(f, "/", length(co2files), " ", fn)
+#    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
+
+    # Find the TIMESTAMP header - location varies by file
+    top <- readLines(fn, n = 50)
+    hl <- grep("TIMESTAMP", top)
+    hdr <- gsub('\\\"', "", top[hl])
+    hdr <- strsplit(hdr, ",")[[1]]
+
+    dat <- read.table(fn,
+                      skip = hl + 1,  # there's a units line after the header
+                      sep = ",",
+                      header = FALSE,
+                      col.name = hdr,
+                      na.strings = "NAN",
+                      stringsAsFactors = FALSE)
+
+    dat$TS <- as.POSIXct(dat$TIMESTAMP, format = "%Y-%m-%d %H:%M:%S")
+    # Metadata says to use Equation 2 from https://www.nature.com/articles/sdata201726
+    # Rs = 60.14 * Pair / (Tair + 273.15) * deltaC / deltaT
+
+    # Find new-chamber rows
+    newchamber <- which(head(dat$Chamber, -1) != tail(dat$Chamber, -1)) + 1
+    newchamber <- c(1, newchamber, nrow(dat) + 1)
+
+    for(i in seq_along(tail(newchamber, -1))) {
+      d <- dat[newchamber[i]:(newchamber[i+1] - 1),]
+      d <- d[!is.na(d$CO2) & !is.na(d$TS),]
+      d$secs <- d$TS - d$TS[1]
+
+      m <- try(lm(CO2 ~ secs, data = d), silent = TRUE)
+      if(class(m) == "lm") {
+        flux <- 60.14 * 99.79 / (mean(d$Tair + 273.15)) * m$coefficients["secs"]
+        r2 <- summary(m)$r.squared
+        err <- FALSE
+      } else {
+        flux <- NA
+        r2 <- NA
+        err <- TRUE
+      }
+
+      if("Humity" %in% names(d)) {
+        hum <- mean(d$Humity)
+      } else {
+        hum <- NA
+      }
+      results[[paste(f, i)]] <- tibble(TIMESTAMP = d$TIMESTAMP[1],
+                                       Chamber = d$Chamber[1],
+                                       CO2 = mean(d$CO2),
+                                       Tsoil = mean(d$Tsoil),
+                                       Tair = mean(d$Tair),
+                                       N = nrow(d),
+                                       R2 = r2,
+                                       Humity = hum,
+                                       Flux = flux,
+                                       Error = err)
+    }
+  }
+  rbind_list(results)
+}
 
 #' Parse one of the d20190617_SCOTT custom files
 #'
