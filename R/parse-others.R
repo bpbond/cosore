@@ -6,12 +6,13 @@
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
 #' @details This is a complicated one: the authors posted their data on
-#' Figshare (good), but provide only raw CO2 concentration data (good
-#' but a pain). Need to read each file, compute the flux for each
+#' Figshare (good), but provide only raw CO2 concentration data.
+#' Need to read each file, compute the flux for each
 #' chamber at each timestep, and stitch together. This is slow.
 #' @note One of the files had a corrupted character: in
 #' \code{Miyazaki_Efflux_txt_Stage_2/Efflux_2/Miyazaki201205.dat} had
-#' to change a stray "(" to "," line 365560.
+#' to change a stray "(" to "," line 365560. This is noted in the
+#' README in the raw data folder.
 
 parse_d20190830_LIANG <- function(path) {
   files <- list.files(path, pattern = ".dat$", full.names = TRUE, recursive = TRUE)
@@ -21,7 +22,7 @@ parse_d20190830_LIANG <- function(path) {
   for(f in seq_along(co2files)) {
     fn <- files[co2files][f]
     message(f, "/", length(co2files), " ", fn)
-    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
+#    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
 
     # Find the TIMESTAMP header - location varies by file
     top <- readLines(fn, n = 50)
