@@ -14,9 +14,10 @@
 #' to change a stray "(" to "," line 365560. This is noted in the
 #' README in the raw data folder.
 
+
 parse_d20190830_LIANG <- function(path) {
   files <- list.files(path, pattern = ".dat$", full.names = TRUE, recursive = TRUE)
-  co2files <- grep("Environ", files, invert = TRUE)[43:75]
+  co2files <- grep("Environ", files, invert = TRUE)
   results <- list()
 
   for(f in seq_along(co2files)) {
@@ -24,14 +25,15 @@ parse_d20190830_LIANG <- function(path) {
     message(f, "/", length(co2files), " ", fn)
 #    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
 
-    # Find the TIMESTAMP header - location varies by file
+    # Find and parse the header; its location varies by file
     top <- readLines(fn, n = 50)
     hl <- grep("TIMESTAMP", top)
+    stopifnot(length(hl) == 1)
     hdr <- gsub('\\\"', "", top[hl])
     hdr <- strsplit(hdr, ",")[[1]]
 
     dat <- read.table(fn,
-                      skip = hl + 1,  # there's a units line after the header
+                      skip = hl + 1,  # skip units line after the header
                       sep = ",",
                       header = FALSE,
                       col.name = hdr,
@@ -65,8 +67,9 @@ parse_d20190830_LIANG <- function(path) {
       # Rs = 60.14 * Pair / (Tair + 273.15) * deltaC / deltaT
       d$secs <- d$TS - d$TS[1]
       m <- try(lm(CO2 ~ secs, data = d), silent = TRUE)
+      mean_tair <- mean(d$Tair)
       if(class(m) == "lm") {
-        resultsdf$Flux[i] <- 60.14 * 99.79 / (mean(d$Tair + 273.15)) * m$coefficients["secs"]
+        resultsdf$Flux[i] <- 60.14 * 99.79 / (mean_tair + 273.15) * m$coefficients["secs"]
         resultsdf$R2[i] <- summary(m)$r.squared
       } else {
         resultsdf$Error[i] <- TRUE
@@ -75,13 +78,15 @@ parse_d20190830_LIANG <- function(path) {
       if("Humity" %in% names(d)) {
         resultsdf$Humity[i] <- mean(d$Humity)
       }
+      if("RECORD" %in% names(d)) {
+        resultsdf$RECORD[i] <- d$RECORD[1]
+      }
 
       resultsdf$TIMESTAMP[i] <- d$TIMESTAMP[1]
-      resultsdf$RECORD[i] <- d$RECORD[1]
       resultsdf$Chamber[i] <- d$Chamber[1]
       resultsdf$CO2[i] <- mean(d$CO2)
       resultsdf$Tsoil[i] <- mean(d$Tsoil)
-      resultsdf$Tair[i] <- mean(d$Tair)
+      resultsdf$Tair[i] <- mean_tair
       resultsdf$N[i] <- nrow(d)
     }
     results[[f]] <- resultsdf
