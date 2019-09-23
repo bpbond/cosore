@@ -9,11 +9,6 @@
 # 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
-# Examples:
-# CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,			CSR_ORCID,					CSR_ROLE
-# Smith,		Jill,			js@smith.edu	0000-1111-2222-3333,	Investigation
-# Jones,		John,			jj@jones.edu	,						"Funding acquisition"
-#
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,							CSR_ORCID,					CSR_ROLE
 Liu,			Peng,				spiritlover@126.com
 Xin,			Jia,				xinjia@bjfu.edu.cn

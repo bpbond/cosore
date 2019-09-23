@@ -406,7 +406,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   # Remove bad temperature values
   tl <- c(-50, 60)  # temperature limits
   for(tmp in c("CSR_TCHAMBER", "CSR_T5")) {
-    if(tmp %in% names(dsd)) {
+    if(tmp %in% names(dsd) && nrow(dsd)) {
       dsd[,tmp] <- as.numeric(unlist(dsd[tmp])) # ensure numeric
       tmpvals <- dsd[tmp]
       bad_temps <- tmpvals < min(tl) | tmpvals > max(tl)

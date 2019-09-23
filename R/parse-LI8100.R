@@ -13,7 +13,7 @@ parse_LI8100_file <- function(filename) {
   filedata <- readLines(filename)
   record_starts <- grep(pattern = "^LI-8100", filedata)
   bfn <- basename(filename)
-  message("Reading ", bfn, ": lines = ", length(filedata), " records = ", length(record_starts))
+  message("Reading ", filename, ": lines = ", length(filedata), " records = ", length(record_starts))
 
   if(length(record_starts) == 0) {
     return(NULL)  # ¯\_(ツ)_/¯
@@ -24,6 +24,7 @@ parse_LI8100_file <- function(filename) {
       Date = NA_character_,
       Label = NA_character_,
       Port = NA_integer_,
+      CrvFitStatus = NA_real_,
       # next two are converted to numeric at end for performance
       Flux = NA_real_,
       R2 = NA_real_,
@@ -45,22 +46,46 @@ parse_LI8100_file <- function(filename) {
       }
 
       # Isolate the lines of this record
+      #message(record_starts[i], ":", record_end)
       record <- filedata[record_starts[i]:record_end]
+
+      # Remove error lines in the data table
+      record <- record[grep("Chamber close not detected", record, invert = TRUE)]
 
       # There are three categories of data here:
       # 1 - record-level data that occur BEFORE the data table (e.g. port number)
       # 2 - table data (e.g. CO2 measurements)
       # 3 - record-level data AFTER the table (e.g. mean flux)
 
+      # Very rarely the record resets in the middle resulting in duplicate labels
+      nport <- grepl("^Port:", record)
+      narea <- grepl("^Area:", record)
+      nlabel <- grepl("^Label:", record)
+      ncrvfit <- grepl("^CrvFitStatus:", record)
+      if(sum(ncrvfit) == 2) {
+        #browser()
+      }
+      if(sum(narea) > 1 | sum(ncrvfit) > 1 | sum(nlabel) > 1) { #} | sum(ncrvfit) != 1 | sum(nport) != 1) {
+        results$Error[i] <- TRUE
+        message("Malformed record in ", bfn, " ", record_starts[i], ":", record_end)
+        next()
+      }
+
       # 1 - record-level data that occur BEFORE the data table
-      results$Label[i] <- extract_line(record, "Label")
-      results$Port[i] <- as.integer(extract_line(record, "Port#"))
-      results$Area[i] <- as.numeric(extract_line(record, "Area"))
-      results$Comments[i] <- extract_line(record, "Comments")
+      results$Label[i] <- extract_line(record, "Label", required = FALSE)
+      results$Port[i] <- as.integer(extract_line(record, "Port#", required = FALSE))
+      results$Area[i] <- as.numeric(extract_line(record, "Area", required = FALSE))
+      results$Comments[i] <- extract_line(record, "Comments", required = FALSE)
 
       # 2 - table data
       # Find the data table start
       table_start <- grep("^Type\t", record)
+      if(length(table_start) != 1) {
+        results$Error[i] <- TRUE
+        message("No data table found in ", bfn, " ", record_starts[i], ":", record_end)
+        next()
+      }
+
       # Look for the next non-numeric line; this marks the end
       table_stop <-  grep("^[A-Z]", record[-(1:table_start)])[1] + table_start - 1
 
@@ -85,7 +110,6 @@ parse_LI8100_file <- function(filename) {
       close(con)
 
       if(class(dat) == "try-error") {
-        browser()
         results$Error[i] <- TRUE
         message("read.table error in ", bfn, " ", i, " ", record_starts[i], ":", record_end)
         next
@@ -99,13 +123,17 @@ parse_LI8100_file <- function(filename) {
       }
 
       # Pull out the table-level data we're interested in
-      index <- which(dat$Type == 1)
+      index <- which(dat$Type == 1 & dat$Etime >= 0)
+      if(!length(index)) {
+        message("No valid data in ", bfn, " ", record_starts[i], ":", record_end)
+        next()
+      }
       results$Date[i] <- dat$Date[1]  # first timestamp
       results$Tcham[i] <- mean(dat$Tcham[index])
-      results$V1[i] <- mean(dat$V1[index])
-      results$V2[i] <- mean(dat$V2[index])
-      results$V3[i] <- mean(dat$V3[index])
-      results$V4[i] <- mean(dat$V4[index])
+      if("V1" %in% names(dat)) results$V1[i] <- mean(dat$V1[index])
+      if("V2" %in% names(dat)) results$V2[i] <- mean(dat$V2[index])
+      if("V3" %in% names(dat)) results$V3[i] <- mean(dat$V3[index])
+      if("V4" %in% names(dat)) results$V4[i] <- mean(dat$V4[index])
       results$RH[i] <- mean(dat$RH[index])
       results$Cdry[i] <- mean(dat$Cdry[index])
 
