@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(dplyr)
 library(ggplot2)
 theme_set(theme_bw())
+library(drake)
 
 #all_data <- readd("all")
 desc <- csr_table(all_data, "description")
@@ -21,14 +22,34 @@ diag <- csr_table(all_data, "diagnostics")
 
 ```{r gen-table1}
 # Extract min and max date information for each dataset
+
+# TODO: this duplicates code in dataset_report.Rmd
+compute_interval <- function(dsd) {
+  dsd %>% 
+    mutate(Year = year(CSR_TIMESTAMP)) %>% 
+    arrange(CSR_TIMESTAMP, CSR_PORT) %>% 
+    group_by(Year, CSR_PORT) %>% 
+    summarise(First_obs = min(CSR_TIMESTAMP),
+              Last_obs = max(CSR_TIMESTAMP),
+              N = length(CSR_TIMESTAMP),
+              `Interval (m)` = median(as.numeric(difftime(CSR_TIMESTAMP, lag(CSR_TIMESTAMP), units = "mins")), na.rm = TRUE),
+              `Interval (m)` = round(`Interval (m)`, 0)) %>% 
+    summarise(First_obs = min(First_obs),
+              Last_obs = max(Last_obs),
+              `Interval (m)` = round(weighted.mean(`Interval (m)`, N, na.rm = TRUE), 0),
+              N = sum(N)) %>% 
+    pull(`Interval (m)`)
+}
+
 years <- lapply(all_data, function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
     data.frame(Start = min(x$data$CSR_TIMESTAMP),
                End = max(x$data$CSR_TIMESTAMP),
+               `Interval (m)` = as.integer(median(compute_interval(x$data), na.rm = TRUE)),
                Size  = format(object.size(x), "Mb"),
                stringsAsFactors = FALSE)
   } else {
-    data.frame(Start = NA, End = NA, 
+    data.frame(Start = NA, End = NA, `Interval (m)` = NA,
                Size = format(object.size(NULL), "Mb"), 
                stringsAsFactors = FALSE)    
   }
