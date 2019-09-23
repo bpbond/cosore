@@ -22,6 +22,7 @@ CSR_T5			Temperature at 5 cm, degC (other CSR_Tx fields similar)
 CSR_TAIR		Air temperature, degC
 CSR_TCHAMBER	Chamber temperature, degC
 CSR_TIMESTAMP	Timestamp, a POSIXct class object
+CSR_WTD			Water table depth, cm
 
 
 # From `DESCRIPTION.txt` file
