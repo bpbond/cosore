@@ -71,3 +71,12 @@ CSR_SAND		Sand (%)
 CSR_SILT		Silt (%)
 CSR_STC			Total soil carbon (%)
 CSR_STN			Total soil nitrogen (%)
+
+
+# From `CONTRIBUTORS.txt` file
+
+CSR_FIRST_NAME	First (personal) name
+CSR_FAMILY_NAME	Family name
+CSR_EMAIL		Email address
+CSR_ORCID		ORCID ID
+CSR_ROLE		CReDiT role
