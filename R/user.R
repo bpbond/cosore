@@ -10,6 +10,7 @@ csr_table <- function(all, table) {
 
   extract <- function(x, table) {
     if(is.null(x[[table]])) { return(NULL) }
+    if(nrow(x[[table]]) == 0) { return(NULL) }
 
     x[[table]]$CSR_DATASET <- x$description$CSR_DATASET
     x[[table]]

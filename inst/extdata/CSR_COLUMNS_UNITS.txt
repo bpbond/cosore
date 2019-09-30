@@ -44,6 +44,7 @@ CSR_OTHER_PUBS        Other publications, character
 CSR_DATA_URL          Data URL or DOI, character
 CSR_ACKNOWLEDGMENT    Acknowledgment text, character
 CSR_NOTES			  Other notes
+CSR_EMBARGO			  Embargo flag, if data can't be released yet
 
 
 # From `PORTS.txt` file

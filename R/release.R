@@ -31,6 +31,14 @@ csr_make_release <- function(all_data, path,
     stop("Vignette rebuilt via devtools::build_vignettes()?")
   }
 
+  # Remove any datasets that are under embargo
+  for(i in seq_along(all_data)) {
+    if("CSR_EMBARGO" %in% names(all_data[[i]]$description)) {
+      message(x$description$CSR_DATASET, " has an embargo entry--removing data")
+      all_data[[i]]$data <- NULL
+    }
+  }
+
   # saveRDS the object
   message("Saving database...")
   saveRDS(all_data, file = file.path(path, "cosore_data.RDS"))
