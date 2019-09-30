@@ -15,6 +15,8 @@
 #' Dynamic information like the current date, git commit hash,
 #' database version, and
 #' database size are all copied into \code{README.md} as well.
+#' @note If a \code{CSR_EMBARGO} field exists in the a DESCRIPTION
+#' file, no data will be released from that dataset.
 #' @export
 csr_make_release <- function(all_data, path,
                              vignette_rebuilt = FALSE, force = FALSE) {

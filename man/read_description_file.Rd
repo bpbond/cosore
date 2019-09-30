@@ -30,6 +30,9 @@ A \code{data.frame} with the following columns:
 \item{CSR_OTHER_PUBS}{Other publications, character}
 \item{CSR_DATA_URL}{Data URL or DOI, character}
 \item{CSR_ACKNOWLEDGMENT}{Acknowledgment text, character}
+Infrequently, the \code{description} object may include:
+\item{CSR_NOTES}{Notes, character}
+\item{CSR_EMBARGO}{Embargo information, character}
 }
 \description{
 Read dataset DESCRIPTION file

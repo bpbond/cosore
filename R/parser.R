@@ -107,6 +107,9 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 #' \item{CSR_OTHER_PUBS}{Other publications, character}
 #' \item{CSR_DATA_URL}{Data URL or DOI, character}
 #' \item{CSR_ACKNOWLEDGMENT}{Acknowledgment text, character}
+#' Infrequently, the \code{description} object may include:
+#' \item{CSR_NOTES}{Notes, character}
+#' \item{CSR_EMBARGO}{Embargo information, character}
 read_description_file <- function(dataset_name, file_data = NULL) {
   f <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
