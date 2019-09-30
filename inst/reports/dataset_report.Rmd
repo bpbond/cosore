@@ -32,7 +32,7 @@ diag <- ds$diagnostics
 ```{r, echo=FALSE}
 if("CSR_EMBARGO" %in% names(d)) {
   cat("---------------------------------------------------------------\n")
-  cat("EMBARGO FLAG IS SET--DATA NOT TO BE RELEASED\n")
+  cat("EMBARGO FLAG IS SET--DATA WILL NOT BE RELEASED\n")
   cat("---------------------------------------------------------------\n")
 }
 ```
