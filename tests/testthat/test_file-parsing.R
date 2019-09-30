@@ -90,6 +90,37 @@ test_that("read_description_file", {
   expect_identical(colnames(x), colnames(x1))
 })
 
+test_that("read_description_file", {
+  # description file
+  labels <- c("CSR_FIRST_NAME", "CSR_FAMILY_NAME", "CSR_EMAIL", "CSR_ORCID", "CSR_ROLE")
+  dat <- c("Ben", "BL", "ben@bbl.com", "0000-0000-0000-0000", "role")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+
+  x <- read_contributors_file("x", file_data = fd)
+  expect_is(x, "data.frame")
+  expect_equivalent(nrow(x), 1)
+  expect_true(all(labels %in% names(x)))
+
+  # Catches blank names
+  dat <- c("", "BL", "ben@bbl.com", "0000-0000-0000-0000", "role")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+  expect_error(read_contributors_file("x", file_data = fd))
+  dat <- c("Ben", "", "ben@bbl.com", "0000-0000-0000-0000", "role")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+  expect_error(read_contributors_file("x", file_data = fd))
+
+  # Catches invalid emails
+  dat <- c("Ben", "BL", "bbl.com", "0000-0000-0000-0000", "role")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+  expect_error(read_contributors_file("x", file_data = fd))
+  dat <- c("Ben", "BL", "ben@", "0000-0000-0000-0000", "role")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+  expect_error(read_contributors_file("x", file_data = fd))
+  dat <- c("Ben", "BL", "", "0000-0000-0000-0000", "role")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+  expect_error(read_contributors_file("x", file_data = fd))
+})
+
 test_that("map_columns", {
   # handles missing input
   expect_null(map_columns(NULL, data.frame()))
