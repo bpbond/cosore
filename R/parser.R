@@ -126,7 +126,8 @@ read_description_file <- function(dataset_name, file_data = NULL) {
          CSR_PRIMARY_PUB = extract_line(f, "CSR_PRIMARY_PUB", required = FALSE),
          CSR_OTHER_PUBS = extract_line(f, "CSR_OTHER_PUBS", required = FALSE),
          CSR_DATA_URL = extract_line(f, "CSR_DATA_URL", required = FALSE),
-         CSR_ACKNOWLEDGMENT = extract_line(f, "CSR_ACKNOWLEDGMENT", required = FALSE))
+         CSR_ACKNOWLEDGMENT = extract_line(f, "CSR_ACKNOWLEDGMENT", required = FALSE),
+         CSR_NOTES = extract_line(f, "CSR_NOTES", required = FALSE))
 }
 
 

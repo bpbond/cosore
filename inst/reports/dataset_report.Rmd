@@ -40,6 +40,8 @@ IGBP          | `r d$CSR_IGBP`
 Network       | `r paste(d$CSR_NETWORK, d$CSR_SITE_ID)`
 Timezone      | `r d$CSR_TIMEZONE`
 
+`r d$CSR_NOTES`
+
 ```{r map, echo=FALSE}
 library(sp)
 library(leaflet)
