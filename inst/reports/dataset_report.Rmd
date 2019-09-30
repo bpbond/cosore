@@ -87,19 +87,23 @@ knitr::kable(dsp, format = "html") %>%
 
 ```{r}
 compute_interval <- function(dsd) {
-  dsd %>% 
-    mutate(Year = year(CSR_TIMESTAMP)) %>% 
-    arrange(CSR_TIMESTAMP, CSR_PORT) %>% 
-    group_by(Year, CSR_PORT) %>% 
-    summarise(First_obs = min(CSR_TIMESTAMP),
-              Last_obs = max(CSR_TIMESTAMP),
-              N = length(CSR_TIMESTAMP),
-              `Interval (m)` = median(as.numeric(difftime(CSR_TIMESTAMP, lag(CSR_TIMESTAMP), units = "mins")), na.rm = TRUE),
-              `Interval (m)` = round(`Interval (m)`, 0)) %>% 
-    summarise(First_obs = min(First_obs),
-              Last_obs = max(Last_obs),
-              `Interval (m)` = round(weighted.mean(`Interval (m)`, N, na.rm = TRUE), 0),
-              N = sum(N))
+  if(is.null(dsd)) {
+    return(tibble(First_obs = NA, Last_OBS = NA, `Interval (m)` = NA))
+  } else {
+    dsd %>% 
+      mutate(Year = year(CSR_TIMESTAMP)) %>% 
+      arrange(CSR_TIMESTAMP, CSR_PORT) %>% 
+      group_by(Year, CSR_PORT) %>% 
+      summarise(First_obs = min(CSR_TIMESTAMP),
+                Last_obs = max(CSR_TIMESTAMP),
+                N = length(CSR_TIMESTAMP),
+                `Interval (m)` = median(as.numeric(difftime(CSR_TIMESTAMP, lag(CSR_TIMESTAMP), units = "mins")), na.rm = TRUE),
+                `Interval (m)` = round(`Interval (m)`, 0)) %>% 
+      summarise(First_obs = min(First_obs),
+                Last_obs = max(Last_obs),
+                `Interval (m)` = round(weighted.mean(`Interval (m)`, N, na.rm = TRUE), 0),
+                N = sum(N))
+  }
 }
 
 compute_interval(ds$data) %>% 
