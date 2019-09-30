@@ -16,4 +16,19 @@
 # 2,	Heated,			Sphagnum fuscum
 #
 CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			None,			317.8,		6,			Artemisia ordosica	
+1,			None,			317.8,		6,			Bare soil
+2,			None,			317.8,		6,			Bare soil	
+3,			None,			317.8,		6,			Bare soil	
+4,			None,			317.8,		6,			Bare soil	
+5,			None,			317.8,		6,			Bare soil	
+6,			None,			317.8,		6,			Bare soil	
+7,			None,			317.8,		6,			Bare soil	
+8,			Clear chamber,	317.8,		6,			Bare soil	
+9,			None,			317.8,		6,			Bare soil	
+10,			None,			317.8,		6,			Bare soil	
+11,			None,			317.8,		6,			Bare soil	
+12,			None,			317.8,		6,			Bare soil	
+13,			Clear chamber,	317.8,		6,			Artemisia ordosica	
+14,			None,			317.8,		6,			Bare soil	
+15,			Clear chamber,	317.8,		6,			Bare soil	
+16,			Clear chamber,	317.8,		6,			Bare soil	

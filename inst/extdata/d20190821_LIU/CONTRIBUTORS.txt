@@ -10,6 +10,6 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,							CSR_ORCID,					CSR_ROLE
-Liu,			Peng,				spiritlover@126.com
+Peng,			Liu,				spiritlover@126.com
 Xin,			Jia,				xinjia@bjfu.edu.cn
 Tianshan,		Zha,				tianshanzha@bjfu.edu.cn

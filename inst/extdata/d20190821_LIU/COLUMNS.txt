@@ -8,3 +8,7 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,	Computation,				Notes
+
+# Note this dataset was provided as raw Li-8100A files, which are
+# very slow to process, so we're using two-stage (raw -> CSV -> COSORE).
+# The raw mapping files are in the raw data folder.
