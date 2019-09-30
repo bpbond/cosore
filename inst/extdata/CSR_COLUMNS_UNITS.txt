@@ -17,10 +17,10 @@ CSR_PORT		Port/chamber number, integer
 CSR_R2			Flux computation R2, fraction
 CSR_RECORD		Record number within file, integer
 CSR_RH			Relative humidity, percent
-CSR_SM5			Soil moisture at 0-5 cm, volumetric (other CSR_SMx fields similar)
-CSR_T5			Temperature at 5 cm, degC (other CSR_Tx fields similar)
-CSR_TAIR		Air temperature, degC
-CSR_TCHAMBER	Chamber temperature, degC
+CSR_SM5			Soil moisture at 5 cm, volumetric (other CSR_SMx fields follow same format for depth x)
+CSR_T5			Temperature at 5 cm, degC (other CSR_Tx fields follow same format for depth x)
+CSR_TAIR		Air temperature, °C
+CSR_TCHAMBER	Chamber temperature, °C
 CSR_TIMESTAMP	Timestamp, a POSIXct class object
 CSR_WTD			Water table depth, cm
 
@@ -31,25 +31,28 @@ CSR_SITE_NAME         Site name, character
 CSR_LONGITUDE         Decimal longitude (degrees), numeric
 CSR_LATITUDE          Decimal latitude (degrees), numeric
 CSR_ELEVATION         Elevation (m), numeric
-CSR_TIMEZONE		      Timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+CSR_TIMEZONE		  Timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 CSR_IGBP              IGBP class, character
 CSR_NETWORK           Site network name, character
 CSR_SITE_ID           Site ID in network, character
 CSR_INSTRUMENT        Measurement instrument, character
 CSR_FILE_FORMAT       Data file format, character
-CSR_TIMESTAMP_FORMAT  Data timestamp format, in `strptime()` format
+CSR_TIMESTAMP_FORMAT  Data timestamp format, in R's `strptime()` format
 CSR_TIMETAMP_TZ	      Instrument timestamp timezone; normally same as `CSR_TIMEZONE`
 CSR_PRIMARY_PUB       Primary publication, character
 CSR_OTHER_PUBS        Other publications, character
 CSR_DATA_URL          Data URL or DOI, character
 CSR_ACKNOWLEDGMENT    Acknowledgment text, character
+CSR_NOTES			  Other notes
 
 
 # From `PORTS.txt` file
 
-Area			Area of measurement chamber, cm2
-Depth			Depth of collar insertion, cm
-Treatment		Collar treatment
+CSR_PORT		Port (chamber) number, numeric; "0" means all ports
+CSR_TREATMENT	Collar treatment; "NEE" means clear chamber
+CSR_AREA		Area of measurement chamber, cm2
+CSR_DEPTH		Depth of collar insertion, cm
+CSR_SPECIES		Comma-separated species list		
 
 
 # From `ANCILLARY.txt` file
@@ -78,5 +81,5 @@ CSR_STN			Total soil nitrogen (%)
 CSR_FIRST_NAME	First (personal) name
 CSR_FAMILY_NAME	Family name
 CSR_EMAIL		Email address
-CSR_ORCID		ORCID ID
-CSR_ROLE		CReDiT role
+CSR_ORCID		ORCID ID; see https://orcid.org
+CSR_ROLE		CReDiT role; see https://www.casrai.org/credit.html
