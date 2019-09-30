@@ -1,7 +1,7 @@
 # CONTRIBUTORS.txt
 #
 # This comma-separated data file provides information about dataset
-# contributors. Entries below include: 
+# contributors. Entries below include:
 # 	CSR_FIRST_NAME: first name
 # 	CSR_FAMILY_NAME: family (last) name
 # 	CSR_EMAIL: email address
@@ -10,4 +10,4 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,			CSR_ORCID,				CSR_ROLE
-Rodrigo,		Vargas,				rvargas@udel.edu,	0000-0001-6829-5333		"Investigation, Data curation"
+Rodrigo,		Vargas,				rvargas@udel.edu,	0000-0001-6829-5333,		"Investigation, Data curation"

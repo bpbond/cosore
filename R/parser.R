@@ -162,7 +162,13 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
   if(length(invalid_emails) && any(cfd$CSR_EMAIL[invalid_emails] != "")) {
     stop("Invalid emails for contributors ", invalid_emails)
   }
-
+  # Check for invalid ORCID ID
+  invalid_orcids <- grep("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$",
+                         cfd$CSR_ORCID, ignore.case = TRUE, invert = TRUE)
+  entries <- !is.na(cfd$CSR_ORCID) & cfd$CSR_ORCID != ""
+  if(length(invalid_orcids) && any(entries[invalid_orcids])) {
+    stop("Invalid ORCID IDs for contributors ", invalid_orcids)
+  }
   cfd
 }
 
