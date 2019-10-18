@@ -9,6 +9,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 theme_set(theme_bw())
 library(drake)
@@ -152,4 +153,16 @@ bind_rows(coverage) %>%
   ggplot(aes(x = CSR_FLUX)) + geom_histogram(bins = 30) +
   facet_wrap(~CSR_IGBP) 
 
+```
+
+### Database growth
+
+```{r database-growth}
+system.file(file.path("extdata/database_growth.csv"),
+            package = "cosore", mustWork = TRUE) %>% 
+  readr::read_csv(col_types = "Ddddd") %>% 
+  gather(Variable, Value, Records, Size_Mb, Datasets) %>% 
+  ggplot(aes(Date, Value, label = Version)) + 
+  geom_line() + geom_label() + 
+  facet_wrap(~Variable, scales = "free")
 ```
