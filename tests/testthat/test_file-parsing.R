@@ -119,6 +119,10 @@ test_that("read_description_file", {
   dat <- c("Ben", "BL", "", "0000-0000-0000-0000", "role")
   fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
   expect_error(read_contributors_file("x", file_data = fd))
+  # Handles multiple (semicolon) emails
+  dat <- c("Ben", "BL", "ben@bbl.com; ben@gmail.com", "0000-0000-0000-0000", "role")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+  expect_silent(read_contributors_file("x", file_data = fd))
 
   # Catches invalid ORCIDs
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-000-0000-0000", "role")
