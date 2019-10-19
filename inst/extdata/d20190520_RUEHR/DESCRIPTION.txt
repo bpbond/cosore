@@ -28,7 +28,7 @@ CSR_IGBP: Evergreen needleleaf forest
 CSR_NETWORK: Ameriflux
 CSR_SITE_ID: US-ME6
 CSR_INSTRUMENT: LI-8100A
-CSR_MSMT_LENGTH: 
+CSR_MSMT_LENGTH: 75
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %m/%d/%y %H:%M 
 CSR_TIMESTAMP_TZ: America/Los_Angeles

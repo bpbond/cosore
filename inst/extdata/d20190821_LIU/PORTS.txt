@@ -11,19 +11,19 @@
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-1,			Rs,				None,			317.8,		6,			Bare soil
-2,			Rs,				None,			317.8,		6,			Bare soil	
-3,			Rs,				None,			317.8,		6,			Bare soil	
-4,			Rs,				None,			317.8,		6,			Bare soil	
-5,			Rs,				None,			317.8,		6,			Bare soil	
-6,			Rs,				None,			317.8,		6,			Bare soil	
-7,			Rs,				None,			317.8,		6,			Bare soil	
-8,			NEE,			Clear chamber,	317.8,		6,			Bare soil	
-9,			Rs,				None,			317.8,		6,			Bare soil	
-10,			Rs,				None,			317.8,		6,			Bare soil	
-11,			Rs,				None,			317.8,		6,			Bare soil	
-12,			Rs,				None,			317.8,		6,			Bare soil	
-13,			NEE,			Clear chamber,	317.8,		6,			Artemisia ordosica	
-14,			Rs,				None,			317.8,		6,			Bare soil	
-15,			NEE,			Clear chamber,	317.8,		6,			Bare soil	
-16,			NEE,			Clear chamber,	317.8,		6,			Bare soil	
+1,			Rs,				None,			317.8,		7,			Bare soil
+2,			Rs,				None,			317.8,		7,			Bare soil	
+3,			Rs,				None,			317.8,		7,			Bare soil	
+4,			Rs,				None,			317.8,		7,			Bare soil	
+5,			Rs,				None,			317.8,		7,			Bare soil	
+7,			Rs,				None,			317.8,		7,			Bare soil	
+7,			Rs,				None,			317.8,		7,			Bare soil	
+8,			NEE,			Clear chamber,	317.8,		7,			Bare soil	
+9,			Rs,				None,			317.8,		7,			Bare soil	
+10,			Rs,				None,			317.8,		7,			Bare soil	
+11,			Rs,				None,			317.8,		7,			Bare soil	
+12,			Rs,				None,			317.8,		7,			Bare soil	
+13,			NEE,			Clear chamber,	317.8,		7,			Artemisia ordosica	
+14,			Rs,				None,			317.8,		7,			Bare soil	
+15,			NEE,			Clear chamber,	317.8,		7,			Bare soil	
+17,			NEE,			Clear chamber,	317.8,		7,			Bare soil	

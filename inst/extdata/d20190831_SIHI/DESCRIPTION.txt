@@ -36,7 +36,7 @@ CSR_IGBP: Evergreen broadleaf forest
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: Cavity Ring-Down Spectroscopy (CRDS) gas analyzer (Picarro G2508)
-CSR_MSMT_LENGTH: 
+CSR_MSMT_LENGTH: 600
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %m/%d/%Y %H:%M
 CSR_TIMESTAMP_TZ: America/Puerto_Rico

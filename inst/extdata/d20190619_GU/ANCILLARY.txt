@@ -21,8 +21,8 @@
 # ... others can be added as needed
 #
 Variable,	Value
-CSR_LAI
+CSR_LAI		3.8
 CSR_NPP
 CSR_ANPP
 CSR_BNPP
-CSR_AGE
+CSR_AGE		77

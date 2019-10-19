@@ -9,4 +9,4 @@
 #	CSR_AREA: optional chamber area, cm2
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			1886
+0,			Rs,				None,			1886,		2

@@ -80,6 +80,8 @@ knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %
 
 **Instrument**: `r d$CSR_INSTRUMENT`
 
+**Measurement length (s)**: `r d$CSR_MSMT_LENGTH`
+
 **File format**: `r d$CSR_FILE_FORMAT`
 
 **Timestamp format**: `r d$CSR_TIMESTAMP_FORMAT`

@@ -36,7 +36,7 @@ CSR_IGBP: Poplar short rotation coppice plantation
 CSR_NETWORK: ICOS
 CSR_SITE_ID: BE-Lcr
 CSR_INSTRUMENT: LI-8100A
-CSR_MSMT_LENGTH: 
+CSR_MSMT_LENGTH: 180
 CSR_FILE_FORMAT: Processed
 CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 CSR_TIMESTAMP_TZ: Africa/Casablanca

@@ -28,12 +28,12 @@ CSR_IGBP: Open shrubland
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-8100A
-CSR_MSMT_LENGTH: 
+CSR_MSMT_LENGTH: 120
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %m/%d/%y %H
 # Following timestamp is -0800 under both standard and daylight savings
 CSR_TIMESTAMP_TZ: Pacific/Pitcairn
-CSR_PRIMARY_PUB:
-CSR_OTHER_PUBS: 10.5194/bgd-10-6335-2013
+CSR_PRIMARY_PUB: 10.5194/bgd-10-6335-2013
+CSR_OTHER_PUBS: 
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: This data was originally collected and analysed by Marguerite Mauritz and David Lipson to investigate soil respiration patterns in semi-arid shrubland invaded by annual grasses and forbs. The LI-8100 was kindly loaned by Walt Oechel.

@@ -33,7 +33,7 @@ CSR_IGBP: Wetland
 CSR_NETWORK: Ameriflux
 CSR_SITE_ID: US-Ho1
 CSR_INSTRUMENT: LI-6252
-CSR_MSMT_LENGTH: 
+CSR_MSMT_LENGTH: 600
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y %j %H:%M:%S %p
 # Following timezone is EST all year
