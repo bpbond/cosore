@@ -28,6 +28,7 @@ CSR_IGBP: Deciduous broadleaf forest
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-8100A
+CSR_MSMT_LENGTH: 
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
 # Following timestamp is -0500 under both standard and daylight savings

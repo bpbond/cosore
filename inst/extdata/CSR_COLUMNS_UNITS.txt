@@ -36,6 +36,7 @@ CSR_IGBP              IGBP class, character
 CSR_NETWORK           Site network name, character
 CSR_SITE_ID           Site ID in network, character
 CSR_INSTRUMENT        Measurement instrument, character
+CSR_MSMT_LENGTH		  Measurement length, seconds
 CSR_FILE_FORMAT       Data file format, character
 CSR_TIMESTAMP_FORMAT  Data timestamp format, in R's `strptime()` format
 CSR_TIMETAMP_TZ	      Instrument timestamp timezone; normally same as `CSR_TIMEZONE`

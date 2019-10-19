@@ -28,6 +28,7 @@ CSR_IGBP: Mixed forests
 CSR_NETWORK: Fluxnet
 CSR_SITE_ID: CH-Lae
 CSR_INSTRUMENT: LI-8100A
+CSR_MSMT_LENGTH: 
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %m/%d/%y %H:%M 
 # Following timezone is +0100 under both standard time and daylight savings

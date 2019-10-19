@@ -29,6 +29,7 @@ CSR_IGBP: Wetland
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-8100A
+CSR_MSMT_LENGTH: 
 CSR_FILE_FORMAT: Processed
 CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 # Following timestamp is -0800 under both standard and daylight savings

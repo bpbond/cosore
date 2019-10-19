@@ -15,6 +15,7 @@
 #	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
 # 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
+#	CSR_MSMT_LENGTH: measurement length (seconds)
 #	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
 #	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
 		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
@@ -32,6 +33,7 @@ CSR_IGBP: Evergreen needleleaf forest
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: eosFD
+CSR_MSMT_LENGTH: 
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 CSR_TIMESTAMP_TZ: America/Anchorage

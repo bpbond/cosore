@@ -28,6 +28,7 @@ CSR_IGBP: Open shrubland
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-8100A
+CSR_MSMT_LENGTH: 
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %m/%d/%y %H
 # Following timestamp is -0800 under both standard and daylight savings

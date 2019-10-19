@@ -123,6 +123,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
          CSR_NETWORK = extract_line(f, "CSR_NETWORK", required = FALSE),
          CSR_SITE_ID = extract_line(f, "CSR_SITE_ID", required = FALSE),
          CSR_INSTRUMENT = extract_line(f, "CSR_INSTRUMENT"),
+         CSR_MSMT_LENGTH = extract_line(f, "CSR_MSMT_LENGTH", required = FALSE, numeric_data = TRUE),
          CSR_FILE_FORMAT = extract_line(f, "CSR_FILE_FORMAT"),
          CSR_TIMESTAMP_FORMAT = extract_line(f, "CSR_TIMESTAMP_FORMAT"),
          CSR_TIMESTAMP_TZ = extract_line(f, "CSR_TIMESTAMP_TZ"),

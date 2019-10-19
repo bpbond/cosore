@@ -97,6 +97,9 @@ insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/ex
       ip <- pat
     }
 
+    if(length(ip) > 1) {
+      stop("Found more than one possible insertion point in ", f)
+    }
     if(length(ip)) {
       # Have we already been here?
       if(dat[ip] == newlines[1]) {

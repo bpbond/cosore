@@ -28,6 +28,7 @@ CSR_IGBP: Deciduous broadleaf forest
 CSR_NETWORK: Ameriflux
 CSR_SITE_ID: US-MMS
 CSR_INSTRUMENT: LI-8100
+CSR_MSMT_LENGTH: 
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y %j %H
 # Following timestamp is -0500 under both standard and daylight savings
