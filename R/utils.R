@@ -74,7 +74,6 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
   invisible(filenum)
 }
 
-
 #' Insert new line(s) into existing metadata files.
 #'
 #' @param file Filename, character

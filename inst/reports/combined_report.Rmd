@@ -27,7 +27,7 @@ diag <- csr_table(all_data, "diagnostics")
 # TODO: this duplicates code in dataset_report.Rmd
 compute_interval <- function(dsd) {
   dsd %>% 
-    mutate(Year = year(CSR_TIMESTAMP)) %>% 
+    mutate(Year = lubridate::year(CSR_TIMESTAMP)) %>% 
     arrange(CSR_TIMESTAMP, CSR_PORT) %>% 
     group_by(Year, CSR_PORT) %>% 
     summarise(First_obs = min(CSR_TIMESTAMP),
@@ -112,7 +112,7 @@ bind_rows(coverage) %>%
   summarise(N = n()) %>% 
   ungroup %>% 
   mutate(Time = lubridate::ymd(paste(Year, Month, "1"))) %>% 
-  ggplot(aes(Time, CSR_DATASET, fill = N)) + geom_tile() +
+  ggplot(aes(Time, CSR_DATASET, fill = N)) + geom_tile(na.rm = TRUE) +
   scale_fill_continuous("Days per month",
                         high = "#132B43", low = "#56B1F7")
 ```
@@ -126,7 +126,7 @@ bind_rows(coverage) %>%
   summarise(N = n()) %>% 
   ungroup %>% 
   mutate(Time = lubridate::ymd(paste(Year, Month, "1"))) %>% 
-  ggplot(aes(Time, CSR_IGBP, fill = N)) + geom_tile() +
+  ggplot(aes(Time, CSR_IGBP, fill = N)) + geom_tile(na.rm = TRUE) +
   scale_fill_continuous("Days per month",
                         high = "#132B43", low = "#56B1F7")
 ```

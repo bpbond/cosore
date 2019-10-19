@@ -184,7 +184,7 @@ read_csv_data <- function(file_data, required = NULL) {
   x <- read.csv(textConnection(file_data), strip.white = TRUE, stringsAsFactors = FALSE)
   for(req in required) {
     if(!req %in% colnames(x)) {
-      stop(req, " is not a column name")
+      stop("Required column ", req, " not found: ", paste(colnames(x), collapse = ", "))
     }
     empty <- which(is.na(x[[req]]) | x[[req]] == "")
     if(length(empty)) {
@@ -202,13 +202,22 @@ read_csv_data <- function(file_data, required = NULL) {
 #' @keywords internal
 #' @return A \code{data.frame} with the following columns:
 #' \item{CSR_PORT}{Port number, numeric; 0 = all ports}
+#' \item{CSR_MSMT_VAR}{Measurement variable, "Rs" (soil respiration), "Rh" (heterotrophic respiration),
+#' or "NEE" (net ecosystem exchange from a clear chamber)}
 #' \item{CSR_TREATMENT}{Treatment, character; by default "None"}
 #' \item{CSR_SPECIES}{Species, character}
 #' \item{CSR_DEPTH}{Depth of collar, cm}
 #' \item{CSR_AREA}{Ground area of chamber, cm2}
 read_ports_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "PORTS.txt", file_data)
-  read_csv_data(file_data, required = c("CSR_PORT", "CSR_TREATMENT"))
+  pfd <- read_csv_data(file_data, required = c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT"))
+
+  # Measurement variable is highly standardized; make sure all ok
+  ok <- pfd$CSR_MSMT_VAR %in% c("Rs", "Rh", "NEE")
+  if(!all(ok)) {
+    stop("Illegal CSR_MSMT_VAR entry in PORTS file: ", paste(pfd$CSR_MSMT_VAR[!ok], collapse = ", "))
+  }
+  pfd
 }
 
 
@@ -416,7 +425,7 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     }
 
     # Remove records with flux data way out of anything possible
-    fl <- c(-1, 50)   # flux limits
+    fl <- c(-10, 50)   # flux limits
     diag$CSR_FLUX_LOWBOUND <- min(fl)
     diag$CSR_FLUX_HIGHBOUND <- max(fl)
     toolow <- dsd$CSR_FLUX < min(fl)

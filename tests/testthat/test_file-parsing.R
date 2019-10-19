@@ -90,8 +90,8 @@ test_that("read_description_file", {
   expect_identical(colnames(x), colnames(x1))
 })
 
-test_that("read_description_file", {
-  # description file
+test_that("read_contributors_file", {
+  # contributors file
   labels <- c("CSR_FIRST_NAME", "CSR_FAMILY_NAME", "CSR_EMAIL", "CSR_ORCID", "CSR_ROLE")
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-0000-0000-0000", "role")
   fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
@@ -138,6 +138,30 @@ test_that("read_description_file", {
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-0000-0000-000X", "role")
   fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
   expect_silent(read_contributors_file("x", file_data = fd))
+})
+
+test_that("read_ports_file", {
+  # ports file
+  labels <- c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT")
+  dat <- c("0", "Rs", "None")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+
+  x <- read_ports_file("x", file_data = fd)
+  expect_is(x, "data.frame")
+  expect_equivalent(nrow(x), 1)
+  expect_true(all(labels %in% names(x)))
+
+  # Catches missing required variable
+  for(i in seq_along(labels)) {
+    fd <- c(paste(labels[-i], collapse = ","), paste(dat[-i], collapse = ","))
+    expect_error(read_ports_file("x", file_data = fd), info = labels[i])
+  }
+
+  # Illegal measurement variable
+  labels <- c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT")
+  dat <- c("0", "Rz", "None")
+  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+  expect_error(read_ports_file("x", file_data = fd))
 })
 
 test_that("map_columns", {

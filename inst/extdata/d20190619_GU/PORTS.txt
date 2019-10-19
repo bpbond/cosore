@@ -9,5 +9,5 @@
 #	CSR_DEPTH: optional collar insertion depth, cm
 # 	CSR_SPECIES: optional field describing species measured
 #
-CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			None,			314.7,		,			Quercus spp.	
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+0,			Rs,				None,			314.7,		,			Quercus spp.	

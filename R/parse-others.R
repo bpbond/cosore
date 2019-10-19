@@ -13,6 +13,8 @@
 #' \code{Miyazaki_Efflux_txt_Stage_2/Efflux_2/Miyazaki201205.dat} had
 #' to change a stray "(" to "," line 365560. This is noted in the
 #' README in the raw data folder.
+#' @importFrom stats lm
+#' @importFrom utils tail write.table
 parse_d20190830_LIANG <- function(path) {
   files <- list.files(path, pattern = ".dat$", full.names = TRUE, recursive = TRUE)
   co2files <- grep("Environ", files, invert = TRUE)
@@ -34,7 +36,7 @@ parse_d20190830_LIANG <- function(path) {
                       skip = hl + 1,  # skip units line after the header
                       sep = ",",
                       header = FALSE,
-                      col.name = hdr,
+                      col.names = hdr,
                       na.strings = "NAN",
                       stringsAsFactors = FALSE)
 

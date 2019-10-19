@@ -14,6 +14,8 @@ read_ports_file(dataset_name, file_data = NULL)
 \value{
 A \code{data.frame} with the following columns:
 \item{CSR_PORT}{Port number, numeric; 0 = all ports}
+\item{CSR_MSMT_VAR}{Measurement variable, "Rs" (soil respiration), "Rh" (heterotrophic respiration),
+or "NEE" (net ecosystem exchange from a clear chamber)}
 \item{CSR_TREATMENT}{Treatment, character; by default "None"}
 \item{CSR_SPECIES}{Species, character}
 \item{CSR_DEPTH}{Depth of collar, cm}

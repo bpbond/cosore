@@ -10,5 +10,5 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
-CSR_PORT,	CSR_TREATMENT,	CSR_SENSOR_DEPTHS,	CSR_SPECIES
-0,			None,			"2; 8; 16",			"Bursera simaruba (L.) Sarg., Dendropanax arboreus (L.) Decne. & Planch., Ficus cotinifolia Kunth., Guettarda combsii Urb, Jatropha gaumeri Greenm., Lonchocarpus castilloi Standl., Lonchocarpus rugo- sus Benth., Nectandra salicifolia Kunth, Piscidia piscipula (L.) Sarg., and Vitex gaumeri Greenm."
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_SENSOR_DEPTHS,	CSR_SPECIES
+0,			Rs,				None,			"2; 8; 16",			"Bursera simaruba (L.) Sarg., Dendropanax arboreus (L.) Decne. & Planch., Ficus cotinifolia Kunth., Guettarda combsii Urb, Jatropha gaumeri Greenm., Lonchocarpus castilloi Standl., Lonchocarpus rugo- sus Benth., Nectandra salicifolia Kunth, Piscidia piscipula (L.) Sarg., and Vitex gaumeri Greenm."

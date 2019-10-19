@@ -9,11 +9,11 @@
 #	CSR_DEPTH: optional collar insertion depth, cm
 # 	CSR_SPECIES: optional field describing species measured
 #
-CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-1,			None,			317.8,		5,			Eragrostis lehmannia		
-2,			None,			317.8,		5,			Eragrostis lehmannia		
-3,			None,			317.8,		5,			Eragrostis lehmannia		
-4,			None,			317.8,		5,			Eragrostis lehmannia		
-5,			Trenched,		317.8,		5,			Eragrostis lehmannia		
-6,			Trenched,		317.8,		5,			Eragrostis lehmannia		
-7,			Trenched,		317.8,		5,			Eragrostis lehmannia		
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+1,			Rs,				None,			317.8,		5,			Eragrostis lehmannia		
+2,			Rs,				None,			317.8,		5,			Eragrostis lehmannia		
+3,			Rs,				None,			317.8,		5,			Eragrostis lehmannia		
+4,			Rs,				None,			317.8,		5,			Eragrostis lehmannia		
+5,			Rh,				Trenched,		317.8,		5,			Eragrostis lehmannia		
+6,			Rh,				Trenched,		317.8,		5,			Eragrostis lehmannia		
+7,			Rh,				Trenched,		317.8,		5,			Eragrostis lehmannia		

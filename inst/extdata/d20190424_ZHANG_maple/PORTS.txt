@@ -8,12 +8,12 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_AREA: optional chamber area, cm2
 #
-CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-1,		Girdled,	491,	,		Acer spp.
-2,		None,		491,	,		Acer spp.
-3,		None,		491,	,		Acer spp.
-4,		None,		491,	,		Acer spp.
-5,		None,		491,	,		Acer spp.
-6,		None,		491,	,		Acer spp.
-7,		Girdled,	491,	,		Acer spp.
-8,		None,		491,	,		Acer spp.
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+1,			Rh,				Girdled,		491,		,		Acer spp.
+2,			Rs,				None,			491,		,		Acer spp.
+3,			Rs,				None,			491,		,		Acer spp.
+4,			Rs,				None,			491,		,		Acer spp.
+5,			Rs,				None,			491,		,		Acer spp.
+6,			Rs,				None,			491,		,		Acer spp.
+7,			Rh,				Girdled,		491,		,		Acer spp.
+8,			Rs,				None,			491,		,		Acer spp.

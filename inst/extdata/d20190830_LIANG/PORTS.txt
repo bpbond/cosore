@@ -10,19 +10,19 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
-CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-1,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-2,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-3,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-4,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-5,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-6,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-7,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-8,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-9,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-10,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-11,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-12,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-13,			Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-14,			None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
-15,			Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+1,			Rh,				Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+2,			Rs,				None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+3,			Rh,				Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+4,			Rh,				Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+5,			Rh,				Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+6,			Rs,				None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+7,			Rs,				None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+8,			Rh,				Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+9,			Rh,				Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+10,			Rh,				Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+11,			Rh,				Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+12,			Rs,				None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+13,			Rh,				Trench,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+14,			Rs,				None,			0.81,		5,			Castanopsis cuspidata and Machilus thunbergii	
+15,			Rh,				Trench and warm,0.81,		5,			Castanopsis cuspidata and Machilus thunbergii

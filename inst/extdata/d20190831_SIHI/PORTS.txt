@@ -10,10 +10,5 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
-# Examples:
-# CSR_PORT,	CSR_TREATMENT,		CSR_SPECIES
-# 1,	None,			"Liriodendron tulipifera, Acer rubrum"
-# 2,	Heated,			Sphagnum fuscum
-#
-CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			None,			182.4,		15,			Tabonuco (Dacryodes excelsa)
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+0,			Rs,				None,			182.4,		15,			Tabonuco (Dacryodes excelsa)

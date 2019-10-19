@@ -8,5 +8,5 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_AREA: optional chamber area, cm2
 #
-CSR_PORT,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,		None,		314,	2,		"Pinus patula subsp. tecunumanii (Eguiluz & J. P. Perry) Styles; Hieronyma alchorneoides Allemao; Pentaclethra macroloba (Willd.) Kuntze; Virola koschnyi Warb.; Vochysia ferruginea Mart.; and Vochysia guatemalensis Donn. Sm. Pentachlethra is a Mimosoid legume with occasionally nodulated roots; Pinus patula"
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+0,			Rs,				None,		314,	2,		"Pinus patula subsp. tecunumanii (Eguiluz & J. P. Perry) Styles; Hieronyma alchorneoides Allemao; Pentaclethra macroloba (Willd.) Kuntze; Virola koschnyi Warb.; Vochysia ferruginea Mart.; and Vochysia guatemalensis Donn. Sm. Pentachlethra is a Mimosoid legume with occasionally nodulated roots; Pinus patula"
