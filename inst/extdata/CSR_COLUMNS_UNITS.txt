@@ -55,8 +55,8 @@ CSR_MSMT_VAR		Measurement variable: "Rs", "Rh", or "NEE"
 CSR_TREATMENT		Collar treatment; default is "None"
 CSR_AREA			Area of measurement chamber, cm2
 CSR_DEPTH			Depth of collar insertion, cm
-CSR_SPECIES			Comma-separated species list		
-CSR_CENSOR_DEPTHS	Comma-separated sensor depths, cm
+CSR_SPECIES			Comma-separated species list
+CSR_SENSOR_DEPTHS	Comma-separated sensor depths, cm
 
 
 # From `ANCILLARY.txt` file
