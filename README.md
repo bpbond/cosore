@@ -6,6 +6,8 @@ community database for continuous soil respiration data.
 **To download the COSORE database, click on the
 [Releases](https://github.com/bpbond/cosore/releases) tab above.**
 
+**To contribute to the database, fill out the [metadata form](https://forms.gle/xRSY7WwmWKTL6iCv5).**
+
 ## Principles and general information
 
 Only free use data accepted.
