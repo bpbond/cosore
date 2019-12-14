@@ -17,7 +17,7 @@ combine_data <- function(datasets, ...) {
 #' @param raw_data The raw data folder to use, character path
 #' @param return_all_data Return all data generated (invisibly)?, Logical
 #' @return All the built data, invisibly.
-#' @importFrom drake drake_plan
+#' @importFrom drake drake_plan target
 #' @export
 #' @examples
 #' csr_build("")  # build without raw data; metadata only
