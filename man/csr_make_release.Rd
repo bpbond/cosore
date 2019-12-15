@@ -5,7 +5,7 @@
 \title{Make a new COSORE release}
 \usage{
 csr_make_release(all_data, path, vignette_rebuilt = FALSE,
-  force = FALSE)
+  force = FALSE, run_report = TRUE, zip_release = TRUE)
 }
 \arguments{
 \item{all_data}{A list of \code{cosore} datasets}
@@ -15,6 +15,10 @@ csr_make_release(all_data, path, vignette_rebuilt = FALSE,
 \item{vignette_rebuilt}{Has vignette been rebuilt? Logical}
 
 \item{force}{Ignore git dirty status? Logical}
+
+\item{run_report}{Include \code{combined_report.Rmd} in release? For testing}
+
+\item{zip_release}{Run /code{utils::zip()} on output files? For testing}
 }
 \value{
 Fully qualified name of zip file containing release.

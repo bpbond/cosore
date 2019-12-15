@@ -5,6 +5,8 @@
 #' @param path Path to write files to; must already exist
 #' @param vignette_rebuilt Has vignette been rebuilt? Logical
 #' @param force Ignore git dirty status? Logical
+#' @param run_report Include \code{combined_report.Rmd} in release? For testing
+#' @param zip_release Run /code{utils::zip()} on output files? For testing
 #' @return Fully qualified name of zip file containing release.
 #' @importFrom utils packageVersion write.csv object.size
 #' @details To make a new release, the git working directory
@@ -19,14 +21,21 @@
 #' file, no data will be released from that dataset.
 #' @export
 csr_make_release <- function(all_data, path,
-                             vignette_rebuilt = FALSE, force = FALSE) {
-
-  if(!force & length(system2("git", args = c("status", "--porcelain"), stdout = TRUE))) {
-    stop("Not allowed: git working directory is not clean")
-  }
+                             vignette_rebuilt = FALSE, force = FALSE,
+                             run_report = TRUE, zip_release = TRUE) {
 
   if(!dir.exists(path)) {
     stop("Path ", path, " doesn't exist")
+  }
+
+  if(!force & length(list.files(path)) != 0) {
+    stop("Not allowed: release directory is not clean")
+  }
+
+  if(!force) {
+    if(length(system2("git", args = c("status", "--porcelain"), stdout = TRUE))) {
+      stop("Not allowed: git working directory is not clean")
+    }
   }
 
   if(!vignette_rebuilt) {
@@ -36,7 +45,7 @@ csr_make_release <- function(all_data, path,
   # Remove any datasets that are under embargo
   for(i in seq_along(all_data)) {
     if(!is.na(all_data[[i]]$description$CSR_EMBARGO)) {
-      message(x$description$CSR_DATASET, " has an embargo entry--removing data")
+      message(all_data[[i]]$description$CSR_DATASET, " has an embargo entry--removing data")
       all_data[[i]]$data <- NULL
     }
   }
@@ -92,9 +101,11 @@ csr_make_release <- function(all_data, path,
     # Substitute in current information
     f_data <- gsub("%VERSION", packageVersion("cosore"), f_data)
     f_data <- gsub("%DATE", Sys.Date(), f_data)
-    git_sha <- system2("git", args = "rev-parse HEAD", stdout = TRUE)
-    git_sha <- substr(git_sha, 1, 8)
-    f_data <- gsub("%GIT_SHA", git_sha, f_data)
+    if(!force) {
+      git_sha <- system2("git", args = "rev-parse HEAD", stdout = TRUE)
+      git_sha <- substr(git_sha, 1, 8)
+      f_data <- gsub("%GIT_SHA", git_sha, f_data)
+    }
     f_data <- gsub("%DATABASE_SIZE", format(object.size(all_data), "Mb"), f_data)
     f_data <- gsub("%FILELIST", paste(
       paste0("* **", names(file_descriptions), "** -"),
@@ -110,7 +121,12 @@ csr_make_release <- function(all_data, path,
   file.copy("doc/cosore-data-example.html", to = path)
 
   # Run combined_report and copy it there
-  run_combined_report(all_data, output_dir = path)
+  if(run_report) {
+    run_combined_report(all_data, output_dir = path)
+  } else {
+    # This normally happens only during testing; create a placeholder file
+    file.create(file.path(path, "Report-all.html"))
+  }
 
   # Check: all the files should be included in the file description list
   all_files <- list.files(path, recursive = FALSE)
@@ -128,12 +144,14 @@ csr_make_release <- function(all_data, path,
   }
 
   # Almost done! Zip everything up into a single file
-  message("Zipping...")
-  wd <- getwd()
-  setwd(path)
-  utils::zip(release_file,
-             list.files("./", full.names = TRUE, recursive = TRUE))
-  setwd(wd)
+  if(zip_release) {
+    message("Zipping...")
+    wd <- getwd()
+    setwd(path)
+    utils::zip(release_file,
+               list.files("./", full.names = TRUE, recursive = TRUE))
+    setwd(wd)
+  }
 
   file.path(path, release_file)
 }
