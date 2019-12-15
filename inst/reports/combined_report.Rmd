@@ -161,7 +161,7 @@ bind_rows(coverage) %>%
 system.file(file.path("extdata/database_growth.csv"),
             package = "cosore", mustWork = TRUE) %>% 
   readr::read_csv(col_types = "Ddddd") %>% 
-  gather(Variable, Value, Records, Size_Mb, Datasets) %>% 
+  tidyr::gather(Variable, Value, Records, Size_Mb, Datasets) %>% 
   ggplot(aes(Date, Value, label = Version)) + 
   geom_line() + geom_label() + 
   facet_wrap(~Variable, scales = "free")

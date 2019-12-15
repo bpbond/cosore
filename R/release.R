@@ -35,7 +35,7 @@ csr_make_release <- function(all_data, path,
 
   # Remove any datasets that are under embargo
   for(i in seq_along(all_data)) {
-    if(!is.na(all_data[[i]]$descriptionCSR_EMBARGO)) {
+    if(!is.na(all_data[[i]]$description$CSR_EMBARGO)) {
       message(x$description$CSR_DATASET, " has an embargo entry--removing data")
       all_data[[i]]$data <- NULL
     }
