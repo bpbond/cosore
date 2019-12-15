@@ -1,0 +1,17 @@
+# CONTRIBUTORS.txt
+#
+# This comma-separated data file provides information about dataset
+# contributors. Entries below include: 
+# 	CSR_FIRST_NAME: first name
+# 	CSR_FAMILY_NAME: family (last) name
+# 	CSR_EMAIL: email address
+# 	CSR_ORCID: optional CSR_ORCID ID (see https://orcid.org)
+# 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
+#     common roles include "Funding acquisition", "Investigation", "Data curation"
+#
+CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,							CSR_ORCID,					CSR_ROLE
+Qhuo,			Pang,				pangzh-84@163.com,					0000-0002-4834-3403,		"Data curation"
+Juying,			Wu,					wujuying@grass-env.com,				,							"Funding acquisition"
+Haiming,		Kan,				kanhaiming@126.com,					,							"Other"
+Junliang,		Zou,				jlzou@nwafu.edu.cn,					,							"Investigation"
+Tiejun,			Sun,				stj_cau@163.com,					,							"Other"
