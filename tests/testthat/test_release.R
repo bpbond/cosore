@@ -17,7 +17,8 @@ test_that("make_cosore_release", {
   expect_error(csr_make_release(all_data, "sdffds"), regexp = "doesn't exist")
 
   # Test the clean-directory check
-  releasedir <- "~/Desktop/release/"
+  releasedir <- file.path(tempdir(check = TRUE), "temp")
+  dir.create(releasedir)
   tf <- file.path(releasedir, "tempfile")
   file.create(tf)
   expect_error(csr_make_release(all_data, releasedir), regexp = "release directory is not clean")
@@ -33,4 +34,5 @@ test_that("make_cosore_release", {
                                   vignette_rebuilt = TRUE, force = TRUE,
                                   run_report = FALSE, zip_release = FALSE),
                  regexp = "has an embargo entry--removing data")
+  unlink(releasedir)
 })

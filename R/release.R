@@ -118,7 +118,9 @@ csr_make_release <- function(all_data, path,
   }
 
   # Copy vignette file
-  file.copy("doc/cosore-data-example.html", to = path)
+  if(file.exists("doc/cosore-data-example.html")) {
+    file.copy("doc/cosore-data-example.html", to = path)
+  }
 
   # Run combined_report and copy it there
   if(run_report) {
