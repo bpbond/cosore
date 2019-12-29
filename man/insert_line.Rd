@@ -5,7 +5,7 @@
 \title{Insert new line(s) into existing metadata files.}
 \usage{
 insert_line(file, pattern, newlines, after = TRUE,
-  path = "./inst/extdata", write_files = TRUE)
+  path = "./inst/extdata/datasets", write_files = TRUE)
 }
 \arguments{
 \item{file}{Filename, character}
@@ -16,7 +16,7 @@ insert_line(file, pattern, newlines, after = TRUE,
 
 \item{after}{Insert new line(s) after pattern (T) or before (F)? Logical}
 
-\item{path}{Path to search; normally the metadata are in \code{inst/extdata}}
+\item{path}{Path to search; normally the metadata are in \code{inst/extdata/datasets}}
 
 \item{write_files}{Write resulting files back out? Logical}
 }

@@ -79,7 +79,7 @@ This file contains ancillary data: stand structure, carbon cycle, disturbance, e
 ## Operation
 
 When asked (via `csr_build()` to build the synthesis dataset, the `cosore` R package
-* Scans its `inst/extdata` folder for metadata on all installed datasets
+* Scans its `inst/extdata/datasets` folder for metadata on all installed datasets
 * Parses the metadata, and then based on `File_format` calls 
 the appropriate function to parse the raw data (which for size reasons are not currently included in the repository)
 * This is done via a [drake](https://github.com/ropensci/drake) pipeline, so we only 
