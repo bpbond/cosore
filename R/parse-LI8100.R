@@ -46,7 +46,7 @@ parse_LI8100_file <- function(filename) {
       }
 
       # Isolate the lines of this record
-      #message(record_starts[i], ":", record_end)
+      message(i, " ", bfn, " ", record_starts[i], ":", record_end)
       record <- filedata[record_starts[i]:record_end]
 
       # Remove error lines in the data table

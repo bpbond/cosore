@@ -17,4 +17,11 @@
 # 2,	Heated,			Sphagnum fuscum
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			323.5,		3,			"Bromus inermis, Medicago sativa"
+1,			Rs,				None,			323.5,		3,			"Bromus inermis"
+2,			NEE,			None,			323.5,		3,			"Bromus inermis"
+3,			Rs,				None,			323.5,		3,			"Bromus inermis"
+4,			NEE,			None,			323.5,		3,			"Bromus inermis"
+5,			NEE,			None,			323.5,		3,			"Medicago sativa"
+6,			Rs,				None,			323.5,		3,			"Medicago sativa"
+7,			NEE,			None,			323.5,		3,			"Medicago sativa"
+8,			Rs,				None,			323.5,		3,			"Medicago sativa"
