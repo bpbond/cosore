@@ -94,7 +94,7 @@ csr_make_release <- function(all_data, path,
 
   filelist <- c("CSR_COLUMNS_UNITS.txt", "README.md")
   for(f in filelist) {
-    f_path <- system.file(file.path("extdata/datasets", f),
+    f_path <- system.file(file.path("extdata", f),
                           package = "cosore", mustWork = TRUE)
     f_data <- readLines(f_path)
 
