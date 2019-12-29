@@ -80,11 +80,11 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
 #' @param pattern Pattern to search for, a regular expression
 #' @param newlines New line(s) to write, character vector
 #' @param after Insert new line(s) after pattern (T) or before (F)? Logical
-#' @param path Path to search; normally the metadata are in \code{inst/extdata}
+#' @param path Path to search; normally the metadata are in \code{inst/extdata/datasets}
 #' @param write_files Write resulting files back out? Logical
 #' @return Nothing; run for side effects
 #' @keywords internal
-insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/extdata", write_files = TRUE) {
+insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/extdata/datasets", write_files = TRUE) {
   files <- list.files(path, pattern = file, full.names = TRUE, recursive = TRUE)
   message("Found ", length(files), " files")
 
@@ -141,4 +141,42 @@ rbind_list <- function(x) {
               }
             }), make.row.names = FALSE, stringsAsFactors = FALSE))
   )
+}
+
+
+#' Write out standardized data and diagnostics tables
+#'
+#' This is typically used to write standardized data to \code{inst/extdata/datasets}.
+#'
+#' @param all_data A list of \code{cosore} datasets
+#' @param path Output path, character
+#' @param create_dirs Create subdirectories as needed? Logical
+#' @return Nothing.
+#' @export
+csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
+
+  stopifnot(is.list(all_data))
+  stopifnot(is.logical(create_dirs))
+
+  message("Writing data and diagnostic tables...")
+  p <- file.path(path, "datasets")
+  lapply(all_data, function(x) {
+    if(is.data.frame(x$data)) {
+      message(x$description$CSR_DATASET)
+      outpath <- file.path(path, x$description$CSR_DATASET)
+      if(!dir.exists(outpath)) {
+        if(create_dirs) {
+          message("Creating ", outpath)
+          dir.create(outpath, recursive = TRUE)
+        } else {
+          stop(outpath, " does not exist")
+        }
+      }
+      datafile <- file.path(outpath, paste0("data_", x$description$CSR_DATASET, ".csv"))
+      write.csv(x$data, file = datafile, row.names = FALSE)
+      diagfile <- file.path(outpath, paste0("diagnostics_", x$description$CSR_DATASET, ".csv"))
+      write.csv(x$diagnostics, file = diagfile, row.names = FALSE)
+    }
+  })
+  NULL
 }
