@@ -162,8 +162,9 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
   message("Writing data and diagnostic tables...")
   p <- file.path(path, "datasets")
   lapply(all_data, function(x) {
-    message(x$description$CSR_DATASET)
-    outpath <- file.path(path, x$description$CSR_DATASET, "data")
+    dataset_name <- x$description$CSR_DATASET
+    message(dataset_name)
+    outpath <- file.path(path, dataset_name, "data")
     if(!dir.exists(outpath)) {
       if(create_dirs) {
         message("Creating ", outpath)
@@ -175,28 +176,15 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
 
     datafiles <- character(0)
     if(is.data.frame(x$data)) {
-
-      # Write diagnostics data
-      diagfile <- file.path(outpath, paste0("diagnostics_", x$description$CSR_DATASET, ".csv"))
-      write.csv(x$diagnostics, file = diagfile, row.names = FALSE)
-
       # Write respiration data
-      # To limit file sizes we write years into individual files
-      years <- unique(lubridate::year(x$data$CSR_TIMESTAMP))
-      for(y in years) {
-        message(" ", y, appendLF = FALSE)
-        d <- x$data[lubridate::year(x$data$CSR_TIMESTAMP) == y,]
-        outfile <- file.path(outpath, paste0("data_", x$description$CSR_DATASET, "_", y, ".csv"))
-        datafiles <- c(datafiles, basename(outfile))
-        write.csv(d, file = outfile, row.names = FALSE)
-      }
-      message()
+      # csv (big, version control friendly) or RDS (small, fast, preserves types)?
+      # Going with the latter for now
+      outfile <- file.path(outpath, paste0("data_", dataset_name, ".RDS"))
+      saveRDS(x$data, file = outfile)
+      # Write diagnostics data
+      diagfile <- file.path(outpath, paste0("diagnostics_", dataset_name, ".RDS"))
+      saveRDS(x$diagnostics, file = diagfile)
     }
-
-    # Write list of data files
-    filesfile <- file.path(outpath, "datafiles.txt")
-    writeLines(datafiles, filesfile)
-
   })
   invisible(NULL)
 }

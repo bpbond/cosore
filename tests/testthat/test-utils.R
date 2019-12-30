@@ -78,7 +78,7 @@ test_that("csr_standardize_data", {
 
   # Error - data subdirectory doesn't exist
   expect_error(csr_standardize_data(all_data, td, create_dirs = FALSE),
-                regexp = "does not exist")
+               regexp = "does not exist")
 
   csr_standardize_data(all_data, td, create_dirs = TRUE)
   td_dataset <- file.path(td, "ds1", "data")
@@ -86,23 +86,17 @@ test_that("csr_standardize_data", {
   # Subdirectory was created
   expect_true(dir.exists(td_dataset))
   # Files exist
-  expect_true(file.exists(file.path(td_dataset, "diagnostics_ds1.csv")))
-  expect_true(file.exists(file.path(td_dataset, "datafiles.txt")))
+  expect_true(file.exists(file.path(td_dataset, "diagnostics_ds1.RDS")))
+  expect_true(file.exists(file.path(td_dataset, "data_ds1.RDS")))
+  written_data <- readRDS(file.path(td_dataset, "data_ds1.RDS"))
+  expect_identical(all_data$ds1$data, written_data)
 
-  filelist <- readLines(file.path(td_dataset, "datafiles.txt"))
-  years <- unique(year(data1$CSR_TIMESTAMP))
-  for(y in years) {
-    f <- paste0("data_ds1_", y, ".csv")
-    expect_true(file.exists(file.path(td_dataset, f)), info = y)
-    expect_true(f %in% filelist, info = y)
-  }
-
-  # Handles no-data dataset
+  # Handles no-data dataset: should create directory but write no files
   ds2 <- list(description = tibble(CSR_DATASET = "ds2"))
   all_data <- list(ds2 = ds2)
 
   csr_standardize_data(all_data, td, create_dirs = TRUE)
   td_dataset <- file.path(td, "ds2", "data")
   expect_true(dir.exists(td_dataset))
-  expect_true(file.exists(file.path(td_dataset, "datafiles.txt")))
+  expect_identical(length(list.files(td_dataset)), 0L)
 })
