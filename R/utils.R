@@ -164,7 +164,7 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
   lapply(all_data, function(x) {
     if(is.data.frame(x$data)) {
       message(x$description$CSR_DATASET)
-      outpath <- file.path(path, x$description$CSR_DATASET)
+      outpath <- file.path(path, x$description$CSR_DATASET, "data")
       if(!dir.exists(outpath)) {
         if(create_dirs) {
           message("Creating ", outpath)

@@ -81,7 +81,7 @@ test_that("csr_standardize_data", {
                 regexp = "does not exist")
 
   csr_standardize_data(all_data, td, create_dirs = TRUE)
-  td_dataset <- file.path(td, "ds1")
+  td_dataset <- file.path(td, "ds1", "data")
 
   # Subdirectory was created
   expect_true(dir.exists(td_dataset))
