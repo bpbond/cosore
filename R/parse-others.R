@@ -14,6 +14,7 @@
 #' to change a stray "(" to "," line 365560. This is noted in the
 #' README in the raw data folder.
 #' @importFrom stats lm
+#' @importFrom utils head
 #' @importFrom utils tail write.table
 parse_d20190830_LIANG <- function(path) {
   files <- list.files(path, pattern = ".dat$", full.names = TRUE, recursive = TRUE)

@@ -2,6 +2,7 @@ Package: cosore
 Type: Package
 Title: Continuous Soil Respiration Database
 Version: 0.4.0
+Depends: R (>= 3.5.0)
 Authors@R: c(person("Ben", "Bond-Lamberty", 
                 email = "bondlamberty@pnnl.gov", 
                 role = c("cre", "aut"), 
