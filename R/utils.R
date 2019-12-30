@@ -162,17 +162,20 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
   message("Writing data and diagnostic tables...")
   p <- file.path(path, "datasets")
   lapply(all_data, function(x) {
-    if(is.data.frame(x$data)) {
-      message(x$description$CSR_DATASET)
-      outpath <- file.path(path, x$description$CSR_DATASET, "data")
-      if(!dir.exists(outpath)) {
-        if(create_dirs) {
-          message("Creating ", outpath)
-          dir.create(outpath, recursive = TRUE)
-        } else {
-          stop(outpath, " does not exist")
-        }
+    message(x$description$CSR_DATASET)
+    outpath <- file.path(path, x$description$CSR_DATASET, "data")
+    if(!dir.exists(outpath)) {
+      if(create_dirs) {
+        message("Creating ", outpath)
+        dir.create(outpath, recursive = TRUE)
+      } else {
+        stop(outpath, " does not exist")
       }
+    }
+
+    datafiles <- character(0)
+    if(is.data.frame(x$data)) {
+
       # Write diagnostics data
       diagfile <- file.path(outpath, paste0("diagnostics_", x$description$CSR_DATASET, ".csv"))
       write.csv(x$diagnostics, file = diagfile, row.names = FALSE)
@@ -180,7 +183,6 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
       # Write respiration data
       # To limit file sizes we write years into individual files
       years <- unique(lubridate::year(x$data$CSR_TIMESTAMP))
-      datafiles <- c()
       for(y in years) {
         message(" ", y, appendLF = FALSE)
         d <- x$data[lubridate::year(x$data$CSR_TIMESTAMP) == y,]
@@ -189,11 +191,12 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
         write.csv(d, file = outfile, row.names = FALSE)
       }
       message()
-
-      # Write list of data files
-      filesfile <- file.path(outpath, "datafiles.txt")
-      writeLines(datafiles, filesfile)
     }
+
+    # Write list of data files
+    filesfile <- file.path(outpath, "datafiles.txt")
+    writeLines(datafiles, filesfile)
+
   })
   invisible(NULL)
 }

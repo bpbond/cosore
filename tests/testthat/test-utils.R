@@ -97,4 +97,12 @@ test_that("csr_standardize_data", {
     expect_true(f %in% filelist, info = y)
   }
 
+  # Handles no-data dataset
+  ds2 <- list(description = tibble(CSR_DATASET = "ds2"))
+  all_data <- list(ds2 = ds2)
+
+  csr_standardize_data(all_data, td, create_dirs = TRUE)
+  td_dataset <- file.path(td, "ds2", "data")
+  expect_true(dir.exists(td_dataset))
+  expect_true(file.exists(file.path(td_dataset, "datafiles.txt")))
 })
