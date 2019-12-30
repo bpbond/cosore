@@ -307,7 +307,6 @@ map_columns <- function(dat, columns) {
 #'
 #' @param dataset_name Dataset name, character
 #' @param raw_data Path to the raw data folder (not in package)
-#' @param log Log messages? Logical
 #' @return A list with (at least) elements:
 #' \item{description}{Contents of \code{DESCRIPTION.txt} file}
 #' \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
@@ -318,7 +317,7 @@ map_columns <- function(dat, columns) {
 #' @importFrom utils head
 #' @examples
 #' read_dataset("TEST_licordata")
-read_dataset <- function(dataset_name, raw_data, log = TRUE) {
+read_dataset <- function(dataset_name, raw_data) {
 
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
@@ -334,13 +333,6 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
     df <- file.path(resolve_dataset(dataset_name), "data")
   } else {
     df <- file.path(raw_data, dataset_name)
-  }
-
-  if(log) {
-    # tf <- tempfile()
-    # zz <- file(tf, open = "wt")
-    # sink(zz, type = "output")
-    # sink(zz, type = "message")
   }
 
   # Processing statistics table
@@ -455,13 +447,6 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
   # Add new tables to the dataset structure and return
   dataset$diagnostics <- diag
   dataset$data <- dsd
-
-  if(log) {
-    # sink(type = "message")
-    # sink(type = "output")
-    # dataset$log <- readLines(tf)
-    # unlink(tf)
-  }
 
   dataset
 }
