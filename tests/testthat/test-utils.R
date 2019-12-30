@@ -91,6 +91,10 @@ test_that("csr_standardize_data", {
   written_data <- readRDS(file.path(td_dataset, "data_ds1.RDS"))
   expect_identical(all_data$ds1$data, written_data)
 
+  # Removing standardized files works
+  csr_remove_stan_data(td, datasets = "ds1")
+  expect_identical(list.files(td_dataset), character(0))
+
   # Handles no-data dataset: should create directory but write no files
   ds2 <- list(description = tibble(CSR_DATASET = "ds2"))
   all_data <- list(ds2 = ds2)
@@ -99,4 +103,7 @@ test_that("csr_standardize_data", {
   td_dataset <- file.path(td, "ds2", "data")
   expect_true(dir.exists(td_dataset))
   expect_identical(length(list.files(td_dataset)), 0L)
+
+  csr_remove_stan_data(td, datasets = "ds2")
+  expect_identical(list.files(td_dataset), character(0))
 })

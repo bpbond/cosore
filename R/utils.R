@@ -188,3 +188,27 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
   })
   invisible(NULL)
 }
+
+#' Remove standardized dataset(s)
+#'
+#' Utility function that remove standardized datasets from a
+#' directory tree, specifically \code{path/dataset/data/*.RDS}.
+#'
+#' @param path Path, typically \code{inst/extdata/datasets/}
+#' @param datasets Optional character vector of datasets. If not
+#' supplied, the output of \code{\link{list_datasets}} is used.
+#' @return Nothing.
+#' @export
+csr_remove_stan_data <- function(path, datasets = list_datasets()) {
+  for(ds in datasets) {
+    message(ds)
+    data_dir <- file.path(path, ds, "data")
+    if(!dir.exists(data_dir)) {
+      message("\tNo data directory")
+      next
+    }
+    files <- list.files(data_dir, pattern = "*.RDS", full.names = TRUE)
+    message("\tRemoving ", length(files), " file(s)")
+    unlink(files)
+  }
+}
