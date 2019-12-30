@@ -87,9 +87,14 @@ test_that("csr_standardize_data", {
   expect_true(dir.exists(td_dataset))
   # Files exist
   expect_true(file.exists(file.path(td_dataset, "diagnostics_ds1.csv")))
+  expect_true(file.exists(file.path(td_dataset, "datafiles.txt")))
+
+  filelist <- readLines(file.path(td_dataset, "datafiles.txt"))
   years <- unique(year(data1$CSR_TIMESTAMP))
   for(y in years) {
-    expect_true(file.exists(file.path(td_dataset, paste0("data_ds1_", y, ".csv"))))
+    f <- paste0("data_ds1_", y, ".csv")
+    expect_true(file.exists(file.path(td_dataset, f)), info = y)
+    expect_true(f %in% filelist, info = y)
   }
 
 })

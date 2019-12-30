@@ -180,13 +180,19 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
       # Write respiration data
       # To limit file sizes we write years into individual files
       years <- unique(lubridate::year(x$data$CSR_TIMESTAMP))
+      datafiles <- c()
       for(y in years) {
         message(" ", y, appendLF = FALSE)
         d <- x$data[lubridate::year(x$data$CSR_TIMESTAMP) == y,]
-        datafile <- file.path(outpath, paste0("data_", x$description$CSR_DATASET, "_", y, ".csv"))
-        write.csv(d, file = datafile, row.names = FALSE)
+        outfile <- file.path(outpath, paste0("data_", x$description$CSR_DATASET, "_", y, ".csv"))
+        datafiles <- c(datafiles, basename(outfile))
+        write.csv(d, file = outfile, row.names = FALSE)
       }
       message()
+
+      # Write list of data files
+      filesfile <- file.path(outpath, "datafiles.txt")
+      writeLines(datafiles, filesfile)
     }
   })
   invisible(NULL)
