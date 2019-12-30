@@ -60,3 +60,36 @@ test_that("fractional_doy", {
   expect_error(fractional_doy(y, 0))
   expect_error(fractional_doy(y, 367))
 })
+
+test_that("csr_standardize_data", {
+  # Handles bad input
+  expect_error(csr_standardize_data(1, "", TRUE))
+  expect_error(csr_standardize_data(list(), 1, TRUE))
+  expect_error(csr_standardize_data(list(), "", 1))
+
+  library(lubridate)
+  data1 <- tibble(CSR_TIMESTAMP = ymd_hms(c("2020-01-01 12:34:56",
+                                            "2021-01-01 12:34:56")))
+  ds1 <- list(description = tibble(CSR_DATASET = "ds1"),
+              diagnostics = tibble(),
+              data = data1)
+  all_data <- list(ds1 = ds1)
+  td <- tempdir()
+
+  # Error - data subdirectory doesn't exist
+  expect_error(csr_standardize_data(all_data, td, create_dirs = FALSE),
+                regexp = "does not exist")
+
+  csr_standardize_data(all_data, td, create_dirs = TRUE)
+  td_dataset <- file.path(td, "ds1")
+
+  # Subdirectory was created
+  expect_true(dir.exists(td_dataset))
+  # Files exist
+  expect_true(file.exists(file.path(td_dataset, "diagnostics_ds1.csv")))
+  years <- unique(year(data1$CSR_TIMESTAMP))
+  for(y in years) {
+    expect_true(file.exists(file.path(td_dataset, paste0("data_ds1_", y, ".csv"))))
+  }
+
+})

@@ -156,6 +156,7 @@ rbind_list <- function(x) {
 csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
 
   stopifnot(is.list(all_data))
+  stopifnot(is.character(path))
   stopifnot(is.logical(create_dirs))
 
   message("Writing data and diagnostic tables...")
@@ -172,11 +173,21 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
           stop(outpath, " does not exist")
         }
       }
-      datafile <- file.path(outpath, paste0("data_", x$description$CSR_DATASET, ".csv"))
-      write.csv(x$data, file = datafile, row.names = FALSE)
+      # Write diagnostics data
       diagfile <- file.path(outpath, paste0("diagnostics_", x$description$CSR_DATASET, ".csv"))
       write.csv(x$diagnostics, file = diagfile, row.names = FALSE)
+
+      # Write respiration data
+      # To limit file sizes we write years into individual files
+      years <- unique(lubridate::year(x$data$CSR_TIMESTAMP))
+      for(y in years) {
+        message(" ", y, appendLF = FALSE)
+        d <- x$data[lubridate::year(x$data$CSR_TIMESTAMP) == y,]
+        datafile <- file.path(outpath, paste0("data_", x$description$CSR_DATASET, "_", y, ".csv"))
+        write.csv(d, file = datafile, row.names = FALSE)
+      }
+      message()
     }
   })
-  NULL
+  invisible(NULL)
 }
