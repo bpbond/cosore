@@ -87,3 +87,7 @@ CSR_FAMILY_NAME	Family name
 CSR_EMAIL		Email address
 CSR_ORCID		ORCID ID; see https://orcid.org
 CSR_ROLE		CReDiT role; see https://www.casrai.org/credit.html
+
+# Diagnostic fields
+
+CSR_ASSUMED_MSMT_LENGTH   If no measurement length is provided this is set to assumed value

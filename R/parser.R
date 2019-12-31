@@ -359,18 +359,29 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     tz <- dataset$description$CSR_TIMESTAMP_TZ
     ml <- dataset$description$CSR_MSMT_LENGTH
 
+    if(is.na(ml)) {
+      ml <- 60
+      diag$CSR_ASSUMED_MSMT_LENGTH <- ml
+    }
+
     ts_begin <- "CSR_TIMESTAMP_BEGIN" %in% names(dsd)
+    ts_mid <- "CSR_TIMESTAMP_MID" %in% names(dsd)
     ts_end <- "CSR_TIMESTAMP_END" %in% names(dsd)
 
-    if(ts_end & !ts_begin) {   # compute begin
+    if(ts_end & !ts_begin) {   # end present; compute begin
       x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
       dsd$CSR_TIMESTAMP_END <- x$new_ts
       dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts - ml
-    } else if(ts_begin & !ts_end) {   # compute end
+    } else if(ts_begin & !ts_end) {   # begin present; compute end
       x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
       dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts
       dsd$CSR_TIMESTAMP_END <- x$new_ts + ml
-    } else if(ts_begin & ts_end) {  # cool, nothing to compute
+    } else if(ts_mid & !ts_begin & !ts_end) {
+      x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_MID, tf, tz)
+      dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts - ml / 2
+      dsd$CSR_TIMESTAMP_END <- x$new_ts + ml / 2
+      dsd$CSR_TIMESTAMP_MID <- NULL
+    } else if(ts_begin & ts_end) {  # both present; nothing to compute
       x_begin <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
       dsd$CSR_TIMESTAMP_BEGIN <- x_begin$new_ts
       x_end <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
