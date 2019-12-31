@@ -17,5 +17,7 @@ csr_standardize_data(all_data, path, create_dirs = FALSE)
 Nothing.
 }
 \description{
-This is typically used to write standardized data to \code{inst/extdata/datasets}.
+This is typically used to write standardized data
+to \code{inst/extdata/datasets}. These data can be removed
+by \code{\link{csr_remove_stan_data}}.
 }

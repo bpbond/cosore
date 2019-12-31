@@ -16,6 +16,7 @@ supplied, the output of \code{\link{list_datasets}} is used.}
 Nothing.
 }
 \description{
-Utility function that remove standardized datasets from a
-directory tree, specifically \code{path/dataset/data/*.RDS}.
+Utility function that remove standardized datasets created
+by \code{\link{csr_standardize_data}} from a
+directory tree, specifically \code{{path}/dataset/data/*.RDS}.
 }

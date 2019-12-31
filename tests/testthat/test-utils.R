@@ -86,7 +86,7 @@ test_that("csr_standardize_data", {
   # Subdirectory was created
   expect_true(dir.exists(td_dataset))
   # Files exist
-  expect_true(file.exists(file.path(td_dataset, "diagnostics_ds1.RDS")))
+  expect_true(file.exists(file.path(td_dataset, "diag_ds1.RDS")))
   expect_true(file.exists(file.path(td_dataset, "data_ds1.RDS")))
   written_data <- readRDS(file.path(td_dataset, "data_ds1.RDS"))
   expect_identical(all_data$ds1$data, written_data)

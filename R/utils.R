@@ -146,7 +146,9 @@ rbind_list <- function(x) {
 
 #' Write out standardized data and diagnostics tables
 #'
-#' This is typically used to write standardized data to \code{inst/extdata/datasets}.
+#' This is typically used to write standardized data
+#' to \code{inst/extdata/datasets}. These data can be removed
+#' by \code{\link{csr_remove_stan_data}}.
 #'
 #' @param all_data A list of \code{cosore} datasets
 #' @param path Output path, character
@@ -182,7 +184,7 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
       outfile <- file.path(outpath, paste0("data_", dataset_name, ".RDS"))
       saveRDS(x$data, file = outfile)
       # Write diagnostics data
-      diagfile <- file.path(outpath, paste0("diagnostics_", dataset_name, ".RDS"))
+      diagfile <- file.path(outpath, paste0("diag_", dataset_name, ".RDS"))
       saveRDS(x$diagnostics, file = diagfile)
     }
   })
@@ -191,8 +193,9 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
 
 #' Remove standardized dataset(s)
 #'
-#' Utility function that remove standardized datasets from a
-#' directory tree, specifically \code{path/dataset/data/*.RDS}.
+#' Utility function that remove standardized datasets created
+#' by \code{\link{csr_standardize_data}} from a
+#' directory tree, specifically \code{{path}/dataset/data/*.RDS}.
 #'
 #' @param path Path, typically \code{inst/extdata/datasets/}
 #' @param datasets Optional character vector of datasets. If not

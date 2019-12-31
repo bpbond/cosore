@@ -483,7 +483,7 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE) {
     dataset$data <- readRDS(datafile)
 
     # Read diagnostics info
-    diagfile <- file.path(data_dir, paste0("diagnostics_", dataset_name, ".RDS"))
+    diagfile <- file.path(data_dir, paste0("diag_", dataset_name, ".RDS"))
     dataset$diagnostics <- readRDS(diagfile)
   }
 
