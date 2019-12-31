@@ -355,13 +355,6 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 
     # Compute timestamp begin and/or ends
 
-    convert_qc_timestamp <- function(ts, timestamp_format, time_zone) {
-      new_ts <- as.POSIXct(ts, format = timestamp_format, tz = time_zone)
-      na_ts <- is.na(new_ts) & !is.na(ts)
-      bad_examples <- paste(head(ts[na_ts]), collapse = ", ")
-      list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
-    }
-
     tf <- dataset$description$CSR_TIMESTAMP_FORMAT
     tz <- dataset$description$CSR_TIMESTAMP_TZ
     ml <- dataset$description$CSR_MSMT_LENGTH
@@ -370,17 +363,17 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     ts_end <- "CSR_TIMESTAMP_END" %in% names(dsd)
 
     if(ts_end & !ts_begin) {   # compute begin
-      x <- convert_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
+      x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
       dsd$CSR_TIMESTAMP_END <- x$new_ts
       dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts - ml
     } else if(ts_begin & !ts_end) {   # compute end
-      x <- convert_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
+      x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
       dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts
       dsd$CSR_TIMESTAMP_END <- x$new_ts + ml
     } else if(ts_begin & ts_end) {  # cool, nothing to compute
-      x_begin <- convert_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
+      x_begin <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
       dsd$CSR_TIMESTAMP_BEGIN <- x_begin$new_ts
-      x_end <- convert_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
+      x_end <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
       dsd$CSR_TIMESTAMP_END <- x_end$new_ts
       x <- list(na_ts = x_begin$na_ts | x_end$na_ts,
                 bad_examples = c(x_begin$bad_examples, x_end$bad_examples))

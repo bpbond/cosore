@@ -107,3 +107,21 @@ test_that("csr_standardize_data", {
   csr_remove_stan_data(td, datasets = "ds2")
   expect_identical(list.files(td_dataset), character(0))
 })
+
+test_that("convert_and_qc_timestamp", {
+  # Handles bad input
+  expect_error(convert_and_qc_timestamp(1, "1", "1"))
+  expect_error(convert_and_qc_timestamp("1", 1, "1"))
+  expect_error(convert_and_qc_timestamp("1", "1", 1))
+
+  ts <- c("2020-01-01 12:34:56", "2021-01-01 12:34:56")
+  out <- convert_and_qc_timestamp(ts, "%Y-%m-%d %H:%M:%S", "UTC")
+  expect_type(out, "list")
+  expect_identical(length(out), 3L)
+  expect_identical(length(out$new_ts), length(ts))
+
+  # Behaves as expected with invalid format string
+  out <- convert_and_qc_timestamp(ts, "not-a-valid-format-string", "UTC")
+  expect_true(all(is.na(out$new_ts)))
+  expect_true(all(out$na_ts))
+})
