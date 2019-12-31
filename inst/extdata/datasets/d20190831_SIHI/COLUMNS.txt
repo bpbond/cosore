@@ -10,4 +10,4 @@
 Database,		Dataset,			Computation,				Notes
 CSR_FLUX,  		CO2_flux_umol_m2_s,
 CSR_PORT,		Chamber_COSORE,		as.factor(Chamber_COSORE)
-CSR_TIMESTAMP,	DateTime
+CSR_TIMESTAMP_MID,	DateTime

@@ -7,13 +7,6 @@
 #	Computation: optional R-parseable computation to change units, etc.
 #	Notes: optional; generally to explain the computation
 #
-# Examples:
-#
-# Database,	Dataset,	Computation,					Notes
-# CSR_T5	V1,
-# CSR_FLUX, Flux, 		Flux / 12 * 10^6 / 24/60/60, 	gC/day to µmol/s - all ports
-# CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
-#
 Database,		Dataset,	Computation,				Notes
 CSR_CDRY,		Cdry,
 CSR_COMMENTS,	Comments,
@@ -27,4 +20,5 @@ CSR_RH,			RH,
 CSR_SM5,		V4
 CSR_T5,			V3
 CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP,	Date
+CSR_TIMESTAMP_BEGIN,	Timestamp_begin
+CSR_TIMESTAMP_END,		Timestamp_end
