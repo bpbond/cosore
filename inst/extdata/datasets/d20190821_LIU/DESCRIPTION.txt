@@ -17,7 +17,6 @@
 #	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
 # 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
 #		"LI-8100A" (no multiplexer), others...
-#	CSR_MSMT_LENGTH: measurement length (seconds)
 #	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
 #	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
 		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
@@ -35,12 +34,10 @@ CSR_IGBP: Open shrubland
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-8100A
-CSR_MSMT_LENGTH: 120
-CSR_FILE_FORMAT: Processed_csv
-CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_FILE_FORMAT: LI-8100A_RAW
+CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 CSR_TIMESTAMP_TZ: Asia/Shanghai
 CSR_PRIMARY_PUB: 10.5194/bg-11-259-2014
 CSR_OTHER_PUBS: 10.5194/bg-12-5705-2015; 10.5194/bg-14-3899-2017; https://doi.org/10.3390/f7080161
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: We acknowledge the grants obtained from National Natural Science Foundation of China (NSFC; 31670710, 31670708 and 31361130340) the National Key Research and Development Program of China (2016YFC0500905), the Fundamental Research Funds for the Central Universities (BLYJ201601 and 2015ZCQ-SB-02), and the Finnish–Chinese research collaboration project EXTREME (2013-2016) between Beijing Forestry University and University of Eastern Finland (EXTREME project 14921 funded by Academy of Finland). Also the US–China Carbon Consortium (USCCC) supported this work by way of helpful discussions and exchange of ideas.
-CSR_NOTES: This dataset is raw 8100A files and for speed reasons, I processed it to a CSV (using DESCRIPTION and COLUMNS files in the raw data folder). This secondary DESCRIPTION is for reading from the CSV file.
