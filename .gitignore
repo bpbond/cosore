@@ -43,3 +43,7 @@ rsconnect/
 
 # OS files
 .DS_Store
+
+# Dataset data files
+#data/
+*.RDS

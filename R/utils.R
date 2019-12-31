@@ -80,11 +80,11 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
 #' @param pattern Pattern to search for, a regular expression
 #' @param newlines New line(s) to write, character vector
 #' @param after Insert new line(s) after pattern (T) or before (F)? Logical
-#' @param path Path to search; normally the metadata are in \code{inst/extdata}
+#' @param path Path to search; normally the metadata are in \code{inst/extdata/datasets}
 #' @param write_files Write resulting files back out? Logical
 #' @return Nothing; run for side effects
 #' @keywords internal
-insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/extdata", write_files = TRUE) {
+insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/extdata/datasets", write_files = TRUE) {
   files <- list.files(path, pattern = file, full.names = TRUE, recursive = TRUE)
   message("Found ", length(files), " files")
 
@@ -141,4 +141,77 @@ rbind_list <- function(x) {
               }
             }), make.row.names = FALSE, stringsAsFactors = FALSE))
   )
+}
+
+
+#' Write out standardized data and diagnostics tables
+#'
+#' This is typically used to write standardized data
+#' to \code{inst/extdata/datasets}. These data can be removed
+#' by \code{\link{csr_remove_stan_data}}.
+#'
+#' @param all_data A list of \code{cosore} datasets
+#' @param path Output path, character
+#' @param create_dirs Create subdirectories as needed? Logical
+#' @return Nothing.
+#' @export
+csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
+
+  stopifnot(is.list(all_data))
+  stopifnot(is.character(path))
+  stopifnot(is.logical(create_dirs))
+
+  message("Writing data and diagnostic tables...")
+  p <- file.path(path, "datasets")
+  lapply(all_data, function(x) {
+    dataset_name <- x$description$CSR_DATASET
+    message(dataset_name)
+    outpath <- file.path(path, dataset_name, "data")
+    if(!dir.exists(outpath)) {
+      if(create_dirs) {
+        message("Creating ", outpath)
+        dir.create(outpath, recursive = TRUE)
+      } else {
+        stop(outpath, " does not exist")
+      }
+    }
+
+    datafiles <- character(0)
+    if(is.data.frame(x$data)) {
+      # Write respiration data
+      # csv (big, version control friendly) or RDS (small, fast, preserves types)?
+      # Going with the latter for now
+      outfile <- file.path(outpath, paste0("data_", dataset_name, ".RDS"))
+      saveRDS(x$data, file = outfile)
+      # Write diagnostics data
+      diagfile <- file.path(outpath, paste0("diag_", dataset_name, ".RDS"))
+      saveRDS(x$diagnostics, file = diagfile)
+    }
+  })
+  invisible(NULL)
+}
+
+#' Remove standardized dataset(s)
+#'
+#' Utility function that remove standardized datasets created
+#' by \code{\link{csr_standardize_data}} from a
+#' directory tree, specifically \code{{path}/dataset/data/*.RDS}.
+#'
+#' @param path Path, typically \code{inst/extdata/datasets/}
+#' @param datasets Optional character vector of datasets. If not
+#' supplied, the output of \code{\link{list_datasets}} is used.
+#' @return Nothing.
+#' @export
+csr_remove_stan_data <- function(path, datasets = list_datasets()) {
+  for(ds in datasets) {
+    message(ds)
+    data_dir <- file.path(path, ds, "data")
+    if(!dir.exists(data_dir)) {
+      message("\tNo data directory")
+      next
+    }
+    files <- list.files(data_dir, pattern = "*.RDS", full.names = TRUE)
+    message("\tRemoving ", length(files), " file(s)")
+    unlink(files)
+  }
 }

@@ -10,8 +10,8 @@ resolve_dataset(dataset_name)
 \item{dataset_name}{Dataset name(s), character}
 }
 \value{
-Fully-qualified filename(s) of dataset folder in \code{inst/extdata}
- (\code{extdata/} in built package).
+Fully-qualified filename(s) of dataset folder in \code{inst/extdata/datasets}
+ (\code{extdata/datasets/} in built package).
 }
 \description{
 Get the full path of a dataset folder(s)

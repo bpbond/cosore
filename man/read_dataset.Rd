@@ -2,16 +2,16 @@
 % Please edit documentation in R/parser.R
 \name{read_dataset}
 \alias{read_dataset}
-\title{Read a complete dataset from raw files}
+\title{Read a complete dataset from either standardized or raw files}
 \usage{
-read_dataset(dataset_name, raw_data, log = TRUE)
+read_dataset(dataset_name, raw_data, force_raw = FALSE)
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}
 
 \item{raw_data}{Path to the raw data folder (not in package)}
 
-\item{log}{Log messages? Logical}
+\item{force_raw}{Ignore existing standardized data and read raw data, logical}
 }
 \value{
 A list with (at least) elements:
@@ -19,10 +19,11 @@ A list with (at least) elements:
 \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
 \item{ports}{Contents of \code{PORTS.txt} file}
 \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
+\item{diagnostics}{Diagnostics on the data parsing and QC process}
 \item{ancillary}{Ancillary site information}
 }
 \description{
-Read a complete dataset from raw files
+Read a complete dataset from either standardized or raw files
 }
 \examples{
 read_dataset("TEST_licordata")

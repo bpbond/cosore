@@ -60,10 +60,10 @@ list_datasets <- function(path = resolve_dataset("")) {
 #'
 #' @param dataset_name Dataset name(s), character
 #' @keywords internal
-#' @return Fully-qualified filename(s) of dataset folder in \code{inst/extdata}
-#'  (\code{extdata/} in built package).
+#' @return Fully-qualified filename(s) of dataset folder in \code{inst/extdata/datasets}
+#'  (\code{extdata/datasets/} in built package).
 resolve_dataset <- function(dataset_name) {
-  system.file(file.path("extdata", dataset_name), package = "cosore", mustWork = TRUE)
+  system.file(file.path("extdata/datasets", dataset_name), package = "cosore", mustWork = TRUE)
 }
 
 
@@ -291,10 +291,10 @@ map_columns <- function(dat, columns) {
     }
     stopifnot(dscol != dbcol)
     if(is.na(comp) | comp == "") {
-      message(dbcol, " <- ", dscol)
+      message("\t", dbcol, " <- ", dscol)
       names(dat)[which(names(dat) == dscol)] <- dbcol  # rename
     } else {
-      message(dbcol, " <- ", comp)
+      message("\t", dbcol, " <- ", comp)
       dat[[dbcol]] <- with(dat, eval(parse(text = comp)))
       dat[[dscol]] <- NULL  # remove original column
     }
@@ -303,45 +303,19 @@ map_columns <- function(dat, columns) {
   dat
 }
 
+
 #' Read a complete dataset from raw files
 #'
 #' @param dataset_name Dataset name, character
 #' @param raw_data Path to the raw data folder (not in package)
-#' @param log Log messages? Logical
-#' @return A list with (at least) elements:
-#' \item{description}{Contents of \code{DESCRIPTION.txt} file}
-#' \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
-#' \item{ports}{Contents of \code{PORTS.txt} file}
-#' \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
-#' \item{ancillary}{Ancillary site information}
-#' @export
+#' @param dataset The dataset (metadata only when called)
 #' @importFrom utils head
-#' @examples
-#' read_dataset("TEST_licordata")
-read_dataset <- function(dataset_name, raw_data, log = TRUE) {
-
-  dataset <- list(description = read_description_file(dataset_name),
-                  contributors = read_contributors_file(dataset_name),
-                  ports = read_ports_file(dataset_name),
-                  columns = read_columns_file(dataset_name),
-                  ancillary = read_ancillary_file(dataset_name)
-  )
-
-  # Parse the actual data
-  # Test data live inside the package, in a data/ subdirectory, but generally
-  # we look in raw_data/ which is supplied by the user (external to the package)
-  if(missing(raw_data)) {
-    df <- file.path(resolve_dataset(dataset_name), "data")
-  } else {
-    df <- file.path(raw_data, dataset_name)
-  }
-
-  if(log) {
-    # tf <- tempfile()
-    # zz <- file(tf, open = "wt")
-    # sink(zz, type = "output")
-    # sink(zz, type = "message")
-  }
+#' @return A list with (at least) elements:
+#' \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
+#' \item{diagnostics}{Diagnostics on the data parsing and QC process}
+#' @note This is normally called only from \code{\link{read_dataset}}.
+read_raw_dataset <- function(dataset_name, raw_data, dataset) {
+  df <- file.path(raw_data, dataset_name)
 
   # Processing statistics table
   diag <- tibble(CSR_RECORDS = 0,
@@ -451,16 +425,66 @@ read_dataset <- function(dataset_name, raw_data, log = TRUE) {
         sum(bad_temps, na.rm = TRUE)
     }
   }
+  list(dsd = dsd, diag = diag)
+}
 
-  # Add new tables to the dataset structure and return
-  dataset$diagnostics <- diag
-  dataset$data <- dsd
+#' Read a complete dataset from either standardized or raw files
+#'
+#' @param dataset_name Dataset name, character
+#' @param raw_data Path to the raw data folder (not in package)
+#' @param force_raw Ignore existing standardized data and read raw data, logical
+#' @return A list with (at least) elements:
+#' \item{description}{Contents of \code{DESCRIPTION.txt} file}
+#' \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
+#' \item{ports}{Contents of \code{PORTS.txt} file}
+#' \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
+#' \item{diagnostics}{Diagnostics on the data parsing and QC process}
+#' \item{ancillary}{Ancillary site information}
+#' @export
+#' @examples
+#' read_dataset("TEST_licordata")
+read_dataset <- function(dataset_name, raw_data, force_raw = FALSE) {
 
-  if(log) {
-    # sink(type = "message")
-    # sink(type = "output")
-    # dataset$log <- readLines(tf)
-    # unlink(tf)
+  dataset <- list(description = read_description_file(dataset_name),
+                  contributors = read_contributors_file(dataset_name),
+                  ports = read_ports_file(dataset_name),
+                  columns = read_columns_file(dataset_name),
+                  ancillary = read_ancillary_file(dataset_name))
+
+  # Parse the actual data. There are three possibilities:
+
+  # 1. By default we try to read 'standardized' data; these are stored
+  # inside the package, and are data we've already parsed and QC'd from
+  # contributed 'raw' data. They live in inst/extdata/{dataset}/data
+
+  # 2. 'Raw' data are used if standardized data not found; these need to
+  # be read from an external {raw_data} directory, then have their columns
+  # mapped, be QC'd, etc.
+
+  # 3. If neither standardized nor raw data are found, return a dataset
+  # with no data (the `data` or `diagnostics` list members).
+
+  data_dir <- file.path(resolve_dataset(dataset_name), "data")
+  datafile <- file.path(data_dir, paste0("data_", dataset_name, ".RDS"))
+
+  if(force_raw | !file.exists(datafile)) {  # raw
+    if(missing(raw_data)) {
+      warning(dataset_name, "\tNo standardized or raw data found")
+      return(dataset)
+    }
+    message(dataset_name, "\tReading and parsing raw data")
+    x <- read_raw_dataset(dataset_name, raw_data, dataset)
+    dataset$diagnostics <- x$diag
+    dataset$data <- x$dsd
+
+  } else {  # standardized
+    message(dataset_name, "\tReading standardized data")
+    # Read data
+    dataset$data <- readRDS(datafile)
+
+    # Read diagnostics info
+    diagfile <- file.path(data_dir, paste0("diag_", dataset_name, ".RDS"))
+    dataset$diagnostics <- readRDS(diagfile)
   }
 
   dataset

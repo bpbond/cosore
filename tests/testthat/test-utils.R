@@ -60,3 +60,50 @@ test_that("fractional_doy", {
   expect_error(fractional_doy(y, 0))
   expect_error(fractional_doy(y, 367))
 })
+
+test_that("csr_standardize_data", {
+  # Handles bad input
+  expect_error(csr_standardize_data(1, "", TRUE))
+  expect_error(csr_standardize_data(list(), 1, TRUE))
+  expect_error(csr_standardize_data(list(), "", 1))
+
+  library(lubridate)
+  data1 <- tibble(CSR_TIMESTAMP = ymd_hms(c("2020-01-01 12:34:56",
+                                            "2021-01-01 12:34:56")))
+  ds1 <- list(description = tibble(CSR_DATASET = "ds1"),
+              diagnostics = tibble(),
+              data = data1)
+  all_data <- list(ds1 = ds1)
+  td <- tempdir()
+
+  # Error - data subdirectory doesn't exist
+  expect_error(csr_standardize_data(all_data, td, create_dirs = FALSE),
+               regexp = "does not exist")
+
+  csr_standardize_data(all_data, td, create_dirs = TRUE)
+  td_dataset <- file.path(td, "ds1", "data")
+
+  # Subdirectory was created
+  expect_true(dir.exists(td_dataset))
+  # Files exist
+  expect_true(file.exists(file.path(td_dataset, "diag_ds1.RDS")))
+  expect_true(file.exists(file.path(td_dataset, "data_ds1.RDS")))
+  written_data <- readRDS(file.path(td_dataset, "data_ds1.RDS"))
+  expect_identical(all_data$ds1$data, written_data)
+
+  # Removing standardized files works
+  csr_remove_stan_data(td, datasets = "ds1")
+  expect_identical(list.files(td_dataset), character(0))
+
+  # Handles no-data dataset: should create directory but write no files
+  ds2 <- list(description = tibble(CSR_DATASET = "ds2"))
+  all_data <- list(ds2 = ds2)
+
+  csr_standardize_data(all_data, td, create_dirs = TRUE)
+  td_dataset <- file.path(td, "ds2", "data")
+  expect_true(dir.exists(td_dataset))
+  expect_identical(length(list.files(td_dataset)), 0L)
+
+  csr_remove_stan_data(td, datasets = "ds2")
+  expect_identical(list.files(td_dataset), character(0))
+})
