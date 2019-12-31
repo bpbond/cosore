@@ -123,7 +123,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
          CSR_NETWORK = extract_line(f, "CSR_NETWORK", required = FALSE),
          CSR_SITE_ID = extract_line(f, "CSR_SITE_ID", required = FALSE),
          CSR_INSTRUMENT = extract_line(f, "CSR_INSTRUMENT"),
-         CSR_MSMT_LENGTH = extract_line(f, "CSR_MSMT_LENGTH", required = FALSE, numeric_data = TRUE),
+         CSR_MSMT_LENGTH = extract_line(f, "CSR_MSMT_LENGTH", numeric_data = TRUE),
          CSR_FILE_FORMAT = extract_line(f, "CSR_FILE_FORMAT"),
          CSR_TIMESTAMP_FORMAT = extract_line(f, "CSR_TIMESTAMP_FORMAT"),
          CSR_TIMESTAMP_TZ = extract_line(f, "CSR_TIMESTAMP_TZ"),
@@ -353,27 +353,56 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     # Column mapping and computation
     dsd <- map_columns(dsd, dataset$columns)
 
-    # Change the timestamp column to a datetime object...
-    original_ts <- dsd$CSR_TIMESTAMP
-    dsd$CSR_TIMESTAMP <- as.POSIXct(dsd$CSR_TIMESTAMP,
-                                    format = dataset$description$CSR_TIMESTAMP_FORMAT,
-                                    tz = dataset$description$CSR_TIMESTAMP_TZ)
-    nats <- is.na(dsd$CSR_TIMESTAMP) & !is.na(original_ts)
-    diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(nats)
-    diag$CSR_EXAMPLE_BAD_TIMESTAMPS <- paste(head(original_ts[nats]), collapse = ", ")
-    dsd <- dsd[!nats,]
+    # Compute timestamp begin and/or ends
+
+    convert_qc_timestamp <- function(ts, timestamp_format, time_zone) {
+      new_ts <- as.POSIXct(ts, format = timestamp_format, tz = time_zone)
+      na_ts <- is.na(new_ts) & !is.na(ts)
+      bad_examples <- paste(head(ts[na_ts]), collapse = ", ")
+      list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
+    }
+
+    tf <- dataset$description$CSR_TIMESTAMP_FORMAT
+    tz <- dataset$description$CSR_TIMESTAMP_TZ
+    ml <- dataset$description$CSR_MSMT_LENGTH
+
+    ts_begin <- "CSR_TIMESTAMP_BEGIN" %in% names(dsd)
+    ts_end <- "CSR_TIMESTAMP_END" %in% names(dsd)
+
+    if(ts_end & !ts_begin) {   # compute begin
+      x <- convert_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
+      dsd$CSR_TIMESTAMP_END <- x$new_ts
+      dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts - ml
+    } else if(ts_begin & !ts_end) {   # compute end
+      x <- convert_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
+      dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts
+      dsd$CSR_TIMESTAMP_END <- x$new_ts + ml
+    } else if(ts_begin & ts_end) {  # cool, nothing to compute
+      x_begin <- convert_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
+      dsd$CSR_TIMESTAMP_BEGIN <- x_begin$new_ts
+      x_end <- convert_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
+      dsd$CSR_TIMESTAMP_END <- x_end$new_ts
+      x <- list(na_ts = x_begin$na_ts | x_end$na_ts,
+                bad_examples = c(x_begin$bad_examples, x_end$bad_examples))
+    } else {
+      stop("No timestamp begin or end provided")
+    }
+
+    # Remove records with invalid timestamps
+    diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(x$na_ts)
+    diag$CSR_EXAMPLE_BAD_TIMESTAMPS <- x$bad_examples
+    dsd <- dsd[!x$na_ts,]
 
     if(nrow(dsd) == 0) {
-      stop("Timestamps could not be parsed with ",
-           dataset$description$CSR_TIMESTAMP_FORMAT,
-           " and tz ", dataset$description$CSR_TIMESTAMP_TZ)
+      stop("Timestamps could not be parsed with ", tf, " and tz ", tz)
     }
 
     # ...and to the site's timezone
     # This attribute-changing makes me nervous, but apparently it's the
     # only way to change timezone without either using lubridate::with_tz(),
     # or using format() to a string and then casting back
-    attr(dsd$CSR_TIMESTAMP, "tzone") <- dataset$DESCRIPTION$CSR_TIMEZONE
+    attr(dsd$CSR_TIMESTAMP_BEGIN, "tzone") <- dataset$DESCRIPTION$CSR_TIMEZONE
+    attr(dsd$CSR_TIMESTAMP_END, "tzone") <- dataset$DESCRIPTION$CSR_TIMEZONE
 
     # Drop any unmapped columns
     drops <- grep("^CSR_", names(dsd), invert = TRUE)
@@ -385,6 +414,11 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
       dsd$CSR_PORT <- 0
     }
     dsd$CSR_PORT <- as.numeric(dsd$CSR_PORT)
+
+    # Rearrange columns
+    required <- c("CSR_PORT", "CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_FLUX")
+    other <- setdiff(names(dsd), required)
+    dsd <- dsd[c(required, sort(other))]
 
     # Remove NA flux records
     na_flux <- is.na(dsd$CSR_FLUX)
