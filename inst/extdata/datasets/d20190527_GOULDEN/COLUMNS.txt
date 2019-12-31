@@ -19,4 +19,4 @@ CSR_FLUX,  		CO2_Flux,
 CSR_LABEL,		Vegetation,
 CSR_PORT,		Chamber,
 CSR_TCHAMBER,	T_chamber_air
-CSR_TIMESTAMP,	Timestamp
+CSR_TIMESTAMP_MID,	Timestamp

@@ -13,6 +13,9 @@
 # CSR_T5	V1,
 # CSR_FLUX, Flux, 		Flux / 12 * 10^6 / 24/60/60, 	gC/day to µmol/s - all ports
 # CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
+# CSR_TIMESTAMP_BEGIN,	Timestamp
+# CSR_TIMESTAMP_MID,	Timestamp
+# CSR_TIMESTAMP_END,	Timestamp
 #
 Database,		Dataset,	Computation,				Notes
 CSR_CDRY,		Cdry,
