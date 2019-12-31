@@ -387,7 +387,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
       x_end <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
       dsd$CSR_TIMESTAMP_END <- x_end$new_ts
       x <- list(na_ts = x_begin$na_ts | x_end$na_ts,
-                bad_examples = c(x_begin$bad_examples, x_end$bad_examples))
+                bad_examples = paste(x_begin$bad_examples, x_end$bad_examples, collapse = " "))
     } else {
       stop("No timestamp begin or end provided")
     }
