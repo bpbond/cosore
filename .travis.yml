@@ -1,0 +1,14 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: r
+sudo: false
+warnings_are_errors: true
+cache: packages
+
+r_github_packages:
+  - jimhester/covr
+
+#r_build_args: "--no-build-vignettes"
+
+after_success:
+  - travis_wait 30 Rscript coverage.R

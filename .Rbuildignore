@@ -6,3 +6,5 @@
 misc/
 rsconnect/
 .pdf$
+.travis.yml
+coverage.R

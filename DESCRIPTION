@@ -15,13 +15,14 @@ Imports:
     rmarkdown,
     knitr,
     tibble (>= 2.1),
-    drake (>= 7.1),
+    drake (>= 7.1)
 Suggests: 
     testthat,
     dplyr,
     lubridate,
     leaflet,
     ggplot2,
+    kableExtra,
     sp,
     rcrossref
 License: MIT + file LICENSE

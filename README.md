@@ -1,6 +1,11 @@
+[![Build Status](https://travis-ci.org/bpbond/cosore.svg?branch=master)](https://travis-ci.org/bpbond/cosore) 
+
+[![codecov](https://codecov.io/gh/bpbond/cosore/branch/master/graph/badge.svg)](https://codecov.io/gh/bpbond/cosore)
+
+
 # cosore
 
-A package of software tools and metadata for COSORE, a reproducibility-oriented 
+The `cosore` package consists of data, metadata, and software tools for COSORE, a reproducibility-oriented 
 community database for continuous soil respiration data.
 
 **To download the COSORE database, click on the

@@ -26,5 +26,5 @@ A list with (at least) elements:
 Read a complete dataset from either standardized or raw files
 }
 \examples{
-read_dataset("TEST_licordata")
+suppressWarnings(read_dataset("TEST_licordata"))
 }
