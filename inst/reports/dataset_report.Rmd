@@ -15,6 +15,10 @@ library(dplyr)
 library(lubridate)
 
 ds <- params$dataset
+# Compute a mean timestamp for ease of use below
+ds$data$CSR_TIMESTAMP <- do.call(c, Map(function(x, y) mean(c(x, y)), 
+                                        ds$data$CSR_TIMESTAMP_BEGIN, 
+                                        ds$data$CSR_TIMESTAMP_END))
 quick <- params$quick
 
 #all <- drake::readd("all")

@@ -11,4 +11,4 @@ Database,		Dataset,	Computation,				Notes
 CSR_FLUX,  		Rs_sitemean,
 CSR_WTD,		WTD
 CSR_T5,			Ts
-CSR_TIMESTAMP,	Year,		"paste(Year, Month, Date, Hour, Minute, Second)"
+CSR_TIMESTAMP_END,	Year,		"paste(Year, Month, Date, Hour, Minute, Second)"

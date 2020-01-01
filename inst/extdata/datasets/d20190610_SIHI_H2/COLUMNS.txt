@@ -14,4 +14,4 @@ CSR_LABEL,		Treatment
 CSR_PORT,		chamber_id,		"sapply(strsplit(chamber_id, '_'), function(x) x[1])"
 CSR_SM10,		SWC
 CSR_T10,		TS
-CSR_TIMESTAMP,	YEAR,			"paste(YEAR, DOY, TIME)"
+CSR_TIMESTAMP_MID,	YEAR,			"paste(YEAR, DOY, TIME)"

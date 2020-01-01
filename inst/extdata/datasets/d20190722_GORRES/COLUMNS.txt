@@ -24,4 +24,4 @@ CSR_RH,			Mean.RH,
 CSR_SM5,		Mean.V3
 CSR_T5,			Mean.V2
 CSR_TCHAMBER,	Mean.Tcham
-CSR_TIMESTAMP,	ObsDateTime
+CSR_TIMESTAMP_END,	ObsDateTime

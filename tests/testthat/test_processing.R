@@ -7,8 +7,10 @@ test_that("dataset read and report", {
   expect_is(x, "list")
   run_single_report(x, output_dir = tempdir(), quiet = TRUE)
 
-  expect_true(is.POSIXct(x$data$CSR_TIMESTAMP))
-  expect_true(is.numeric(x$data$CSR_FLUX))
+  expect_true(is.POSIXct(x$data$CSR_TIMESTAMP_BEGIN))
+  expect_true(is.POSIXct(x$data$CSR_TIMESTAMP_END))
+  expect_type(x$data$CSR_FLUX, "double")
+  expect_true(is.numeric(x$data$CSR_PORT))
 
   # No-data dataset
   expect_warning(x_no_data <- read_dataset("TEST_licordata"))

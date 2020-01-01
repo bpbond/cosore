@@ -15,4 +15,4 @@
 # CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
 #
 Database,		Dataset,	Computation,				Notes
-CSR_TIMESTAMP,	Time.UTC
+CSR_TIMESTAMP_MID,	Time.UTC

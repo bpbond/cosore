@@ -33,7 +33,7 @@ CSR_IGBP: Evergreen needleleaf forest
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: eosFD
-CSR_MSMT_LENGTH: 
+CSR_MSMT_LENGTH: 1800
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 CSR_TIMESTAMP_TZ: America/Anchorage

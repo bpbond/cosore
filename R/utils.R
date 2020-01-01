@@ -215,3 +215,27 @@ csr_remove_stan_data <- function(path, datasets = list_datasets()) {
     unlink(files)
   }
 }
+
+
+#' Convert a vector of strings to POSIXct timestamps.
+#'
+#' @param ts Timestamps, character
+#' @param timestamp_format Formatting string that \code{\link{as.POSIXct}} accepts.
+#' This normally comes from \code{CSR_TIMESTAMP_FORMAT} in the DESCRIPTION file.
+#' @param time_zone Time zone that \code{\link{as.POSIXct}} accepts.
+#' This normally comes from \code{CSR_TIMESTAMP_TZ} in the DESCRIPTION file.
+#' @return A list with (i) a vector of \code{POSIXct} timestamps, (ii) a logical vector
+#' indicating which ones are invalid (and thus now NA), and (iii) a string of examples of
+#' bad timestamps.
+#' @keywords internal
+convert_and_qc_timestamp <- function(ts, timestamp_format, time_zone) {
+  stopifnot(is.character(ts))
+  stopifnot(is.character(timestamp_format))
+  stopifnot(is.character(time_zone))
+
+  new_ts <- as.POSIXct(ts, format = timestamp_format, tz = time_zone)
+  na_ts <- is.na(new_ts) & !is.na(ts)
+  bad_examples <- paste(head(ts[na_ts]), collapse = ", ")
+  list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
+}
+
