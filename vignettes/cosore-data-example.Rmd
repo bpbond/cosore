@@ -38,7 +38,7 @@ try(cosore <- drake::readd("all"))
 # cosore data structure but not the `data` elements of each dataset
 # list, throwing an error when things bomb below. Huh?!?
 # Check for this and create a fake database if necessary
-data_loaded <- is.data.frame(cosore$d20190415_VARNER$data)
+data_loaded <- exists("cosore") && is.data.frame(cosore$d20190415_VARNER$data)
 
 if(!data_loaded) {   # no database available; create a fake one
   cosore <- list(
