@@ -20,7 +20,6 @@ combine_data <- function(datasets, ...) {
 #' @importFrom drake drake_plan target
 #' @export
 #' @examples
-#' csr_build("")  # build without raw data; metadata only
 #' \dontrun{
 #' all_data <- csr_build("../rawdata/")  # build with raw data
 #' run_all_reports(all_data)

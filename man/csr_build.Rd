@@ -18,7 +18,6 @@ All the built data, invisibly.
 Build the cosore dataset
 }
 \examples{
-csr_build("")  # build without raw data; metadata only
 \dontrun{
 all_data <- csr_build("../rawdata/")  # build with raw data
 run_all_reports(all_data)
