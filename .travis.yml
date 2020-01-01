@@ -11,9 +11,9 @@ r_github_packages:
 r_build_args: "--no-build-vignettes"
 r_check_args: "--no-build-vignettes"
 
-script:
-  - R CMD build .
-  - travis_wait 30 R CMD check *.tar.gz
+#script:
+#  - R CMD build .
+#  - travis_wait 30 R CMD check *.tar.gz
 
 after_success:
   - travis_wait 30 Rscript coverage.R
