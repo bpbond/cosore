@@ -21,7 +21,8 @@ CSR_SM5			Volumetric soil moisture at 5 cm, fraction (other CSR_SMx fields follo
 CSR_T5			Temperature at 5 cm, degC (other CSR_Tx fields follow same format for depth x)
 CSR_TAIR		Air temperature, °C
 CSR_TCHAMBER	Chamber temperature, °C
-CSR_TIMESTAMP	Timestamp, a POSIXct class object internally, written YYYY-MM-DD HH:MM:SS
+CSR_TIMESTAMP_BEGIN	Timestamp, a POSIXct class object internally, written YYYY-MM-DD HH:MM:SS
+CSR_TIMESTAMP_END	Timestamp, a POSIXct class object internally, written YYYY-MM-DD HH:MM:SS
 CSR_WTD			Water table depth, cm
 
 
@@ -87,3 +88,7 @@ CSR_FAMILY_NAME	Family name
 CSR_EMAIL		Email address
 CSR_ORCID		ORCID ID; see https://orcid.org
 CSR_ROLE		CReDiT role; see https://www.casrai.org/credit.html
+
+# Diagnostic fields
+
+CSR_ASSUMED_MSMT_LENGTH   If no measurement length is provided this is set to assumed value

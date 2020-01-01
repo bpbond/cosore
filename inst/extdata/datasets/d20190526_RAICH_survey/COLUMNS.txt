@@ -22,4 +22,4 @@ CSR_RH,			RH,
 CSR_SM5,		Soil_H2O
 CSR_T5,			Tsoil
 CSR_TAIR,		Tair
-CSR_TIMESTAMP,	Date,		"paste(Date, Time)"
+CSR_TIMESTAMP_END,	Date,		"paste(Date, Time)"

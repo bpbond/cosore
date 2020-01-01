@@ -69,11 +69,11 @@ test_that("read_description_file", {
   # description file
   labels <- c("CSR_SITE_NAME", "CSR_LONGITUDE", "CSR_LATITUDE", "CSR_ELEVATION",
               "CSR_TIMEZONE", "CSR_IGBP",
-              "CSR_INSTRUMENT",
+              "CSR_INSTRUMENT", "CSR_MSMT_LENGTH",
               "CSR_FILE_FORMAT", "CSR_TIMESTAMP_FORMAT", "CSR_TIMESTAMP_TZ")
   dat <- c("site", "1", "2", "3",
            "America/New_York", "igbp",
-           "ins",
+           "ins", "120",
            "ff", "tsf", "tstz")
   fd <- paste(labels, dat, sep = ":")
 

@@ -17,4 +17,4 @@
 Database,		Dataset,	Computation,						Notes
 CSR_FLUX, 		co2.flux,	co2.flux / 1000/44 * 10^6 /60/60,	mg CO2/m2/hr
 CSR_PORT,		chamber.id
-CSR_TIMESTAMP,	datetime
+CSR_TIMESTAMP_MID,	datetime

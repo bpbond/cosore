@@ -128,7 +128,8 @@ parse_LI8100_file <- function(filename) {
         message("No valid data in ", bfn, " ", record_starts[i], ":", record_end)
         next()
       }
-      results$Date[i] <- dat$Date[1]  # first timestamp
+      results$Timestamp_begin[i] <- dat$Date[1]  # first timestamp
+      results$Timestamp_end[i] <- dat$Date[nrow(dat)]  # last timestamp
       results$Tcham[i] <- mean(dat$Tcham[index])
       if("V1" %in% names(dat)) results$V1[i] <- mean(dat$V1[index])
       if("V2" %in% names(dat)) results$V2[i] <- mean(dat$V2[index])

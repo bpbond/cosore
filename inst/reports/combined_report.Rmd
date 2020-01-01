@@ -27,13 +27,15 @@ diag <- csr_table(all_data, "diagnostics")
 # TODO: this duplicates code in dataset_report.Rmd
 compute_interval <- function(dsd) {
   dsd %>% 
-    mutate(Year = lubridate::year(CSR_TIMESTAMP)) %>% 
-    arrange(CSR_TIMESTAMP, CSR_PORT) %>% 
+    mutate(Year = lubridate::year(CSR_TIMESTAMP_BEGIN)) %>% 
+    arrange(CSR_TIMESTAMP_BEGIN, CSR_PORT) %>% 
     group_by(Year, CSR_PORT) %>% 
-    summarise(First_obs = min(CSR_TIMESTAMP),
-              Last_obs = max(CSR_TIMESTAMP),
-              N = length(CSR_TIMESTAMP),
-              `Interval (m)` = median(as.numeric(difftime(CSR_TIMESTAMP, lag(CSR_TIMESTAMP), units = "mins")), na.rm = TRUE),
+    summarise(First_obs = min(CSR_TIMESTAMP_BEGIN),
+              Last_obs = max(CSR_TIMESTAMP_BEGIN),
+              N = length(CSR_TIMESTAMP_BEGIN),
+              `Interval (m)` = median(as.numeric(difftime(CSR_TIMESTAMP_BEGIN, 
+                                                          lag(CSR_TIMESTAMP_BEGIN), 
+                                                          units = "mins")), na.rm = TRUE),
               `Interval (m)` = round(`Interval (m)`, 0)) %>% 
     summarise(First_obs = min(First_obs),
               Last_obs = max(Last_obs),
@@ -43,9 +45,9 @@ compute_interval <- function(dsd) {
 }
 
 years <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
-    data.frame(Start = min(x$data$CSR_TIMESTAMP),
-               End = max(x$data$CSR_TIMESTAMP),
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
+    data.frame(Start = min(x$data$CSR_TIMESTAMP_BEGIN),
+               End = max(x$data$CSR_TIMESTAMP_BEGIN),
                `Interval (m)` = as.integer(median(compute_interval(x$data), na.rm = TRUE)),
                Size  = format(object.size(x), "Mb"),
                stringsAsFactors = FALSE)
@@ -91,12 +93,12 @@ leaflet(df) %>%
 ```{r temporal}
 library(lubridate)
 coverage <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
     data.frame(CSR_DATASET = x$description$CSR_DATASET,
                CSR_IGBP = x$description$CSR_IGBP,
-               Year = year(x$data$CSR_TIMESTAMP), 
-               Month = month(x$data$CSR_TIMESTAMP),
-               Day = day(x$data$CSR_TIMESTAMP),
+               Year = year(x$data$CSR_TIMESTAMP_BEGIN), 
+               Month = month(x$data$CSR_TIMESTAMP_BEGIN),
+               Day = day(x$data$CSR_TIMESTAMP_BEGIN),
                stringsAsFactors = FALSE)
   } else {
     data.frame(CSR_DATASET = x$description$CSR_DATASET,
@@ -135,7 +137,7 @@ bind_rows(coverage) %>%
 
 ```{r igbp}
 coverage <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP" %in% names(x$data)) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
     data.frame(CSR_DATASET = x$description$CSR_DATASET,
                CSR_IGBP = x$description$CSR_IGBP,
                CSR_FLUX = x$data$CSR_FLUX,

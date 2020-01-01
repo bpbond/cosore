@@ -23,6 +23,7 @@ A \code{data.frame} with the following columns:
 \item{CSR_NETWORK}{Site network name, character}
 \item{CSR_SITE_ID}{Site ID in network, character}
 \item{CSR_INSTRUMENT}{Measurement instrument, character}
+\item{CSR_MSMT_LENGTH}{Measurement legnth (s), numeric}
 \item{CSR_FILE_FORMAT}{Data file format, character}
 \item{CSR_TIMESTAMP_FORMAT}{Data timestamp format (see \code{\link{strptime}}), character}
 \item{CSR_TIMESTAMP_TZ}{Data timestamp timezone, character}

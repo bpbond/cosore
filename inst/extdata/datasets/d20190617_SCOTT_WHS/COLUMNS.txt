@@ -9,4 +9,4 @@
 #
 # Examples:
 Database,		Dataset,	Computation,				Notes
-CSR_TIMESTAMP,	Year,		"paste(Year, DOY)"
+CSR_TIMESTAMP_END,	Year,		"paste(Year, DOY)"

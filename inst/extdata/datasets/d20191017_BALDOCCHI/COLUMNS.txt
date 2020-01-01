@@ -17,4 +17,4 @@
 Database,		Dataset,	Computation,				Notes
 CSR_FLUX,  		Fsurface,
 CSR_PORT,		Port,
-CSR_TIMESTAMP,	year,		"paste(year, fractional_doy(year, DOY))"
+CSR_TIMESTAMP_MID,	year,		"paste(year, fractional_doy(year, DOY))"
