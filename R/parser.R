@@ -100,6 +100,7 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 #' \item{CSR_NETWORK}{Site network name, character}
 #' \item{CSR_SITE_ID}{Site ID in network, character}
 #' \item{CSR_INSTRUMENT}{Measurement instrument, character}
+#' \item{CSR_MSMT_LENGTH}{Measurement legnth (s), numeric}
 #' \item{CSR_FILE_FORMAT}{Data file format, character}
 #' \item{CSR_TIMESTAMP_FORMAT}{Data timestamp format (see \code{\link{strptime}}), character}
 #' \item{CSR_TIMESTAMP_TZ}{Data timestamp timezone, character}
@@ -303,7 +304,6 @@ map_columns <- function(dat, columns) {
   dat
 }
 
-
 #' Read a complete dataset from raw files
 #'
 #' @param dataset_name Dataset name, character
@@ -424,44 +424,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     other <- setdiff(names(dsd), required)
     dsd <- dsd[c(required, sort(other))]
 
-    # Remove NA flux records
-    na_flux <- is.na(dsd$CSR_FLUX)
-    diag$CSR_RECORDS_REMOVED_NA <- sum(na_flux)
-    dsd <- dsd[!na_flux,]
-
-    # Remove error records
-    if("CSR_ERROR" %in% names(dsd)) {
-      err <- dsd$CSR_ERROR
-      diag$CSR_RECORDS_REMOVED_ERR <- sum(err)
-      dsd <- dsd[!err,]
-      dsd$CSR_ERROR <- NULL
-    }
-
-    # Remove records with flux data way out of anything possible
-    fl <- c(-10, 50)   # flux limits
-    diag$CSR_FLUX_LOWBOUND <- min(fl)
-    diag$CSR_FLUX_HIGHBOUND <- max(fl)
-    toolow <- dsd$CSR_FLUX < min(fl)
-    diag$CSR_RECORDS_REMOVED_TOOLOW <- sum(toolow, na.rm = TRUE)
-    toohigh <- dsd$CSR_FLUX > max(fl)
-    diag$CSR_RECORDS_REMOVED_TOOHIGH <- sum(toohigh, na.rm = TRUE)
-    dsd <- dsd[!toolow & !toohigh,]
-
-    diag$CSR_RECORDS <- nrow(dsd)
-  }
-
-  # Remove bad temperature values
-  tl <- c(-50, 60)  # temperature limits
-  for(tmp in c("CSR_TCHAMBER", "CSR_T5")) {
-    if(tmp %in% names(dsd) && nrow(dsd)) {
-      dsd[,tmp] <- as.numeric(unlist(dsd[tmp])) # ensure numeric
-      tmpvals <- dsd[tmp]
-      bad_temps <- tmpvals < min(tl) | tmpvals > max(tl)
-      bad_temps[is.na(bad_temps)] <- FALSE
-      dsd[bad_temps, tmp] <- NA  # NA out bad values
-      diag$CSR_BAD_TEMPERATURE <- diag$CSR_BAD_TEMPERATURE +
-        sum(bad_temps, na.rm = TRUE)
-    }
+    return(qaqc_data(dsd, diag))
   }
   list(dsd = dsd, diag = diag)
 }

@@ -14,7 +14,7 @@ Description: Software tools to build COSORE, an open-science
 Imports:
     rmarkdown,
     knitr,
-    tibble,
+    tibble (>= 2.1),
     drake (>= 7.1),
 Suggests: 
     testthat,
