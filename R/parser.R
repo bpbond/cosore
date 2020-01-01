@@ -443,7 +443,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 #' \item{ancillary}{Ancillary site information}
 #' @export
 #' @examples
-#' read_dataset("TEST_licordata")
+#' suppressWarnings(read_dataset("TEST_licordata"))
 read_dataset <- function(dataset_name, raw_data, force_raw = FALSE) {
 
   dataset <- list(description = read_description_file(dataset_name),
