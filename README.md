@@ -20,37 +20,33 @@ Only free use data accepted.
 The package, and the process of contributing data, should be as focused and 
 simple as possible (but no simpler).
 
-All contributors will be included on a database definition paper.
+All contributors will be included on an introductory database paper planned for spring 2020.
 
-The database is completely open for reuse. We request that users cite the 
+The database is completely open for reuse, and licensed under the [CC BY 4](https://creativecommons.org/licenses/by/4.0/) license. We request that users cite the 
 database definition paper, and strongly encourage them to (i) cite all dataset primary
 publications, and (ii) involve data contributors as co-authors when possible.
 
 **This database is not designed for, and should not be treated as, a permanent
-data repository.** COSORE is a community database, but not an institutionally-backed repository like Figshare, DataONE, ESS-DIVE, etc. We recommend depositing your data in one of these first, and providing its DOI in metadata.
+data repository.** COSORE is a community database, but not an institutionally-backed repository like Figshare, DataONE, ESS-DIVE, etc. We recommend depositing your data in one of these first, and providing its DOI in your COSORE dataset metadata.
 
 ## Database design
 
 This database is comprised of a collection of datasets, each converted to a standard format and units.
 A _dataset_ is one or more files of continuous (automated) soil respiration data,
 with accompanying metadata, with all measurements taken at a single _site_ and with
-constant _treatment_ assignments.
+constant _treatment_ assignments (i.e. they may vary between chambers but not over time).
 
 As much as possible, metadata are kept to a minimum. There are five metadata files, but only two of them absolutely need to be filled out:
 
 ### `DESCRIPTION.txt`
 
 * Site name
-* Longitude
-* Latitude
-* Elevation [optional]
-* Site timezone
+* Longitude, latitude, and elevation
 * Site [timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 * [IGBP cover type](http://www.eomf.ou.edu/static/IGBP.pdf)
-* Instrument name
-* Measurement length
-* File format
-* Timestamp format and timezone
+* Site network affiliation and network code [optional]
+* Measurement instrument and length
+* File and timestamp format and timezone
 * Primary publication DOI or URL [optional]
 * Other publications DOI or URL [optional]
 * Data DOI or URL [optional]
@@ -66,28 +62,31 @@ Information on arbitrary number (>=1) of contributors. The first contributor lis
 
 ### `PORTS.txt`
 
-For each multiplexer port, can define:
+Continuous systems typically, but not always, are comprised of a single analyzer plumbed to multiple chambers through a multiplexer. In COSORE, for each multiplexer port, we can define:
 
+* Measurement variable (typically Rs, Rh, or NEE)
 * Treatment ("None" by default)
-* Species [optional]
 * Chamber area [optional]
 * Collar depth [optional]
+* Species [optional]
+* Sensor depths [optional, only for gradient method]
 
 ### `COLUMNS.txt`
 
-This maps between _dataset_ fields and standardized _database_ fields.
+This file is used during the import of raw (contributed) data, and maps
+between the raw _dataset_ fields and standardized COSORE fields.
 It include an optional compute-on-columns capability (e.g. to change units or combine columns). See `?map_columns` for more information.
 
 ### `ANCILLARY.txt`
 
-This file contains ancillary data: stand structure, carbon cycle, disturbance, etc. [all optional]
+This file contains arbitrary ancillary data: stand structure, carbon cycle, disturbance, etc. [all optional]
 
 ## Operation
 
-When asked (via `csr_build()` to build the synthesis dataset, the `cosore` R package
-* Scans its `inst/extdata/datasets` folder for metadata on all installed datasets
-* Parses the metadata, and then based on `File_format` calls 
-the appropriate function to parse the raw data (which for size reasons are not currently included in the repository)
+When asked (via `csr_build()` to build the synthesis dataset, the `cosore` R package:
+* Scans for and parses metadata on all installed datasets
+* If standardized (already imported data) is available for a dataset, loads that
+* If not, parses, QA/QCs, and transforms raw contributed data into a standardized form
 * This is done via a [drake](https://github.com/ropensci/drake) pipeline, so we only 
 rebuild datasets when needed
 * Currently a `list` is returned, in which each entry is an individual dataset, itself
