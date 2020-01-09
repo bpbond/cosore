@@ -49,18 +49,18 @@ years <- lapply(all_data, function(x) {
     data.frame(Start = min(x$data$CSR_TIMESTAMP_BEGIN),
                End = max(x$data$CSR_TIMESTAMP_BEGIN),
                `Interval (m)` = as.integer(median(compute_interval(x$data), na.rm = TRUE)),
-               Size  = format(object.size(x), "Mb"),
+               Size  = format(object.size(x), units = "Mb"),
                stringsAsFactors = FALSE)
   } else {
     data.frame(Start = NA, End = NA, `Interval (m)` = NA,
-               Size = format(object.size(NULL), "Mb"), 
+               Size = format(object.size(NULL), units = "Mb"), 
                stringsAsFactors = FALSE)    
   }
 }
 )
 years <- do.call("rbind", c(years, make.row.names = FALSE))
-years$Start <- format(years$Start, "%Y-%m")
-years$End <- format(years$End, "%Y-%m")
+years$Start <- format(years$Start, format = "%Y-%m")
+years$End <- format(years$End, format = "%Y-%m")
 
 x <- cbind(diag[c("CSR_DATASET", "CSR_RECORDS")], years)
 ```
