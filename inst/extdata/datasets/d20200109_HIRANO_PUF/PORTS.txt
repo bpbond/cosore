@@ -1,0 +1,15 @@
+# PORTS.txt
+#
+# This comma-separated data file provides information about multiplexer ports
+# and what conditions they represent. Entries below include: 
+#
+# 	CSR_PORT: CSR_PORT number, numeric; "0" means all ports [req]
+#	CSR_MSMT_VAR: measurement variable: "Rs", "Rh", or "NEE" [req]
+# 	CSR_TREATMENT: "None" or experimental manipulation [req]
+#	CSR_AREA: optional chamber area, cm2
+#	CSR_DEPTH: optional collar insertion depth, cm
+# 	CSR_SPECIES: optional field describing species measured
+#	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
+#
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+0,			Rs,				None,			491,		10,			Combretocarpus rotundatus
