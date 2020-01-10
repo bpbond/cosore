@@ -1,4 +1,4 @@
-COSORE submission - [questions and] upload link
+COSORE submission - [questions and] upload link for $DATASET
 
 Dear Dr. $LAST_NAME,
  
