@@ -23,7 +23,7 @@ CSR_TAIR		Air temperature, °C
 CSR_TCHAMBER	Chamber temperature, °C
 CSR_TIMESTAMP_BEGIN	Timestamp, a POSIXct class object internally, written YYYY-MM-DD HH:MM:SS
 CSR_TIMESTAMP_END	Timestamp, a POSIXct class object internally, written YYYY-MM-DD HH:MM:SS
-CSR_WTD			Water table depth, cm
+CSR_WTD			Water table depth, cm, positive numbers are depth
 
 
 # From `DESCRIPTION.txt` file

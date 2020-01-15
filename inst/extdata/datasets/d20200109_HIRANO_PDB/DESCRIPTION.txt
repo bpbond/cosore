@@ -27,7 +27,7 @@
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
 CSR_SITE_NAME: Palangkaraya drained burned ex-peat swamp forest (PDB)
-CSR_LONGITUDE: -114.0379
+CSR_LONGITUDE: 114.0379
 CSR_LATITUDE: 2.3408
 CSR_ELEVATION: 15
 CSR_TIMEZONE: Asia/Jakarta
@@ -37,11 +37,11 @@ CSR_NETWORK:
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-820
 CSR_MSMT_LENGTH: 180
-CSR_FILE_FORMAT: Processed
-CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %Y %j %H:%M:%S
 CSR_TIMESTAMP_TZ: Asia/Jakarta
 CSR_PRIMARY_PUB: 10.1111/gcb.12296
 CSR_OTHER_PUBS: 10.1111/j.1365-2486.2012.02793.x
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: 
-CSR_NOTES: Almost bare ground with regrowing fern plants. The site was ex-drained peat swamp forest. The measurement started in 2004, 1.5 years after severe fire. At that time, plants were few, thus we think root respiration was excluded. Please refer to our primary publication.
+CSR_NOTES: Almost bare ground with regrowing fern plants. The measurement started in 2004, 1.5 years after severe fire.

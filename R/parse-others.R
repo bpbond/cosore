@@ -268,3 +268,29 @@ parse_d20190430_DESAI <- function(path) {
 
   rbind_list(results)
 }
+
+#' Parse a custom file from d20200109_HIRANO_PDB.
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @importFrom utils read.csv
+#' @keywords internal
+`parse_d20200109_HIRANO_PDB` <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  dat <- subset(dat, !(DOY == 366 & Time == 2400)) # drops one oddball row with no flux
+
+  dat$DOYfrac <- fractional_doy(dat$Year, dat$DOY + dat$Time / 2400)
+
+  # Flux fields
+  fluxcols <- grep("^SR", names(dat))
+  x <- dat[-fluxcols]
+  results <- list()
+  for(i in seq_along(fluxcols)) {
+    results[[i]] <- x
+    results[[i]]$CSR_FLUX <- dat[,fluxcols[i]]
+    results[[i]]$CSR_PORT <- i
+  }
+
+  rbind_list(results)
+}
