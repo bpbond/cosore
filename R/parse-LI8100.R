@@ -21,7 +21,8 @@ parse_LI8100_file <- function(filename) {
     # Set up results data frame and fill it in as we go
     results <- data.frame(
       Record = seq_along(record_starts),
-      Date = NA_character_,
+      Timestamp_begin = NA_character_,
+      Timestamp_end = NA_character_,
       Label = NA_character_,
       Port = NA_integer_,
       CrvFitStatus = NA_real_,
