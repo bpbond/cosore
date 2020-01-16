@@ -28,7 +28,7 @@
 # --------------------------------------
 CSR_SITE_NAME: Palangkaraya drained burned ex-peat swamp forest (PDB)
 CSR_LONGITUDE: 114.0379
-CSR_LATITUDE: 2.3408
+CSR_LATITUDE: -2.3408
 CSR_ELEVATION: 15
 CSR_TIMEZONE: Asia/Jakarta
 CSR_BIOME: Tropical
@@ -36,7 +36,7 @@ CSR_IGBP: Evergreen broadleaf forest
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-820
-CSR_MSMT_LENGTH: 180
+CSR_MSMT_LENGTH: 1800
 CSR_FILE_FORMAT: Custom
 CSR_TIMESTAMP_FORMAT: %Y %j %H:%M:%S
 CSR_TIMESTAMP_TZ: Asia/Jakarta

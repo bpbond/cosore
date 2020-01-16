@@ -403,10 +403,10 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 
     # ...and to the site's timezone
     # This attribute-changing makes me nervous, but apparently it's the
-    # only way to change timezone without either using lubridate::with_tz(),
+    # only way to change timezone without either using lubridate::force_tz(),
     # or using format() to a string and then casting back
-    attr(dsd$CSR_TIMESTAMP_BEGIN, "tzone") <- dataset$DESCRIPTION$CSR_TIMEZONE
-    attr(dsd$CSR_TIMESTAMP_END, "tzone") <- dataset$DESCRIPTION$CSR_TIMEZONE
+    attr(dsd$CSR_TIMESTAMP_BEGIN, "tzone") <- dataset$description$CSR_TIMEZONE
+    attr(dsd$CSR_TIMESTAMP_END, "tzone") <- dataset$description$CSR_TIMEZONE
 
     # Drop any unmapped columns
     drops <- grep("^CSR_", names(dsd), invert = TRUE)
