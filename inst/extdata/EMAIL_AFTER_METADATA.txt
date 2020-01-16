@@ -4,7 +4,7 @@ Dear Dr. $LAST_NAME,
  
 Thanks for your interest and submitting the COSORE metadata form. If you have any feedback on it (too complicated, unclear, something is missing) please let me know. 
 
-Reviewing the metadata, I do have some questions:
+Reviewing the metadata for this dataset, I do have some questions:
 1. ...
 
 **To upload the data** for $SITE, please use this link: $DROPBOX_LINK
