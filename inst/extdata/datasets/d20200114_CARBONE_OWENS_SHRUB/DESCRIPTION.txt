@@ -26,13 +26,13 @@
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-CSR_SITE_NAME: Owens Valley Grassland
-CSR_LONGITUDE: -118.42638889
-CSR_LATITUDE: 37.41111111
-CSR_ELEVATION: 1250
+CSR_SITE_NAME: Owens Valley Shrubland
+CSR_LONGITUDE: 118.35777778
+CSR_LATITUDE: 37.32138889
+CSR_ELEVATION: 1260
 CSR_TIMEZONE: Etc/GMT+8
 CSR_BIOME: Temperate
-CSR_IGBP: Grassland
+CSR_IGBP: Open shrubland
 CSR_NETWORK: 
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-840
@@ -42,5 +42,5 @@ CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
 CSR_TIMESTAMP_TZ: Etc/GMT+8
 CSR_PRIMARY_PUB: 10.1029/2007JG000611
 CSR_OTHER_PUBS: 10.1111/j.1469-8137.2007.02153.x
-CSR_DATA_URL: 10.6084/m9.figshare.11605476
+CSR_DATA_URL: 10.6084/m9.figshare.11605473
 CSR_ACKNOWLEDGMENT: The Kearney Foundation of Soil Science
