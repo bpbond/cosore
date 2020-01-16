@@ -17,4 +17,4 @@
 # 2,	Heated,			Sphagnum fuscum
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			527.2727,	2,			"Quercus cornelius-mulleri, bare ground"	
+0,			Rs,				None,			527.2727,	2,			"Quercus kelloggii, Arctostaphylos glandulosa"	

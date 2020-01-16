@@ -82,6 +82,7 @@ knitr::kable(x, format = "html", format.args = list(big.mark = ',')) %>%
 library(sp)
 library(leaflet)
 df <- data.frame(lon = desc$CSR_LONGITUDE, lat = desc$CSR_LATITUDE)
+df <- subset(df, !is.na(lon) & !is.na(lat))
 coordinates(df) <- ~lon + lat
 leaflet(df) %>% 
   addMarkers() %>% 
