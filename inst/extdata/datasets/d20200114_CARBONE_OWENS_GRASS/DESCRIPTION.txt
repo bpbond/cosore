@@ -1,0 +1,46 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+#		For US sites, a corresponding Central American timezone is used if 
+#		the instrument does not follow daylight savings 
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+#	CSR_MSMT_LENGTH: measurement length (seconds)
+#	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
+#	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
+		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
+# --------------------------------------
+CSR_SITE_NAME: Owens Valley Grassland
+CSR_LONGITUDE: -118.42638889
+CSR_LATITUDE: 37.41111111
+CSR_ELEVATION: 1250
+CSR_TIMEZONE: Etc/GMT+8
+CSR_BIOME: Temperate
+CSR_IGBP: Grassland
+CSR_NETWORK: 
+CSR_SITE_ID: 
+CSR_INSTRUMENT: LI-8100A
+CSR_MSMT_LENGTH: 
+CSR_FILE_FORMAT: Processed
+CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_TIMESTAMP_TZ: Etc/GMT+8
+CSR_PRIMARY_PUB: 10.1029/2007JG000611
+CSR_OTHER_PUBS: 10.1111/j.1469-8137.2007.02153.x
+CSR_DATA_URL: 10.6084/m9.figshare.11605476
+CSR_ACKNOWLEDGMENT: The Kearney Foundation of Soil Science
