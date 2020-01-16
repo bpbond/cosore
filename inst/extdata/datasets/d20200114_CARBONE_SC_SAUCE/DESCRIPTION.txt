@@ -1,0 +1,46 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+#		For US sites, a corresponding Central American timezone is used if 
+#		the instrument does not follow daylight savings 
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+#	CSR_MSMT_LENGTH: measurement length (seconds)
+#	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
+#	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
+		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
+# --------------------------------------
+CSR_SITE_NAME: Santa Cruz Island Sauce Canyon
+CSR_LONGITUDE: -119.81750000
+CSR_LATITUDE: 34.00111111
+CSR_ELEVATION: 300
+CSR_TIMEZONE: Etc/GMT+8
+CSR_BIOME: Mediterranean
+CSR_IGBP: Evergreen needleleaf forest
+CSR_NETWORK: 
+CSR_SITE_ID: 
+CSR_INSTRUMENT: LI-840
+CSR_MSMT_LENGTH: 600
+CSR_FILE_FORMAT: Processed_csv
+CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_TIMESTAMP_TZ: Etc/GMT+8
+CSR_PRIMARY_PUB: 10.1111/gcb.12054
+CSR_OTHER_PUBS:
+CSR_DATA_URL: 10.6084/m9.figshare.11605467
+CSR_ACKNOWLEDGMENT: This work was funded by The Kearney Foundation of Soil Science. MSC was supported by the NOAA Climate & Global Change Postdoctoral Fellowship Program administered by the University Corporation for Atmospheric Research.
