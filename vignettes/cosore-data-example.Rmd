@@ -48,7 +48,7 @@ if(!data_loaded) {   # no database available; create a fake one
                                CSR_IGBP = "Deciduous broadleaf forest",
                                CSR_LONGITUDE = 1,
                                CSR_LATITUDE = 1),
-      data = data.frame(CSR_TIMESTAMP = lubridate::ymd_hm("2019-06-05 07:12"),
+      data = data.frame(CSR_TIMESTAMP_BEGIN = lubridate::ymd_hm("2019-06-05 07:12"),
                         CSR_FLUX = 1,
                         CSR_PORT = 1,
                         CSR_T5 = 1))
@@ -130,12 +130,12 @@ This dataset has `r nrow(sr)` observations; extends from April 2003 to December 
 
 ```{r visualize-varner}
 library(ggplot2)
-ggplot(sr, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
+ggplot(sr, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_PORT)) +
   geom_point(size = 0.5) + ggtitle("Flux over time")
 
 library(lubridate, warn.conflicts = FALSE)
 ggplot(sr, aes(CSR_T5, CSR_FLUX)) + 
-  facet_wrap(~month(CSR_TIMESTAMP), scales = "free") +
+  facet_wrap(~month(CSR_TIMESTAMP_BEGIN), scales = "free") +
   geom_point(size = 0.5, alpha = 0.5) +
   ggtitle("5 cm soil temp vs. flux, by month")
 ```
@@ -187,7 +187,7 @@ There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 cosore_tdf <- cosore[tdf$CSR_DATASET]
 tdf_dat <- csr_table(cosore_tdf, "data")
 tdf_dat %>% 
-  ggplot(aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_DATASET)) + 
+  ggplot(aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
   geom_point(size = 0.5) + 
   coord_cartesian(ylim = c(0, 20)) +
   ggtitle("Flux over time, colored by dataset")
@@ -200,9 +200,9 @@ tdf_dat %>%
   # join two tables together
   left_join(select(tdf, CSR_DATASET, CSR_SITE_NAME, CSR_LATITUDE), by = "CSR_DATASET") %>% 
   # add some new fields
-  mutate(Hour = hour(CSR_TIMESTAMP),
-         Month = month(CSR_TIMESTAMP), 
-         Year = year(CSR_TIMESTAMP)) %>% 
+  mutate(Hour = hour(CSR_TIMESTAMP_BEGIN),
+         Month = month(CSR_TIMESTAMP_BEGIN), 
+         Year = year(CSR_TIMESTAMP_BEGIN)) %>% 
   # for each month, compute mean flux for each hour of the day
   group_by(CSR_DATASET, CSR_LATITUDE, Year, Month, Hour) %>% 
   summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
