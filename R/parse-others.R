@@ -273,12 +273,11 @@ parse_d20190430_DESAI <- function(path) {
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
-#' @importFrom utils read.csv
 #' @keywords internal
 `parse_d20200109_HIRANO_PDB` <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
-  dat <- subset(dat, !(DOY == 366 & Time == 2400)) # drops one oddball row with no flux
+  dat <- subset(dat, !(dat$DOY == 366 & dat$Time == 2400)) # drops one oddball row with no flux
   dat$DOYfrac <- fractional_doy(dat$Year, dat$DOY + dat$Time / 2400)
 
   # Flux fields
@@ -289,6 +288,30 @@ parse_d20190430_DESAI <- function(path) {
     results[[i]] <- x
     results[[i]]$CSR_FLUX <- dat[,fluxcols[i]]
     results[[i]]$CSR_PORT <- i
+  }
+
+  rbind_list(results)
+}
+
+#' Parse a custom file from d20200108_JASSAL.
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+`parse_d20200108_JASSAL` <- function(path) {
+  dat <- parse_PROCESSED(path)
+
+  dat$Timestamp <- as.character(dat$Days_since_20060100 * 24 * 60 * 60 +
+                                  strptime("20060101", format("%Y%m%d")))
+
+  # Flux fields
+  fluxcols <- grep("^flux_", names(dat))
+  x <- dat[-fluxcols]
+  results <- list()
+  for(i in seq_along(fluxcols)) {
+    results[[i]] <- x
+    results[[i]]$flux <- dat[,fluxcols[i]]
+    results[[i]]$port <- i
   }
 
   rbind_list(results)

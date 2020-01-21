@@ -271,6 +271,8 @@ map_columns <- function(dat, columns) {
 
   stopifnot(is.data.frame(columns))
   stopifnot(all(c("Database", "Dataset") %in% names(columns)))
+  stopifnot(!any(duplicated(columns$Database)))
+  stopifnot(!any(duplicated(columns$Dataset)))
 
   if(!"Computation" %in% names(columns)) {
     columns$Computation <- NA_character_
@@ -290,7 +292,9 @@ map_columns <- function(dat, columns) {
     if(!dscol %in% names(dat)) {
       stop("Column ", dscol, " not found in data")
     }
-    stopifnot(dscol != dbcol)
+    if(dscol == dbcol) {
+      stop("Identically-named columns in dataset and database")
+    }
     if(is.na(comp) | comp == "") {
       message("\t", dbcol, " <- ", dscol)
       names(dat)[which(names(dat) == dscol)] <- dbcol  # rename
