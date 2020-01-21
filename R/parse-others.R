@@ -277,7 +277,7 @@ parse_d20190430_DESAI <- function(path) {
 `parse_d20200109_HIRANO_PDB` <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
-  dat <- subset(dat, !(DOY == 366 & Time == 2400)) # drops one oddball row with no flux
+  dat <- subset(dat, !(dat$DOY == 366 & dat$Time == 2400)) # drops one oddball row with no flux
   dat$DOYfrac <- fractional_doy(dat$Year, dat$DOY + dat$Time / 2400)
 
   # Flux fields
