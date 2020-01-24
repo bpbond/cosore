@@ -5,7 +5,8 @@
 
 Field name		Description and units
 
-CSR_CDRY		Mean CO2 concentration, ppmv
+CSR_CDRY		Chamber CO2 concentration, ppmv
+CSR_CO2_AMB		Ambient CO2 concentration, ppmv
 CSR_COMMENTS	Comments, text
 CSR_CRVFIT		Flux computation method ("Lin" or "Exp" for linear and exponential)
 CSR_ERROR		Error raised by instrument or during import, logical
@@ -23,6 +24,7 @@ CSR_TAIR		Air temperature, °C
 CSR_TCHAMBER	Chamber temperature, °C
 CSR_TIMESTAMP_BEGIN	Timestamp, a POSIXct class object internally, written YYYY-MM-DD HH:MM:SS
 CSR_TIMESTAMP_END	Timestamp, a POSIXct class object internally, written YYYY-MM-DD HH:MM:SS
+CSR_WIND		Wind speed, m/s
 CSR_WTD			Water table depth, cm, positive numbers are depth
 
 
