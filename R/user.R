@@ -47,11 +47,16 @@ csr_table <- function(table, datasets = list_datasets(), quiet = FALSE) {
 #' \item{ancillary}{Ancillary site information.}
 #' @export
 csr_dataset <- function(dataset_name, quiet = FALSE, metadata_only = FALSE) {
+  stopifnot(is.character(dataset_name))
+  stopifnot(length(dataset_name) == 1)
+  stopifnot(is.logical(quiet))
+  stopifnot(is.logical(metadata_only))
+
   # no raw data parsing allowed
   read_dataset(dataset_name, force_raw = FALSE, quiet = quiet, metadata_only = metadata_only)
 }
 
-#' Return metadata (the \code{description} file) for the entire COSORE database.
+#' Return metadata (i.e. the \code{description} file) for the entire COSORE database.
 #'
 #' @return A \code{data.frame} with metadata about each constituent dataset.
 #' @export
