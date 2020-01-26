@@ -55,7 +55,7 @@ CSR_EMBARGO			  Embargo flag, if data can't be released yet
 # From `PORTS.txt` file; all optional except for port and treatment
 
 CSR_PORT			Port (chamber) number, numeric; "0" means all ports
-CSR_MSMT_VAR		Measurement variable: "Rs", "Rh", or "NEE"
+CSR_MSMT_VAR		Measurement variable: "Rs", "Rh", "Reco", or "NEE"
 CSR_TREATMENT		Collar treatment; default is "None"
 CSR_AREA			Area of measurement chamber, cm2
 CSR_DEPTH			Depth of collar insertion, cm

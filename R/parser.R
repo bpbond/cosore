@@ -215,7 +215,7 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
   pfd <- read_csv_data(file_data, required = c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT"))
 
   # Measurement variable is highly standardized; make sure all ok
-  ok <- pfd$CSR_MSMT_VAR %in% c("Rs", "Rh", "NEE")
+  ok <- pfd$CSR_MSMT_VAR %in% c("Rs", "Rh", "Reco", "NEE")
   if(!all(ok)) {
     stop("Illegal CSR_MSMT_VAR entry in PORTS file: ", paste(pfd$CSR_MSMT_VAR[!ok], collapse = ", "))
   }
