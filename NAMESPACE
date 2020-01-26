@@ -3,7 +3,6 @@
 export(csr_build)
 export(csr_database)
 export(csr_dataset)
-export(csr_emails)
 export(csr_make_release)
 export(csr_remove_stan_data)
 export(csr_standardize_data)

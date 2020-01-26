@@ -9,6 +9,11 @@
 #' @export
 csr_table <- function(table, datasets = list_datasets(), quiet = FALSE) {
 
+  if(missing(table)) {
+    stop("'table' should be one of 'description', 'contributors',",
+         "'ports', 'columns', 'data', 'diagnostics', or 'ancillary'")
+  }
+
   extract <- function(dataset_name, table, quiet) {
     mdo <- !table %in% c("data", "diagnostics") # only these require actual data read (which is slow)
     x <- csr_dataset(dataset_name, metadata_only = mdo, quiet = quiet)
