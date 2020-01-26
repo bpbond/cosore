@@ -438,6 +438,8 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 #' @param dataset_name Dataset name, character
 #' @param raw_data Path to the raw data folder (not in package)
 #' @param force_raw Ignore existing standardized data and read raw data, logical
+#' @param quiet Print progress messages and warnings? Logical
+#' @param metadata_only Quick-read metadata only? Logical
 #' @return A list with (at least) elements:
 #' \item{description}{Contents of \code{DESCRIPTION.txt} file}
 #' \item{contributors}{Contents of \code{CONTRIBUTORS.txt} file}
@@ -448,7 +450,10 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 #' @export
 #' @examples
 #' suppressWarnings(read_dataset("TEST_licordata"))
-read_dataset <- function(dataset_name, raw_data, force_raw = FALSE) {
+read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALSE, metadata_only = FALSE) {
+  stopifnot(is.character(dataset_name))
+  stopifnot(length(dataset_name) == 1)
+  stopifnot(is.logical(force_raw))
 
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
@@ -456,40 +461,42 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE) {
                   columns = read_columns_file(dataset_name),
                   ancillary = read_ancillary_file(dataset_name))
 
-  # Parse the actual data. There are three possibilities:
+  if(!metadata_only) {
 
-  # 1. By default we try to read 'standardized' data; these are stored
-  # inside the package, and are data we've already parsed and QC'd from
-  # contributed 'raw' data. They live in inst/extdata/{dataset}/data
+    # Parse the actual data. There are three possibilities:
 
-  # 2. 'Raw' data are used if standardized data not found; these need to
-  # be read from an external {raw_data} directory, then have their columns
-  # mapped, be QC'd, etc.
+    # 1. By default we try to read 'standardized' data; these are stored
+    # inside the package, and are data we've already parsed and QC'd from
+    # contributed 'raw' data. They live in inst/extdata/{dataset}/data
 
-  # 3. If neither standardized nor raw data are found, return a dataset
-  # with no data (the `data` or `diagnostics` list members).
+    # 2. 'Raw' data are used if standardized data not found; these need to
+    # be read from an external {raw_data} directory, then have their columns
+    # mapped, be QC'd, etc.
 
-  data_dir <- file.path(resolve_dataset(dataset_name), "data")
-  datafile <- file.path(data_dir, paste0("data_", dataset_name, ".RDS"))
+    # 3. If neither standardized nor raw data are found, return a dataset
+    # with no data (the `data` or `diagnostics` list members).
 
-  if(force_raw | !file.exists(datafile)) {  # raw
-    if(missing(raw_data)) {
-      warning(dataset_name, "\tNo standardized or raw data found")
-      return(dataset)
+    data_dir <- file.path(resolve_dataset(dataset_name), "data")
+    datafile <- file.path(data_dir, paste0("data_", dataset_name, ".RDS"))
+
+    if(force_raw | !file.exists(datafile)) {  # raw
+      if(missing(raw_data)) {
+        if(!quiet) warning(dataset_name, "\tNo standardized or raw data found")
+        return(dataset)
+      }
+      if(!quiet) message(dataset_name, "\tReading and parsing raw data")
+      x <- read_raw_dataset(dataset_name, raw_data, dataset)
+      dataset$diagnostics <- x$diag
+      dataset$data <- x$dsd
+
+    } else {  # standardized
+      if(!quiet) message(dataset_name, "\tReading standardized data")
+      # Read data
+      dataset$data <- readRDS(datafile)
+      # Read diagnostics info
+      diagfile <- file.path(data_dir, paste0("diag_", dataset_name, ".RDS"))
+      dataset$diagnostics <- readRDS(diagfile)
     }
-    message(dataset_name, "\tReading and parsing raw data")
-    x <- read_raw_dataset(dataset_name, raw_data, dataset)
-    dataset$diagnostics <- x$diag
-    dataset$data <- x$dsd
-
-  } else {  # standardized
-    message(dataset_name, "\tReading standardized data")
-    # Read data
-    dataset$data <- readRDS(datafile)
-
-    # Read diagnostics info
-    diagfile <- file.path(data_dir, paste0("diag_", dataset_name, ".RDS"))
-    dataset$diagnostics <- readRDS(diagfile)
   }
 
   dataset
