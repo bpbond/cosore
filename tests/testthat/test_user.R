@@ -2,13 +2,17 @@
 
 context("user")
 
-test_that("user utilities work", {
+test_that("csr_table", {
 
-  all_data <- list(list(data = cars, dataset_name = "a"),
-                   list(data = cars, dataset_name = "b"),
-                   list(data = cars, dataset_name = "c"))
+})
 
-  x <- csr_table(all_data, "data")
-  expect_is(x, "data.frame")
-  expect_identical(nrow(x), nrow(cars) * length(all_data))
+test_that("csr_dataset", {
+
+})
+
+test_that("csr_database", {
+  x <- csr_database()
+  expect_s3_class(x, "data.frame")
+  y <- list_datasets()
+  expect_identical(nrow(x), length(y))  # should be one row per dataset
 })
