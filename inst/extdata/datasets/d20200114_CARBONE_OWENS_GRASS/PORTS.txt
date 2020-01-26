@@ -12,4 +12,11 @@
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
+1,			Reco,			None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
+2,			Reco,			None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
+3,			Rs,				None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
+4,			Rs,				None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
+5,			Reco,			None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
+6,			Reco,			None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
+7,			Rs,				None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
+8,			Rs,				None,			527.2727,	0,			"Distichlis spicata, Juncus balticus"
