@@ -125,3 +125,20 @@ test_that("convert_and_qc_timestamp", {
   expect_true(all(is.na(out$new_ts)))
   expect_true(all(out$na_ts))
 })
+
+
+test_that("compute_interval", {
+  # Bad input
+  expect_error(compute_interval(1))
+
+  x <- tibble(CSR_TIMESTAMP_BEGIN = seq(ISOdate(2000, 1, 1), by = "day", length.out = 12),
+              CSR_PORT = 0)
+  y <- compute_interval(x)
+  expect_s3_class(y, "data.frame")
+  expect_identical(y$Interval, 60 * 24)  # minutes in a day
+  expect_identical(y$N, nrow(x))
+
+  # Sorting shouldn't matter
+  xrev <- x[order(x$CSR_TIMESTAMP_BEGIN, decreasing = TRUE),]
+  expect_identical(compute_interval(x), compute_interval(xrev))
+})

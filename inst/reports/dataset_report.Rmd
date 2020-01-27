@@ -15,8 +15,10 @@ library(cosore)
 library(lubridate)
 
 ds <- params$dataset
+
 # Compute a mean timestamp for ease of use below
-ds$data$CSR_TIMESTAMP <- do.call(c, Map(function(x, y) mean(c(x, y)), 
+dsd <- ds$data
+dsd$CSR_TIMESTAMP <- do.call(c, Map(function(x, y) mean(c(x, y)), 
                                         ds$data$CSR_TIMESTAMP_BEGIN, 
                                         ds$data$CSR_TIMESTAMP_END))
 quick <- params$quick
@@ -94,15 +96,17 @@ kableExtra::kable_styling(x, full_width = FALSE, position = "left")
 ## Observation density
 
 ```{r}
-x <- cosore:::compute_interval(ds$data)
-results <- list()
-for(yr in unique(x$Year)) {
-  d <- x[x$Year == yr,]
-  results[[yr]] <- tibble(Year = yr,
-                          `Interval (min)` = round(weighted.mean(d$Interval, d$N), 1))
+if(is.data.frame(dsd)) {
+  x <- cosore:::compute_interval(dsd)
+  results <- list()
+  for(yr in unique(x$Year)) {
+    d <- x[x$Year == yr,]
+    results[[yr]] <- tibble(Year = yr,
+                            `Interval (min)` = round(weighted.mean(d$Interval, d$N), 1))
+  }
+  results <- cosore:::rbind_list(results)
+  kableExtra::kable_styling(knitr::kable(results), full_width = FALSE, position = "left")
 }
-results <- cosore:::rbind_list(results)
-kableExtra::kable_styling(knitr::kable(results), full_width = FALSE, position = "left")
 ```
 
 ## Column mapping
@@ -130,7 +134,6 @@ Size                | `r format(object.size(ds), "Mb")`
 **Flux summary**:
 
 ```{r flux-graphs}
-dsd <- ds$data
 if(is.data.frame(dsd) & !quick) {
   dsd <- subset(dsd, !is.na(CSR_FLUX) & CSR_FLUX > 0)
   dsd$CSR_PORT <- as.factor(dsd$CSR_PORT)
@@ -146,11 +149,9 @@ if(is.data.frame(dsd) & !quick) {
     geom_point(size = 0.2) + scale_y_log10()
   print(p2)
   
-  dsd %>% 
-    mutate(Month = month(CSR_TIMESTAMP)) %>% 
-    group_by(CSR_PORT, Month) %>% 
-    summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
-    ggplot(aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + 
+  dsd$Month = month(dsd$CSR_TIMESTAMP)
+  smry <- aggregate(CSR_FLUX ~ CSR_PORT + Month, data = dsd, mean)
+  ggplot(smry, aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + 
     geom_line() ->
     p3
   print(p3)
@@ -169,7 +170,7 @@ if(is.data.frame(dsd) & !quick) {
     results <- list()
     for(col in tcols) {
       x <- dsd[c("CSR_FLUX", "CSR_PORT")]
-      x$Temperature <- pull(dsd, col)#ds$data[,col]
+      x$Temperature <- unlist(dsd[,col])
       x$Which_temp <- names(dsd)[col]
       results[[as.character(col)]] <- x
     }
@@ -193,7 +194,7 @@ if(is.data.frame(ds$data) & !quick) {
     results <- list()
     for(col in smcols) {
       x <- dsd[c("CSR_FLUX", "CSR_PORT")]
-      x$SM <- pull(dsd, col)#ds$data[,col]
+      x$SM <- unlist(dsd[,col])
       x$Which_sm <- names(dsd)[col]
       results[[as.character(col)]] <- x
     }

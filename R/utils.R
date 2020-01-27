@@ -259,6 +259,8 @@ combine_data <- function(datasets, ...) {
 #' @return Median interval between timestamps.
 #' @note This is used by the reports.
 compute_interval <- function(dsd) {
+  stopifnot(is.data.frame(dsd))
+
   dsd <- dsd[with(dsd, order(CSR_TIMESTAMP_BEGIN, CSR_PORT)),]
   dsd$Year <- lubridate::year(dsd$CSR_TIMESTAMP_BEGIN)
   mylag <- function(x) c(as.POSIXct(NA), head(x, -1))  # like dplyr::lag()
