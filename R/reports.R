@@ -1,16 +1,14 @@
 
 #' Run a summary report on the entire COSORE database
 #'
-#' @param all_data A list of \code{cosore} datasets.
 #' @param output_dir Output directory
 #' @importFrom rmarkdown render
 #' @return Nothing; run for its side effects.
 #' @export
-run_combined_report <- function(all_data, output_dir = "~/Desktop/Reports/") {
+csr_report_database <- function(output_dir = "~/Desktop/Reports/") {
   mf <- system.file("reports/combined_report.Rmd", package = "cosore")
 
   rmarkdown::render(mf,
-                    params = list(all_data = all_data),
                     output_file = paste0("Report-all.html"),
                     output_dir = output_dir)
 }
@@ -28,7 +26,10 @@ run_combined_report <- function(all_data, output_dir = "~/Desktop/Reports/") {
 #' @importFrom rmarkdown render
 #' @return Nothing; run for its side effects.
 #' @export
-run_single_report <- function(ds, output_dir = "~/Desktop/Reports/", quiet = FALSE, quick = FALSE) {
+csr_report_dataset <- function(ds,
+                               output_dir = "~/Desktop/Reports/",
+                               quiet = FALSE, quick = FALSE) {
+
   mf <- system.file("reports/dataset_report.Rmd", package = "cosore")
 
   rmarkdown::render(mf,
@@ -38,18 +39,14 @@ run_single_report <- function(ds, output_dir = "~/Desktop/Reports/", quiet = FAL
                     quiet = quiet)
 }
 
-#' Run all individual dataset reports
+#' Run all individual dataset and database reports
 #'
-#' @param all_data A list of \code{cosore} datasets.
-#' @param run_combined When done, run the combined (entire database) report?
 #' @return Nothing; run for its side effects.
 #' @export
-run_all_reports <- function(all_data, run_combined = TRUE) {
-  for(ds in all_data) {
-    run_single_report(ds)
+csr_reports_all <- function() {
+  for(dataset_name in list_datasets()) {
+    csr_report_dataset(csr_dataset(dataset_name))
   }
 
-  if(run_combined) {
-    run_combined_report(all_data)
-  }
+    csr_report_database(all_data)
 }
