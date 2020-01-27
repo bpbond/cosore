@@ -1,18 +1,5 @@
 
-#' Combine all datasets into a single list
-#'
-#' @param datasets Character vector of dataset names
-#' @param ... Dataset objects
-#' @return A single list with all datasets
-#' @importFrom drake drake_plan
-#' @keywords internal
-combine_data <- function(datasets, ...) {
-  x <-  list(...)
-  names(x) <- datasets
-  x
-}
-
-#' Build the cosore dataset
+#' Build the COSORE dataset
 #'
 #' @param raw_data The raw data folder to use, character path
 #' @param return_all_data Return all data generated (invisibly)?, Logical

@@ -239,3 +239,15 @@ convert_and_qc_timestamp <- function(ts, timestamp_format, time_zone) {
   list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
 }
 
+#' Combine all datasets into a single list
+#'
+#' @param datasets Character vector of dataset names
+#' @param ... Dataset objects
+#' @return A single list with all datasets
+#' @importFrom drake drake_plan
+#' @keywords internal
+combine_data <- function(datasets, ...) {
+  x <-  list(...)
+  names(x) <- datasets
+  x
+}

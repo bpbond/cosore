@@ -9,7 +9,7 @@ csr_table(table, datasets = list_datasets(), quiet = FALSE)
 \arguments{
 \item{table}{Name of table to extract, character}
 
-\item{datasets}{Character vector of dataset names, e.g. from \code{\link{list_datasets()}}}
+\item{datasets}{Character vector of dataset names, e.g. from \code{\link{list_datasets}}}
 
 \item{quiet}{Print progress messages and warnings? Logical}
 }

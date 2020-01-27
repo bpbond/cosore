@@ -3,7 +3,7 @@
 #' Extract one table (\code{description}, \code{data}, etc.) from datasets
 #'
 #' @param table Name of table to extract, character
-#' @param datasets Character vector of dataset names, e.g. from \code{\link{list_datasets()}}
+#' @param datasets Character vector of dataset names, e.g. from \code{\link{list_datasets}}
 #' @param quiet Print progress messages and warnings? Logical
 #' @return A \code{\link{data.frame}}.
 #' @export

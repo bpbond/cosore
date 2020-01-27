@@ -2,7 +2,7 @@
 % Please edit documentation in R/user.R
 \name{csr_database}
 \alias{csr_database}
-\title{Return metadata (the \code{description} file) for the entire COSORE database.}
+\title{Return metadata (i.e. the \code{description} file) for the entire COSORE database.}
 \usage{
 csr_database()
 }
@@ -10,5 +10,5 @@ csr_database()
 A \code{data.frame} with metadata about each constituent dataset.
 }
 \description{
-Return metadata (the \code{description} file) for the entire COSORE database.
+Return metadata (i.e. the \code{description} file) for the entire COSORE database.
 }

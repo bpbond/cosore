@@ -2,7 +2,7 @@
 % Please edit documentation in R/plan.R
 \name{csr_build}
 \alias{csr_build}
-\title{Build the cosore dataset}
+\title{Build the COSORE dataset}
 \usage{
 csr_build(raw_data, return_all_data = TRUE)
 }
@@ -15,7 +15,7 @@ csr_build(raw_data, return_all_data = TRUE)
 All the built data, invisibly.
 }
 \description{
-Build the cosore dataset
+Build the COSORE dataset
 }
 \examples{
 \dontrun{
