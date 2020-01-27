@@ -84,7 +84,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
     "ports.csv" = "Port-specific information: species, collar areas and depths, treatments",
     "datasets" = "A folder containing the various `data` tables for each dataset",
     "CSR_COLUMNS_UNITS.txt" = "Metadata for all database fields",
-    "Report-all.html" = "A summary report on the various datasets",
+    "Report-all.html" = "A summary report on the entire database",
     "cosore-data-example.html" = "A vignette showing how to load and work with the database",
     "README.md" = "This file."
   )
@@ -123,7 +123,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
 
   # Run combined_report and copy it there
   if(run_report) {
-#    run_combined_report(all_data, output_dir = path)
+    csr_report_database(output_dir = path)
   } else {
     # This normally happens only during testing; create a placeholder file
     file.create(file.path(path, "Report-all.html"))
