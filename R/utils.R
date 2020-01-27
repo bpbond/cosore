@@ -251,3 +251,33 @@ combine_data <- function(datasets, ...) {
   names(x) <- datasets
   x
 }
+
+
+#' Compute measurement interval for a dataset
+#'
+#' @param dsd Dataset data (a data frame)
+#' @return Median interval between timestamps.
+#' @note This is used by the reports.
+compute_interval <- function(dsd) {
+  dsd <- dsd[with(dsd, order(CSR_TIMESTAMP_BEGIN, CSR_PORT)),]
+  dsd$Year <- lubridate::year(dsd$CSR_TIMESTAMP_BEGIN)
+  mylag <- function(x) c(as.POSIXct(NA), head(x, -1))  # like dplyr::lag()
+
+  results <- list()
+  for(y in unique(dsd$Year)) {
+    for(p in unique(dsd$CSR_PORT)) {
+      d <- dsd[dsd$Year == y & dsd$CSR_PORT == p,]
+
+      results[[paste(y, p)]] <-
+        tibble(Year = y,
+               Port = p,
+               N = nrow(d),
+               Interval = median(as.numeric(difftime(d$CSR_TIMESTAMP_BEGIN,
+                                                     mylag(d$CSR_TIMESTAMP_BEGIN),
+                                                     units = "mins")), na.rm = TRUE))
+    }
+  }
+
+  cosore:::rbind_list(results)
+}
+

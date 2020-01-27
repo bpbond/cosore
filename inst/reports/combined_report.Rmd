@@ -17,25 +17,7 @@ desc <- csr_table("description")
 diag <- csr_table("diagnostics")
 
 compute_interval <- function(dsd) {
-  dsd <- dsd[with(dsd, order(CSR_TIMESTAMP_BEGIN, CSR_PORT)),]
-  dsd$Year <- lubridate::year(dsd$CSR_TIMESTAMP_BEGIN)
-  mylag <- function(x) c(as.POSIXct(NA), head(x, -1))  # like dplyr::lag()
-  
-  results <- list()
-  for(y in unique(dsd$Year)) {
-    for(p in unique(dsd$CSR_PORT)) {
-      d <- dsd[dsd$Year == y & dsd$CSR_PORT == p,]
-      
-      results[[paste(y, p)]] <- 
-        tibble(N = nrow(d),
-               Interval = median(as.numeric(difftime(d$CSR_TIMESTAMP_BEGIN, 
-                                                     mylag(d$CSR_TIMESTAMP_BEGIN), 
-                                                     units = "mins")), na.rm = TRUE))
-    }
-  }
-  
-  results <- cosore:::rbind_list(results)
-  results$Interval <- round(results$Interval, 0)
+  results <- cosore:::compute_interval(dsd)
   median(round(weighted.mean(results$Interval, results$N, na.rm = TRUE), 0))
 }
 
