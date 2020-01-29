@@ -298,11 +298,11 @@ parse_d20190430_DESAI <- function(path) {
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
-`parse_d20200108_JASSAL` <- function(path) {
+`parse_d20200122_BLACK` <- function(path) {
   dat <- parse_PROCESSED(path)
 
-  dat$Timestamp <- as.character(dat$Days_since_20060100 * 24 * 60 * 60 +
-                                  strptime("20060101", format("%Y%m%d")))
+  dat$Timestamp <- as.character(dat$days_since_20040101 * 24 * 60 * 60 +
+                                  strptime("20040101", format("%Y%m%d")))
 
   # Flux fields
   fluxcols <- grep("^flux_", names(dat))
@@ -311,7 +311,7 @@ parse_d20190430_DESAI <- function(path) {
   for(i in seq_along(fluxcols)) {
     results[[i]] <- x
     results[[i]]$flux <- dat[,fluxcols[i]]
-    results[[i]]$port <- i
+    results[[i]]$port <- i + 1  # 11 columns labeled 2...12
   }
 
   rbind_list(results)
