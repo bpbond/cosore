@@ -11,29 +11,25 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(ggplot2)
 theme_set(theme_bw())
-library(dplyr)
+library(cosore)
 library(lubridate)
 
 ds <- params$dataset
+
 # Compute a mean timestamp for ease of use below
-ds$data$CSR_TIMESTAMP <- do.call(c, Map(function(x, y) mean(c(x, y)), 
+dsd <- ds$data
+dsd$CSR_TIMESTAMP <- do.call(c, Map(function(x, y) mean(c(x, y)), 
                                         ds$data$CSR_TIMESTAMP_BEGIN, 
                                         ds$data$CSR_TIMESTAMP_END))
 quick <- params$quick
-
-#all <- drake::readd("all")
-#ds <- all$d20190517_MAURITZ
 ```
 
 # `r ds$description$CSR_DATASET`
 
-
-```{r}
+```{r, echo=FALSE}
 d <- ds$description
 diag <- ds$diagnostics
-```
 
-```{r, echo=FALSE}
 if(!is.na(d$CSR_EMBARGO)) {
   cat("---------------------------------------------------------------\n")
   cat("EMBARGO FLAG IS SET--DATA WILL NOT BE RELEASED\n")
@@ -58,9 +54,8 @@ library(sp)
 library(leaflet)
 df <- data.frame(lon = ds$description$CSR_LONGITUDE, lat = ds$description$CSR_LATITUDE)
 coordinates(df) <- ~lon + lat
-leaflet(df) %>% 
-  addMarkers() %>% 
-  addTiles(options = providerTileOptions(minZoom = 3, maxZoom = 5))
+x <- addMarkers(leaflet(df))
+addTiles(x, options = providerTileOptions(minZoom = 3, maxZoom = 5))
 ```
 
 ## Reference information
@@ -76,8 +71,8 @@ Data (URL or DOI)         | `r d$CSR_DATA_URL`
 ## Contributors
 
 ```{r contrib_table, echo=FALSE}
-knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %>% 
-  kableExtra::kable_styling(full_width = FALSE, position = "left")
+x <- knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) 
+kableExtra::kable_styling(x, full_width = FALSE, position = "left")
 ```
 
 ## Measurement information
@@ -94,46 +89,32 @@ knitr::kable(unlist(ds$contributors), format = "html", col.names = c("Value")) %
 
 ```{r msmt_table, echo=FALSE}
 dsp <- ds$ports
-knitr::kable(dsp, format = "html") %>% 
-  kableExtra::kable_styling(full_width = FALSE, position = "left")
+x <- knitr::kable(dsp, format = "html")
+kableExtra::kable_styling(x, full_width = FALSE, position = "left")
 ```
 
 ## Observation density
 
 ```{r}
-compute_interval <- function(dsd) {
-  if(is.null(dsd)) {
-    return(tibble(First_obs = NA, Last_OBS = NA, `Interval (m)` = NA))
-  } else {
-    dsd %>% 
-      mutate(Year = year(CSR_TIMESTAMP)) %>% 
-      arrange(CSR_TIMESTAMP, CSR_PORT) %>% 
-      group_by(Year, CSR_PORT) %>% 
-      summarise(First_obs = min(CSR_TIMESTAMP),
-                Last_obs = max(CSR_TIMESTAMP),
-                N = length(CSR_TIMESTAMP),
-                `Interval (m)` = median(as.numeric(difftime(CSR_TIMESTAMP, lag(CSR_TIMESTAMP), units = "mins")), na.rm = TRUE),
-                `Interval (m)` = round(`Interval (m)`, 0)) %>% 
-      summarise(First_obs = min(First_obs),
-                Last_obs = max(Last_obs),
-                `Interval (m)` = round(weighted.mean(`Interval (m)`, N, na.rm = TRUE), 0),
-                N = sum(N))
+if(is.data.frame(dsd)) {
+  x <- cosore:::compute_interval(dsd)
+  results <- list()
+  for(yr in unique(x$Year)) {
+    d <- x[x$Year == yr,]
+    results[[yr]] <- tibble(Year = yr,
+                            `Interval (min)` = round(weighted.mean(d$Interval, d$N), 1))
   }
+  results <- cosore:::rbind_list(results)
+  kableExtra::kable_styling(knitr::kable(results), full_width = FALSE, position = "left")
 }
-
-compute_interval(ds$data) %>% 
-  knitr::kable() %>% 
-  kableExtra::kable_styling(full_width = FALSE, position = "left")
 ```
-
 
 ## Column mapping
 
 ```{r mapping, echo=FALSE}
-knitr::kable(ds$columns, format = "html") %>% 
-  kableExtra::kable_styling(full_width = FALSE, position = "left")
+x <- knitr::kable(ds$columns, format = "html")
+kableExtra::kable_styling(x,full_width = FALSE, position = "left")
 ```
-
 
 ## Data processing diagnostics
 
@@ -153,7 +134,6 @@ Size                | `r format(object.size(ds), "Mb")`
 **Flux summary**:
 
 ```{r flux-graphs}
-dsd <- ds$data
 if(is.data.frame(dsd) & !quick) {
   dsd <- subset(dsd, !is.na(CSR_FLUX) & CSR_FLUX > 0)
   dsd$CSR_PORT <- as.factor(dsd$CSR_PORT)
@@ -169,11 +149,9 @@ if(is.data.frame(dsd) & !quick) {
     geom_point(size = 0.2) + scale_y_log10()
   print(p2)
   
-  dsd %>% 
-    mutate(Month = month(CSR_TIMESTAMP)) %>% 
-    group_by(CSR_PORT, Month) %>% 
-    summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
-    ggplot(aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + 
+  dsd$Month = month(dsd$CSR_TIMESTAMP)
+  smry <- aggregate(CSR_FLUX ~ CSR_PORT + Month, data = dsd, mean)
+  ggplot(smry, aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + 
     geom_line() ->
     p3
   print(p3)
@@ -192,11 +170,11 @@ if(is.data.frame(dsd) & !quick) {
     results <- list()
     for(col in tcols) {
       x <- dsd[c("CSR_FLUX", "CSR_PORT")]
-      x$Temperature <- pull(dsd, col)#ds$data[,col]
+      x$Temperature <- unlist(dsd[,col])
       x$Which_temp <- names(dsd)[col]
       results[[as.character(col)]] <- x
     }
-    results <- bind_rows(results)
+    results <- cosore:::rbind_list(results)
     
     p1 <- ggplot(results, aes(Temperature, CSR_FLUX, color = CSR_PORT)) + 
       geom_point(size = 0.2, alpha = I(0.25)) + 
@@ -216,11 +194,11 @@ if(is.data.frame(ds$data) & !quick) {
     results <- list()
     for(col in smcols) {
       x <- dsd[c("CSR_FLUX", "CSR_PORT")]
-      x$SM <- pull(dsd, col)#ds$data[,col]
+      x$SM <- unlist(dsd[,col])
       x$Which_sm <- names(dsd)[col]
       results[[as.character(col)]] <- x
     }
-    results <- bind_rows(results)
+    results <- cosore:::rbind_list(results)
     
     p1 <- ggplot(results, aes(SM, CSR_FLUX, color = CSR_PORT)) + 
       geom_point(size = 0.2, alpha = I(0.25)) + 

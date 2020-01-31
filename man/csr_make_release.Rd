@@ -2,14 +2,12 @@
 % Please edit documentation in R/release.R
 \name{csr_make_release}
 \alias{csr_make_release}
-\title{Make a new COSORE release}
+\title{Make a new COSORE release based on current package datasets.}
 \usage{
-csr_make_release(all_data, path, vignette_rebuilt = FALSE,
-  force = FALSE, run_report = TRUE, zip_release = TRUE)
+csr_make_release(path, vignette_rebuilt = FALSE, force = FALSE,
+  run_report = TRUE, zip_release = TRUE)
 }
 \arguments{
-\item{all_data}{A list of \code{cosore} datasets}
-
 \item{path}{Path to write files to; must already exist}
 
 \item{vignette_rebuilt}{Has vignette been rebuilt? Logical}
@@ -24,7 +22,7 @@ csr_make_release(all_data, path, vignette_rebuilt = FALSE,
 Fully qualified name of zip file containing release.
 }
 \description{
-Make a new COSORE release
+Make a new COSORE release based on current package datasets.
 }
 \details{
 To make a new release, the git working directory
@@ -37,6 +35,6 @@ database version, and
 database size are all copied into \code{README.md} as well.
 }
 \note{
-If a \code{CSR_EMBARGO} field exists in the a DESCRIPTION
+If a \code{CSR_EMBARGO} field exists in the DESCRIPTION
 file, no data will be released from that dataset.
 }

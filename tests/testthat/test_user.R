@@ -2,13 +2,31 @@
 
 context("user")
 
-test_that("user utilities work", {
+test_that("csr_table", {
+  # Handles bad data
+  expect_error(csr_table(), regexp = "should be one of")  # informative error message
 
-  all_data <- list(list(data = cars, dataset_name = "a"),
-                   list(data = cars, dataset_name = "b"),
-                   list(data = cars, dataset_name = "c"))
+  x <- csr_table("sdfkjh")  # should return an empty data frame
+  expect_s3_class(x, "data.frame")
+  expect_identical(nrow(x), 0L)
+})
 
-  x <- csr_table(all_data, "data")
-  expect_is(x, "data.frame")
-  expect_identical(nrow(x), nrow(cars) * length(all_data))
+test_that("csr_dataset", {
+  # Handles bad data
+  expect_error(csr_dataset(1))
+  expect_error(csr_dataset(LETTERS))
+  expect_error(csr_dataset("x", quiet = "quiet"))
+  expect_error(csr_dataset("x", metadata_only = "metadata_only"))
+
+  x <- csr_dataset("TEST_licordata", metadata_only = TRUE)
+  expect_is(x, "list")
+  expect_identical(sort(names(x)),
+                   sort(c("description", "contributors", "ports", "columns", "ancillary")))
+})
+
+test_that("csr_database", {
+  x <- csr_database()
+  expect_s3_class(x, "data.frame")
+  y <- list_datasets()
+  expect_identical(nrow(x), length(y))  # should be one row per dataset
 })

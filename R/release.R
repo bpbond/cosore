@@ -1,7 +1,6 @@
 
-#' Make a new COSORE release
+#' Make a new COSORE release based on current package datasets.
 #'
-#' @param all_data A list of \code{cosore} datasets
 #' @param path Path to write files to; must already exist
 #' @param vignette_rebuilt Has vignette been rebuilt? Logical
 #' @param force Ignore git dirty status? Logical
@@ -17,11 +16,10 @@
 #' Dynamic information like the current date, git commit hash,
 #' database version, and
 #' database size are all copied into \code{README.md} as well.
-#' @note If a \code{CSR_EMBARGO} field exists in the a DESCRIPTION
+#' @note If a \code{CSR_EMBARGO} field exists in the DESCRIPTION
 #' file, no data will be released from that dataset.
 #' @export
-csr_make_release <- function(all_data, path,
-                             vignette_rebuilt = FALSE, force = FALSE,
+csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
                              run_report = TRUE, zip_release = TRUE) {
 
   if(!dir.exists(path)) {
@@ -42,43 +40,42 @@ csr_make_release <- function(all_data, path,
     stop("Vignette rebuilt via devtools::build_vignettes()?")
   }
 
-  # Remove any datasets that are under embargo
-  for(i in seq_along(all_data)) {
-    if(!is.na(all_data[[i]]$description$CSR_EMBARGO)) {
-      message(all_data[[i]]$description$CSR_DATASET, " has an embargo entry--removing data")
-      all_data[[i]]$data <- NULL
-    }
-  }
-
-  # saveRDS the object
-  message("Saving database...")
-  saveRDS(all_data, file = file.path(path, "cosore_data.RDS"))
+  db_size <- 0
 
   # Invert structure and write each table (except data) as a single csv
   nms <- c("description", "contributors", "ports", "columns", "ancillary", "diagnostics")
   for(nm in nms) {
     message("Extracting ", nm)
-    x <- csr_table(all_data, nm) # extract table with name "n"
+    x <- csr_table(nm) # extract table with name "n"
+    db_size <- db_size + object.size(x)
     fn <- paste0(nm, ".csv")
     message("Writing ", fn)
     write.csv(x, file.path(path, fn), row.names = FALSE)
   }
 
-  # For data, we write each dataset separately into a data/ folder
-  message("Writing data tables...")
-  p <- file.path(path, "datasets")
-  dir.create(p, showWarnings = FALSE)
-  lapply(all_data, function(x) {
-    if(is.data.frame(x$data)) {
-      write.csv(x$data,
-                file = file.path(p, paste0("data_", x$description$CSR_DATASET, ".csv")),
+  for(dataset_name in list_datasets()) {
+    ds <- csr_dataset(dataset_name)
+
+    # If dataset is under embargo, don't write data
+    if(!is.na(ds$description$CSR_EMBARGO)) {
+      message(ds$description$CSR_DATASET, " has an embargo entry--skipping data")
+      next
+    }
+
+    # For data, we write each dataset separately into a data/ folder
+    db_size <- db_size + object.size(ds$data)
+    message("\tWriting data...")
+    p <- file.path(path, "datasets")
+    dir.create(p, showWarnings = FALSE)
+    if(is.data.frame(ds$data)) {
+      write.csv(ds$data,
+                file = file.path(p, paste0("data_", dataset_name, ".csv")),
                 row.names = FALSE)
     }
-  })
+  } # for ds
 
   # Copy column metadata and README files
   file_descriptions <- c(
-    "cosore_data.RDS" = "Entire database saved as an RDS file (see below)",
     "ancillary.csv" = "Ancillary data (LAI, etc.) table",
     "columns.csv" = "Column mapping data table",
     "contributors.csv" = "Information on data contributors",
@@ -87,7 +84,7 @@ csr_make_release <- function(all_data, path,
     "ports.csv" = "Port-specific information: species, collar areas and depths, treatments",
     "datasets" = "A folder containing the various `data` tables for each dataset",
     "CSR_COLUMNS_UNITS.txt" = "Metadata for all database fields",
-    "Report-all.html" = "A summary report on the various datasets",
+    "Report-all.html" = "A summary report on the entire database",
     "cosore-data-example.html" = "A vignette showing how to load and work with the database",
     "README.md" = "This file."
   )
@@ -101,12 +98,14 @@ csr_make_release <- function(all_data, path,
     # Substitute in current information
     f_data <- gsub("%VERSION", packageVersion("cosore"), f_data)
     f_data <- gsub("%DATE", Sys.Date(), f_data)
+    git_sha <- system2("git", args = "rev-parse HEAD", stdout = TRUE)
+    git_sha <- substr(git_sha, 1, 8)
     if(!force) {
-      git_sha <- system2("git", args = "rev-parse HEAD", stdout = TRUE)
-      git_sha <- substr(git_sha, 1, 8)
       f_data <- gsub("%GIT_SHA", git_sha, f_data)
+    } else {
+      f_data <- gsub("%GIT_SHA", paste(git_sha, "- BUT GIT DIRECTORY WAS NOT CLEAN ON RELEASE"), f_data)
     }
-    f_data <- gsub("%DATABASE_SIZE", format(object.size(all_data), "Mb"), f_data)
+    f_data <- gsub("%DATABASE_SIZE", format(db_size, "Mb"), f_data)
     f_data <- gsub("%FILELIST", paste(
       paste0("* **", names(file_descriptions), "** -"),
       file_descriptions,
@@ -124,7 +123,7 @@ csr_make_release <- function(all_data, path,
 
   # Run combined_report and copy it there
   if(run_report) {
-    run_combined_report(all_data, output_dir = path)
+    csr_report_database(output_dir = path)
   } else {
     # This normally happens only during testing; create a placeholder file
     file.create(file.path(path, "Report-all.html"))

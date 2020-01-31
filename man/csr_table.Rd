@@ -2,18 +2,20 @@
 % Please edit documentation in R/user.R
 \name{csr_table}
 \alias{csr_table}
-\title{Extract one table (\code{description}, \code{data}, etc.) of all datasets}
+\title{Extract one table (\code{description}, \code{data}, etc.) from datasets}
 \usage{
-csr_table(all, table)
+csr_table(table, datasets = list_datasets(), quiet = FALSE)
 }
 \arguments{
-\item{all}{All data, a list of lists}
-
 \item{table}{Name of table to extract, character}
+
+\item{datasets}{Character vector of dataset names, e.g. from \code{\link{list_datasets}}}
+
+\item{quiet}{Print progress messages and warnings? Logical}
 }
 \value{
 A \code{\link{data.frame}}.
 }
 \description{
-Extract one table (\code{description}, \code{data}, etc.) of all datasets
+Extract one table (\code{description}, \code{data}, etc.) from datasets
 }

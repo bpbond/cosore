@@ -4,12 +4,12 @@
 \alias{csr_standardize_data}
 \title{Write out standardized data and diagnostics tables}
 \usage{
-csr_standardize_data(all_data, path, create_dirs = FALSE)
+csr_standardize_data(dataset, path, create_dirs = FALSE)
 }
 \arguments{
-\item{all_data}{A list of \code{cosore} datasets}
+\item{dataset}{A COSORE dataset, list}
 
-\item{path}{Output path, character}
+\item{path}{Output path (typically \code{inst/extdata/datasets}), character}
 
 \item{create_dirs}{Create subdirectories as needed? Logical}
 }
@@ -19,5 +19,5 @@ Nothing.
 \description{
 This is typically used to write standardized data
 to \code{inst/extdata/datasets}. These data can be removed
-by \code{\link{csr_remove_stan_data}}.
+using \code{\link{csr_remove_stan_data}}.
 }

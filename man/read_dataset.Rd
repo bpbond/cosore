@@ -4,7 +4,8 @@
 \alias{read_dataset}
 \title{Read a complete dataset from either standardized or raw files}
 \usage{
-read_dataset(dataset_name, raw_data, force_raw = FALSE)
+read_dataset(dataset_name, raw_data, force_raw = FALSE, quiet = FALSE,
+  metadata_only = FALSE)
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}
@@ -12,6 +13,10 @@ read_dataset(dataset_name, raw_data, force_raw = FALSE)
 \item{raw_data}{Path to the raw data folder (not in package)}
 
 \item{force_raw}{Ignore existing standardized data and read raw data, logical}
+
+\item{quiet}{Print progress messages and warnings? Logical}
+
+\item{metadata_only}{Quick-read metadata only? Logical}
 }
 \value{
 A list with (at least) elements:

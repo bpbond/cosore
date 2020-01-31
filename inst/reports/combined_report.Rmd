@@ -1,79 +1,105 @@
 ---
 title: "COSORE report"
 date: "`r format(Sys.time(), '%d %B %Y')`"
-params:
-  all_data: NULL
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
-library(dplyr)
 library(tidyr)
 library(ggplot2)
 theme_set(theme_bw())
-library(drake)
+library(lubridate)
+library(tibble)
+library(cosore)
 
-#all_data <- readd("all")
-desc <- csr_table(all_data, "description")
-diag <- csr_table(all_data, "diagnostics")
+desc <- csr_table("description")
+diag <- csr_table("diagnostics")
+
+compute_interval <- function(dsd) {
+  results <- cosore:::compute_interval(dsd)
+  median(round(weighted.mean(results$Interval, results$N, na.rm = TRUE), 0))
+}
+
+compute_years <- function(x) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
+    tibble(CSR_DATASET = x$description$CSR_DATASET,
+           CSR_RECORDS = x$diagnostics$CSR_RECORDS,
+           Start = min(x$data$CSR_TIMESTAMP_BEGIN),
+           End = max(x$data$CSR_TIMESTAMP_BEGIN),
+           `Interval (m)` = as.integer(compute_interval(x$data)),
+           Size  = format(object.size(x), units = "Mb"))
+  } else {
+    tibble(CSR_DATASET = x$description$CSR_DATASET,
+           CSR_RECORDS = 0,
+           Start = NA, End = NA, `Interval (m)` = NA,
+           Size = format(object.size(NULL), units = "Mb"))    
+  }
+}
+
+compute_coverage <- function(x) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
+    tibble(CSR_DATASET = x$description$CSR_DATASET,
+           CSR_IGBP = x$description$CSR_IGBP,
+           Year = year(x$data$CSR_TIMESTAMP_BEGIN), 
+           Month = month(x$data$CSR_TIMESTAMP_BEGIN),
+           Day = day(x$data$CSR_TIMESTAMP_BEGIN))
+  } else {
+    tibble(CSR_DATASET = x$description$CSR_DATASET,
+           CSR_IGBP = x$description$CSR_IGBP,
+           Year = NA, Month = NA, Day = NA)
+  }
+}
+
+compute_flux_dist <- function(x) {
+  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
+    tibble(CSR_DATASET = x$description$CSR_DATASET,
+           CSR_IGBP = x$description$CSR_IGBP,
+           CSR_FLUX = x$data$CSR_FLUX)
+  } else {
+    tibble(CSR_DATASET = x$description$CSR_DATASET,
+           CSR_IGBP = x$description$CSR_IGBP,
+           CSR_FLUX = NA)
+  }
+}
 ```
 
 ## Summary
 
 ```{r gen-table1}
 # Extract min and max date information for each dataset
+datasets <- list_datasets()
 
-# TODO: this duplicates code in dataset_report.Rmd
-compute_interval <- function(dsd) {
-  dsd %>% 
-    mutate(Year = lubridate::year(CSR_TIMESTAMP_BEGIN)) %>% 
-    arrange(CSR_TIMESTAMP_BEGIN, CSR_PORT) %>% 
-    group_by(Year, CSR_PORT) %>% 
-    summarise(First_obs = min(CSR_TIMESTAMP_BEGIN),
-              Last_obs = max(CSR_TIMESTAMP_BEGIN),
-              N = length(CSR_TIMESTAMP_BEGIN),
-              `Interval (m)` = median(as.numeric(difftime(CSR_TIMESTAMP_BEGIN, 
-                                                          lag(CSR_TIMESTAMP_BEGIN), 
-                                                          units = "mins")), na.rm = TRUE),
-              `Interval (m)` = round(`Interval (m)`, 0)) %>% 
-    summarise(First_obs = min(First_obs),
-              Last_obs = max(Last_obs),
-              `Interval (m)` = round(weighted.mean(`Interval (m)`, N, na.rm = TRUE), 0),
-              N = sum(N)) %>% 
-    pull(`Interval (m)`)
-}
-
-years <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    data.frame(Start = min(x$data$CSR_TIMESTAMP_BEGIN),
-               End = max(x$data$CSR_TIMESTAMP_BEGIN),
-               `Interval (m)` = as.integer(median(compute_interval(x$data), na.rm = TRUE)),
-               Size  = format(object.size(x), units = "Mb"),
-               stringsAsFactors = FALSE)
-  } else {
-    data.frame(Start = NA, End = NA, `Interval (m)` = NA,
-               Size = format(object.size(NULL), units = "Mb"), 
-               stringsAsFactors = FALSE)    
+years <- list()
+coverage <- list()
+flux_dist <- list()
+db_size <- 0
+records <- 0
+for(dsn in datasets) {
+  x <- csr_dataset(dsn, quiet = TRUE)
+  years[[dsn]] <- compute_years(x)
+  coverage[[dsn]] <- compute_coverage(x)
+  flux_dist[[dsn]] <- compute_flux_dist(x)
+  db_size <- db_size + object.size(x)
+  if(is.data.frame(x$data)) {
+    records <- records + nrow(x$data)
   }
 }
-)
-years <- do.call("rbind", c(years, make.row.names = FALSE))
+
+years <- cosore:::rbind_list(years)
 years$Start <- format(years$Start, format = "%Y-%m")
 years$End <- format(years$End, format = "%Y-%m")
-
-x <- cbind(diag[c("CSR_DATASET", "CSR_RECORDS")], years)
 ```
 
-Datasets: `r length(all_data)`
+Datasets: `r length(list_datasets())`
 
-Total records: `r format(sum(x$CSR_RECORDS), big.mark = ",")`
+Total records: `r format(records, big.mark = ",")`
 
-Total size: `r format(object.size(all_data), "Mb")`
+Total size: `r format(db_size, "Mb")`
 
 ```{r table1}
-knitr::kable(x, format = "html", format.args = list(big.mark = ',')) %>% 
-  kableExtra::kable_styling(full_width = FALSE)
+x <- knitr::kable(years, format = "html", format.args = list(big.mark = ',')) 
+kableExtra::kable_styling(x, full_width = FALSE)
 ```
 
 ## Spatial coverage
@@ -84,38 +110,18 @@ library(leaflet)
 df <- data.frame(lon = desc$CSR_LONGITUDE, lat = desc$CSR_LATITUDE)
 df <- subset(df, !is.na(lon) & !is.na(lat))
 coordinates(df) <- ~lon + lat
-leaflet(df) %>% 
-  addMarkers() %>% 
-  addTiles#(options = providerTileOptions(minZoom = 1, maxZoom = 2))
+lflt <- addMarkers(leaflet(df))
+addTiles(lflt)
 ```
 
 ## Temporal coverage
 
 ```{r temporal}
-library(lubridate)
-coverage <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               CSR_IGBP = x$description$CSR_IGBP,
-               Year = year(x$data$CSR_TIMESTAMP_BEGIN), 
-               Month = month(x$data$CSR_TIMESTAMP_BEGIN),
-               Day = day(x$data$CSR_TIMESTAMP_BEGIN),
-               stringsAsFactors = FALSE)
-  } else {
-    data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               CSR_IGBP = x$description$CSR_IGBP,
-               Year = NA, Month = NA, Day = NA,
-               stringsAsFactors = FALSE)
-  }
-} )
-
-bind_rows(coverage) %>% 
-  distinct(CSR_DATASET, CSR_IGBP, Year, Month, Day) %>% 
-  group_by(CSR_DATASET, CSR_IGBP, Year, Month) %>% 
-  summarise(N = n()) %>% 
-  ungroup %>% 
-  mutate(Time = lubridate::ymd(paste(Year, Month, "1"))) %>% 
-  ggplot(aes(Time, CSR_DATASET, fill = N)) + geom_tile(na.rm = TRUE) +
+coverage <- cosore:::rbind_list(coverage)
+cover_day <- unique(coverage) # this is super slow compared to dplyr::distinct!
+dpm <- aggregate(Day ~ CSR_DATASET + CSR_IGBP + Year + Month, data = cover_day, length)
+dpm$Time <- lubridate::ymd(paste(dpm$Year, dpm$Month, "1"))
+ggplot(dpm, aes(Time, CSR_DATASET, fill = Day)) + geom_tile(na.rm = TRUE) +
   scale_fill_continuous("Days per month",
                         high = "#132B43", low = "#56B1F7")
 ```
@@ -123,13 +129,9 @@ bind_rows(coverage) %>%
 ### IGBP coverage
 
 ```{r, temporal-igbp}
-bind_rows(coverage) %>% 
-  distinct(CSR_DATASET, CSR_IGBP, Year, Month, Day) %>% 
-  group_by(CSR_IGBP, Year, Month) %>% 
-  summarise(N = n()) %>% 
-  ungroup %>% 
-  mutate(Time = lubridate::ymd(paste(Year, Month, "1"))) %>% 
-  ggplot(aes(Time, CSR_IGBP, fill = N)) + geom_tile(na.rm = TRUE) +
+dpm_igbp <- aggregate(Day ~ CSR_IGBP + Year + Month, data = cover_day, length)
+dpm_igbp$Time <- lubridate::ymd(paste(dpm_igbp$Year, dpm_igbp$Month, "1"))
+ggplot(dpm_igbp, aes(Time, CSR_IGBP, fill = Day)) + geom_tile(na.rm = TRUE) +
   scale_fill_continuous("Days per month",
                         high = "#132B43", low = "#56B1F7")
 ```
@@ -137,35 +139,20 @@ bind_rows(coverage) %>%
 ### Flux distribution
 
 ```{r igbp}
-coverage <- lapply(all_data, function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               CSR_IGBP = x$description$CSR_IGBP,
-               CSR_FLUX = x$data$CSR_FLUX,
-               stringsAsFactors = FALSE)
-  } else {
-    data.frame(CSR_DATASET = x$description$CSR_DATASET,
-               CSR_IGBP = x$description$CSR_IGBP,
-               CSR_FLUX = NA,
-               stringsAsFactors = FALSE)
-  }
-})
-
-bind_rows(coverage) %>% 
-  filter(CSR_FLUX > -1 & CSR_FLUX < 20) %>% 
-  ggplot(aes(x = CSR_FLUX)) + geom_histogram(bins = 30) +
+x <- cosore:::rbind_list(flux_dist)
+x <- x[x$CSR_FLUX > -1 & x$CSR_FLUX < 20,]
+ggplot(x, aes(x = CSR_FLUX)) + geom_histogram(bins = 30) +
   facet_wrap(~CSR_IGBP) 
-
 ```
 
 ### Database growth
 
 ```{r database-growth}
-system.file(file.path("extdata/database_growth.csv"),
-            package = "cosore", mustWork = TRUE) %>% 
-  readr::read_csv(col_types = "Ddddd") %>% 
-  tidyr::gather(Variable, Value, Records, Size_Mb, Datasets) %>% 
-  ggplot(aes(Date, Value, label = Version)) + 
+x <- system.file(file.path("extdata", "database_growth.csv"), 
+                 package = "cosore", mustWork = TRUE)
+growth <- read.csv(x, colClasses = c("Date", rep("numeric", 4)))
+growth <- tidyr::gather(growth, Variable, Value, Records, Size_Mb, Datasets)
+ggplot(growth, aes(Date, Value, label = Version)) + 
   geom_line() + geom_label() + 
   facet_wrap(~Variable, scales = "free")
 ```

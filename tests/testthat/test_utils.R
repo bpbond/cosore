@@ -73,23 +73,22 @@ test_that("csr_standardize_data", {
   ds1 <- list(description = tibble(CSR_DATASET = "ds1"),
               diagnostics = tibble(),
               data = data1)
-  all_data <- list(ds1 = ds1)
   td <- tempdir()
 
   # Error - data subdirectory doesn't exist
-  expect_error(csr_standardize_data(all_data, td, create_dirs = FALSE),
+  expect_error(csr_standardize_data(ds1, td, create_dirs = FALSE),
                regexp = "does not exist")
 
-  csr_standardize_data(all_data, td, create_dirs = TRUE)
+  expect_null(csr_standardize_data(ds1, td, create_dirs = TRUE))
   td_dataset <- file.path(td, "ds1", "data")
 
   # Subdirectory was created
   expect_true(dir.exists(td_dataset))
   # Files exist
-  expect_true(file.exists(file.path(td_dataset, "diag_ds1.RDS")))
-  expect_true(file.exists(file.path(td_dataset, "data_ds1.RDS")))
-  written_data <- readRDS(file.path(td_dataset, "data_ds1.RDS"))
-  expect_identical(all_data$ds1$data, written_data)
+  expect_true(file.exists(file.path(td_dataset, "diag.RDS")))
+  expect_true(file.exists(file.path(td_dataset, "data.RDS")))
+  written_data <- readRDS(file.path(td_dataset, "data.RDS"))
+  expect_identical(ds1$data, written_data)
 
   # Removing standardized files works
   csr_remove_stan_data(td, datasets = "ds1")
@@ -97,9 +96,8 @@ test_that("csr_standardize_data", {
 
   # Handles no-data dataset: should create directory but write no files
   ds2 <- list(description = tibble(CSR_DATASET = "ds2"))
-  all_data <- list(ds2 = ds2)
 
-  csr_standardize_data(all_data, td, create_dirs = TRUE)
+  csr_standardize_data(ds2, td, create_dirs = TRUE)
   td_dataset <- file.path(td, "ds2", "data")
   expect_true(dir.exists(td_dataset))
   expect_identical(length(list.files(td_dataset)), 0L)
@@ -124,4 +122,32 @@ test_that("convert_and_qc_timestamp", {
   out <- convert_and_qc_timestamp(ts, "not-a-valid-format-string", "UTC")
   expect_true(all(is.na(out$new_ts)))
   expect_true(all(out$na_ts))
+})
+
+
+test_that("compute_interval", {
+  # Bad input
+  expect_error(compute_interval(1))
+
+  x <- tibble(CSR_TIMESTAMP_BEGIN = seq(ISOdate(2000, 1, 1), by = "day", length.out = 12),
+              CSR_PORT = 0)
+  y <- compute_interval(x)
+  expect_s3_class(y, "data.frame")
+  expect_identical(y$Interval, 60 * 24)  # minutes in a day
+  expect_identical(y$N, nrow(x))
+
+  # Sorting shouldn't matter
+  xrev <- x[order(x$CSR_TIMESTAMP_BEGIN, decreasing = TRUE),]
+  expect_identical(compute_interval(x), compute_interval(xrev))
+})
+
+test_that("csr_build", {
+  # handles bad input
+  expect_error(csr_build(dataset_names = 1))
+  expect_error(csr_build(force_raw = 1))
+  expect_error(csr_build(write_standardized = 1))
+  expect_error(csr_build(standardized_path = 1))
+  expect_error(csr_build(quiet = 1))
+
+  # not sure how to test this effectively at the moment
 })

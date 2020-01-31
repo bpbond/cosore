@@ -11,4 +11,4 @@
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,				CSR_ROLE
 Mariah,			Carbone,			Mariah.carbone@nau.edu,		0000-0002-7832-7009,	"Investigation, Data curation"
-Susan,			Trumbore, 			trumbore@bgc-jena.mpg.de,	0000-0003-3885-6202, 	"Funding acquisition"
+Susan,			Trumbore, 			trumbore@bgc-jena.mpg.de,	0000-0003-3885-6202, 	"Funding acquisition, Investigation"

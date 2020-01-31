@@ -123,7 +123,7 @@ insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/ex
 #'
 #' @param x List of data frames
 #' @return A single \code{data.frame} with all data together
-#' @keywords internal
+#' @export
 rbind_list <- function(x) {
   stopifnot(is.list(x))
 
@@ -148,46 +148,44 @@ rbind_list <- function(x) {
 #'
 #' This is typically used to write standardized data
 #' to \code{inst/extdata/datasets}. These data can be removed
-#' by \code{\link{csr_remove_stan_data}}.
+#' using \code{\link{csr_remove_stan_data}}.
 #'
-#' @param all_data A list of \code{cosore} datasets
-#' @param path Output path, character
+#' @param dataset A COSORE dataset, list
+#' @param path Output path (typically \code{inst/extdata/datasets}), character
 #' @param create_dirs Create subdirectories as needed? Logical
 #' @return Nothing.
 #' @export
-csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
+csr_standardize_data <- function(dataset, path, create_dirs = FALSE) {
 
-  stopifnot(is.list(all_data))
+  stopifnot(is.list(dataset))
   stopifnot(is.character(path))
   stopifnot(is.logical(create_dirs))
 
-  message("Writing data and diagnostic tables...")
-  p <- file.path(path, "datasets")
-  lapply(all_data, function(x) {
-    dataset_name <- x$description$CSR_DATASET
-    message(dataset_name)
-    outpath <- file.path(path, dataset_name, "data")
-    if(!dir.exists(outpath)) {
-      if(create_dirs) {
-        message("Creating ", outpath)
-        dir.create(outpath, recursive = TRUE)
-      } else {
-        stop(outpath, " does not exist")
-      }
-    }
+  dataset_name <- dataset$description$CSR_DATASET
+  message("Writing data and diagnostic tables for ", dataset_name, "...")
 
-    datafiles <- character(0)
-    if(is.data.frame(x$data)) {
-      # Write respiration data
-      # csv (big, version control friendly) or RDS (small, fast, preserves types)?
-      # Going with the latter for now
-      outfile <- file.path(outpath, paste0("data_", dataset_name, ".RDS"))
-      saveRDS(x$data, file = outfile)
-      # Write diagnostics data
-      diagfile <- file.path(outpath, paste0("diag_", dataset_name, ".RDS"))
-      saveRDS(x$diagnostics, file = diagfile)
+  outpath <- file.path(path, dataset_name, "data")
+  if(!dir.exists(outpath)) {
+    if(create_dirs) {
+      message("Creating ", outpath)
+      dir.create(outpath, recursive = TRUE)
+    } else {
+      stop(outpath, " does not exist")
     }
-  })
+  }
+
+  datafiles <- character(0)
+  if(is.data.frame(dataset$data)) {
+    # Write respiration data
+    # csv (big, version control friendly) or RDS (small, fast, preserves types)?
+    # Going with the latter for now
+    outfile <- file.path(outpath, "data.RDS")
+    saveRDS(dataset$data, file = outfile)
+    # Write diagnostics data
+    diagfile <- file.path(outpath, "diag.RDS")
+    saveRDS(dataset$diagnostics, file = diagfile)
+  }
+
   invisible(NULL)
 }
 
@@ -239,3 +237,72 @@ convert_and_qc_timestamp <- function(ts, timestamp_format, time_zone) {
   list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
 }
 
+#' Compute measurement interval for a dataset
+#'
+#' @param dsd Dataset data (a data frame)
+#' @return Median interval between timestamps.
+#' @importFrom stats median
+#' @note This is used by the reports.
+compute_interval <- function(dsd) {
+  stopifnot(is.data.frame(dsd))
+
+  dsd <- dsd[with(dsd, order(CSR_TIMESTAMP_BEGIN, CSR_PORT)),]
+  dsd$Year <- lubridate::year(dsd$CSR_TIMESTAMP_BEGIN)
+  mylag <- function(x) c(as.POSIXct(NA), head(x, -1))  # like dplyr::lag()
+
+  results <- list()
+  for(y in unique(dsd$Year)) {
+    for(p in unique(dsd$CSR_PORT)) {
+      d <- dsd[dsd$Year == y & dsd$CSR_PORT == p,]
+
+      results[[paste(y, p)]] <-
+        tibble(Year = y,
+               Port = p,
+               N = nrow(d),
+               Interval = median(as.numeric(difftime(d$CSR_TIMESTAMP_BEGIN,
+                                                     mylag(d$CSR_TIMESTAMP_BEGIN),
+                                                     units = "mins")), na.rm = TRUE))
+    }
+  }
+
+  cosore::rbind_list(results)
+}
+
+
+#' Build the COSORE database
+#'
+#' @param raw_data The raw data folder to use, character path
+#' @param dataset_names The raw data folder to use, character path
+#' @param force_raw Always read raw (as opposed to standardized) data? Logical
+#' @param write_standardized Write standardized data after parsing? Logical
+#' @param standardized_path Output path (typically \code{inst/extdata/datasets})
+#' for standardized data, character
+#' @param quiet Print progress messages and warnings? Logical
+#' @return All the built data, invisibly.
+#' @export
+csr_build <- function(raw_data,
+                      dataset_names = list_datasets(),
+                      force_raw = FALSE,
+                      write_standardized = FALSE,
+                      standardized_path = "./inst/extdata/datasets",
+                      quiet = FALSE) {
+
+  stopifnot(is.character(dataset_names))
+  stopifnot(is.logical(force_raw))
+  stopifnot(is.logical(write_standardized))
+  stopifnot(is.character(standardized_path))
+  stopifnot(is.logical(quiet))
+
+  if(length(dataset_names)) {
+
+    for(ds in seq_along(dataset_names)) {
+      dsn <- dataset_names[ds]
+      if(!quiet) message(ds, "/", length(dataset_names), " ", dsn)
+      x <- read_dataset(dsn, raw_data, force_raw = force_raw, quiet = quiet)
+
+      if(write_standardized) {
+        csr_standardize_data(x, path = standardized_path, create_dirs = TRUE)
+      }
+    }
+  }
+}
