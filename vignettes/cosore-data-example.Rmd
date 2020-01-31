@@ -194,7 +194,8 @@ ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) +
 The original question we were interested in was how respiration varies over the course of the day. Say we're also interested in site latitude as a possible covariate, requiring us to join together two of the tables we've extracted.
 
 ```{r dbf-day}
-site_info <- tdf[c("CSR_DATASET", "CSR_SITE_NAME", "CSR_LATITUDE")]
+if(!travis) {
+  site_info <- tdf[c("CSR_DATASET", "CSR_SITE_NAME", "CSR_LATITUDE")]
 # join two tables together
 tdf_combined <- merge(tdf_dat, site_info, by = "CSR_DATASET")
 # add some new fields
@@ -209,6 +210,7 @@ tdf_smry <- aggregate(CSR_FLUX ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hou
 ggplot(tdf_smry, aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
   geom_point(size = 0.5) + facet_wrap(~Month) +
   ggtitle("Flux by hour of day and month of year")
+}
 ```
 
 (Note that for simplicity, we're assuming above that data timestamps are in _local_ time, but that might not be true, e.g. if an instrument is set to UTC; see the `description` table.)
