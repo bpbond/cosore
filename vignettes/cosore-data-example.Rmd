@@ -171,7 +171,7 @@ There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 
 ```{r, include=FALSE}
 tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
-if(!is.data.frame(tdf_dat)) {
+if(travis) {
   tdf <- data.frame(CSR_TIMESTAMP_BEGIN = ymd_hm("2020-01-31 7:01"), 
                     CSR_FLUX = 1, CSR_DATASET = "d20190415_VARNER")
 } else {
