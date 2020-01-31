@@ -84,7 +84,7 @@ instrument used, and citation and acknowledgment information.
 
 ```{r, include=FALSE}
 # We need to do this for now because no data available when on Travis
-if(!is.null(varner$data)) {
+if(is.null(varner$data)) {
   sr <- data.frame(CSR_TIMESTAMP_BEGIN = 1, CSR_FLUX = 1, CSR_PORT = 1, CSR_T5 = 1)
 } else {
   sr <- varner$data
@@ -139,7 +139,7 @@ Time for something more ambitious: let's examine how soil respiration varies ove
 ```{r, include=FALSE}
 dbf_datasets <- subset(db_info, CSR_IGBP == "Deciduous broadleaf forest")$CSR_DATASET
 tdf <- csr_table("description", dbf_datasets)
-if(is.data.frame(tdf)) {
+if(!is.data.frame(tdf)) {
   tdf <- data.frame(CSR_TIMESTAMP_BEGIN = ymd_hm("2020-01-31 7:01"), 
                     CSR_FLUX = 1, CSR_DATASET = "d20190415_VARNER",
                      CSR_SITE_NAME = 1, CSR_LONGITUDE = 1, CSR_LATITUDE = 1)
