@@ -170,17 +170,17 @@ leaflet(map) %>%
 There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 
 ```{r, include=FALSE}
-tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
 if(travis) {
   tdf <- data.frame(CSR_TIMESTAMP_BEGIN = ymd_hm("2020-01-31 7:01"), 
                     CSR_FLUX = 1, CSR_DATASET = "d20190415_VARNER")
 } else {
   tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
-}
-ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
+
+  ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
   geom_point(size = 0.5) + 
   coord_cartesian(ylim = c(0, 20)) +
   ggtitle("Flux over time, colored by dataset")
+}
 ```
 
 ```{r dbf-data, eval=FALSE}
