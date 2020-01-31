@@ -123,7 +123,7 @@ insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/ex
 #'
 #' @param x List of data frames
 #' @return A single \code{data.frame} with all data together
-#' @keywords internal
+#' @export
 rbind_list <- function(x) {
   stopifnot(is.list(x))
 
@@ -257,6 +257,7 @@ combine_data <- function(datasets, ...) {
 #'
 #' @param dsd Dataset data (a data frame)
 #' @return Median interval between timestamps.
+#' @importFrom stats median
 #' @note This is used by the reports.
 compute_interval <- function(dsd) {
   stopifnot(is.data.frame(dsd))
@@ -275,11 +276,11 @@ compute_interval <- function(dsd) {
                Port = p,
                N = nrow(d),
                Interval = median(as.numeric(difftime(d$CSR_TIMESTAMP_BEGIN,
-                                                     mylag(d$CSR_TIMESTAMP_BEGIN),
-                                                     units = "mins")), na.rm = TRUE))
+                                                            mylag(d$CSR_TIMESTAMP_BEGIN),
+                                                            units = "mins")), na.rm = TRUE))
     }
   }
 
-  cosore:::rbind_list(results)
+  cosore::rbind_list(results)
 }
 

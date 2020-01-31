@@ -48,5 +48,5 @@ csr_reports_all <- function() {
     csr_report_dataset(csr_dataset(dataset_name))
   }
 
-    csr_report_database(all_data)
+    csr_report_database()
 }

@@ -15,4 +15,3 @@ A single \code{data.frame} with all data together
 \description{
 Bind a list of data frames (with possibly non-identical column names) together.
 }
-\keyword{internal}
