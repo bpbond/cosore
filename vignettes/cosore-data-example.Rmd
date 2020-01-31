@@ -17,18 +17,22 @@ vignette: >
   )
   ```
   
-  # Introduction
+```{r, include=FALSE}
+  travis <- Sys.getenv("TRAVIS") == "true"
+```
   
-  Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
+# Introduction
   
-  The database is distributed as an R package. Use the `devtools` package
-  to install COSORE: `devtools::install_github()`.
+Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
   
-  (For non-R users, the database is also distrubuted as a zip file of comma-separated files for non-R users, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files, including a version of this vignette.)
+The database is distributed as an R package. Use the `devtools` package
+to install COSORE: `devtools::install_github()`.
   
-  But how do we work with this database, exactly? Let's start by loading it into R:
+(For non-R users, the database is also distrubuted as a zip file of comma-separated files for non-R users, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files, including a version of this vignette.)
   
-  ```{r}
+But how do we work with this database, exactly? Let's start by loading it into R:
+  
+```{r}
   library(cosore)
 ```
 
@@ -84,7 +88,7 @@ instrument used, and citation and acknowledgment information.
 
 ```{r, include=FALSE}
 # We need to do this for now because no data available when on Travis
-if(is.null(varner$data)) {
+if(travis) {
   sr <- data.frame(CSR_TIMESTAMP_BEGIN = 1, CSR_FLUX = 1, CSR_PORT = 1, CSR_T5 = 1)
 } else {
   sr <- varner$data
@@ -138,10 +142,11 @@ Time for something more ambitious: let's examine how soil respiration varies ove
 
 ```{r, include=FALSE}
 dbf_datasets <- subset(db_info, CSR_IGBP == "Deciduous broadleaf forest")$CSR_DATASET
-tdf <- csr_table("description", dbf_datasets)
-if(!is.data.frame(tdf)) {
+if(travis) {
   tdf <- data.frame(CSR_DATASET = "d20190415_VARNER",
-                     CSR_SITE_NAME = 1, CSR_LONGITUDE = 1, CSR_LATITUDE = 1)
+                    CSR_SITE_NAME = 1, CSR_LONGITUDE = 1, CSR_LATITUDE = 1)
+} else {
+  tdf <- csr_table("description", dbf_datasets)
 }
 ```
 
@@ -169,11 +174,13 @@ tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
 if(!is.data.frame(tdf_dat)) {
   tdf <- data.frame(CSR_TIMESTAMP_BEGIN = ymd_hm("2020-01-31 7:01"), 
                     CSR_FLUX = 1, CSR_DATASET = "d20190415_VARNER")
+} else {
+  tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
+}
 ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
   geom_point(size = 0.5) + 
   coord_cartesian(ylim = c(0, 20)) +
   ggtitle("Flux over time, colored by dataset")
-}
 ```
 
 ```{r dbf-data, eval=FALSE}
