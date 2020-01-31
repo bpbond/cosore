@@ -140,8 +140,7 @@ Time for something more ambitious: let's examine how soil respiration varies ove
 dbf_datasets <- subset(db_info, CSR_IGBP == "Deciduous broadleaf forest")$CSR_DATASET
 tdf <- csr_table("description", dbf_datasets)
 if(!is.data.frame(tdf)) {
-  tdf <- data.frame(CSR_TIMESTAMP_BEGIN = ymd_hm("2020-01-31 7:01"), 
-                    CSR_FLUX = 1, CSR_DATASET = "d20190415_VARNER",
+  tdf <- data.frame(CSR_DATASET = "d20190415_VARNER",
                      CSR_SITE_NAME = 1, CSR_LONGITUDE = 1, CSR_LATITUDE = 1)
 }
 ```
@@ -165,7 +164,19 @@ leaflet(map) %>%
 
 There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 
-```{r dbf-data}
+```{r, include=FALSE}
+tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
+if(!is.data.frame(tdf_dat)) {
+  tdf <- data.frame(CSR_TIMESTAMP_BEGIN = ymd_hm("2020-01-31 7:01"), 
+                    CSR_FLUX = 1, CSR_DATASET = "d20190415_VARNER")
+ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
+  geom_point(size = 0.5) + 
+  coord_cartesian(ylim = c(0, 20)) +
+  ggtitle("Flux over time, colored by dataset")
+}
+```
+
+```{r dbf-data, eval=FALSE}
 tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
 ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
   geom_point(size = 0.5) + 
