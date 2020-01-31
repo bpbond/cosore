@@ -477,7 +477,7 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
     # with no data (the `data` or `diagnostics` list members).
 
     data_dir <- file.path(resolve_dataset(dataset_name), "data")
-    datafile <- file.path(data_dir, paste0("data_", dataset_name, ".RDS"))
+    datafile <- file.path(data_dir, "data.RDS")
 
     if(force_raw | !file.exists(datafile)) {  # raw
       if(missing(raw_data)) {
@@ -494,7 +494,7 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
       # Read data
       dataset$data <- readRDS(datafile)
       # Read diagnostics info
-      diagfile <- file.path(data_dir, paste0("diag_", dataset_name, ".RDS"))
+      diagfile <- file.path(data_dir, "diag.RDS")
       dataset$diagnostics <- readRDS(diagfile)
     }
   }

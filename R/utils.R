@@ -174,17 +174,17 @@ csr_standardize_data <- function(dataset, path, create_dirs = FALSE) {
     }
   }
 
-    datafiles <- character(0)
-    if(is.data.frame(dataset$data)) {
-      # Write respiration data
-      # csv (big, version control friendly) or RDS (small, fast, preserves types)?
-      # Going with the latter for now
-      outfile <- file.path(outpath, paste0("data_", dataset_name, ".RDS"))
-      saveRDS(dataset$data, file = outfile)
-      # Write diagnostics data
-      diagfile <- file.path(outpath, paste0("diag_", dataset_name, ".RDS"))
-      saveRDS(dataset$diagnostics, file = diagfile)
-    }
+  datafiles <- character(0)
+  if(is.data.frame(dataset$data)) {
+    # Write respiration data
+    # csv (big, version control friendly) or RDS (small, fast, preserves types)?
+    # Going with the latter for now
+    outfile <- file.path(outpath, "data.RDS")
+    saveRDS(dataset$data, file = outfile)
+    # Write diagnostics data
+    diagfile <- file.path(outpath, "diag.RDS")
+    saveRDS(dataset$diagnostics, file = diagfile)
+  }
 
   invisible(NULL)
 }
@@ -260,8 +260,8 @@ compute_interval <- function(dsd) {
                Port = p,
                N = nrow(d),
                Interval = median(as.numeric(difftime(d$CSR_TIMESTAMP_BEGIN,
-                                                            mylag(d$CSR_TIMESTAMP_BEGIN),
-                                                            units = "mins")), na.rm = TRUE))
+                                                     mylag(d$CSR_TIMESTAMP_BEGIN),
+                                                     units = "mins")), na.rm = TRUE))
     }
   }
 
@@ -306,4 +306,3 @@ csr_build <- function(raw_data,
     }
   }
 }
-
