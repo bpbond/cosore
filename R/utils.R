@@ -148,46 +148,44 @@ rbind_list <- function(x) {
 #'
 #' This is typically used to write standardized data
 #' to \code{inst/extdata/datasets}. These data can be removed
-#' by \code{\link{csr_remove_stan_data}}.
+#' using \code{\link{csr_remove_stan_data}}.
 #'
-#' @param all_data A list of \code{cosore} datasets
-#' @param path Output path, character
+#' @param dataset A COSORE dataset, list
+#' @param path Output path (typically \code{inst/extdata/datasets}), character
 #' @param create_dirs Create subdirectories as needed? Logical
 #' @return Nothing.
 #' @export
-csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
+csr_standardize_data <- function(dataset, path, create_dirs = FALSE) {
 
-  stopifnot(is.list(all_data))
+  stopifnot(is.list(dataset))
   stopifnot(is.character(path))
   stopifnot(is.logical(create_dirs))
 
-  message("Writing data and diagnostic tables...")
-  p <- file.path(path, "datasets")
-  lapply(all_data, function(x) {
-    dataset_name <- x$description$CSR_DATASET
-    message(dataset_name)
-    outpath <- file.path(path, dataset_name, "data")
-    if(!dir.exists(outpath)) {
-      if(create_dirs) {
-        message("Creating ", outpath)
-        dir.create(outpath, recursive = TRUE)
-      } else {
-        stop(outpath, " does not exist")
-      }
+  dataset_name <- dataset$description$CSR_DATASET
+  message("Writing data and diagnostic tables for ", dataset_name, "...")
+
+  outpath <- file.path(path, dataset_name, "data")
+  if(!dir.exists(outpath)) {
+    if(create_dirs) {
+      message("Creating ", outpath)
+      dir.create(outpath, recursive = TRUE)
+    } else {
+      stop(outpath, " does not exist")
     }
+  }
 
     datafiles <- character(0)
-    if(is.data.frame(x$data)) {
+    if(is.data.frame(dataset$data)) {
       # Write respiration data
       # csv (big, version control friendly) or RDS (small, fast, preserves types)?
       # Going with the latter for now
       outfile <- file.path(outpath, paste0("data_", dataset_name, ".RDS"))
-      saveRDS(x$data, file = outfile)
+      saveRDS(dataset$data, file = outfile)
       # Write diagnostics data
       diagfile <- file.path(outpath, paste0("diag_", dataset_name, ".RDS"))
-      saveRDS(x$diagnostics, file = diagfile)
+      saveRDS(dataset$diagnostics, file = diagfile)
     }
-  })
+
   invisible(NULL)
 }
 
