@@ -237,20 +237,6 @@ convert_and_qc_timestamp <- function(ts, timestamp_format, time_zone) {
   list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
 }
 
-#' Combine all datasets into a single list
-#'
-#' @param datasets Character vector of dataset names
-#' @param ... Dataset objects
-#' @return A single list with all datasets
-#' @importFrom drake drake_plan
-#' @keywords internal
-combine_data <- function(datasets, ...) {
-  x <-  list(...)
-  names(x) <- datasets
-  x
-}
-
-
 #' Compute measurement interval for a dataset
 #'
 #' @param dsd Dataset data (a data frame)
@@ -280,5 +266,42 @@ compute_interval <- function(dsd) {
   }
 
   cosore::rbind_list(results)
+}
+
+
+#' Build the COSORE database
+#'
+#' @param raw_data The raw data folder to use, character path
+#' @param dataset_names The raw data folder to use, character path
+#' @param force_raw Always read raw (as opposed to standardized) data? Logical
+#' @param write_standardized Write standardized data after parsing? Logical
+#' @param standardized_path Output path (typically \code{inst/extdata/datasets})
+#' for standardized data, character
+#' @param quiet Print progress messages and warnings? Logical
+#' @return All the built data, invisibly.
+#' @export
+csr_build <- function(raw_data,
+                      dataset_names = list_datasets(),
+                      force_raw = FALSE,
+                      write_standardized = FALSE,
+                      standardized_path = "./inst/extdata/datasets",
+                      quiet = FALSE) {
+
+  stopifnot(is.character(dataset_names))
+  stopifnot(is.logical(force_raw))
+  stopifnot(is.logical(write_standardized))
+  stopifnot(is.character(standardized_path))
+  stopifnot(is.logical(quiet))
+
+  if(length(dataset_names)) {
+
+    for(dsn in dataset_names) {
+      x <- read_dataset(dsn, raw_data, force_raw = force_raw, quiet = quiet)
+
+      if(write_standardized) {
+        csr_standardize_data(x, path = standardized_path, create_dirs = TRUE)
+      }
+    }
+  }
 }
 
