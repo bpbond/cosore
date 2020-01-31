@@ -10,55 +10,31 @@ vignette: >
   ---
   
   ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-echo = TRUE,
-collapse = TRUE,
-comment = "#>"
-)
-```
-
-# Introduction
-
-Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
-
-The database is distributed as a zip file, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files (including a version of this vignette).
-
-But how do we work with this database, exactly? Let's start by loading it into R:
-
-```r
-cosore <- readRDS("cosore_data.RDS")
-```
-
-```{r, echo=FALSE}
-# For the vignette, we just read from the drake cache, not use readRDS as above
-try(cosore <- drake::readd("all"))
-
-# I don't understand why, but when devtools::check runs this at its
-# 'checking re-building of vignette outputs' step, it will load the
-# cosore data structure but not the `data` elements of each dataset
-# list, throwing an error when things bomb below. Huh?!?
-# Check for this and create a fake database if necessary
-data_loaded <- exists("cosore") && is.data.frame(cosore$d20190415_VARNER$data)
-
-if(!data_loaded) {   # no database available; create a fake one
-  cosore <- list(
-    d20190415_VARNER = list(
-      description = data.frame(CSR_DATASET = "d20190415_VARNER",
-                               CSR_SITE_NAME = "1",
-                               CSR_IGBP = "Deciduous broadleaf forest",
-                               CSR_LONGITUDE = 1,
-                               CSR_LATITUDE = 1),
-      data = data.frame(CSR_TIMESTAMP_BEGIN = lubridate::ymd_hm("2019-06-05 07:12"),
-                        CSR_FLUX = 1,
-                        CSR_PORT = 1,
-                        CSR_T5 = 1))
+  knitr::opts_chunk$set(
+  echo = TRUE,
+  collapse = TRUE,
+  comment = "#>"
   )
-}
+  ```
+  
+  # Introduction
+  
+  Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
+  
+  The database is distributed as an R package. Use the `devtools` package
+  to install COSORE: `devtools::install_github()`.
+  
+  (For non-R users, the database is also distrubuted as a zip file of comma-separated files for non-R users, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files, including a version of this vignette.)
+  
+  But how do we work with this database, exactly? Let's start by loading it into R:
+  
+  ```{r}
+  library(cosore)
 ```
 
-This database is comprised of a collection of _datasets_, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements taken at a single site and with constant treatment assignments.
+The database is comprised of a collection of _datasets_, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements taken at a single site and with constant treatment assignments.
 
-In practice, the `COSORE` database is structured as a two-level nested list of data frames:
+In practice, the `COSORE` database can be thought of as a two-level nested list of data frames:
 
 ```
 cosore
@@ -82,27 +58,13 @@ cosore
 |   |- etc.
 ```
 
-For most analyses we want to extract one or more of these pieces and combine them--for example, to get a single table of contributors. There are [various](https://cran.r-project.org/package=purrr) [packages](https://cran.r-project.org/package=rlist) for dealing with nested lists, but we can also write our own short extractor function:
-
-```{r extractor, echo=TRUE}
-csr_table <- function(cosore, table_name) {
-  
-  extract <- function(x, table_name) {
-    if(is.null(x[[table_name]])) { return(NULL) }
-    # Add an identifier field so we can track things as tables get combined
-    x[[table_name]]$CSR_DATASET <- x$description$CSR_DATASET
-    x[[table_name]]
-  }
-  
-  dplyr::bind_rows(lapply(cosore, extract, table_name = table_name))
-}
-```
+For most analyses we want to extract one or more of these pieces and combine them--for example, to get a single dataset, a table of contributors, or an overview of the entire database. 
 
 With this in place, we extract a combined `description` table for the entire database and take a look at it:
 
 ```{r description-table}
-desc <- csr_table(cosore, "description")
-tibble::glimpse(desc)
+db_info <- csr_database()
+tibble::glimpse(db_info)
 ```
 
 Lots of information; note much of this is summarized in the `Report-all.html` file included with the data download.
@@ -112,7 +74,7 @@ Lots of information; note much of this is summarized in the `Report-all.html` fi
 To begin, we pick a single dataset (`d20190415_VARNER`), get some information about it, and plot it.
 
 ```{r desc-varner}
-varner <- cosore$d20190415_VARNER
+varner <- csr_dataset("d20190415_VARNER")
 tibble::glimpse(varner$description)
 ```
 
@@ -164,12 +126,8 @@ try(cr_cn(dois = doi, format = "text"))
 Time for something more ambitious: let's examine how soil respiration varies over the course of the day in temperate deciduous forests.
 
 ```{r dbf-map}
-# The dplyr package is really good for this kind of filter-and-join thing,
-# but all the steps below can be replicated with base R commands too of course
-library(dplyr, warn.conflicts = FALSE)
-desc %>%   # our combined 'description' table, from above
-  filter(CSR_IGBP == "Deciduous broadleaf forest") ->
-  tdf
+dbf_datasets <- subset(db_info, CSR_IGBP == "Deciduous broadleaf forest")$CSR_DATASET
+tdf <- csr_table("description", dbf_datasets)
 
 # Make a map of these datasets
 library(sp)
@@ -184,10 +142,8 @@ leaflet(map) %>%
 There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 
 ```{r dbf-data}
-cosore_tdf <- cosore[tdf$CSR_DATASET]
-tdf_dat <- csr_table(cosore_tdf, "data")
-tdf_dat %>% 
-  ggplot(aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
+tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
+ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
   geom_point(size = 0.5) + 
   coord_cartesian(ylim = c(0, 20)) +
   ggtitle("Flux over time, colored by dataset")
@@ -196,18 +152,19 @@ tdf_dat %>%
 The original question we were interested in was how respiration varies over the course of the day. Say we're also interested in site latitude as a possible covariate, requiring us to join together two of the tables we've extracted.
 
 ```{r dbf-day}
-tdf_dat %>% 
-  # join two tables together
-  left_join(select(tdf, CSR_DATASET, CSR_SITE_NAME, CSR_LATITUDE), by = "CSR_DATASET") %>% 
-  # add some new fields
-  mutate(Hour = hour(CSR_TIMESTAMP_BEGIN),
-         Month = month(CSR_TIMESTAMP_BEGIN), 
-         Year = year(CSR_TIMESTAMP_BEGIN)) %>% 
-  # for each month, compute mean flux for each hour of the day
-  group_by(CSR_DATASET, CSR_LATITUDE, Year, Month, Hour) %>% 
-  summarise(CSR_FLUX = mean(CSR_FLUX)) %>% 
-  
-  ggplot(aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
+site_info <- tdf[c("CSR_DATASET", "CSR_SITE_NAME", "CSR_LATITUDE")]
+# join two tables together
+tdf_combined <- merge(tdf_dat, site_info, by = "CSR_DATASET")
+# add some new fields
+tdf_combined$Hour <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+tdf_combined$Month <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+tdf_combined$Year <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+
+# for each month, compute mean flux for each hour of the day
+tdf_smry <- aggregate(CSR_FLUX ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hour,
+                      FUN = mean, data = tdf_combined)
+
+ggplot(tdf_smry, aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
   geom_point(size = 0.5) + facet_wrap(~Month) +
   ggtitle("Flux by hour of day and month of year")
 ```
@@ -226,22 +183,15 @@ Two additional tables provide information about the processing of raw data into 
 * `columns`: describes how columns in the original dataset (i.e. as contributed) were mapped to the COSORE standard fields, including any unit changes or transformations.
 * `diagnostics`: metadata about the data ingestion process: rows and columns removed, errors, etc.
 
-These can all be extracted using a method like the `csr_table()` function above.
+These can all be extracted using the `csr_table()` function shown above.
 
-# Using the _database_ versus using the _package_
+# Useful package functions for users
 
-Note that it's not necessary to install the `cosore` package to use the 
-COSORE database. The former is composed of software tools used to parse dataset 
-metadata, read and normalize raw data, and generate the database, while latter is
-a collection of files available for download via the package's
-[Releases](https://github.com/bpbond/cosore/releases) page.
-
-The package does include a few functions that might be handy for users:
-
-* `csr_table()`, the code for which is provided near the top of this vignette.
-* `run_single_report()`, to generate an html report on a single dataset. A  `run_all_reports()` function will generate reports for all datasets.
-* `run_combined_report()` provides a summary report, included in the release
-download, on the entire database.
+* `csr_database()`, demonstrated above, provides a database overview
+* `csr_dataset()`, demonstrated above, loads a single dataset
+* `csr_table()`, demonstrated above, load a single _table_ across multiple datasets
+* `csr_report_database()` generates a HTML summary of the entire database
+* `csr_report_dataset()` generates an HTML summary of a single dataset
 
 # Feedback and contributions
 

@@ -17,7 +17,6 @@ Imports:
     tibble (>= 2.1)
 Suggests: 
     testthat,
-    dplyr,
     lubridate,
     leaflet,
     ggplot2,
