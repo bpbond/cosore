@@ -295,7 +295,9 @@ csr_build <- function(raw_data,
 
   if(length(dataset_names)) {
 
-    for(dsn in dataset_names) {
+    for(ds in seq_along(dataset_names)) {
+      dsn <- dataset_names[ds]
+      if(!quiet) message(ds, "/", length(dataset_names), " ", dsn)
       x <- read_dataset(dsn, raw_data, force_raw = force_raw, quiet = quiet)
 
       if(write_standardized) {

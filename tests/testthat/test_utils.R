@@ -140,3 +140,14 @@ test_that("compute_interval", {
   xrev <- x[order(x$CSR_TIMESTAMP_BEGIN, decreasing = TRUE),]
   expect_identical(compute_interval(x), compute_interval(xrev))
 })
+
+test_that("csr_build", {
+  # handles bad input
+  expect_error(csr_build(dataset_names = 1))
+  expect_error(csr_build(force_raw = 1))
+  expect_error(csr_build(write_standardized = 1))
+  expect_error(csr_build(standardized_path = 1))
+  expect_error(csr_build(quiet = 1))
+
+  # not sure how to test this effectively at the moment
+})
