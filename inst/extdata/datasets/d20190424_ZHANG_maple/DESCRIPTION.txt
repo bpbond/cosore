@@ -23,7 +23,7 @@ CSR_SITE_NAME: Morgan Monroe State Forest
 CSR_LONGITUDE: -86.4131
 CSR_LATITUDE: 39.3232
 CSR_ELEVATION: 275
-CSR_TIMEZONE: America/Indiana/Indianapolis
+CSR_TIMEZONE: Etc/GMT+5
 CSR_IGBP: Deciduous broadleaf forest
 CSR_NETWORK: Ameriflux
 CSR_SITE_ID: US-MMS
@@ -31,8 +31,7 @@ CSR_INSTRUMENT: LI-8100
 CSR_MSMT_LENGTH: 450
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y %j %H
-# Following timestamp is -0500 under both standard and daylight savings
-CSR_TIMESTAMP_TZ: America/Jamaica
+CSR_TIMESTAMP_TZ: Etc/GMT+5
 CSR_PRIMARY_PUB: 10.1016/j.agrformet.2018.05.005
 CSR_OTHER_PUBS:
 CSR_DATA_URL:
