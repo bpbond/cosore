@@ -61,6 +61,7 @@ csr_dataset <- function(dataset_name, quiet = FALSE, metadata_only = FALSE) {
 #' @return A \code{data.frame} with metadata about each constituent dataset. This consists of parts of
 #' the \code{description} file, joined with parts of \code{ports} and \code{diag}.
 #' @export
+#' @importFrom stats aggregate
 csr_database <- function() {
   desc <- csr_table("description")
   desc <- desc[c("CSR_DATASET", "CSR_LONGITUDE", "CSR_LATITUDE", "CSR_ELEVATION", "CSR_IGBP")]

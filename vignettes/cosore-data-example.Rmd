@@ -9,18 +9,14 @@ vignette: >
   %\VignetteEncoding{UTF-8}
   ---
   
-  ```{r setup, include = FALSE}
+```{r setup, include = FALSE}
   knitr::opts_chunk$set(
   echo = TRUE,
   collapse = TRUE,
   comment = "#>"
   )
-  ```
-  
-  ```{r, include=FALSE}
-  travis <- Sys.getenv("TRAVIS") == "true"
 ```
-
+  
 # Introduction
 
 Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
@@ -66,17 +62,7 @@ For most analyses we want to extract one or more of these pieces and combine the
 
 With this in place, we extract a combined `description` table for the entire database and take a look at it:
 
-```{r, include=FALSE}
-if(travis) {
-  db_info <- tibble::tibble(CSR_IGBP = "Deciduous broadleaf forest",
-                            CSR_DATASET = "d20190415_VARNER")  
-} else {
-  db_info <- csr_database()
-}
-tibble::glimpse(db_info)
-```
-
-```{r description-table, eval=FALSE}
+```{r description-table}
 db_info <- csr_database()
 tibble::glimpse(db_info)
 ```
@@ -96,18 +82,7 @@ The `description` table gives the basic information about this dataset:
 where it was measured, the time zone that the `data` timestamps are in, 
 instrument used, and citation and acknowledgment information.
 
-```{r, include=FALSE}
-# We need to do this for now because no data available when on Travis
-if(travis) {
-  sr <- data.frame(CSR_TIMESTAMP_BEGIN = 1, CSR_FLUX = 1, CSR_PORT = 1, CSR_T5 = 1)
-} else {
-  sr <- varner$data
-}
-nrow(sr)
-summary(sr)
-```
-
-```{r sr-varner, eval=FALSE}
+```{r sr-varner}
 sr <- varner$data
 nrow(sr)
 summary(sr)
@@ -150,17 +125,7 @@ try(cr_cn(dois = doi, format = "text"))
 
 Time for something more ambitious: let's examine how soil respiration varies over the course of the day in temperate deciduous forests.
 
-```{r, include=FALSE}
-dbf_datasets <- subset(db_info, CSR_IGBP == "Deciduous broadleaf forest")$CSR_DATASET
-if(travis) {
-  tdf <- data.frame(CSR_DATASET = "d20190415_VARNER",
-                    CSR_SITE_NAME = 1, CSR_LONGITUDE = 1, CSR_LATITUDE = 1)
-} else {
-  tdf <- csr_table("description", dbf_datasets)
-}
-```
-
-```{r, eval=FALSE}
+```{r}
 dbf_datasets <- subset(db_info, CSR_IGBP == "Deciduous broadleaf forest")$CSR_DATASET
 tdf <- csr_table("description", dbf_datasets)
 ```
@@ -179,21 +144,7 @@ leaflet(map) %>%
 
 There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 
-```{r, include=FALSE}
-if(travis) {
-  tdf <- data.frame(CSR_TIMESTAMP_BEGIN = ymd_hm("2020-01-31 7:01"), 
-                    CSR_FLUX = 1, CSR_DATASET = "d20190415_VARNER")
-} else {
-  tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
-  
-  ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
-    geom_point(size = 0.5) + 
-    coord_cartesian(ylim = c(0, 20)) +
-    ggtitle("Flux over time, colored by dataset")
-}
-```
-
-```{r dbf-data, eval=FALSE}
+```{r dbf-data}
 tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
 ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
   geom_point(size = 0.5) + 
@@ -204,23 +155,21 @@ ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) +
 The original question we were interested in was how respiration varies over the course of the day. Say we're also interested in site latitude as a possible covariate, requiring us to join together two of the tables we've extracted.
 
 ```{r dbf-day}
-if(!travis) {
-  site_info <- tdf[c("CSR_DATASET", "CSR_SITE_NAME", "CSR_LATITUDE")]
-  # join two tables together
-  tdf_combined <- merge(tdf_dat, site_info, by = "CSR_DATASET")
-  # add some new fields
-  tdf_combined$Hour <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
-  tdf_combined$Month <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
-  tdf_combined$Year <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
-  
-  # for each month, compute mean flux for each hour of the day
-  tdf_smry <- aggregate(CSR_FLUX ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hour,
-                        FUN = mean, data = tdf_combined)
-  
-  ggplot(tdf_smry, aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
-    geom_point(size = 0.5) + facet_wrap(~Month) +
-    ggtitle("Flux by hour of day and month of year")
-}
+site_info <- tdf[c("CSR_DATASET", "CSR_SITE_NAME", "CSR_LATITUDE")]
+# join two tables together
+tdf_combined <- merge(tdf_dat, site_info, by = "CSR_DATASET")
+# add some new fields
+tdf_combined$Hour <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+tdf_combined$Month <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+tdf_combined$Year <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+
+# for each month, compute mean flux for each hour of the day
+tdf_smry <- aggregate(CSR_FLUX ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hour,
+                      FUN = mean, data = tdf_combined)
+
+ggplot(tdf_smry, aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
+  geom_point(size = 0.5) + facet_wrap(~Month) +
+  ggtitle("Flux by hour of day and month of year")
 ```
 
 (Note that for simplicity, we're assuming above that data timestamps are in _local_ time, but that might not be true, e.g. if an instrument is set to UTC; see the `description` table.)
