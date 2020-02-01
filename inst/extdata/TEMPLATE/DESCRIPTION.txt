@@ -9,7 +9,6 @@
 #	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 #		For US sites, a corresponding Central American timezone is used if 
 #		the instrument does not follow daylight savings 
-#	CSR_BIOME: Standard broad categories (Polar, Boreal, Temperate, Subtropical, Tropical, other)
 # 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
@@ -32,7 +31,6 @@ CSR_LONGITUDE:
 CSR_LATITUDE: 
 CSR_ELEVATION: 
 CSR_TIMEZONE: 
-CSR_BIOME: 
 CSR_IGBP: 
 CSR_NETWORK: 
 CSR_SITE_ID: 
