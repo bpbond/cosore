@@ -17,23 +17,23 @@ vignette: >
   )
   ```
   
-```{r, include=FALSE}
-  travis <- Sys.getenv("TRAVIS") == "true"
+  ```{r, include=FALSE}
+  travis <- Sys.getenv("TRAVIS") != "true"
 ```
-  
+
 # Introduction
-  
+
 Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
-  
+
 The database is distributed as an R package. Use the `devtools` package
 to install COSORE: `devtools::install_github()`.
-  
+
 (For non-R users, the database is also distrubuted as a zip file of comma-separated files for non-R users, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files, including a version of this vignette.)
-  
+
 But how do we work with this database, exactly? Let's start by loading it into R:
-  
+
 ```{r}
-  library(cosore)
+library(cosore)
 ```
 
 The database is comprised of a collection of _datasets_, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements taken at a single site and with constant treatment assignments.
@@ -66,7 +66,17 @@ For most analyses we want to extract one or more of these pieces and combine the
 
 With this in place, we extract a combined `description` table for the entire database and take a look at it:
 
-```{r description-table}
+```{r, include=FALSE}
+if(travis) {
+  db_info <- tibble::tibble(CSR_IGBP = "Deciduous broadleaf forest",
+                            CSR_DATASET = "d20190415_VARNER")  
+} else {
+  db_info <- csr_database()
+}
+tibble::glimpse(db_info)
+```
+
+```{r description-table, eval=FALSE}
 db_info <- csr_database()
 tibble::glimpse(db_info)
 ```
@@ -175,11 +185,11 @@ if(travis) {
                     CSR_FLUX = 1, CSR_DATASET = "d20190415_VARNER")
 } else {
   tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
-
+  
   ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
-  geom_point(size = 0.5) + 
-  coord_cartesian(ylim = c(0, 20)) +
-  ggtitle("Flux over time, colored by dataset")
+    geom_point(size = 0.5) + 
+    coord_cartesian(ylim = c(0, 20)) +
+    ggtitle("Flux over time, colored by dataset")
 }
 ```
 
@@ -196,20 +206,20 @@ The original question we were interested in was how respiration varies over the 
 ```{r dbf-day}
 if(!travis) {
   site_info <- tdf[c("CSR_DATASET", "CSR_SITE_NAME", "CSR_LATITUDE")]
-# join two tables together
-tdf_combined <- merge(tdf_dat, site_info, by = "CSR_DATASET")
-# add some new fields
-tdf_combined$Hour <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
-tdf_combined$Month <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
-tdf_combined$Year <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
-
-# for each month, compute mean flux for each hour of the day
-tdf_smry <- aggregate(CSR_FLUX ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hour,
-                      FUN = mean, data = tdf_combined)
-
-ggplot(tdf_smry, aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
-  geom_point(size = 0.5) + facet_wrap(~Month) +
-  ggtitle("Flux by hour of day and month of year")
+  # join two tables together
+  tdf_combined <- merge(tdf_dat, site_info, by = "CSR_DATASET")
+  # add some new fields
+  tdf_combined$Hour <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+  tdf_combined$Month <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+  tdf_combined$Year <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+  
+  # for each month, compute mean flux for each hour of the day
+  tdf_smry <- aggregate(CSR_FLUX ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hour,
+                        FUN = mean, data = tdf_combined)
+  
+  ggplot(tdf_smry, aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
+    geom_point(size = 0.5) + facet_wrap(~Month) +
+    ggtitle("Flux by hour of day and month of year")
 }
 ```
 
