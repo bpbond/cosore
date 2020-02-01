@@ -14,10 +14,10 @@ Description: Software tools to build COSORE, an open-science
 Imports:
     rmarkdown,
     knitr,
+    lubridate,
     tibble (>= 2.1)
 Suggests: 
     testthat,
-    lubridate,
     leaflet,
     ggplot2,
     kableExtra,

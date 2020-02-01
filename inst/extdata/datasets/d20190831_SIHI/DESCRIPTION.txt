@@ -30,7 +30,7 @@ CSR_SITE_NAME: El Verde Field Station at the Luquillo Experimental Forest
 CSR_LONGITUDE: -65.8
 CSR_LATITUDE: 18.3
 CSR_ELEVATION: 725
-CSR_TIMEZONE: America/Puerto_Rico
+CSR_TIMEZONE: Etc/GMT+4
 CSR_BIOME: Tropical
 CSR_IGBP: Evergreen broadleaf forest
 CSR_NETWORK: 
@@ -39,7 +39,7 @@ CSR_INSTRUMENT: Cavity Ring-Down Spectroscopy (CRDS) gas analyzer (Picarro G2508
 CSR_MSMT_LENGTH: 600
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %m/%d/%Y %H:%M
-CSR_TIMESTAMP_TZ: America/Puerto_Rico
+CSR_TIMESTAMP_TZ: Etc/GMT+4
 CSR_PRIMARY_PUB: https://www.nature.com/articles/s41467-018-03352-3
 CSR_OTHER_PUBS:
 CSR_DATA_URL: https://luq.lter.network/data/luqmetadata199

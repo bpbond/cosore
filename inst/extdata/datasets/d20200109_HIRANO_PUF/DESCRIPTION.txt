@@ -30,7 +30,7 @@ CSR_SITE_NAME: Palangkaraya undrained forest (PUF)
 CSR_LONGITUDE: 113.9078
 CSR_LATITUDE: -2.3219
 CSR_ELEVATION: 15
-CSR_TIMEZONE: Asia/Jakarta
+CSR_TIMEZONE: Etc/GMT-7
 CSR_BIOME: Tropical
 CSR_IGBP: Evergreen broadleaf forest
 CSR_NETWORK: 
@@ -39,9 +39,9 @@ CSR_INSTRUMENT: LI-820
 CSR_MSMT_LENGTH: 180
 CSR_FILE_FORMAT: Processed
 CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
-CSR_TIMESTAMP_TZ: Asia/Jakarta
+CSR_TIMESTAMP_TZ: Etc/GMT-7
 CSR_PRIMARY_PUB: 10.2480/agrmet.68.2.6
 CSR_OTHER_PUBS: 10.1007/s10021-008-9209-1, 10.1111/j.1365-2486.2012.02793.x
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: 
-CSR_NOTES: almost bare ground with regrowing fern plants
+CSR_NOTES: almost bare ground with regrowing fern plants5

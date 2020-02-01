@@ -356,6 +356,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 
   if(!is.null(dsd)) {
     dsd <- tibble::as_tibble(dsd)
+
     # Column mapping and computation
     dsd <- map_columns(dsd, dataset$columns)
 
@@ -407,15 +408,12 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
       stop("Timestamps could not be parsed with ", tf, " and tz ", tz)
     }
 
+    # Change to the site's timezone (which is usually the same but might be different)
+    dsd <- lubridate::with_tz(dsd, tzone = dataset$description$CSR_TIMEZONE)
+
+    # Diagnostic information
     diag$CSR_TIME_BEGIN <- format(min(dsd$CSR_TIMESTAMP_BEGIN), format = "%Y-%m-%d")
     diag$CSR_TIME_END <- format(max(dsd$CSR_TIMESTAMP_END), format = "%Y-%m-%d")
-
-    # ...and to the site's timezone
-    # This attribute-changing makes me nervous, but apparently it's the
-    # only way to change timezone without either using lubridate::force_tz(),
-    # or using format() to a string and then casting back
-    attr(dsd$CSR_TIMESTAMP_BEGIN, "tzone") <- dataset$description$CSR_TIMEZONE
-    attr(dsd$CSR_TIMESTAMP_END, "tzone") <- dataset$description$CSR_TIMEZONE
 
     # Drop any unmapped columns
     drops <- grep("^CSR_", names(dsd), invert = TRUE)
