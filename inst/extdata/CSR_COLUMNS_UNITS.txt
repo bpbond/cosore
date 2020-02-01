@@ -35,7 +35,6 @@ CSR_LONGITUDE         Decimal longitude (degrees), numeric
 CSR_LATITUDE          Decimal latitude (degrees), numeric
 CSR_ELEVATION         Elevation (m), numeric
 CSR_TIMEZONE		  Timezone code; https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-CSR_BIOME			  Biome, character
 CSR_IGBP              IGBP class, character
 CSR_NETWORK           Site network name, character
 CSR_SITE_ID           Site ID in network, character
