@@ -71,6 +71,6 @@ csr_database <- function() {
   diag <- csr_table("diagnostics", quiet = TRUE)
   diag <- diag[c("CSR_DATASET", "CSR_RECORDS", "CSR_TIME_BEGIN", "CSR_TIME_END")]
 
-  x <- merge(desc, diag, by = "CSR_DATASET")
-  tibble::as.tibble(merge(x, ports, by = "CSR_DATASET"))
+  x <- merge(desc, diag, by = "CSR_DATASET", all.x = TRUE)
+  tibble::as_tibble(merge(x, ports, by = "CSR_DATASET", all.x = TRUE))
 }
