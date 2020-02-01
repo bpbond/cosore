@@ -332,7 +332,9 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
                  CSR_FLUX_HIGHBOUND = NA,
                  CSR_BAD_TEMPERATURE = 0,
                  CSR_RECORDS_REMOVED_TIMESTAMP = 0,
-                 CSR_EXAMPLE_BAD_TIMESTAMPS = "")
+                 CSR_EXAMPLE_BAD_TIMESTAMPS = "",
+                 CSR_TIME_BEGIN = NA_character_,
+                 CSR_TIME_END = NA_character_)
 
   dsd <- NULL  # dataset data
 
@@ -408,6 +410,10 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 
     # Change to the site's timezone (which is usually the same but might be different)
     dsd <- lubridate::with_tz(dsd, tzone = dataset$description$CSR_TIMEZONE)
+
+    # Diagnostic information
+    diag$CSR_TIME_BEGIN <- format(min(dsd$CSR_TIMESTAMP_BEGIN), format = "%Y-%m-%d")
+    diag$CSR_TIME_END <- format(max(dsd$CSR_TIMESTAMP_END), format = "%Y-%m-%d")
 
     # Drop any unmapped columns
     drops <- grep("^CSR_", names(dsd), invert = TRUE)
