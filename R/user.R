@@ -56,10 +56,21 @@ csr_dataset <- function(dataset_name, quiet = FALSE, metadata_only = FALSE) {
   read_dataset(dataset_name, force_raw = FALSE, quiet = quiet, metadata_only = metadata_only)
 }
 
-#' Return metadata (i.e. the \code{description} file) for the entire COSORE database.
+#' Return metadata for the entire COSORE database.
 #'
-#' @return A \code{data.frame} with metadata about each constituent dataset.
+#' @return A \code{data.frame} with metadata about each constituent dataset. This consists of parts of
+#' the \code{description} file, joined with parts of \code{ports} and \code{diag}.
 #' @export
 csr_database <- function() {
-  csr_table("description")
+  desc <- csr_table("description")
+  desc <- desc[c("CSR_DATASET", "CSR_LONGITUDE", "CSR_LATITUDE", "CSR_ELEVATION", "CSR_IGBP")]
+
+  ports <- csr_table("ports")
+  ports <- aggregate(CSR_MSMT_VAR ~ CSR_DATASET, data = ports, FUN = function(x) paste(unique(x), collapse = ", "))
+
+  diag <- csr_table("diagnostics", quiet = TRUE)
+  diag <- diag[c("CSR_DATASET", "CSR_RECORDS", "CSR_TIME_BEGIN", "CSR_TIME_END")]
+
+  x <- merge(desc, diag, by = "CSR_DATASET")
+  tibble::as.tibble(merge(x, ports, by = "CSR_DATASET"))
 }
