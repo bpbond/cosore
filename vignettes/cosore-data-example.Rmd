@@ -18,7 +18,7 @@ vignette: >
   ```
   
   ```{r, include=FALSE}
-  travis <- Sys.getenv("TRAVIS") != "true"
+  travis <- Sys.getenv("TRAVIS") == "true"
 ```
 
 # Introduction
