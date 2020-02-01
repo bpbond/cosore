@@ -30,7 +30,7 @@ CSR_SITE_NAME: Lochristi
 CSR_LONGITUDE: 3.850444
 CSR_LATITUDE: 51.11219
 CSR_ELEVATION: 5
-CSR_TIMEZONE: Europe/Paris
+CSR_TIMEZONE: Etc/GMT-1
 CSR_BIOME: Temperate
 CSR_IGBP: Poplar short rotation coppice plantation
 CSR_NETWORK: ICOS
@@ -39,7 +39,7 @@ CSR_INSTRUMENT: LI-8100A
 CSR_MSMT_LENGTH: 180
 CSR_FILE_FORMAT: Processed
 CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
-CSR_TIMESTAMP_TZ: Africa/Casablanca
+CSR_TIMESTAMP_TZ: Etc/GMT-1
 CSR_PRIMARY_PUB: 10.5194/bg-13-1949-2016
 CSR_OTHER_PUBS: http://uahost.uantwerpen.be/popfull/index.php?page=publications&lang=en
 CSR_DATA_URL:
