@@ -295,14 +295,28 @@ csr_build <- function(raw_data,
 
   if(length(dataset_names)) {
 
+    # Get metadata file for database fields
+    md <- read.csv(system.file(file.path("extdata", "CSR_COLUMN_UNITS.csv"),
+                               package = "cosore", mustWork = TRUE),
+                   comment.char = "#", stringsAsFactors = FALSE)
+    md$Count <- 0
+
     for(ds in seq_along(dataset_names)) {
       dsn <- dataset_names[ds]
       if(!quiet) message(ds, "/", length(dataset_names), " ", dsn)
       x <- read_dataset(dsn, raw_data, force_raw = force_raw, quiet = quiet)
 
+      md$Count <- md$Count + check_dataset_names(dsn, x, md)
+
       if(write_standardized) {
         csr_standardize_data(x, path = standardized_path, create_dirs = TRUE)
       }
+    }
+
+    md <- md[md$Count == 0,]
+    if(nrow(md)) {
+      warnings("Some metadata entries do not appear in entire database: ",
+               paste(md$Table_name, md$Field_name, sep = "/"))
     }
   }
 }
