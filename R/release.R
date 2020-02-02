@@ -83,7 +83,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
     "diagnostics.csv" = "Diagnostics on data processing: records removed, etc.",
     "ports.csv" = "Port-specific information: species, collar areas and depths, treatments",
     "datasets" = "A folder containing the various `data` tables for each dataset",
-    "CSR_COLUMNS_UNITS.csv" = "Metadata for all database fields",
+    "CSR_COLUMN_UNITS.csv" = "Metadata for all database fields",
     "Report-all.html" = "A summary report on the entire database",
     "cosore-data-example.html" = "A vignette showing how to load and work with the database",
     "README.md" = "This file."
