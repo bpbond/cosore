@@ -89,7 +89,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
     "README.md" = "This file."
   )
 
-  filelist <- c("CSR_COLUMNS_UNITS.txt", "README.md")
+  filelist <- c("CSR_COLUMNS_UNITS.csv", "README.md")
   for(f in filelist) {
     f_path <- system.file(file.path("extdata", f),
                           package = "cosore", mustWork = TRUE)
