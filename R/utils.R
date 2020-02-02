@@ -321,6 +321,21 @@ csr_build <- function(raw_data,
   }
 }
 
+
+#' Change "T2", "SM4.5", etc., to "Tx" and "SMx"
+#'
+#' @param x Vector of dataset names
+#' @param prefixes Prefixes
+#' @return A transformed vector of names.
+#' @keywords internal
+TSM_change <- function(x, prefixes = c("CSR_T", "CSR_SM")) {
+  stopifnot(is.character(x))
+  for(p in prefixes) {
+    x <- gsub(paste0("^", p, "[0-9]+[\\.]{0,1}[0-9]*$"), paste0(p, "x"), x)
+  }
+  x
+}
+
 #' Check dataset for name and class consistency with metadata file
 #'
 #' @param dataset_name Dataset name, character
@@ -340,9 +355,14 @@ check_dataset_names <- function(dataset_name, dataset, field_metadata) {
     dst <- dataset[[tab]]
     if(is.data.frame(dst)) {
 
+      # We have single "Tx" and "SMx" entries in the metadata table, while data have
+      # "T0", "SM2", etc. (very dataset-specific, didn't want to have ALL these in
+      # the metadata). Handle this
+      changed_names <- TSM_change(names(dst))
+
       # Does every table name appear in the metadata file?
       fm_table <- field_metadata[field_metadata$Table_name == tab,]
-      names_found <- names(dst) %in% fm_table$Field_name
+      names_found <- changed_names %in% fm_table$Field_name
       if(any(!names_found)) {
         warning(dataset_name, " - ", "fields not found in metadata for table '", tab, "': ",
                 paste(names(dst)[!names_found], collapse = ", "))
@@ -358,7 +378,7 @@ check_dataset_names <- function(dataset_name, dataset, field_metadata) {
       }
 
       # Keep track of which metadata file entries appear
-      found <- which(field_metadata$Field_name %in% names(dst))
+      found <- which(field_metadata$Field_name %in% changed_names)
       field_metadata$count[found] <- field_metadata$count[found] + 1
     }
   }

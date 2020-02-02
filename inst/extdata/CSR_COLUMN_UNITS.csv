@@ -18,8 +18,8 @@ data,CSR_PORT,Port/chamber number,numeric,,TRUE
 data,CSR_R2,Flux computation R2,numeric,fraction,FALSE
 data,CSR_RECORD,Record number within file,numeric,,FALSE
 data,CSR_RH,Chamber relative humidity,numeric,percent,FALSE
-data,CSR_SM5,Volumetric soil moisture at 5 cm (other CSR_SMx fields follow same format for depth x),numeric,m3/m3,FALSE
-data,CSR_T5,Temperature at 5 cm (other CSR_Tx fields follow same format for depth x),numeric,°C,FALSE
+data,CSR_SMx,Volumetric soil moisture at x cm (other CSR_SMx fields follow same format),numeric,m3/m3,FALSE
+data,CSR_Tx,Temperature at x cm (other CSR_Tx fields follow same format),numeric,°C,FALSE
 data,CSR_TAIR,Air temperature,numeric,°C,FALSE
 data,CSR_TCHAMBER,Chamber temperature,numeric,°C,FALSE
 data,CSR_TIMESTAMP_BEGIN,"Timestamp, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE

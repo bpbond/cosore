@@ -161,10 +161,10 @@ test_that("check_dataset_names", {
 
   # Returns correct entry count across tables
   dataset <- list(table1 = data.frame(field1 = 1, field2 = 2),
-             table2 = data.frame(field2 = 3, field3 = 4))
+                  table2 = data.frame(field2 = 3, field3 = 4))
   metadata <- data.frame(Table_name = c("table1", "table1", "table2", "table2"),
-                    Field_name = c("field1", "field2", "field2", "field3"),
-                    Required = FALSE)
+                         Field_name = c("field1", "field2", "field2", "field3"),
+                         Required = FALSE)
   expect_identical(check_dataset_names("", dataset, metadata), c(1, 2, 2, 1))
 
   # Warns when table field is missing in metadata
@@ -180,4 +180,20 @@ test_that("check_dataset_names", {
                          Field_name = c("field1", "field2"),
                          Required = c(FALSE, TRUE))
   expect_warning(check_dataset_names("", dataset, metadata), regexp = "field2")
+
+  # Handles temperature and soil moisture fields correctly
+  dataset <- list(table1 = data.frame(CSR_T2 = 1, CSR_SM37.1 = 1))
+  metadata <- data.frame(Table_name = "table1",
+                         Field_name = c("CSR_Tx", "CSR_SMx"),
+                         Required = c(FALSE, FALSE))
+  expect_silent(check_dataset_names("", dataset, metadata))
+})
+
+test_that("check_dataset_names", {
+  expect_error(TSM_change(1))
+
+  # Transforms as expected
+  expect_identical(TSM_change(c("CSR_T0", "CSR_SM2")), c("CSR_Tx", "CSR_SMx"))
+  expect_identical(TSM_change(c("CSR_T2.5", "CSR_T", "CSR_0")), c("CSR_Tx", "CSR_T", "CSR_0"))
+  expect_identical(TSM_change(c("blah", "blah2.5"), prefixes = "blah"), c("blah", "blahx"))
 })
