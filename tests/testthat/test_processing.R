@@ -13,6 +13,6 @@ test_that("dataset read and report", {
   expect_true(is.numeric(x$data$CSR_PORT))
 
   # No-data dataset
-  expect_warning(x_no_data <- read_dataset("TEST_licordata"))
+  expect_message(x_no_data <- read_dataset("TEST_licordata"))
   csr_report_dataset(x_no_data, output_dir = tempdir(), quiet = TRUE)
 })

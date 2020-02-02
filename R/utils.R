@@ -295,14 +295,93 @@ csr_build <- function(raw_data,
 
   if(length(dataset_names)) {
 
+    # Get metadata file for database fields
+    md <- read.csv(system.file(file.path("extdata", "CSR_COLUMN_UNITS.csv"),
+                               package = "cosore", mustWork = TRUE),
+                   comment.char = "#", stringsAsFactors = FALSE)
+    md$Count <- 0
+
     for(ds in seq_along(dataset_names)) {
       dsn <- dataset_names[ds]
       if(!quiet) message(ds, "/", length(dataset_names), " ", dsn)
       x <- read_dataset(dsn, raw_data, force_raw = force_raw, quiet = quiet)
 
+      md$Count <- md$Count + check_dataset_names(dsn, x, md)
+
       if(write_standardized) {
         csr_standardize_data(x, path = standardized_path, create_dirs = TRUE)
       }
     }
+
+    md <- md[md$Count == 0,]
+    if(nrow(md)) {
+      warnings("Some metadata entries do not appear in entire database: ",
+               paste(md$Table_name, md$Field_name, sep = "/"))
+    }
   }
 }
+
+
+#' Change "T2", "SM4.5", etc., to "Tx" and "SMx"
+#'
+#' @param x Vector of dataset names
+#' @param prefixes Prefixes
+#' @return A transformed vector of names.
+#' @keywords internal
+TSM_change <- function(x, prefixes = c("CSR_T", "CSR_SM")) {
+  stopifnot(is.character(x))
+  for(p in prefixes) {
+    x <- gsub(paste0("^", p, "[0-9]+[\\.]{0,1}[0-9]*$"), paste0(p, "x"), x)
+  }
+  x
+}
+
+#' Check dataset for name and class consistency with metadata file
+#'
+#' @param dataset_name Dataset name, character
+#' @param dataset An individual dataset
+#' @param field_metadata Field metadata file, from \code{inst/extdata/CSR_COLUMN_UNITS.csv}
+#' @return A count of how many times each metadata entry appeared in the dataset.
+#' @export
+check_dataset_names <- function(dataset_name, dataset, field_metadata) {
+
+  stopifnot(is.character(dataset_name))
+  stopifnot(is.list(dataset))
+  stopifnot(is.data.frame(field_metadata))
+
+  field_metadata$count <- 0
+
+  for(tab in names(dataset)) {
+    dst <- dataset[[tab]]
+    if(is.data.frame(dst)) {
+
+      # We have single "Tx" and "SMx" entries in the metadata table, while data have
+      # "T0", "SM2", etc. (very dataset-specific, didn't want to have ALL these in
+      # the metadata). Handle this
+      changed_names <- TSM_change(names(dst))
+
+      # Does every table name appear in the metadata file?
+      fm_table <- field_metadata[field_metadata$Table_name == tab,]
+      names_found <- changed_names %in% fm_table$Field_name
+      if(any(!names_found)) {
+        warning(dataset_name, " - ", "fields not found in metadata for table '", tab, "': ",
+                paste(names(dst)[!names_found], collapse = ", "))
+      }
+
+      # Do all required fields appear in the table?
+      requireds <- fm_table$Field_name[fm_table$Required]
+      req_found <- requireds %in% names(dst)
+      if(any(!req_found)) {
+        warning(dataset_name, " - ", "required metadata fields not found for table '", tab, "': ",
+                paste(requireds[!req_found], collapse = ", "))
+
+      }
+
+      # Keep track of which metadata file entries appear
+      found <- which(field_metadata$Field_name %in% changed_names)
+      field_metadata$count[found] <- field_metadata$count[found] + 1
+    }
+  }
+  field_metadata$count
+}
+

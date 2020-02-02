@@ -339,7 +339,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
   dsd <- NULL  # dataset data
 
   if(!dir.exists(df)) {
-    warning("No data folder found for ", dataset_name)
+    message("No data folder found for ", dataset_name)
   } else {
     # Dispatch to correct parsing function based on file format
     ff <- toupper(dataset$description$CSR_FILE_FORMAT)
@@ -484,7 +484,7 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
 
     if(force_raw | !file.exists(datafile)) {  # raw
       if(missing(raw_data)) {
-        if(!quiet) warning(dataset_name, "\tNo standardized or raw data found")
+        if(!quiet) message(dataset_name, "\tNo standardized or raw data found")
         return(dataset)
       }
       if(!quiet) message(dataset_name, "\tReading and parsing raw data")

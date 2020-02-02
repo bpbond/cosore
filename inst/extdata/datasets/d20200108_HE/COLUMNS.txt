@@ -8,8 +8,8 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,				Dataset,	Computation,				Notes
-CSR_FLUX,  				CSR_SR,
-#CSR_PORT,				CSR_PORT,
-#CSR_SM5,				CSR_SM5
-CSR_T5,					CSR_ST5
-CSR_TIMESTAMP_BEGIN,	CSR_TIMESTAMP
+CSR_FLUX,  				SR,
+CSR_PORT,				PORT,
+CSR_SM5,				SM5
+CSR_T5,					ST5
+CSR_TIMESTAMP_BEGIN,	TIMESTAMP

@@ -43,4 +43,4 @@ CSR_PRIMARY_PUB: 10.2480/agrmet.68.2.6
 CSR_OTHER_PUBS: 10.1007/s10021-008-9209-1, 10.1111/j.1365-2486.2012.02793.x
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: 
-CSR_NOTES: almost bare ground with regrowing fern plants5
+CSR_NOTES: almost bare ground with regrowing fern plants
