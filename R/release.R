@@ -27,7 +27,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
   }
 
   if(!force & length(list.files(path)) != 0) {
-    stop("Not allowed: release directory is not clean")
+    stop("Not allowed: release directory is not empty")
   }
 
   if(!force) {
