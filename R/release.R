@@ -83,13 +83,13 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
     "diagnostics.csv" = "Diagnostics on data processing: records removed, etc.",
     "ports.csv" = "Port-specific information: species, collar areas and depths, treatments",
     "datasets" = "A folder containing the various `data` tables for each dataset",
-    "CSR_COLUMNS_UNITS.txt" = "Metadata for all database fields",
+    "CSR_COLUMNS_UNITS.csv" = "Metadata for all database fields",
     "Report-all.html" = "A summary report on the entire database",
     "cosore-data-example.html" = "A vignette showing how to load and work with the database",
     "README.md" = "This file."
   )
 
-  filelist <- c("CSR_COLUMNS_UNITS.csv", "README.md")
+  filelist <- c("CSR_COLUMN_UNITS.csv", "README.md")
   for(f in filelist) {
     f_path <- system.file(file.path("extdata", f),
                           package = "cosore", mustWork = TRUE)
