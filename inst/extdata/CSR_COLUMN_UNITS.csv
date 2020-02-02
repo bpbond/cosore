@@ -10,7 +10,7 @@ data,CSR_CO2_AMB,Ambient CO2 concentration,numeric,ppmv,FALSE
 data,CSR_COMMENTS,"Comments, text",character,,FALSE
 data,CSR_CRVFIT,"Flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
 data,CSR_ERROR,"Error raised by instrument or during import, logical",logical,,FALSE
-data,CSR_FLUX  ,Soil respiration flux,numeric,μmol CO2/m2/s,TRUE
+data,CSR_FLUX,Soil respiration flux,numeric,μmol CO2/m2/s,TRUE
 data,CSR_FLUX_SE,"Standard error of soil respiration flux, µmol CO2/m2/s",numeric,,FALSE
 data,CSR_LABEL,Port/chamber label,character,,FALSE
 data,CSR_PAR,Photosynthetically active radiation,numeric,μmol photons/m2/s,FALSE
@@ -35,7 +35,7 @@ description,CSR_LONGITUDE,"Decimal longitude, positive = north",numeric,degrees,
 description,CSR_LATITUDE,"Decimal latitude, positive = east",numeric,degrees,TRUE
 description,CSR_ELEVATION,Elevation,numeric,m,TRUE
 description,CSR_TIMEZONE,"Timezone code, from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",character,,TRUE
-description,CSR_IGBP ,"IGBP class, from http://www.eomf.ou.edu/static/IGBP.pdf",character,,TRUE
+description,CSR_IGBP,"IGBP class, from http://www.eomf.ou.edu/static/IGBP.pdf",character,,TRUE
 description,CSR_NETWORK,Site network name,character,,FALSE
 description,CSR_SITE_ID,Site ID in network,character,,FALSE
 description,CSR_INSTRUMENT,Measurement instrument (i.e. model),character,,TRUE
@@ -43,7 +43,7 @@ description,CSR_MSMT_LENGTH,Measurement length,numeric,s,TRUE
 description,CSR_FILE_FORMAT,Data file format,character,,TRUE
 description,CSR_TIMESTAMP_FORMAT,"Data timestamp format, in R's `strptime()` format",character,,TRUE
 description,CSR_TIMESTAMP_TZ,Instrument timestamp timezone; usually the same as CSR_TIMEZONE,character,,TRUE
-description,CSR_PRIMARY_PUB	,Primary publication,character,,FALSE
+description,CSR_PRIMARY_PUB,Primary publication,character,,FALSE
 description,CSR_OTHER_PUBS,Other publications,character,,FALSE
 description,CSR_DATA_URL,Data URL or DOI,character,,FALSE
 description,CSR_ACKNOWLEDGMENT,Acknowledgment text,character,,FALSE
@@ -111,3 +111,5 @@ diagnostics,CSR_RECORDS_REMOVED_NA,Number of observations removed for missing fl
 diagnostics,CSR_RECORDS_REMOVED_TIMESTAMP,Number of observations removed for bad timestamp,numeric,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_TOOHIGH,Number of observations removed for flux too low,numeric,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_TOOLOW,Number of observations removed for flux too high,numeric,,TRUE
+diagnostics,CSR_TIME_BEGIN,Year and month of first observation in dataset,character,,FALSE
+diagnostics,CSR_TIME_END,Year and month of last observation in dataset,character,,FALSE
