@@ -306,3 +306,48 @@ csr_build <- function(raw_data,
     }
   }
 }
+
+#' Check dataset for name and class consistency with metadata file
+#'
+#' @param dataset_name Dataset name, character
+#' @param dataset An individual dataset
+#' @param field_metadata Field metadata file, from \code{inst/extdata/CSR_COLUMN_UNITS.csv}
+#' @return A count of how many times each metadata entry appeared in the dataset.
+#' @export
+check_dataset_names <- function(dataset_name, dataset, field_metadata) {
+
+  stopifnot(is.character(dataset_name))
+  stopifnot(is.list(dataset))
+  stopifnot(is.data.frame(field_metadata))
+
+  field_metadata$count <- 0
+
+  for(tab in names(dataset)) {
+    dst <- dataset[[tab]]
+    if(is.data.frame(dst)) {
+
+      # Does every table name appear in the metadata file?
+      fm_table <- field_metadata[field_metadata$Table_name == tab,]
+      names_found <- names(dst) %in% fm_table$Field_name
+      if(any(!names_found)) {
+        warning(dataset_name, " - ", "fields not found in metadata for table '", tab, "': ",
+                paste(names(dst)[!names_found], collapse = ", "))
+      }
+
+      # Do all required fields appear in the table?
+      requireds <- fm_table$Field_name[fm_table$Required]
+      req_found <- requireds %in% names(dst)
+      if(any(!req_found)) {
+        warning(dataset_name, " - ", "required metadata fields not found for table '", tab, "': ",
+                paste(requireds[!req_found], collapse = ", "))
+
+      }
+
+      # Keep track of which metadata file entries appear
+      found <- which(field_metadata$Field_name %in% names(dst))
+      field_metadata$count[found] <- field_metadata$count[found] + 1
+    }
+  }
+  field_metadata$count
+}
+

@@ -1,0 +1,113 @@
+# Metadata for COSORE version %VERSION,,
+# %DATE,,
+#,,
+Table_name,Field_name,Description,Class,Units,Required
+#,,
+# `data`: flux data table,,
+#,,
+data,CSR_CDRY,Chamber CO2 concentration,numeric,ppmv,FALSE
+data,CSR_CO2_AMB,Ambient CO2 concentration,numeric,ppmv,FALSE
+data,CSR_COMMENTS,"Comments, text",character,,FALSE
+data,CSR_CRVFIT,"Flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
+data,CSR_ERROR,"Error raised by instrument or during import, logical",logical,,FALSE
+data,CSR_FLUX  ,Soil respiration flux,numeric,μmol CO2/m2/s,TRUE
+data,CSR_FLUX_SE,"Standard error of soil respiration flux, µmol CO2/m2/s",numeric,,FALSE
+data,CSR_LABEL,Port/chamber label,character,,FALSE
+data,CSR_PAR,Photosynthetically active radiation,numeric,μmol photons/m2/s,FALSE
+data,CSR_PORT,Port/chamber number,numeric,,TRUE
+data,CSR_R2,Flux computation R2,numeric,fraction,FALSE
+data,CSR_RECORD,Record number within file,numeric,,FALSE
+data,CSR_RH,Chamber relative humidity,numeric,percent,FALSE
+data,CSR_SM5,Volumetric soil moisture at 5 cm (other CSR_SMx fields follow same format for depth x),numeric,m3/m3,FALSE
+data,CSR_T5,Temperature at 5 cm (other CSR_Tx fields follow same format for depth x),numeric,°C,FALSE
+data,CSR_TAIR,Air temperature,numeric,°C,FALSE
+data,CSR_TCHAMBER,Chamber temperature,numeric,°C,FALSE
+data,CSR_TIMESTAMP_BEGIN,"Timestamp, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
+data,CSR_TIMESTAMP_END,"Timestamp, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
+data,CSR_WIND,Wind speed,numeric,m/s,FALSE
+data,CSR_WTD,"Water table depth, positive numbers are depth",numeric,cm,FALSE
+#,,
+# `description`: dataset and site description,,
+#,,
+description,CSR_DATASET,Dataset name,character,,TRUE
+description,CSR_SITE_NAME,Site name,character,,TRUE
+description,CSR_LONGITUDE,"Decimal longitude, positive = north",numeric,degrees,TRUE
+description,CSR_LATITUDE,"Decimal latitude, positive = east",numeric,degrees,TRUE
+description,CSR_ELEVATION,Elevation,numeric,m,TRUE
+description,CSR_TIMEZONE,"Timezone code, from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",character,,TRUE
+description,CSR_IGBP ,"IGBP class, from http://www.eomf.ou.edu/static/IGBP.pdf",character,,TRUE
+description,CSR_NETWORK,Site network name,character,,FALSE
+description,CSR_SITE_ID,Site ID in network,character,,FALSE
+description,CSR_INSTRUMENT,Measurement instrument (i.e. model),character,,TRUE
+description,CSR_MSMT_LENGTH,Measurement length,numeric,s,TRUE
+description,CSR_FILE_FORMAT,Data file format,character,,TRUE
+description,CSR_TIMESTAMP_FORMAT,"Data timestamp format, in R's `strptime()` format",character,,TRUE
+description,CSR_TIMESTAMP_TZ,Instrument timestamp timezone; usually the same as CSR_TIMEZONE,character,,TRUE
+description,CSR_PRIMARY_PUB	,Primary publication,character,,FALSE
+description,CSR_OTHER_PUBS,Other publications,character,,FALSE
+description,CSR_DATA_URL,Data URL or DOI,character,,FALSE
+description,CSR_ACKNOWLEDGMENT,Acknowledgment text,character,,FALSE
+description,CSR_NOTES,Miscellaneous notes,character,,FALSE
+description,CSR_EMBARGO,Embargo flag. If this field is present data will not be released,character,,FALSE
+#,,
+# `ports`: individual chamber metadata,,
+#,,
+ports,CSR_PORT,"Port (chamber) number; ""0"" means all ports",numeric,,TRUE
+ports,CSR_MSMT_VAR,"Measurement variable: ""Rs"", ""Rh"", ""Reco"", or ""NEE""",character,,TRUE
+ports,CSR_TREATMENT,"Collar treatment; default is ""None""",character,,TRUE
+ports,CSR_AREA,Area of measurement chamber,numeric,cm2,FALSE
+ports,CSR_DEPTH,Depth of collar insertion,numeric,cm,FALSE
+ports,CSR_SPECIES,Comma-separated species list,character,,FALSE
+ports,CSR_SENSOR_DEPTHS,"Comma-separated sensor depths, each in cm",character,,FALSE
+#,,
+# `columns`: mapping of raw data columns to COSORE columns,,
+#,,
+columns,Database,Database column name (e.g. CSR_FLUX),character,,TRUE
+columns,Dataset,Dataset columns name,character,,TRUE
+columns,Computation,"Optional R computation to be performed changing units, etc.",character,,FALSE
+columns,Notes,Notes,character,,FALSE
+#,,
+# `ancillary`: other site-level data,,
+#,,
+ancillary,Variable,Variable name (one of entries below),character,,TRUE
+ancillary,Value,Value (see units below),character,,TRUE
+ancillary,CSR_AGE,Time since disturbance,numeric,years,FALSE
+ancillary,CSR_ANPP,Aboveground NPP,numeric,gC/m2/yr,FALSE
+ancillary,CSR_BD,Soil bulk density,numeric,g/cm3,FALSE
+ancillary,CSR_BNPP,Belowground NPP,numeric,gC/m2/yr,FALSE
+ancillary,CSR_CLAY,Clay,numeric,percent,FALSE
+ancillary,CSR_LAI,Leaf area index,numeric,m2/m2,FALSE
+ancillary,CSR_LITTERFALL,Litterfall,numeric,g/m2/yr,FALSE
+ancillary,CSR_MAT,Mean annual air temperature,numeric,°C,FALSE
+ancillary,CSR_MAP,Mean annual precipitation,numeric,mm,FALSE
+ancillary,CSR_NH4,Ammonium,numeric,mg kg−1 soil,FALSE
+ancillary,CSR_NO3,Nitrate,numeric,mg kg−1 soil,FALSE
+ancillary,CSR_NPP,Total NPP,numeric,gC/m2/yr,FALSE
+ancillary,CSR_PH,pH,numeric,,FALSE
+ancillary,CSR_SAND,Sand,numeric,percent,FALSE
+ancillary,CSR_SILT,Silt,numeric,percent,FALSE
+ancillary,CSR_STC,Total soil carbon,numeric,percent,FALSE
+ancillary,CSR_STN,Total soil nitrogen,numeric,percent,FALSE
+#,,
+# `contributors`: data contributor information,,
+#,,
+contributors,CSR_FIRST_NAME,First (personal) name,character,,FALSE
+contributors,CSR_FAMILY_NAME,Family name,character,,FALSE
+contributors,CSR_EMAIL,Email address,character,,FALSE
+contributors,CSR_ORCID,ORCID ID; see https://orcid.org,character,,FALSE
+contributors,CSR_ROLE,CReDiT role; see https://www.casrai.org/credit.html,character,,FALSE
+#,,
+# Diagnostic fields,,
+#,,
+diagnostics,CSR_ASSUMED_MSMT_LENGTH,If no measurement length is provided this is set to assumed value,numeric,s,FALSE
+diagnostics,CSR_BAD_TEMPERATURE,Number of observations removed for bad temperature values,numeric,,TRUE
+diagnostics,CSR_COLUMNS_DROPPED,Number of columns dropped because no mapping available,numeric,,TRUE
+diagnostics,CSR_EXAMPLE_BAD_TIMESTAMPS,Example bad timestamps,character,,FALSE
+diagnostics,CSR_FLUX_HIGHBOUND,Flux high bound; values above this are removed,numeric,,TRUE
+diagnostics,CSR_FLUX_LOWBOUND,Flux low bound; values above this are removed,numeric,,TRUE
+diagnostics,CSR_RECORDS,Records in final dataset,numeric,,TRUE
+diagnostics,CSR_RECORDS_REMOVED_ERR,Number of observations removed for error code,numeric,,TRUE
+diagnostics,CSR_RECORDS_REMOVED_NA,Number of observations removed for missing flux,numeric,,TRUE
+diagnostics,CSR_RECORDS_REMOVED_TIMESTAMP,Number of observations removed for bad timestamp,numeric,,TRUE
+diagnostics,CSR_RECORDS_REMOVED_TOOHIGH,Number of observations removed for flux too low,numeric,,TRUE
+diagnostics,CSR_RECORDS_REMOVED_TOOLOW,Number of observations removed for flux too high,numeric,,TRUE
