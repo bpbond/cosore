@@ -3,7 +3,6 @@
 ## put the commands inline in the after_success section
 
 library(covr)
-#Sys.setenv("gcamdata.is_coverage_test" = "TRUE")
-x <- package_coverage()
+x <- package_coverage(line_exclusions = list("R/parse-others.R"))
 cat("coverage = ", percent_coverage(x), " %\n")
 codecov(coverage = x)
