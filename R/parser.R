@@ -217,7 +217,7 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
   # Measurement variable is highly standardized; make sure all ok
   ok <- pfd$CSR_MSMT_VAR %in% c("Rs", "Rh", "Reco", "NEE")
   if(!all(ok)) {
-    stop("Illegal CSR_MSMT_VAR entry in PORTS file: ", paste(pfd$CSR_MSMT_VAR[!ok], collapse = ", "))
+    stop(dataset_name, ": illegal CSR_MSMT_VAR entry in PORTS file: ", paste(pfd$CSR_MSMT_VAR[!ok], collapse = ", "))
   }
   pfd
 }

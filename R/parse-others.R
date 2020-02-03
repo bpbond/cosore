@@ -293,6 +293,15 @@ parse_d20190430_DESAI <- function(path) {
   rbind_list(results)
 }
 
+#' Parse a custom file from d20200109_HIRANO_PDF.
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+`parse_d20200109_HIRANO_PDF` <- function(path) {
+  parse_d20200109_HIRANO_PDB(path)
+}
+
 #' Parse a custom file from d20200108_JASSAL.
 #'
 #' @param path Data directory path, character
