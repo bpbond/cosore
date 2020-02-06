@@ -336,6 +336,25 @@ TSM_change <- function(x, prefixes = c("CSR_T", "CSR_SM")) {
   x
 }
 
+
+#' Ensure required columns are present; put them first;
+#' sort everything else alphabetically.
+#'
+#' @param dsd Dataset data, a data frame
+#' @param required_cols Required column names, a character vector
+#' @keywords internal
+#' @return The column-sorted data frame.
+#' @note Called by \code{\link{read_raw_dataset}}.
+rearrange_columns <- function(dsd, required_cols) {
+  stopifnot(is.data.frame(dsd))
+  stopifnot(is.character(required_cols))
+
+  stopifnot(all(required_cols %in% names(dsd)))
+
+  other <- setdiff(names(dsd), required_cols)
+  dsd[c(required_cols, sort(other))]
+}
+
 #' Check dataset for name and class consistency with metadata file
 #'
 #' @param dataset_name Dataset name, character

@@ -189,6 +189,32 @@ test_that("check_dataset_names", {
   expect_silent(check_dataset_names("", dataset, metadata))
 })
 
+test_that("rearrange_colunns", {
+  # Handles bad input
+  expect_error(rearrange_columns(1, "1"))
+  expect_error(rearrange_columns(data.frame(), 1))
+
+  # Puts required cols first and sorts the rest
+  df <- data.frame(x = 1, y = 2, z = 3)
+  expect_identical(colnames(rearrange_columns(df, "x")), c("x", "y", "z"))
+  expect_identical(colnames(rearrange_columns(df, "y")), c("y", "x", "z"))
+  expect_identical(colnames(rearrange_columns(df, "z")), c("z", "x", "y"))
+  expect_identical(colnames(rearrange_columns(df, c("z", "x"))), c("z", "x", "y"))
+
+  # Errors if 'required' cols not all in data frame already
+  expect_error(rearrange_columns(df, "a"))
+  expect_error(rearrange_columns(df, c("x", "x1")))
+
+  # Handles data frame with no 'other' columns
+  x <- rearrange_columns(df, colnames(df))
+  expect_identical(df, x)
+
+  # Handles no required columns at all
+  df <- data.frame(z = 1, y = 2, x = 3)
+  expect_identical(colnames(rearrange_columns(df, character(0))),
+                   sort(colnames(df)))
+})
+
 test_that("check_dataset_names", {
   expect_error(TSM_change(1))
 
