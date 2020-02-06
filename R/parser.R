@@ -114,7 +114,7 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 read_description_file <- function(dataset_name, file_data = NULL) {
   f <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
-  tibble(CSR_DATASET = dataset_name,
+  x <- tibble(CSR_DATASET = dataset_name,
          CSR_SITE_NAME = extract_line(f, "CSR_SITE_NAME"),
          CSR_LONGITUDE = extract_line(f, "CSR_LONGITUDE", numeric_data = TRUE),
          CSR_LATITUDE = extract_line(f, "CSR_LATITUDE", numeric_data = TRUE),
@@ -134,6 +134,16 @@ read_description_file <- function(dataset_name, file_data = NULL) {
          CSR_ACKNOWLEDGMENT = extract_line(f, "CSR_ACKNOWLEDGMENT", required = FALSE),
          CSR_NOTES = extract_line(f, "CSR_NOTES", required = FALSE),
          CSR_EMBARGO = extract_line(f, "CSR_EMBARGO", required = FALSE))
+
+  if(!x$CSR_IGBP %in% c("Wetland", "Evergreen needleleaf forest",
+                        "Deciduous broadleaf forest", "Open shrubland",
+                        "Evergreen broadleaf forest", "Mixed forests", "Woody savanna",
+                        "Grassland",
+                        "Poplar short rotation coppice plantation",  # TODO fix this
+                        "Savannas", "Desert woodland")) {
+    stop("Unknown IGBP: ", x$CSR_IGBP)
+  }
+  x
 }
 
 
