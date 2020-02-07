@@ -189,6 +189,54 @@ test_that("check_dataset_names", {
   expect_silent(check_dataset_names("", dataset, metadata))
 })
 
+test_that("calc_timestamps", {
+  # Handles bad input
+  expect_error(calc_timestamps(1, 1, "1", "1"))
+  expect_error(calc_timestamps(data.frame(), "1", "1", "1"))
+  expect_error(calc_timestamps(data.frame(), 1, 1, "1"))
+  expect_error(calc_timestamps(data.frame(), 1, "1", 1))
+
+  # If data.frame doesn't enough information, error
+  expect_error(calc_timestamps(data.frame(), 1, "1", "1"))
+
+  # We're going to run these tests a bunch so...
+  validate_list <- function(x, ml, description) {
+    expect_type(x, "list")
+    expect_identical(length(x), 4L)
+
+    new_df <- x[["dsd"]]
+    expect_s3_class(new_df, "data.frame")
+
+    expect_s3_class(new_df$CSR_TIMESTAMP_BEGIN, c("POSIXct", "POSIXt"))
+    expect_identical(sort(colnames(new_df)),
+                     sort(c("CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END")))
+    difft <- difftime(new_df$CSR_TIMESTAMP_END, new_df$CSR_TIMESTAMP_BEGIN, units = "secs")
+    expect_identical(as.numeric(difft), ml)
+  }
+
+  # Supply begin, get end
+  ml <- 120
+  df <- data.frame(CSR_TIMESTAMP_BEGIN = "2020-02-06 18:47", stringsAsFactors = FALSE)
+  x <- calc_timestamps(df, ml = ml, tf = "%Y-%m-%d %H:%M", tz = "UTC")
+  validate_list(x,  ml, "Supply begin, get end")
+
+  # Supply end, get begin
+  df <- data.frame(CSR_TIMESTAMP_END = "2020-02-06 18:47", stringsAsFactors = FALSE)
+  x <- calc_timestamps(df, ml = ml, tf = "%Y-%m-%d %H:%M", tz = "UTC")
+  validate_list(x,  ml, "Supply end, get begin")
+
+  # Supply mid, get begin and end
+  df <- data.frame(CSR_TIMESTAMP_MID = "2020-02-06 18:47", stringsAsFactors = FALSE)
+  x <- calc_timestamps(df, ml = ml, tf = "%Y-%m-%d %H:%M", tz = "UTC")
+  validate_list(x,  ml, "Supply mid, get begin and end")
+
+  # Supply both begin and end
+  df <- data.frame(CSR_TIMESTAMP_BEGIN = "2020-02-06 18:47",
+                   CSR_TIMESTAMP_END = "2020-02-06 18:49", stringsAsFactors = FALSE)
+  x <- calc_timestamps(df, ml = ml, tf = "%Y-%m-%d %H:%M", tz = "UTC")
+  validate_list(x,  ml, "Supply begin and end")
+})
+
 test_that("rearrange_colunns", {
   # Handles bad input
   expect_error(rearrange_columns(1, "1"))

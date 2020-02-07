@@ -237,6 +237,61 @@ convert_and_qc_timestamp <- function(ts, timestamp_format, time_zone) {
   list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
 }
 
+#' Calculate all timestamps based on timestamps given and measurement length
+#'
+#' @param dsd Dataset data, a data frame
+#' @param ml Measurement length, numeric (seconds)
+#' @param tf Timestamp format, a \code{\link{strptime}} format string
+#' @param tz Timezone, character
+#' @export
+#' @note This is called from \code{\link{read_raw_dataset}}.
+#' @return A list with (i) the new dataset data.frame, (ii) a logical vector
+#' indicating which ones are invalid (and thus now NA), and
+#' (iii) a string of examples of bad timestamps.
+calc_timestamps <- function(dsd, ml, tf, tz) {
+  stopifnot(is.data.frame(dsd))
+  stopifnot(is.numeric(ml))
+  stopifnot(is.character(tf))
+  stopifnot(is.character(tz))
+
+  ts_begin <- "CSR_TIMESTAMP_BEGIN" %in% names(dsd)
+  ts_mid <- "CSR_TIMESTAMP_MID" %in% names(dsd)
+  ts_end <- "CSR_TIMESTAMP_END" %in% names(dsd)
+
+  if(ts_end & !ts_begin) {   # end present; compute begin
+    x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
+    dsd$CSR_TIMESTAMP_END <- x$new_ts
+    dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts - ml
+    return(c(list(dsd = dsd), x))
+
+  } else if(ts_begin & !ts_end) {   # begin present; compute end
+    x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
+    dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts
+    dsd$CSR_TIMESTAMP_END <- x$new_ts + ml
+    return(c(list(dsd = dsd), x))
+
+  } else if(ts_mid & !ts_begin & !ts_end) {
+    x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_MID, tf, tz)
+    dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts - ml / 2
+    dsd$CSR_TIMESTAMP_END <- x$new_ts + ml / 2
+    dsd$CSR_TIMESTAMP_MID <- NULL
+    return(c(list(dsd = dsd), x))
+
+  } else if(ts_begin & ts_end) {  # both present; nothing to compute
+    x_begin <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
+    dsd$CSR_TIMESTAMP_BEGIN <- x_begin$new_ts
+    x_end <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
+    dsd$CSR_TIMESTAMP_END <- x_end$new_ts
+    return(list(dsd = dsd,
+                new_ts = 0,
+                na_ts = x_begin$na_ts | x_end$na_ts,
+                bad_examples = paste(x_begin$bad_examples, x_end$bad_examples, collapse = " ")))
+
+  } else {
+    stop("No timestamp begin or end provided")
+  }
+}
+
 #' Compute measurement interval for a dataset
 #'
 #' @param dsd Dataset data (a data frame)
