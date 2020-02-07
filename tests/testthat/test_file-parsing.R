@@ -72,7 +72,7 @@ test_that("read_description_file", {
               "CSR_INSTRUMENT", "CSR_MSMT_LENGTH",
               "CSR_FILE_FORMAT", "CSR_TIMESTAMP_FORMAT", "CSR_TIMESTAMP_TZ")
   dat <- c("site", "1", "2", "3",
-           "America/New_York", "igbp",
+           "America/New_York", "Grassland",
            "ins", "120",
            "ff", "tsf", "tstz")
   fd <- paste(labels, dat, sep = ":")
@@ -81,6 +81,12 @@ test_that("read_description_file", {
   expect_is(x, "data.frame")
   expect_equivalent(nrow(x), 1)
   expect_true(all(labels %in% names(x)))
+
+  # Errors on unknown IGBP
+  dat1 <- dat
+  dat1[which(labels  == "CSR_IGBP")] <- "igbp"
+  fd1 <- paste(labels, dat1, sep = ":")
+  expect_error(read_description_file("x", file_data = fd1))
 
   # Ignores unknown labels
   labels <- c(labels, "Unknown_label")

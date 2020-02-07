@@ -114,26 +114,36 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 read_description_file <- function(dataset_name, file_data = NULL) {
   f <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
-  tibble(CSR_DATASET = dataset_name,
-         CSR_SITE_NAME = extract_line(f, "CSR_SITE_NAME"),
-         CSR_LONGITUDE = extract_line(f, "CSR_LONGITUDE", numeric_data = TRUE),
-         CSR_LATITUDE = extract_line(f, "CSR_LATITUDE", numeric_data = TRUE),
-         CSR_ELEVATION = extract_line(f, "CSR_ELEVATION", numeric_data = TRUE),
-         CSR_TIMEZONE = extract_line(f, "CSR_TIMEZONE"),
-         CSR_IGBP = extract_line(f, "CSR_IGBP"),
-         CSR_NETWORK = extract_line(f, "CSR_NETWORK", required = FALSE),
-         CSR_SITE_ID = extract_line(f, "CSR_SITE_ID", required = FALSE),
-         CSR_INSTRUMENT = extract_line(f, "CSR_INSTRUMENT"),
-         CSR_MSMT_LENGTH = extract_line(f, "CSR_MSMT_LENGTH", numeric_data = TRUE),
-         CSR_FILE_FORMAT = extract_line(f, "CSR_FILE_FORMAT"),
-         CSR_TIMESTAMP_FORMAT = extract_line(f, "CSR_TIMESTAMP_FORMAT"),
-         CSR_TIMESTAMP_TZ = extract_line(f, "CSR_TIMESTAMP_TZ"),
-         CSR_PRIMARY_PUB = extract_line(f, "CSR_PRIMARY_PUB", required = FALSE),
-         CSR_OTHER_PUBS = extract_line(f, "CSR_OTHER_PUBS", required = FALSE),
-         CSR_DATA_URL = extract_line(f, "CSR_DATA_URL", required = FALSE),
-         CSR_ACKNOWLEDGMENT = extract_line(f, "CSR_ACKNOWLEDGMENT", required = FALSE),
-         CSR_NOTES = extract_line(f, "CSR_NOTES", required = FALSE),
-         CSR_EMBARGO = extract_line(f, "CSR_EMBARGO", required = FALSE))
+  x <- tibble(CSR_DATASET = dataset_name,
+              CSR_SITE_NAME = extract_line(f, "CSR_SITE_NAME"),
+              CSR_LONGITUDE = extract_line(f, "CSR_LONGITUDE", numeric_data = TRUE),
+              CSR_LATITUDE = extract_line(f, "CSR_LATITUDE", numeric_data = TRUE),
+              CSR_ELEVATION = extract_line(f, "CSR_ELEVATION", numeric_data = TRUE),
+              CSR_TIMEZONE = extract_line(f, "CSR_TIMEZONE"),
+              CSR_IGBP = extract_line(f, "CSR_IGBP"),
+              CSR_NETWORK = extract_line(f, "CSR_NETWORK", required = FALSE),
+              CSR_SITE_ID = extract_line(f, "CSR_SITE_ID", required = FALSE),
+              CSR_INSTRUMENT = extract_line(f, "CSR_INSTRUMENT"),
+              CSR_MSMT_LENGTH = extract_line(f, "CSR_MSMT_LENGTH", numeric_data = TRUE),
+              CSR_FILE_FORMAT = extract_line(f, "CSR_FILE_FORMAT"),
+              CSR_TIMESTAMP_FORMAT = extract_line(f, "CSR_TIMESTAMP_FORMAT"),
+              CSR_TIMESTAMP_TZ = extract_line(f, "CSR_TIMESTAMP_TZ"),
+              CSR_PRIMARY_PUB = extract_line(f, "CSR_PRIMARY_PUB", required = FALSE),
+              CSR_OTHER_PUBS = extract_line(f, "CSR_OTHER_PUBS", required = FALSE),
+              CSR_DATA_URL = extract_line(f, "CSR_DATA_URL", required = FALSE),
+              CSR_ACKNOWLEDGMENT = extract_line(f, "CSR_ACKNOWLEDGMENT", required = FALSE),
+              CSR_NOTES = extract_line(f, "CSR_NOTES", required = FALSE),
+              CSR_EMBARGO = extract_line(f, "CSR_EMBARGO", required = FALSE))
+
+  if(!x$CSR_IGBP %in% c("Wetland", "Evergreen needleleaf forest",
+                        "Deciduous broadleaf forest", "Open shrubland",
+                        "Evergreen broadleaf forest", "Mixed forests", "Woody savanna",
+                        "Grassland",
+                        "Poplar short rotation coppice plantation",  # TODO fix this
+                        "Savannas", "Desert woodland")) {
+    stop("Unknown IGBP: ", x$CSR_IGBP)
+  }
+  x
 }
 
 
@@ -371,38 +381,13 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
       diag$CSR_ASSUMED_MSMT_LENGTH <- ml
     }
 
-    ts_begin <- "CSR_TIMESTAMP_BEGIN" %in% names(dsd)
-    ts_mid <- "CSR_TIMESTAMP_MID" %in% names(dsd)
-    ts_end <- "CSR_TIMESTAMP_END" %in% names(dsd)
-
-    if(ts_end & !ts_begin) {   # end present; compute begin
-      x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
-      dsd$CSR_TIMESTAMP_END <- x$new_ts
-      dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts - ml
-    } else if(ts_begin & !ts_end) {   # begin present; compute end
-      x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
-      dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts
-      dsd$CSR_TIMESTAMP_END <- x$new_ts + ml
-    } else if(ts_mid & !ts_begin & !ts_end) {
-      x <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_MID, tf, tz)
-      dsd$CSR_TIMESTAMP_BEGIN <- x$new_ts - ml / 2
-      dsd$CSR_TIMESTAMP_END <- x$new_ts + ml / 2
-      dsd$CSR_TIMESTAMP_MID <- NULL
-    } else if(ts_begin & ts_end) {  # both present; nothing to compute
-      x_begin <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_BEGIN, tf, tz)
-      dsd$CSR_TIMESTAMP_BEGIN <- x_begin$new_ts
-      x_end <- convert_and_qc_timestamp(dsd$CSR_TIMESTAMP_END, tf, tz)
-      dsd$CSR_TIMESTAMP_END <- x_end$new_ts
-      x <- list(na_ts = x_begin$na_ts | x_end$na_ts,
-                bad_examples = paste(x_begin$bad_examples, x_end$bad_examples, collapse = " "))
-    } else {
-      stop("No timestamp begin or end provided")
-    }
+    ctlist <- calc_timestamps(dsd, ml, tf, tz)
+    dsd <- ctlist[["dsd"]]
 
     # Remove records with invalid timestamps
-    diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(x$na_ts)
-    diag$CSR_EXAMPLE_BAD_TIMESTAMPS <- x$bad_examples
-    dsd <- dsd[!x$na_ts,]
+    diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(ctlist$na_ts)
+    diag$CSR_EXAMPLE_BAD_TIMESTAMPS <- ctlist$bad_examples
+    dsd <- dsd[!ctlist$na_ts,]
 
     if(nrow(dsd) == 0) {
       stop("Timestamps could not be parsed with ", tf, " and tz ", tz)
@@ -427,12 +412,14 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     dsd$CSR_PORT <- as.numeric(dsd$CSR_PORT)
 
     # Rearrange columns
-    required <- c("CSR_PORT", "CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_FLUX")
-    other <- setdiff(names(dsd), required)
-    dsd <- dsd[c(required, sort(other))]
+    dsd <- rearrange_columns(dsd, required_cols =
+                               c("CSR_PORT", "CSR_TIMESTAMP_BEGIN",
+                                 "CSR_TIMESTAMP_END", "CSR_FLUX"))
 
     return(qaqc_data(dsd, diag))
   }
+
+  # If no data this gets returned
   list(dsd = dsd, diag = diag)
 }
 
