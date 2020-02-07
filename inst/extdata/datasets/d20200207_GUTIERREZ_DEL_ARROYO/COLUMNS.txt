@@ -12,7 +12,7 @@ CSR_FLUX,  		flux,
 CSR_PAR,		PAR
 CSR_PORT,		Chamber,
 CSR_RH,			RelHum,
-CSR_SM5,		sm
+CSR_SM10,		sm
 CSR_T5,			soiltemp
 CSR_TAIR,		AirTemp
 CSR_TIMESTAMP_END,	Timestamp

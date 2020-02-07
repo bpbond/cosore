@@ -10,5 +10,5 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,		CSR_EMAIL,						CSR_ORCID,					CSR_ROLE
-Omar,			Guttierez Del Arroyo,	omar.gutierrezdela@gmail.com,	0000-0001-9550-3476,	"Funding acquisition, Investigation, Data curation"
+Omar,			Guttierez del Arroyo,	omar.gutierrezdela@gmail.com,	0000-0001-9550-3476,	"Funding acquisition, Investigation, Data curation"
 Tana,			Wood,					tana.e.wood@usda.gov,			0000-0001-6322-6224,	"Funding acquisition, Investigation, Data curation"
