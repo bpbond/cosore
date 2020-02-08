@@ -8,8 +8,12 @@
 The `cosore` package consists of data, metadata, and software tools for COSORE, a reproducibility-oriented 
 community database for continuous soil respiration data.
 
-**To download the COSORE database, click on the
+**To use the database from R, install this `cosore` package.** This can be done using the `devtools` package: `devtools::install_github("bpbond/cosore")`.
+
+**To download the COSORE database in a flat-file format, click on the
 [Releases](https://github.com/bpbond/cosore/releases) tab above.**
+
+**A step-by-step guide to using COSORE data is available [here]().** [not available yet]
 
 **To contribute to the database, fill out the [metadata form](https://forms.gle/xRSY7WwmWKTL6iCv5).**
 
