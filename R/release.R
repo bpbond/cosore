@@ -24,6 +24,13 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
                              run_report = TRUE, zip_release = TRUE,
                              datasets = list_datasets()) {
 
+  stopifnot(is.character(path))
+  stopifnot(is.logical(vignette_rebuilt))
+  stopifnot(is.logical(force))
+  stopifnot(is.logical(run_report))
+  stopifnot(is.logical(zip_release))
+  stopifnot(is.character(datasets))
+
   if(!dir.exists(path)) {
     stop("Path ", path, " doesn't exist")
   }
@@ -96,7 +103,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
     f_path <- system.file(file.path("extdata", f),
                           package = "cosore", mustWork = TRUE)
     f_data <- readLines(f_path)
-    f_data <- substitute_info(f_data, file_descriptions)
+    f_data <- substitute_release_info(f_data, file_descriptions, db_size, force)
 
     message("Writing ", f, "...")
     writeLines(f_data, file.path(path, f))
@@ -147,10 +154,16 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
 #'
 #' @param f_data File data, a character vector
 #' @param file_descriptions A character vector of filenames and their descriptions
+#' @param db_size Database size, numeric
+#' @param force Ignore git dirty status? Logical
 #' @return The file data with substitutions made.
 #' @note Called only by \code{\link{csr_make_release}}.
-#' @keywords internal
-substitute_info <- function(f_data, file_descriptions) {
+#' @export
+substitute_release_info <- function(f_data, file_descriptions, db_size, force) {
+  stopifnot(is.character(f_data))
+  stopifnot(is.character(file_descriptions))
+  stopifnot(is.numeric(db_size))
+
   # Substitute in current information
   f_data <- gsub("%VERSION", packageVersion("cosore"), f_data)
   f_data <- gsub("%DATE", Sys.Date(), f_data)
@@ -161,7 +174,7 @@ substitute_info <- function(f_data, file_descriptions) {
   } else {
     f_data <- gsub("%GIT_SHA", paste(git_sha, "- BUT GIT DIRECTORY WAS NOT CLEAN ON RELEASE"), f_data)
   }
-  f_data <- gsub("%DATABASE_SIZE", format(db_size, "Mb"), f_data)
+  f_data <- gsub("%DATABASE_SIZE", format(db_size, units = "Mb"), f_data)
   gsub("%FILELIST", paste(
     paste0("* **", names(file_descriptions), "** -"),
     file_descriptions,
