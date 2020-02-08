@@ -22,13 +22,6 @@ fractional_doy <- function(year, doy) {
 }
 
 
-rename_col <- function(x, old, new) {
-  stopifnot(old %in% names(x))
-  colnames(x)[colnames(x) == old] <- new
-  x
-}
-
-
 #' Split a raw Licor (*.81x) file into pieces.
 #'
 #' @param filename Fully-qualified filename, character
@@ -83,7 +76,7 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
 #' @param path Path to search; normally the metadata are in \code{inst/extdata/datasets}
 #' @param write_files Write resulting files back out? Logical
 #' @return Nothing; run for side effects
-#' @keywords internal
+#' @export
 insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/extdata/datasets", write_files = TRUE) {
   files <- list.files(path, pattern = file, full.names = TRUE, recursive = TRUE)
   message("Found ", length(files), " files")
@@ -91,25 +84,30 @@ insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/ex
   for(f in files) {
     dat <- readLines(f)
     pat <- grep(pattern, dat)
-    if(after) {
-      ip <- pat + 1
-    } else {
-      ip <- pat
-    }
+    ip <- pat + after  # insertion point
 
     if(length(ip) > 1) {
       stop("Found more than one possible insertion point in ", f)
     }
     if(length(ip)) {
       # Have we already been here?
-      if(dat[ip] == newlines[1]) {
+      if(!after &&
+         length(dat[ip-1]) &&  # this occurs if inserting at very beginning
+         dat[ip-1] == newlines[1]) {
+        warning("Lines to insert already found at line ", ip-1, " in ", f)
+      } else if(after &&
+                !is.na(dat[ip]) &&  # this occurs if inserting at very end
+                dat[ip] == newlines[1]) {
         warning("Lines to insert already found at line ", ip, " in ", f)
       } else {
         message("Found insert point at line ", ip, " in ", f)
-        dat <- c(dat[1:(ip - 1)], newlines, dat[ip:length(dat)])
+        newdat <- c(dat[seq_len(ip - 1)], newlines)
+        if(ip <= length(dat)) {
+          newdat <- c(newdat, dat[ip:length(dat)])
+        }
         if(write_files) {
           message("...writing")
-          writeLines(dat, f)
+          writeLines(newdat, f)
         }
       }
     } else {

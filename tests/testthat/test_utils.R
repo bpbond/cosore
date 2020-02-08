@@ -271,3 +271,55 @@ test_that("check_dataset_names", {
   expect_identical(TSM_change(c("CSR_T2.5", "CSR_T", "CSR_0")), c("CSR_Tx", "CSR_T", "CSR_0"))
   expect_identical(TSM_change(c("blah", "blah2.5"), prefixes = "blah"), c("blah", "blahx"))
 })
+
+test_that("insert_line", {
+  # Create a test file
+  td <- tempdir()
+  f <- "testfile.txt"
+  fqfn <- file.path(td, f)
+  fd <- c("Line1", "Line2", "Line3")
+
+  # Handles zero matching files
+  expect_message(insert_line("testfile.txt", pattern = "Line2",
+                             newlines = "Line4", after = TRUE, path = td))
+
+  # Insert after
+  writeLines(fd, con = fqfn)
+  insert_line("testfile.txt", pattern = "Line2", newlines = "Line4", after = TRUE, path = td)
+  expect_identical(readLines(fqfn), c("Line1", "Line2", "Line4", "Line3"))
+  # Warn if new lines already present
+  expect_warning(insert_line("testfile.txt", pattern = "Line2",
+                             newlines = "Line4", after = TRUE, path = td),
+                 regexp = "already found")
+
+  # Insert before
+  writeLines(fd, con = fqfn)
+  insert_line("testfile.txt", pattern = "Line2", newlines = "Line4", after = FALSE, path = td)
+  expect_identical(readLines(fqfn), c("Line1", "Line4", "Line2", "Line3"))
+  # Warn if new lines already present
+  expect_warning(insert_line("testfile.txt", pattern = "Line2",
+                             newlines = "Line4", after = FALSE, path = td),
+                 regexp = "already found")
+
+  # Warning if pattern not present
+  expect_warning(insert_line("testfile.txt", pattern = "Line5",
+                             newlines = "Line4", after = FALSE, path = td),
+                 regexp = "No insert point found")
+
+  # Beginning and end of file
+  writeLines(fd, con = fqfn)
+  insert_line("testfile.txt", pattern = "Line1", newlines = "Line4", after = FALSE, path = td)
+  expect_identical(readLines(fqfn), c("Line4", "Line1", "Line2", "Line3"))
+  writeLines(fd, con = fqfn)
+  insert_line("testfile.txt", pattern = "Line3", newlines = "Line4", after = TRUE, path = td)
+  expect_identical(readLines(fqfn), c("Line1", "Line2", "Line3", "Line4"))
+
+  # Multiple insertion points
+  fd <- c("Line1", "Line2", "Line3", "Line2")
+  writeLines(fd, con = fqfn)
+  expect_error(insert_line("testfile.txt", pattern = "Line2",
+                           newlines = "Line4", after = FALSE, path = td),
+               regexp = "more than one")
+
+})
+
