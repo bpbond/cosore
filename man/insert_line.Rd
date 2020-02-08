@@ -26,4 +26,3 @@ Nothing; run for side effects
 \description{
 Insert new line(s) into existing metadata files.
 }
-\keyword{internal}
