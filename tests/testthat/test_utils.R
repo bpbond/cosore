@@ -150,6 +150,8 @@ test_that("csr_build", {
   expect_error(csr_build(quiet = 1))
 
   # not sure how to test this effectively at the moment
+  expect_message(csr_build(dataset_names = list_datasets()[1]), quiet = FALSE)
+  expect_silent(csr_build(dataset_names = list_datasets()[1], quiet = TRUE))
 })
 
 test_that("check_dataset_names", {
