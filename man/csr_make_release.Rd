@@ -5,7 +5,7 @@
 \title{Make a new COSORE release based on current package datasets.}
 \usage{
 csr_make_release(path, vignette_rebuilt = FALSE, force = FALSE,
-  run_report = TRUE, zip_release = TRUE)
+  run_report = TRUE, zip_release = TRUE, datasets = list_datasets())
 }
 \arguments{
 \item{path}{Path to write files to; must already exist}
@@ -17,6 +17,8 @@ csr_make_release(path, vignette_rebuilt = FALSE, force = FALSE,
 \item{run_report}{Include \code{combined_report.Rmd} in release? For testing}
 
 \item{zip_release}{Run /code{utils::zip()} on output files? For testing}
+
+\item{datasets}{Datasets to include, character; used for testing}
 }
 \value{
 Fully qualified name of zip file containing release.
