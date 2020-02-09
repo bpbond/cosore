@@ -31,7 +31,7 @@ database definition paper, and strongly encourage them to (i) cite all dataset p
 publications, and (ii) involve data contributors as co-authors when possible.
 
 **COSORE is not designed to be, and should not be treated as, a permanent
-data repository.** It is a community database, but not an institutionally-backed repository like Figshare, DataONE, ESS-DIVE, etc. We recommend depositing your data in one of these first, and providing its DOI in your COSORE dataset metadata.
+data repository.** It is a community database, but not an institutionally-backed repository like [Figshare](https://figshare.com), [DataONE](https://www.dataone.org), [ESS-DIVE](https://ess-dive.lbl.gov), etc. We recommend depositing your data in one of these first, and providing its DOI in your COSORE dataset metadata.
 
 ## Database design
 
