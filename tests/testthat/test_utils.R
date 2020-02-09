@@ -93,6 +93,7 @@ test_that("csr_standardize_data", {
   # Removing standardized files works
   csr_remove_stan_data(td, datasets = "ds1")
   expect_identical(list.files(td_dataset), character(0))
+  expect_message(csr_remove_stan_data("directory_doesnt_exist", datasets = "ds1"))
 
   # Handles no-data dataset: should create directory but write no files
   ds2 <- list(description = tibble(CSR_DATASET = "ds2"))

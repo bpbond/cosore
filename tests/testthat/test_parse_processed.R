@@ -5,7 +5,7 @@ context("parse-processed")
 create_test_files <- function(td, nfiles, sep, extension) {
   for(i in seq_len(nfiles)) {
     df <- data.frame(x = i, row.names = FALSE)
-    fqfn <- file.path(td, paste0("test", i, ".txt"))
+    fqfn <- file.path(td, paste0("test", i, extension))
     write.table(df, file = fqfn, sep = sep, col.names = TRUE, row.names = FALSE)
   }
 }
@@ -33,7 +33,7 @@ test_that("parse_PROCESSED_CSV", {
 
   # csv
   fnames <- create_test_files(td, nfiles = nfiles, sep = ",", extension = ".csv")
-  x <- parse_PROCESSED(td)
+  x <- parse_PROCESSED_CSV(td)
   expect_s3_class(x, "data.frame")
   expect_identical(x$x, seq_len(nfiles))
   unlink(fnames)
