@@ -30,8 +30,8 @@ The database is completely open for reuse, and licensed under the [CC BY 4](http
 database definition paper, and strongly encourage them to (i) cite all dataset primary
 publications, and (ii) involve data contributors as co-authors when possible.
 
-**This database is not designed for, and should not be treated as, a permanent
-data repository.** COSORE is a community database, but not an institutionally-backed repository like Figshare, DataONE, ESS-DIVE, etc. We recommend depositing your data in one of these first, and providing its DOI in your COSORE dataset metadata.
+**COSORE is not designed to be, and should not be treated as, a permanent
+data repository.** It is a community database, but not an institutionally-backed repository like Figshare, DataONE, ESS-DIVE, etc. We recommend depositing your data in one of these first, and providing its DOI in your COSORE dataset metadata.
 
 ## Database design
 
