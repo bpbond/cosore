@@ -22,6 +22,14 @@ test_that("extract_line", {
   # Data not present
   expect_error(extract_line(fd, "not there"))
   expect_identical(extract_line(fd, "not there", required = FALSE), NA_character_)
+
+  # Multiple entries and empty entry
+  labels <- c("One", "Two", "Two", "Three label")
+  dat <- c("1", "This is two", "2", "")
+  sep <- ":"
+  fd <- paste(labels, dat, sep = sep)
+  expect_error(extract_line(fd, "Two"), regexp = "2 entries found")
+#  expect_true(is.na(extract_line(fd, "Three label")))
 })
 
 test_that("list_datasets", {
