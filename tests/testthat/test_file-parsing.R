@@ -29,7 +29,8 @@ test_that("extract_line", {
   sep <- ":"
   fd <- paste(labels, dat, sep = sep)
   expect_error(extract_line(fd, "Two"), regexp = "2 entries found")
-#  expect_true(is.na(extract_line(fd, "Three label")))
+  expect_error(extract_line(fd, "Three label", required = TRUE), regexp = "blank entry")
+  expect_true(is.na(extract_line(fd, "Three label", required = FALSE)))
 })
 
 test_that("list_datasets", {
