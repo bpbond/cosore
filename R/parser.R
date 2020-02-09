@@ -26,11 +26,14 @@ extract_line <- function(file_data, line_label,
   }
 
   d <- trimws(gsub(rx, "", fd))
-  if(length(d) == 0) d <- NA_character_
+  if(nchar(d) == 0) d <- NA_character_
+  if(required & is.na(d)) {
+    stop("Required label ", line_label, " has a blank entry")
+  }
 
   if(numeric_data) {
     dn <- suppressWarnings(as.numeric(d))
-    if(d != "" & is.na(dn)) {
+    if(required & is.na(dn)) {
       stop(d, " could not be converted to numeric for ", line_label)
     }
     dn
@@ -118,13 +121,13 @@ read_description_file <- function(dataset_name, file_data = NULL) {
               CSR_SITE_NAME = extract_line(f, "CSR_SITE_NAME"),
               CSR_LONGITUDE = extract_line(f, "CSR_LONGITUDE", numeric_data = TRUE),
               CSR_LATITUDE = extract_line(f, "CSR_LATITUDE", numeric_data = TRUE),
-              CSR_ELEVATION = extract_line(f, "CSR_ELEVATION", numeric_data = TRUE),
+              CSR_ELEVATION = extract_line(f, "CSR_ELEVATION", numeric_data = TRUE, required = FALSE),
               CSR_TIMEZONE = extract_line(f, "CSR_TIMEZONE"),
               CSR_IGBP = extract_line(f, "CSR_IGBP"),
               CSR_NETWORK = extract_line(f, "CSR_NETWORK", required = FALSE),
               CSR_SITE_ID = extract_line(f, "CSR_SITE_ID", required = FALSE),
               CSR_INSTRUMENT = extract_line(f, "CSR_INSTRUMENT"),
-              CSR_MSMT_LENGTH = extract_line(f, "CSR_MSMT_LENGTH", numeric_data = TRUE),
+              CSR_MSMT_LENGTH = extract_line(f, "CSR_MSMT_LENGTH", numeric_data = TRUE, required = FALSE),
               CSR_FILE_FORMAT = extract_line(f, "CSR_FILE_FORMAT"),
               CSR_TIMESTAMP_FORMAT = extract_line(f, "CSR_TIMESTAMP_FORMAT"),
               CSR_TIMESTAMP_TZ = extract_line(f, "CSR_TIMESTAMP_TZ"),
