@@ -31,18 +31,20 @@ test_that("csr_make_release", {
 
   # Nonexistent path
   expect_error(csr_make_release("1", TRUE, TRUE, TRUE, TRUE, "1"))
+
   # Release directory not empty
   rd <- file.path(tempdir(), "test-temp")
   dir.create(rd)
   on.exit(unlink(rd))
   file.create(file.path(rd, "foo"))
-  expect_error(csr_make_release(path = rd, TRUE, TRUE, TRUE, TRUE, "1"))
+  expect_error(csr_make_release(path = rd, force = FALSE), regexp = "is not empty")
   unlink(file.path(rd, "foo"))
+
   # Vignette not rebuilt
-  expect_error(csr_make_release("1", vignette_rebuilt = FALSE, TRUE, TRUE, TRUE, "1"))
+  expect_error(csr_make_release(path = rd, force = TRUE, vignette_rebuilt = FALSE), regexp = "Vignette rebuilt")
 
   # At this point we use force=TRUE; testing git status seems hard
-  zip <- csr_make_release(rd, TRUE, TRUE, FALSE, zip_release = FALSE, datasets = "TEST_licordata")
+  zip <- csr_make_release(rd, TRUE, TRUE, FALSE, zip_release = FALSE, datasets = c("TEST_licordata", list_datasets()[1]))
   expect_type(zip, "character")
   expect_true(file.exists(file.path(rd, "description.csv")))
   expect_true(file.exists(file.path(rd, "contributors.csv")))
