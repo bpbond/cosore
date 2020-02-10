@@ -1,6 +1,118 @@
 # parse-LI8100.R
 
 
+#' Parse a LI-8100 (with LI-8150 multiplexer) data record
+#'
+#' @param record Character vector containing record data extracted from file
+#' @param results Pre-allocated results, a data.frame
+#' @param i Position in \code{results} in which to insert extracted data
+#' @param brn Base filename being used, for error reporting, character
+#' @param rec_start Record position within file, for error reporting, numeric
+#' @return A \code{data.frame} containing extracted data.
+#' @note This is called only by \code{\link{parse_LI8100_file}}.
+#' @keywords internal
+parse_LI8100_record <- function(record, results, i, bfn, rec_start) {
+
+  # Remove error lines in the data table
+  record <- record[grep("Chamber close not detected", record, invert = TRUE)]
+
+  # There are three categories of data here:
+  # 1 - record-level data that occur BEFORE the data table (e.g. port number)
+  # 2 - table data (e.g. CO2 measurements)
+  # 3 - record-level data AFTER the table (e.g. mean flux)
+
+  # Very rarely the record resets in the middle resulting in duplicate labels
+  nport <- grepl("^Port:", record)
+  narea <- grepl("^Area:", record)
+  nlabel <- grepl("^Label:", record)
+  ncrvfit <- grepl("^CrvFitStatus:", record)
+  if(sum(ncrvfit) == 2) {
+    #browser()
+  }
+  if(sum(narea) > 1 | sum(ncrvfit) > 1 | sum(nlabel) > 1) { #} | sum(ncrvfit) != 1 | sum(nport) != 1) {
+    results$Error[i] <- TRUE
+    message("Malformed record in ", bfn, " ", rec_start)
+    return(results)
+  }
+
+  # 1 - record-level data that occur BEFORE the data table
+  results$Label[i] <- extract_line(record, "Label", required = FALSE)
+  results$Port[i] <- as.integer(extract_line(record, "Port#", required = FALSE))
+  results$Area[i] <- as.numeric(extract_line(record, "Area", required = FALSE))
+  results$Comments[i] <- extract_line(record, "Comments", required = FALSE)
+
+  # 2 - table data
+  # Find the data table start
+  table_start <- grep("^Type\t", record)
+  if(length(table_start) != 1) {
+    results$Error[i] <- TRUE
+    message("No data table found in ", bfn, " ", rec_start)
+    return(results)
+  }
+
+  # Look for the next non-numeric line; this marks the end
+  table_stop <-  grep("^[A-Z]", record[-(1:table_start)])[1] + table_start - 1
+
+  # Sometimes the Licor aborts in the middle of a measurement. Handle gracefully
+  if(is.na(table_stop)) {
+    results$Error[i] <- TRUE
+    message("Licor abort in ", bfn, " ", rec_start)
+    return(results)
+  }
+
+  # Insert NA into any empty column (consecutive tabs, usually 'Annotation')
+  # Otherwise read.table() skips the column
+  record[(table_start+1):table_stop] <- gsub("\\t\\t", "\tNA\t", record[(table_start+1):table_stop])
+  # Remove any trailing "Annotation" column name, as the Licor doesn't write
+  # *anything* (/t, /tNA, etc) if it's not present
+  record[table_start] <- gsub("\\tAnnotation$", "", record[table_start])
+
+  con <- textConnection(record[table_start:table_stop])
+  dat <- try({
+    read.table(con, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+  }, silent = TRUE)
+  close(con)
+
+  if(class(dat) == "try-error") {
+    results$Error[i] <- TRUE
+    message("read.table error in ", bfn, " ", i, " ", rec_start)
+    return(results)
+  }
+  # Check whether an error (e.g. chamber closing problem) occurred
+  errorlines <- which(dat$Type < 0)
+  if(length(errorlines) || class(dat) == "try-error") {
+    results$Error[i] <- TRUE
+    message("Licor error in ", bfn, " ", rec_start)
+    return(results)
+  }
+
+  # Pull out the table-level data we're interested in
+  index <- which(dat$Type == 1 & dat$Etime >= 0)
+  if(!length(index)) {
+    results$Error[i] <- TRUE
+    message("No valid data in ", bfn, " ", rec_start)
+    return(results)
+  }
+  results$Timestamp_begin[i] <- dat$Date[1]  # first timestamp
+  results$Timestamp_end[i] <- dat$Date[nrow(dat)]  # last timestamp
+  results$Tcham[i] <- mean(dat$Tcham[index])
+  if("V1" %in% names(dat)) results$V1[i] <- mean(dat$V1[index])
+  if("V2" %in% names(dat)) results$V2[i] <- mean(dat$V2[index])
+  if("V3" %in% names(dat)) results$V3[i] <- mean(dat$V3[index])
+  if("V4" %in% names(dat)) results$V4[i] <- mean(dat$V4[index])
+  results$RH[i] <- mean(dat$RH[index])
+  results$Cdry[i] <- mean(dat$Cdry[index])
+
+  # 3 - record-level data AFTER the table
+  # This is tricky, as the CrvFitStatus line might or might not be there
+  cfs <- extract_line(record, "CrvFitStatus", required = FALSE)
+  if(cfs == "" | is.na(cfs)) cfs <- "Lin"  # ?
+  results$CrvFitStatus[i] <- cfs
+  results$Flux[i] <- extract_line(record, paste0(cfs, "_Flux"), required = TRUE, numeric_data = TRUE)
+  results$R2[i] <- extract_line(record, paste0(cfs, "_R2"), required = TRUE, numeric_data = TRUE)
+  return(results)
+}
+
 #' Parse a LI-8100 (with LI-8150 multiplexer) data file
 #'
 #' @param filename Filename, character
@@ -50,102 +162,8 @@ parse_LI8100_file <- function(filename) {
       message(i, " ", bfn, " ", record_starts[i], ":", record_end)
       record <- filedata[record_starts[i]:record_end]
 
-      # Remove error lines in the data table
-      record <- record[grep("Chamber close not detected", record, invert = TRUE)]
-
-      # There are three categories of data here:
-      # 1 - record-level data that occur BEFORE the data table (e.g. port number)
-      # 2 - table data (e.g. CO2 measurements)
-      # 3 - record-level data AFTER the table (e.g. mean flux)
-
-      # Very rarely the record resets in the middle resulting in duplicate labels
-      nport <- grepl("^Port:", record)
-      narea <- grepl("^Area:", record)
-      nlabel <- grepl("^Label:", record)
-      ncrvfit <- grepl("^CrvFitStatus:", record)
-      if(sum(ncrvfit) == 2) {
-        #browser()
-      }
-      if(sum(narea) > 1 | sum(ncrvfit) > 1 | sum(nlabel) > 1) { #} | sum(ncrvfit) != 1 | sum(nport) != 1) {
-        results$Error[i] <- TRUE
-        message("Malformed record in ", bfn, " ", record_starts[i], ":", record_end)
-        next()
-      }
-
-      # 1 - record-level data that occur BEFORE the data table
-      results$Label[i] <- extract_line(record, "Label", required = FALSE)
-      results$Port[i] <- as.integer(extract_line(record, "Port#", required = FALSE))
-      results$Area[i] <- as.numeric(extract_line(record, "Area", required = FALSE))
-      results$Comments[i] <- extract_line(record, "Comments", required = FALSE)
-
-      # 2 - table data
-      # Find the data table start
-      table_start <- grep("^Type\t", record)
-      if(length(table_start) != 1) {
-        results$Error[i] <- TRUE
-        message("No data table found in ", bfn, " ", record_starts[i], ":", record_end)
-        next()
-      }
-
-      # Look for the next non-numeric line; this marks the end
-      table_stop <-  grep("^[A-Z]", record[-(1:table_start)])[1] + table_start - 1
-
-      # Sometimes the Licor aborts in the middle of a measurement. Handle gracefully
-      if(is.na(table_stop)) {
-        results$Error[i] <- TRUE
-        message("Licor abort in ", bfn, " ", record_starts[i], ":", record_end)
-        next()
-      }
-
-      # Insert NA into any empty column (consecutive tabs, usually 'Annotation')
-      # Otherwise read.table() skips the column
-      record[(table_start+1):table_stop] <- gsub("\\t\\t", "\tNA\t", record[(table_start+1):table_stop])
-      # Remove any trailing "Annotation" column name, as the Licor doesn't write
-      # *anything* (/t, /tNA, etc) if it's not present
-      record[table_start] <- gsub("\\tAnnotation$", "", record[table_start])
-
-      con <- textConnection(record[table_start:table_stop])
-      dat <- try({
-        read.table(con, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
-      }, silent = TRUE)
-      close(con)
-
-      if(class(dat) == "try-error") {
-        results$Error[i] <- TRUE
-        message("read.table error in ", bfn, " ", i, " ", record_starts[i], ":", record_end)
-        next
-      }
-      # Check whether an error (e.g. chamber closing problem) occurred
-      errorlines <- which(dat$Type < 0)
-      if(length(errorlines) || class(dat) == "try-error") {
-        results$Error[i] <- TRUE
-        message("Licor error in ", bfn, " ", record_starts[i], ":", record_end)
-        next()
-      }
-
-      # Pull out the table-level data we're interested in
-      index <- which(dat$Type == 1 & dat$Etime >= 0)
-      if(!length(index)) {
-        message("No valid data in ", bfn, " ", record_starts[i], ":", record_end)
-        next()
-      }
-      results$Timestamp_begin[i] <- dat$Date[1]  # first timestamp
-      results$Timestamp_end[i] <- dat$Date[nrow(dat)]  # last timestamp
-      results$Tcham[i] <- mean(dat$Tcham[index])
-      if("V1" %in% names(dat)) results$V1[i] <- mean(dat$V1[index])
-      if("V2" %in% names(dat)) results$V2[i] <- mean(dat$V2[index])
-      if("V3" %in% names(dat)) results$V3[i] <- mean(dat$V3[index])
-      if("V4" %in% names(dat)) results$V4[i] <- mean(dat$V4[index])
-      results$RH[i] <- mean(dat$RH[index])
-      results$Cdry[i] <- mean(dat$Cdry[index])
-
-      # 3 - record-level data AFTER the table
-      # This is tricky, as the CrvFitStatus line might or might not be there
-      cfs <- extract_line(record, "CrvFitStatus", required = FALSE)
-      if(cfs == "" | is.na(cfs)) cfs <- "Lin"  # ?
-      results$CrvFitStatus[i] <- cfs
-      results$Flux[i] <- extract_line(record, paste0(cfs, "_Flux"), required = TRUE, numeric_data = TRUE)
-      results$R2[i] <- extract_line(record, paste0(cfs, "_R2"), required = TRUE, numeric_data = TRUE)
+      # Parse record
+      results <- parse_LI8100_record(record, results, i, bfn, record_starts[i])
     } # for i
 
     results
