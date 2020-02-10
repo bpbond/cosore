@@ -87,16 +87,16 @@ This file contains arbitrary ancillary data: stand structure, carbon cycle, dist
 
 ## Operation
 
-When asked (via `csr_build()` to build the synthesis dataset, the `cosore` R package:
+Three primary functions are available for R users:
+* `csr_database()` returns a summary data frame about the entire database (all constituent datasets)
+* `csr_dataset()` returns a single _dataset_, as a list of data frames
+* `csr_table()` returns a single _table_, across one or many datasets
+* Reports can be generated for the overall database and each individual dataset.
+
+There is also `csr_build()` for developers, which:
 * Scans for and parses metadata on all installed datasets
 * If standardized (already imported data) is available for a dataset, loads that
 * If not, parses, QA/QCs, and transforms raw contributed data into a standardized form
-* This is done via a [drake](https://github.com/ropensci/drake) pipeline, so we only 
-rebuild datasets when needed
-* Currently a `list` is returned, in which each entry is an individual dataset, itself
-a list comprised of dataset objects (the description, contributors, etc., tables)
-* User-side convenience functions generate data frames ready (or readier) for analysis
-* Reports are generated for the overall database and each individual dataset.
 
 ## Data access
 
@@ -106,4 +106,4 @@ a list comprised of dataset objects (the description, contributors, etc., tables
 
 * Structured/standardized continuous IRGA data
 * Raw LI-8100A data
-* Other data, e.g. long term survey measurements
+* Unusual or long-term survey (i.e. not continuous) measurements
