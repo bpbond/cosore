@@ -100,7 +100,7 @@ There is also `csr_build()` for developers, which:
 
 ## Data access
 
-* The easiest way to get the data is on the [Releases](https://github.com/bpbond/cosore/releases) page.
+R users will find it easiest to install this package and then use the functions above. Anyone can also download flat (csv) files from the [Releases](https://github.com/bpbond/cosore/releases) page.
 
 ## Priorities
 
