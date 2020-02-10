@@ -15,4 +15,12 @@ test_that("dataset read and report", {
   # No-data dataset
   expect_message(x_no_data <- read_dataset("TEST_licordata"))
   csr_report_dataset(x_no_data, output_dir = tempdir(), quiet = TRUE)
+
+  # Unusual error conditions
+  for(fn in list.files(pattern = "*.txt", path = "test_raw_problems", full.names = TRUE)) {
+    rec <- readLines(fn)
+    x <- parse_LI8100_record(rec, data.frame(), 0, basename(fn), 0)
+    # One of these errors should print a message and return data frame with `Error` column
+    expect_true("Error" %in% names(x), info = fn)
+  }
 })
