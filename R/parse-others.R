@@ -327,12 +327,12 @@ parse_d20190430_DESAI <- function(path) {
   rbind_list(results)
 }
 
-#' Parse a custom file from d20200212_AKATA.
+#' Parse a custom file from d20200212_ATAKA.
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
-parse_d20200212_AKATA <- function(path) {
+parse_d20200212_ATAKA <- function(path) {
   dat <- parse_PROCESSED(path)
 
   # Flux fields

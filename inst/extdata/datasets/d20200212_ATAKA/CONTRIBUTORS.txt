@@ -10,5 +10,5 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,	CSR_ROLE
-Mioko,			Akata,				teshimamioko@yahoo.co.jp,	,			"Funding acquisition, Investigation, Data curation"
-Kominami,		Yuji,				kominy@ffpri.affrc.go.jp, 	,			Investigation
+Mioko,			Ataka,				teshimamioko@yahoo.co.jp,	,			"Funding acquisition, Investigation, Data curation"
+Yuji,			Kominami,			kominy@ffpri.affrc.go.jp, 	,			Investigation
