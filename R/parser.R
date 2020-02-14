@@ -140,6 +140,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 
   if(!x$CSR_IGBP %in% c("Wetland", "Evergreen needleleaf forest",
                         "Deciduous broadleaf forest", "Open shrubland",
+                        "Closed shrubland",
                         "Evergreen broadleaf forest", "Mixed forests", "Woody savanna",
                         "Grassland",
                         "Poplar short rotation coppice plantation",  # TODO fix this
