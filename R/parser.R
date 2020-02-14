@@ -142,7 +142,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
                         "Deciduous broadleaf forest", "Open shrubland",
                         "Closed shrubland",
                         "Evergreen broadleaf forest", "Mixed forests", "Woody savanna",
-                        "Grassland",
+                        "Grassland", "Cropland",
                         "Poplar short rotation coppice plantation",  # TODO fix this
                         "Savannas", "Desert woodland")) {
     stop("Unknown IGBP: ", x$CSR_IGBP)
