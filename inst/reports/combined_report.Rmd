@@ -150,7 +150,7 @@ ggplot(x, aes(x = CSR_FLUX)) + geom_histogram(bins = 30) +
 ```{r database-growth}
 x <- system.file(file.path("extdata", "database_growth.csv"), 
                  package = "cosore", mustWork = TRUE)
-growth <- read.csv(x, colClasses = c("Date", rep("numeric", 4)))
+growth <- read.csv(x, colClasses = c("Date", rep("numeric", 3), "character"))
 growth <- tidyr::gather(growth, Variable, Value, Records, Size_Mb, Datasets)
 ggplot(growth, aes(Date, Value, label = Version)) + 
   geom_line() + geom_label() + 
