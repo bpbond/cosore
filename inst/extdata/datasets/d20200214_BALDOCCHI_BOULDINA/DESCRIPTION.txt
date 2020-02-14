@@ -27,8 +27,8 @@
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
 CSR_SITE_NAME: Bouldin Alfalfa
-CSR_LONGITUDE: 38.09915382
-CSR_LATITUDE: -121.49933727
+CSR_LONGITUDE: -121.49933727
+CSR_LATITUDE: 38.09915382
 CSR_ELEVATION: -2.7
 CSR_TIMEZONE: Etc/GMT+8
 CSR_IGBP: Cropland
