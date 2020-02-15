@@ -7,17 +7,8 @@
 #	Computation: optional R-parseable computation to change units, etc.
 #	Notes: optional; generally to explain the computation
 #
-Database,		Dataset,	Computation,				Notes
-CSR_CDRY,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_ERROR,		Error,
-CSR_FLUX,  		Flux,
-CSR_LABEL,		Label,
-CSR_PORT,		Port,
-CSR_R2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V4
-CSR_T5,			V3
-CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP,	Timestamp
+Database,				Dataset,						Computation,	Notes
+CSR_FLUX,  				Flux_umolm2-1s-1 (FD20160001),
+CSR_PORT,				datetime,						1,				One chamber
+CSR_T5,					SensorTemp_degC (FD20160001)
+CSR_TIMESTAMP_BEGIN,	datetime
