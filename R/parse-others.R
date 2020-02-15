@@ -349,3 +349,61 @@ parse_d20200212_ATAKA <- function(path) {
   rbind_list(results)
 }
 
+#' Parse a custom file from d20200214_BALDOCCHI_BOULDINC.
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20200214_BALDOCCHI_BOULDINC <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  cn <- c("datetime", "flux", "t5")
+  x <- dat[c(1:3)]
+  colnames(x) <- cn
+  x$port <- 1
+  y <- dat[c(4:6)]
+  colnames(y) <- cn
+  y$port <- 2
+  z <- dat[c(7:9)]
+  colnames(z) <- cn
+  z$port <- 3
+
+  rbind(x, y, z)
+}
+
+#' Parse a custom file from d20200214_BALDOCCHI_VAIRA.
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20200214_BALDOCCHI_VAIRA <- function(path) {
+  parse_d20200214_BALDOCCHI_BOULDINC(path)
+}
+
+#' Parse a custom file from d20200214_BALDOCCHI_TONZI.
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20200214_BALDOCCHI_TONZI <- function(path) {
+
+  # These files have different headers. Who does that?!?
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  cn <- c("datetime", "flux", "t5")
+  results <- list()
+  for(f in files) {
+    dat <- read.csv(f, na.strings = c("NA", "-9999", "#VALUE!", "#REF!"),
+                         stringsAsFactors = FALSE,
+                         check.names = FALSE)
+    x <- dat[c(1:3)]
+    colnames(x) <- cn
+    x$port <- 1
+    y <- dat[c(4:6)]
+    colnames(y) <- cn
+    y$port <- 2
+    results[[f]] <- rbind(x, y)
+    results[[f]]$CSR_ERROR <- FALSE
+  }
+
+  rbind_list(results)
+}
