@@ -127,7 +127,6 @@ Bad timestamp examples     | `r diag$CSR_EXAMPLE_BAD_TIMESTAMPS`
 Records removed (no flux)   | `r diag$CSR_RECORDS_REMOVED_NA`
 Records (flux < `r diag$CSR_FLUX_LOWBOUND`)  | `r diag$CSR_RECORDS_REMOVED_TOOLOW`
 Records (flux > `r diag$CSR_FLUX_HIGHBOUND`) | `r diag$CSR_RECORDS_REMOVED_TOOHIGH`
-Columns dropped     | `r diag$CSR_COLUMNS_DROPPED`
 Bad temperature values removed | `r diag$CSR_BAD_TEMPERATURE`
 Size                | `r format(object.size(ds), "Mb")`
 

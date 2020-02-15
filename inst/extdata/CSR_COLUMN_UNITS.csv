@@ -101,7 +101,6 @@ contributors,CSR_ROLE,CReDiT role; see https://www.casrai.org/credit.html,charac
 #,,
 diagnostics,CSR_ASSUMED_MSMT_LENGTH,If no measurement length is provided this is set to assumed value,numeric,s,FALSE
 diagnostics,CSR_BAD_TEMPERATURE,Number of observations removed for bad temperature values,numeric,,TRUE
-diagnostics,CSR_COLUMNS_DROPPED,Number of columns dropped because no mapping available,numeric,,TRUE
 diagnostics,CSR_EXAMPLE_BAD_TIMESTAMPS,Example bad timestamps,character,,FALSE
 diagnostics,CSR_FLUX_HIGHBOUND,Flux high bound; values above this are removed,numeric,,TRUE
 diagnostics,CSR_FLUX_LOWBOUND,Flux low bound; values above this are removed,numeric,,TRUE

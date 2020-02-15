@@ -189,7 +189,7 @@ test_that("map_columns", {
   dat <- data.frame(x = 1:2, y = 2:3)
   columns <- data.frame(Database = "z", Dataset = "x", stringsAsFactors = FALSE)
   res <- map_columns(dat, columns)
-  expect_identical(res, data.frame(z = 1:2, y = 2:3))
+  expect_equivalent(res, data.frame(z = 1:2))
 
   # handles factors
   columns <- data.frame(Database = "z", Dataset = "x")
@@ -197,11 +197,9 @@ test_that("map_columns", {
 
   # computes on columns
   columns <- data.frame(Database = "z", Dataset = "x", Computation = "x * 2", stringsAsFactors = FALSE)
-  expect_identical(map_columns(dat, columns), data.frame(y = 2:3, z = c(2, 4)))
+  expect_equivalent(map_columns(dat, columns), data.frame(z = c(2, 4)))
 
   # errors on nonexistent or duplicated columns
   columns <- data.frame(Database = "z", Dataset = "q")
-  expect_error(map_columns(dat, columns))
-  columns <- data.frame(Database = "x", Dataset = "x")
   expect_error(map_columns(dat, columns))
 })

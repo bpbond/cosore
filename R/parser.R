@@ -275,18 +275,15 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
 #' computed, as defined by \code{columns}.
 #' @keywords internal
 #' @examples
-#' \dontrun{
 #' dat <- data.frame(x = 1:3)
 #' columns <- data.frame(Database = "y", Dataset = "x", Computation = "x * 2")
 #' map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
-#' }
 map_columns <- function(dat, columns) {
   if(!is.data.frame(dat)) return(NULL)
 
   stopifnot(is.data.frame(columns))
   stopifnot(all(c("Database", "Dataset") %in% names(columns)))
   stopifnot(!any(duplicated(columns$Database)))
-  stopifnot(!any(duplicated(columns$Dataset)))
 
   if(!"Computation" %in% names(columns)) {
     columns$Computation <- NA_character_
@@ -297,6 +294,8 @@ map_columns <- function(dat, columns) {
   columns$Dataset <- as.character(columns$Dataset)
   columns$Computation <- as.character(columns$Computation)
 
+  newdat <- tibble(.rows = nrow(dat))
+
   for(col in seq_len(nrow(columns))) {
     dbcol <- columns$Database[col]
     dscol <- columns$Dataset[col]
@@ -304,22 +303,19 @@ map_columns <- function(dat, columns) {
 
     # Apply map/computation
     if(!dscol %in% names(dat)) {
-      stop("Column ", dscol, " not found in data")
-    }
-    if(dscol == dbcol) {
-      stop("Identically-named columns in dataset and database")
+      stop("Column ", dscol, " not found in data, which has columns ",
+           paste(names(dat), collapse = ","))
     }
     if(is.na(comp) | comp == "") {
       message("\t", dbcol, " <- ", dscol)
-      names(dat)[which(names(dat) == dscol)] <- dbcol  # rename
+      newdat[[dbcol]] <- dat[[dscol]]
     } else {
       message("\t", dbcol, " <- ", comp)
-      dat[[dbcol]] <- with(dat, eval(parse(text = comp)))
-      dat[[dscol]] <- NULL  # remove original column
+      newdat[[dbcol]] <- with(dat, eval(parse(text = comp)))
     }
   }
 
-  dat
+  newdat
 }
 
 #' Read a complete dataset from raw files
@@ -337,7 +333,6 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 
   # Processing statistics table
   diag <- tibble(CSR_RECORDS = 0,
-                 CSR_COLUMNS_DROPPED = "",
                  CSR_RECORDS_REMOVED_NA = 0,
                  CSR_RECORDS_REMOVED_ERR = 0,
                  CSR_RECORDS_REMOVED_TOOLOW = 0,
@@ -403,11 +398,6 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     # Diagnostic information
     diag$CSR_TIME_BEGIN <- format(min(dsd$CSR_TIMESTAMP_BEGIN), format = "%Y-%m-%d")
     diag$CSR_TIME_END <- format(max(dsd$CSR_TIMESTAMP_END), format = "%Y-%m-%d")
-
-    # Drop any unmapped columns
-    drops <- grep("^CSR_", names(dsd), invert = TRUE)
-    diag$CSR_COLUMNS_DROPPED <- paste(names(dsd)[drops], collapse = ", ")
-    dsd[drops] <- NULL
 
     # Add port column if necessary
     if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
