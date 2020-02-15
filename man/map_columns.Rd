@@ -21,6 +21,6 @@ Map data columns to new names/values.
 \examples{
 dat <- data.frame(x = 1:3)
 columns <- data.frame(Database = "y", Dataset = "x", Computation = "x * 2")
-map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
+cosore:::map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
 }
 \keyword{internal}
