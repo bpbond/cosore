@@ -43,4 +43,4 @@ CSR_PRIMARY_PUB:
 CSR_OTHER_PUBS:
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: 
-CSR_NOTE: Vaira Ranch is an active cattle ranch. The chambers are placed inside a grazing exclosure.
+CSR_NOTE: Vaira Ranch is an active cattle ranch. The chambers are placed inside a grazing exclosure. The eosFD chambers were installed in areas with a mix of grass and herb species, so it is monitoring multiple species, such as purple false brome, smooth cat's ear, and rose clover. 
