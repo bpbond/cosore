@@ -116,12 +116,14 @@ addTiles(lflt)
 
 ## Temporal coverage
 
-```{r temporal}
+```{r temporal, fig.height=8}
 coverage <- cosore:::rbind_list(coverage)
 cover_day <- unique(coverage) # this is super slow compared to dplyr::distinct!
-dpm <- aggregate(Day ~ CSR_DATASET + CSR_IGBP + Year + Month, data = cover_day, length)
+dpm <- aggregate(Day ~ CSR_DATASET + CSR_IGBP + Year + Month, 
+                 data = cover_day, length)
 dpm$Time <- lubridate::ymd(paste(dpm$Year, dpm$Month, "1"))
-ggplot(dpm, aes(Time, CSR_DATASET, fill = Day)) + geom_tile(na.rm = TRUE) +
+ggplot(dpm, aes(Time, CSR_DATASET, fill = Day)) + 
+  geom_tile(na.rm = TRUE) +
   scale_fill_continuous("Days per month",
                         high = "#132B43", low = "#56B1F7")
 ```
