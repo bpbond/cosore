@@ -10,5 +10,4 @@
 Database,				Dataset,						Computation,	Notes
 CSR_FLUX,  				Flux_umolm2-1s-1 (FD20160001),
 CSR_PORT,				datetime,						1,				One chamber
-CSR_T5,					SensorTemp_degC (FD20160001)
 CSR_TIMESTAMP_BEGIN,	datetime

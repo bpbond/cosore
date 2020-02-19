@@ -10,5 +10,4 @@
 Database,				Dataset,	Computation,				Notes
 CSR_FLUX,  				flux,
 CSR_PORT,				port,
-CSR_T5,					t5
 CSR_TIMESTAMP_BEGIN,	datetime
