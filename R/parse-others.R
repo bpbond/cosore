@@ -349,12 +349,12 @@ parse_d20200212_ATAKA <- function(path) {
   rbind_list(results)
 }
 
-#' Parse a custom file from d20200214_BALDOCCHI_BOULDINC.
+#' Parse a custom file from d20200214_SZUTU_BOULDINC.
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
-parse_d20200214_BALDOCCHI_BOULDINC <- function(path) {
+parse_d20200214_SZUTU_BOULDINC <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
   cn <- c("datetime", "flux", "t5")
@@ -371,21 +371,21 @@ parse_d20200214_BALDOCCHI_BOULDINC <- function(path) {
   rbind(x, y, z)
 }
 
-#' Parse a custom file from d20200214_BALDOCCHI_VAIRA.
+#' Parse a custom file from d20200214_SZUTU_VAIRA.
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
-parse_d20200214_BALDOCCHI_VAIRA <- function(path) {
-  parse_d20200214_BALDOCCHI_BOULDINC(path)
+parse_d20200214_SZUTU_VAIRA <- function(path) {
+  parse_d20200214_SZUTU_BOULDINC(path)
 }
 
-#' Parse a custom file from d20200214_BALDOCCHI_TONZI.
+#' Parse a custom file from d20200214_SZUTU_TONZI.
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
-parse_d20200214_BALDOCCHI_TONZI <- function(path) {
+parse_d20200214_SZUTU_TONZI <- function(path) {
 
   # These files have different headers. Who does that?!?
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)

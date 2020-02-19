@@ -10,5 +10,6 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,				CSR_ORCID,	CSR_ROLE
+Daphne,			Szutu,				daphneszutu@berkeley.edu,,			"Investigation, Data curation"
 Dennis,			Baldocchi,			baldocchi@berkeley.edu,	,			"Funding acquisition, Investigation"
 Joseph,			Verfaillie,			jverfail@berkeley.edu,	,			"Investigation, Data curation"
