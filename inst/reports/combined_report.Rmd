@@ -3,6 +3,9 @@ title: "COSORE report"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
 ---
+[![Build Status](https://travis-ci.org/bpbond/cosore.svg?branch=master)](https://travis-ci.org/bpbond/cosore) 
+
+[![codecov](https://codecov.io/gh/bpbond/cosore/branch/master/graph/badge.svg)](https://codecov.io/gh/bpbond/cosore)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
