@@ -138,7 +138,9 @@ read_description_file <- function(dataset_name, file_data = NULL) {
               CSR_NOTES = extract_line(f, "CSR_NOTES", required = FALSE),
               CSR_EMBARGO = extract_line(f, "CSR_EMBARGO", required = FALSE))
 
-  if(!x$CSR_IGBP %in% c("Wetland", "Evergreen needleleaf forest",
+  if(!x$CSR_IGBP %in% c("Wetland",
+                        "Evergreen needleleaf forest",
+                        "Evergreen needleleaf plantation", # TODO
                         "Deciduous broadleaf forest", "Open shrubland",
                         "Closed shrubland",
                         "Evergreen broadleaf forest", "Mixed forests", "Woody savanna",
