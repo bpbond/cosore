@@ -10,6 +10,6 @@
 Database,			Dataset,				Computation,		Notes
 CSR_FLUX,  			flux (umol/m2/s)
 CSR_PORT,			flux (umol/m2/s),		1
-CSR_SM5,			soil_water (vol/vol)
-CSR_T5,				soil_temp (degree C)
+CSR_SM10,			soil_water (vol/vol)
+CSR_T10,			soil_temp (degree C)
 CSR_TIMESTAMP_END,	sample_time

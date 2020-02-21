@@ -10,4 +10,4 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,					CSR_ROLE
-Shih-Chieh,		Chang,				scchang@gms.ndhu.edu.tw,	
+Shih-Chieh,		Chang,				scchang@gms.ndhu.edu.tw,	0000-0002-8236-227X
