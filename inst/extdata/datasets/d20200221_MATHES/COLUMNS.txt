@@ -7,27 +7,9 @@
 #	Computation: optional R-parseable computation to change units, etc.
 #	Notes: optional; generally to explain the computation
 #
-# Examples:
-#
-# Database,	Dataset,	Computation,					Notes
-# CSR_T5	V1,
-# CSR_FLUX, Flux, 		Flux / 12 * 10^6 / 24/60/60, 	gC/day to µmol/s - all ports
-# CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
-# CSR_TIMESTAMP_BEGIN,	Timestamp
-# CSR_TIMESTAMP_MID,	Timestamp
-# CSR_TIMESTAMP_END,	Timestamp
-#
-Database,		Dataset,	Computation,				Notes
-CSR_CDRY,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_ERROR,		Error,
-CSR_FLUX,  		Flux,
-CSR_LABEL,		Label,
-CSR_PORT,		Port,
-CSR_R2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V4
-CSR_T5,			V3
-CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP,	Timestamp
+Database,			Dataset,	Computation,				Notes
+CSR_FLUX,  			EFFLUX,
+CSR_LABEL,			Plot_ID
+CSR_PORT,			Plot_ID,	as.integer(as.factor(Plot_ID))
+CSR_T7,				Tsoil_C,
+CSR_TIMESTAMP_END,	Year,		"paste(Year, DOY, `HH:MM:SS`)"
