@@ -11,4 +11,4 @@
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,							CSR_ORCID,					CSR_ROLE
 Nadine,		Ruehr,			nadine.ruehr@kit.edu,			0000-0001-5989-7463,	"Investigation, Data curation"
-Buchmann,	Nina,			nina.buchmann@usys.ethz.ch,		0000-0003-0826-2980,	Funding acquisition
+Nina,	Buchmann,			nina.buchmann@usys.ethz.ch,		0000-0003-0826-2980,	Funding acquisition
