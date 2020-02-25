@@ -99,7 +99,7 @@ kableExtra::kable_styling(x, full_width = FALSE, position = "left")
 if(is.data.frame(dsd)) {
   x <- cosore:::compute_interval(dsd)
   results <- list()
-  for(yr in unique(x$Year)) {
+  for(yr in na.omit(unique(x$Year))) {
     d <- x[x$Year == yr,]
     results[[yr]] <- tibble(Year = yr,
                             `Interval (min)` = round(weighted.mean(d$Interval, d$N), 1))
