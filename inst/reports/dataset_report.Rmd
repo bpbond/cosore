@@ -102,7 +102,7 @@ if(is.data.frame(dsd)) {
   for(yr in na.omit(unique(x$Year))) {
     d <- x[x$Year == yr,]
     results[[yr]] <- tibble(Year = yr,
-                            `Interval (min)` = round(weighted.mean(d$Interval, d$N), 1))
+                            `Interval (min)` = round(weighted.mean(d$Interval, d$N, na.rm = TRUE), 1))
   }
   results <- cosore:::rbind_list(results)
   kableExtra::kable_styling(knitr::kable(results), full_width = FALSE, position = "left")
