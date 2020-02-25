@@ -493,6 +493,7 @@ redo_diagnostics <- function() { # nocov start
 
     if(is.data.frame(dsd) & nrow(dsd)) {
       # Diagnostic information
+      diag$CSR_DATASET <- NULL  # this is added by csr_table(); remove
       diag$CSR_TIME_BEGIN <- format(min(dsd$CSR_TIMESTAMP_BEGIN), format = "%Y-%m-%d")
       diag$CSR_TIME_END <- format(max(dsd$CSR_TIMESTAMP_END), format = "%Y-%m-%d")
       outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
