@@ -326,3 +326,18 @@ test_that("insert_line", {
 
 })
 
+test_that("convert_to_numeric", {
+  # Bad input
+  expect_error(convert_to_numeric(1, 1, TRUE))
+  expect_error(convert_to_numeric(1, "1", 1))
+
+  x <- 1:3
+  expect_equal(convert_to_numeric(x, "x"), x)
+  expect_equal(convert_to_numeric(as.character(x), "x"), x)
+  expect_equal(convert_to_numeric(character(0), "x"), numeric(0))
+  x <- c("1", "a", "3")
+  y <- suppressWarnings(as.numeric(x))
+  expect_equal(convert_to_numeric(x, "x", warn = FALSE), y)
+  expect_warning(z <- convert_to_numeric(x, "x", warn = TRUE))
+  expect_equal(y, z)
+})

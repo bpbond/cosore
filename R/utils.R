@@ -457,3 +457,27 @@ check_dataset_names <- function(dataset_name, dataset, field_metadata) {
   field_metadata$count
 }
 
+
+#' Convert a vector to numeric, giving an informative warning.
+#'
+#' @param x Vector
+#' @param name Name of object (for warning)
+#' @param warn Warn if non-numeric? Logical
+#' @return A numeric vector.
+#' @export
+convert_to_numeric <- function(x, name, warn = TRUE) {
+  stopifnot(is.character(name))
+  stopifnot(is.logical(warn))
+
+  # Convert to numeric, reporting any that don't convert
+  y <- suppressWarnings(as.numeric(x))  # ensure numeric
+  non_num <- which(is.na(y) & !is.na(x))
+
+  if(warn && length(non_num)) {
+    warning("Non-numeric values in ", name,  ": ",
+            paste(head(x[non_num]), collapse = ", "),
+            "... in positions ",
+            paste(head(non_num), collapse = ", "))
+  }
+  y
+}
