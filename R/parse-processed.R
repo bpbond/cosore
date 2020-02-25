@@ -28,10 +28,10 @@
 #' @keywords internal
 `parse_PROCESSED_CSV` <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
-  dat <- do.call("rbind", lapply(files, read.csv,
-                                 na.strings = c("NA", "-9999", "#VALUE!", "#REF!"),
-                                 stringsAsFactors = FALSE,
-                                 check.names = FALSE))
+  dat <- rbind_list(lapply(files, read.csv,
+                           na.strings = c("NA", "-9999", "#VALUE!", "#REF!"),
+                           stringsAsFactors = FALSE,
+                           check.names = FALSE))
   dat$CSR_ERROR <- FALSE
   dat
 }
