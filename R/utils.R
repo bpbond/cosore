@@ -481,3 +481,23 @@ convert_to_numeric <- function(x, name, warn = TRUE) {
   }
   y
 }
+
+
+# A utility function that I may need again sometime, if something gets added to diags
+# and I don't want to re-run csr_build()
+redo_diagnostics <- function() { # nocov start
+  for(ds in list_datasets()) {
+    message(ds)
+    dsd <- csr_table("data", ds)
+    diag <- csr_table("diagnostics", ds)
+
+    if(is.data.frame(dsd) & nrow(dsd)) {
+      # Diagnostic information
+      diag$CSR_TIME_BEGIN <- format(min(dsd$CSR_TIMESTAMP_BEGIN), format = "%Y-%m-%d")
+      diag$CSR_TIME_END <- format(max(dsd$CSR_TIMESTAMP_END), format = "%Y-%m-%d")
+      outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
+      stopifnot(file.exists(outfile))
+      saveRDS(diag, file = outfile)
+    }
+  }
+} # nocov end
