@@ -2,6 +2,7 @@
 
 export(calc_timestamps)
 export(check_dataset_names)
+export(convert_to_numeric)
 export(csr_build)
 export(csr_database)
 export(csr_dataset)

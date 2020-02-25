@@ -388,7 +388,8 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     # Remove records with invalid timestamps
     diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(ctlist$na_ts)
     diag$CSR_EXAMPLE_BAD_TIMESTAMPS <- ctlist$bad_examples
-    dsd <- dsd[!ctlist$na_ts,]
+    dsd <- dsd[!is.na(dsd$CSR_TIMESTAMP_BEGIN),]
+    dsd <- dsd[!is.na(dsd$CSR_TIMESTAMP_END),]
 
     if(nrow(dsd) == 0) {
       stop("Timestamps could not be parsed with ", tf, " and tz ", tz)
@@ -405,7 +406,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
       dsd$CSR_PORT <- 0
     }
-    dsd$CSR_PORT <- as.numeric(dsd$CSR_PORT)
+    dsd$CSR_PORT <- convert_to_numeric(dsd$CSR_PORT, "CSR_PORT")
 
     # Rearrange columns
     dsd <- rearrange_columns(dsd, required_cols =

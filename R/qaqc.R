@@ -73,7 +73,8 @@ qaqc_data <- function(dsd, diag,
   if(remove_temp) {
     for(tmp in c("CSR_TCHAMBER", "CSR_T5")) {
       if(tmp %in% names(dsd) && nrow(dsd)) {
-        dsd[,tmp] <- as.numeric(unlist(dsd[tmp])) # ensure numeric
+        dsd[,tmp]  <- convert_to_numeric(unlist(dsd[tmp]), tmp)
+
         tmpvals <- dsd[tmp]
         bad_temps <- tmpvals < min(temp_limits) | tmpvals > max(temp_limits)
         bad_temps[is.na(bad_temps)] <- FALSE
