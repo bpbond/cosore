@@ -308,6 +308,9 @@ compute_interval <- function(dsd) {
     for(p in unique(dsd$CSR_PORT)) {
       d <- dsd[dsd$Year == y & dsd$CSR_PORT == p,]
 
+      # Remove duplicate timestamps - this fouls up the difftime() computation
+      d <- d[!duplicated(d$CSR_TIMESTAMP_BEGIN),]
+
       results[[paste(y, p)]] <-
         tibble(Year = y,
                Port = p,
