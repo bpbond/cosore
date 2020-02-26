@@ -8,8 +8,6 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,	Computation,				Notes
-CSR_FLUX,  			EFFLUX,
-CSR_LABEL,			Plot_ID
-CSR_PORT,			Plot_ID,	as.integer(as.factor(Plot_ID))
-CSR_T7,				Tsoil_C,
-CSR_TIMESTAMP_END,	Year,		"paste(Year, DOY, `HH:MM:SS`)"
+CSR_FLUX,  			efflux,
+CSR_PORT,			Chamber,
+CSR_TIMESTAMP_END,	Year,		"paste(Year, Doy, Hour)"
