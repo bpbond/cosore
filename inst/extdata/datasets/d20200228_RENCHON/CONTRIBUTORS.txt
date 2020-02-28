@@ -1,0 +1,18 @@
+# CONTRIBUTORS.txt
+#
+# This comma-separated data file provides information about dataset
+# contributors. Entries below include: 
+# 	CSR_FIRST_NAME: first name
+# 	CSR_FAMILY_NAME: family (last) name
+# 	CSR_EMAIL: email address
+# 	CSR_ORCID: optional CSR_ORCID ID (see https://orcid.org)
+# 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
+#     common roles include "Funding acquisition", "Investigation", "Data curation"
+#
+CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,							CSR_ORCID,				CSR_ROLE
+Alexandre,		Renchon,			a.renchon@gmail.com,				0000-0002-9521-5092,	"Investigation, Data curation"
+John,			Drake,				jedrake@esf.edu,					0000-0001-9453-1766,	"Investigation, Data curation"
+Mark,			Tjoelker,			M.Tjoelker@westernsydney.edu.au,	0000-0003-4607-5238,	"Funding acquisition, Investigation"
+Catriona,		Macdonald,			c.macdonald@westernsydney.edu.au, 	0000-0001-9239-4593,	"Investigation, Data curation"
+Elise,			Pendall, 			e.pendall@westernsydney.edu.au, 	0000-0002-1651-8969,	"Investigation, Funding acquisition"
+David S.,	 	Ellsworth, 			d.ellsworth@westernsydney.edu.au,	0000-0002-9699-2272,	"Funding acquisition"
