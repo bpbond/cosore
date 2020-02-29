@@ -1,0 +1,40 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
+# --------------------------------------
+CSR_SITE_NAME: Terracosm Facility of the US Environmental Protection Agency Western Ecology Division
+CSR_LONGITUDE: -123.293
+CSR_LATITUDE: 44.565
+CSR_ELEVATION: 77
+CSR_TIMEZONE: Etc/GMT+8
+CSR_IGBP: Grassland
+CSR_NETWORK: 
+CSR_SITE_ID: 
+CSR_INSTRUMENT: LI-6262
+CSR_MSMT_LENGTH: 60
+CSR_FILE_FORMAT: LI-8100A_raw
+CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
+CSR_TIMESTAMP_TZ: Etc/GMT+8
+CSR_PRIMARY_PUB: 10.1007/s10533-016-0204-x
+CSR_OTHER_PUBS: 10.1111/j.1365-2486.2011.02483.x
+CSR_DATA_URL:
+CSR_ACKNOWLEDGMENT: This research was supported by the Smithsonian Environmental Research Center.
+CSR_NOTE: These data are from a whole-ecosystem warming experiment. Each collar was in a sunlit, climate controlled chamber that was either held at ambient temperature, warmed symetrically (+3.5 degrees day and night) or warmed asymetrically (+5C at dawn, decreasing to +2C at mid-afternoon). There are 12 collars representing 4 replicates per treatment.
