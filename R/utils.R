@@ -405,7 +405,10 @@ rearrange_columns <- function(dsd, required_cols) {
   stopifnot(is.data.frame(dsd))
   stopifnot(is.character(required_cols))
 
-  stopifnot(all(required_cols %in% names(dsd)))
+  if(!all(required_cols %in% names(dsd))) {
+    stop("Missing required columns: ",
+         paste(setdiff(required_cols, names(dsd)), collapse = ", "))
+  }
 
   other <- setdiff(names(dsd), required_cols)
   dsd[c(required_cols, sort(other))]
