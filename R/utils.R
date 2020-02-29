@@ -325,59 +325,6 @@ compute_interval <- function(dsd) {
 }
 
 
-#' Build the COSORE database
-#'
-#' @param raw_data The raw data folder to use, character path
-#' @param dataset_names The raw data folder to use, character path
-#' @param force_raw Always read raw (as opposed to standardized) data? Logical
-#' @param write_standardized Write standardized data after parsing? Logical
-#' @param standardized_path Output path (typically \code{inst/extdata/datasets})
-#' for standardized data, character
-#' @param quiet Print progress messages and warnings? Logical
-#' @return All the built data, invisibly.
-#' @export
-csr_build <- function(raw_data,
-                      dataset_names = list_datasets(),
-                      force_raw = FALSE,
-                      write_standardized = FALSE,
-                      standardized_path = "./inst/extdata/datasets",
-                      quiet = FALSE) {
-
-  stopifnot(is.character(dataset_names))
-  stopifnot(is.logical(force_raw))
-  stopifnot(is.logical(write_standardized))
-  stopifnot(is.character(standardized_path))
-  stopifnot(is.logical(quiet))
-
-  if(length(dataset_names)) {
-
-    # Get metadata file for database fields
-    md <- read.csv(system.file(file.path("extdata", "CSR_COLUMN_UNITS.csv"),
-                               package = "cosore", mustWork = TRUE),
-                   comment.char = "#", stringsAsFactors = FALSE)
-    md$Count <- 0
-
-    for(ds in seq_along(dataset_names)) {
-      dsn <- dataset_names[ds]
-      if(!quiet) message(ds, "/", length(dataset_names), " ", dsn)
-      x <- read_dataset(dsn, raw_data, force_raw = force_raw, quiet = quiet)
-
-      md$Count <- md$Count + check_dataset_names(dsn, x, md)
-
-      if(write_standardized) {
-        csr_standardize_data(x, path = standardized_path, create_dirs = TRUE)
-      }
-    }
-
-    md <- md[md$Count == 0,]
-    if(nrow(md)) {
-      warnings("Some metadata entries do not appear in entire database: ",
-               paste(md$Table_name, md$Field_name, sep = "/"))
-    }
-  }
-}
-
-
 #' Change "T2", "SM4.5", etc., to "Tx" and "SMx"
 #'
 #' @param x Vector of dataset names
@@ -518,8 +465,8 @@ redo_diagnostics <- function() { # nocov start
 #' @param value_col_name Name of resulting value column, character
 #' @param new_categories Optional new categories to use
 #' in place of gathered column names, character vector
-#' @note Base R's \code{\link{reshape}} sucks, while \code{\link{tidyr::gather}}
-#' brings in \code{tidyr}, which imports \code{dplyr}, ...way too heavy.
+#' @note Base R's \code{\link{reshape}} sucks, while \code{gather}
+#' brings in \code{tidyr}, which in turn imports \code{dplyr}, ...way too heavy.
 #' @return The data frame in long format.
 #' @keywords internal
 #' @examples

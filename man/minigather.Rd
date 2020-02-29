@@ -31,8 +31,8 @@ The data frame in long format.
 Simple function to gather (reshape) data.
 }
 \note{
-Base R's \code{\link{reshape}} sucks, while \code{\link{tidyr::gather}}
-brings in \code{tidyr}, which imports \code{dplyr}, ...way too heavy.
+Base R's \code{\link{reshape}} sucks, while \code{gather}
+brings in \code{tidyr}, which in turn imports \code{dplyr}, ...way too heavy.
 }
 \examples{
 cosore:::minigather(cars, c("speed", "dist"), "var", "val")
