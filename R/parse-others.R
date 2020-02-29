@@ -286,8 +286,8 @@ parse_d20190430_DESAI <- function(path) {
   results <- list()
   for(i in seq_along(fluxcols)) {
     results[[i]] <- x
-    results[[i]]$CSR_FLUX <- dat[,fluxcols[i]]
-    results[[i]]$CSR_PORT <- i
+    results[[i]]$flux <- unlist(dat[,fluxcols[i]])
+    results[[i]]$port <- i
   }
 
   rbind_list(results)
@@ -301,6 +301,16 @@ parse_d20190430_DESAI <- function(path) {
 `parse_d20200109_HIRANO_PDF` <- function(path) {
   parse_d20200109_HIRANO_PDB(path)
 }
+
+#' Parse a custom file from d20200109_HIRANO_PUF.
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+`parse_d20200109_HIRANO_PUF` <- function(path) {
+  parse_d20200109_HIRANO_PDB(path)
+}
+
 
 #' Parse a custom file from d20200122_BLACK
 #'
@@ -393,8 +403,8 @@ parse_d20200214_SZUTU_TONZI <- function(path) {
   results <- list()
   for(f in files) {
     dat <- read.csv(f, na.strings = c("NA", "-9999", "#VALUE!", "#REF!"),
-                         stringsAsFactors = FALSE,
-                         check.names = FALSE)
+                    stringsAsFactors = FALSE,
+                    check.names = FALSE)
     x <- dat[c(1:3)]
     colnames(x) <- cn
     x$port <- 1
