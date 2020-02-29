@@ -8,6 +8,8 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,	Computation,				Notes
+CSR_FLUX,			flux
+CSR_PORT,			port
 CSR_SM30,			Soil_moisture
 CSR_T5,				Soil_temperature
 CSR_TIMESTAMP_END,	DOYfrac,	"paste(Year, DOYfrac)"
