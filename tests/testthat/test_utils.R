@@ -341,3 +341,34 @@ test_that("convert_to_numeric", {
   expect_warning(z <- convert_to_numeric(x, "x", warn = TRUE))
   expect_equal(y, z)
 })
+
+test_that("convert_to_numeric", {
+  # Bad input
+  expect_error(minigather(1, c("speed", "dist"), "var", "val"))
+  expect_error(minigather(cars, 1, "var", "val"))
+  expect_error(minigather(cars, "xxx", "var", "val"))
+  expect_error(minigather(cars, c("speed", "dist"), 1, "val"))
+  expect_error(minigather(cars, c("speed", "dist"), "var", 1))
+  expect_error(minigather(cars, c("speed", "dist"), "var", "val", new_categories = 1))
+  expect_error(minigather(cars, c("speed", "dist"), "var", "val", new_categories = "1"))
+
+  # No non-varying columns
+  y <- minigather(cars, c("speed", "dist"), "var", "val")
+  expect_s3_class(y, "data.frame")
+  expect_identical(nrow(y), nrow(cars) * ncol(cars))
+  expect_identical(unique(y$var), names(cars))
+  expect_identical(sort(y$val), sort(c(cars$speed, cars$dist)))
+
+  # Non-varying columns
+  x <- data.frame(Time = 1:2, x = 3:4, y = 5:6)
+  y <- minigather(x, c("x", "y"), "var", "val")
+  expect_s3_class(y, "data.frame")
+  expect_identical(unique(y$var), c("x", "y"))
+  expect_identical(sort(y$val), sort(c(x$x, x$y)))
+
+  # New categories
+  y1 <- minigather(x, c("x", "y"), "var", "val", new_categories = c("a", "b"))
+  expect_identical(unique(y1$var), c("a", "b"))
+  expect_identical(y$Time, y1$Time)
+  expect_identical(y$val, y1$val)
+})

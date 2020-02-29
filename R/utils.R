@@ -508,3 +508,44 @@ redo_diagnostics <- function() { # nocov start
     }
   }
 } # nocov end
+
+
+#' Simple function to gather (reshape) data.
+#'
+#' @param x Data frame to reshape
+#' @param gather_cols Names of columns to gather, character vector
+#' @param category_col_name Name of resulting category column, character
+#' @param value_col_name Name of resulting value column, character
+#' @param new_categories Optional new categories to use
+#' in place of gathered column names, character vector
+#' @note Base R's \code{\link{reshape}} sucks, while \code{\link{tidyr::gather}}
+#' brings in \code{tidyr}, which imports \code{dplyr}, ...way too heavy.
+#' @return The data frame in long format.
+#' @keywords internal
+#' @examples
+#' cosore:::minigather(cars, c("speed", "dist"), "var", "val")
+minigather <- function(x, gather_cols, category_col_name, value_col_name,
+                       new_categories = NULL) {
+  stopifnot(is.data.frame(x))
+  stopifnot(is.character(gather_cols))
+  stopifnot(all(gather_cols %in% colnames(x)))
+  stopifnot(is.character(category_col_name))
+  stopifnot(is.character(value_col_name))
+
+  if(is.null(new_categories)) {
+    new_categories <- gather_cols
+  }
+  stopifnot(identical(length(new_categories), length(gather_cols)))
+
+  results <- list()
+  which_gather <- which(names(x) %in% gather_cols)
+  nonvarying <- x[-which_gather]
+  for(i in seq_along(which_gather)) {
+    y <- data.frame(a = new_categories[i],
+                    b = x[which_gather[i]],
+                    stringsAsFactors = FALSE)
+    names(y) <- c(category_col_name, value_col_name)
+    results[[i]] <- cbind(nonvarying, y)
+  }
+  do.call(rbind, results)
+}
