@@ -26,7 +26,7 @@
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-CSR_SITE_NAME: EucFACE
+CSR_SITE_NAME: Cumberland Plain
 CSR_LONGITUDE: 150.738207
 CSR_LATITUDE: -33.618439
 CSR_ELEVATION: 23
@@ -36,11 +36,11 @@ CSR_NETWORK: EucFACE
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-8100A
 CSR_MSMT_LENGTH: 270
-CSR_FILE_FORMAT: Processed
-CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %m/%d/%Y %H:%M
 CSR_TIMESTAMP_TZ: Etc/GMT-11
 CSR_PRIMARY_PUB:
 CSR_OTHER_PUBS:
 CSR_DATA_URL: 10.5281/zenodo.3689685
 CSR_ACKNOWLEDGMENT: The first 2 years of soil respiration data (2014 and 2015) were previously published (https://doi.org/10.1007/s10533-018-0457-7). Data were collected at the Cumberland Plain Australian Terrestrial Ecosystem Research Network (TERN) site, which encompasses EucFACE and the flux tower. The Cumberland Plain TERN facilities are supported by the Australian Government through the Education Investment Fund, the Department of Industry and Science, the National Collaborative Research Infrastructure Strategy, and the Australian Research Council in partnership with Western Sydney University. Facilities at EucFACE were built as an initiative of the Australian Government as part of the Nation-building Economic Stimulus Package.
-CSR_NOTE: A manuscript using this dataset will be submitted within the next few month. Temporary title: "Simultaneous measurements of soil and ecosystem respiration: advantages, lessons, and questions"
+CSR_EMBARGO: A manuscript using this dataset will be submitted within the next few month. Temporary title: "Simultaneous measurements of soil and ecosystem respiration: advantages, lessons, and questions"

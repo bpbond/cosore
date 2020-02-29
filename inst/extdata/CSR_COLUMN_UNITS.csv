@@ -13,8 +13,10 @@ data,CSR_ERROR,"Error raised by instrument or during import, logical",logical,,F
 data,CSR_FLUX,Soil respiration flux,numeric,μmol CO2/m2/s,TRUE
 data,CSR_FLUX_SE,"Standard error of soil respiration flux, µmol CO2/m2/s",numeric,,FALSE
 data,CSR_LABEL,Port/chamber label,character,,FALSE
+data,CSR_NEE,Net ecosystem exchange,numeric,μmol/m2/s,FALSE
 data,CSR_PAR,Photosynthetically active radiation,numeric,μmol photons/m2/s,FALSE
 data,CSR_PORT,Port/chamber number,numeric,,TRUE
+data,CSR_PRECIP,Precipitation},numeric,mm,FALSE
 data,CSR_R2,Flux computation R2,numeric,fraction,FALSE
 data,CSR_RECORD,Record number within file,numeric,,FALSE
 data,CSR_RH,Chamber relative humidity,numeric,percent,FALSE

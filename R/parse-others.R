@@ -407,3 +407,27 @@ parse_d20200214_SZUTU_TONZI <- function(path) {
 
   rbind_list(results)
 }
+
+#' Parse a custom file from d20200228_RENCHON
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20200228_RENCHON <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  common_dat <- dat[c("DateTime", "NEE", "Ta", "Precip")]
+  results <- list()
+  ports <- c(2, 3, 6)
+  for(p in ports) {
+    x <- dat[c(paste0("Rsoil_R", p),
+               paste0("Rsoil_R", p, "_qc"),
+               paste0("Ts_R", p),
+               paste0("SWC_R", p))]
+    names(x) <- c("Rsoil", "Rsoil_gapfill", "Ts", "SWC")
+    x$port <- p
+    x <- cbind(common_dat, x)
+    results[[p]] <- x[x$Rsoil_gapfill == 1,]  # remove any gapfilled data
+  }
+  rbind_list(results)
+}
