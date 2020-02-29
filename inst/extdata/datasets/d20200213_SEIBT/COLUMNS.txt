@@ -7,17 +7,10 @@
 #	Computation: optional R-parseable computation to change units, etc.
 #	Notes: optional; generally to explain the computation
 #
-Database,		Dataset,	Computation,				Notes
-CSR_CDRY,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_ERROR,		Error,
-CSR_FLUX,  		Flux,
-CSR_LABEL,		Label,
-CSR_PORT,		Port,
-CSR_R2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V4
-CSR_T5,			V3
-CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP,	Timestamp
+Database,				Dataset,			Computation,		Notes
+CSR_FLUX,  				f_co2,
+CSR_FLUX_SE,			sd_f_co2,
+CSR_PORT,				ch_no	
+CSR_SM5,				w_soil_sfc
+CSR_T5,					T_soil_sfc
+CSR_TIMESTAMP_BEGIN,	doy_utc,	"paste(2018, doy_utc)",		Year per contributor
