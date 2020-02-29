@@ -13,4 +13,4 @@ CSR_FLUX_SE,			sd_f_co2,
 CSR_PORT,				ch_no	
 CSR_SM5,				w_soil_sfc
 CSR_T5,					T_soil_sfc
-CSR_TIMESTAMP_BEGIN,	doy_utc,	"paste(2018, doy_utc)",		Year per contributor
+CSR_TIMESTAMP_BEGIN,	doy_utc,	"paste(2013, doy_utc)",		Year per contributor
