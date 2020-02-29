@@ -4,8 +4,12 @@
 \alias{csr_report_dataset}
 \title{Run a single dataset report}
 \usage{
-csr_report_dataset(ds, output_dir = "~/Desktop/Reports/",
-  quiet = FALSE, quick = FALSE)
+csr_report_dataset(
+  ds,
+  output_dir = "~/Desktop/Reports/",
+  quiet = FALSE,
+  quick = FALSE
+)
 }
 \arguments{
 \item{ds}{The dataset for which to generate a report.}

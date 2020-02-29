@@ -7,11 +7,9 @@
 parse_d20190617_SCOTT_xxx(path, skip, ports)
 }
 \arguments{
-\item{path}{Data directory path, character}
+\item{path}{Ports, an integer vector}
 
 \item{skip}{Lines to skip, integer}
-
-\item{path}{Ports, an integer vector}
 }
 \value{
 A \code{data.frame} containing extracted data.

@@ -4,8 +4,7 @@
 \alias{split_licor_file}
 \title{Split a raw Licor (*.81x) file into pieces.}
 \usage{
-split_licor_file(filename, split_lines = 25000,
-  out_dir = dirname(filename))
+split_licor_file(filename, split_lines = 25000, out_dir = dirname(filename))
 }
 \arguments{
 \item{filename}{Fully-qualified filename, character}

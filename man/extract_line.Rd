@@ -4,8 +4,13 @@
 \alias{extract_line}
 \title{Parse labels from information files}
 \usage{
-extract_line(file_data, line_label, required = TRUE, sep = ":",
-  numeric_data = FALSE)
+extract_line(
+  file_data,
+  line_label,
+  required = TRUE,
+  sep = ":",
+  numeric_data = FALSE
+)
 }
 \arguments{
 \item{file_data}{Character vector of file lines}

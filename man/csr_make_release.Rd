@@ -4,8 +4,14 @@
 \alias{csr_make_release}
 \title{Make a new COSORE release based on current package datasets.}
 \usage{
-csr_make_release(path, vignette_rebuilt = FALSE, force = FALSE,
-  run_report = TRUE, zip_release = TRUE, datasets = list_datasets())
+csr_make_release(
+  path,
+  vignette_rebuilt = FALSE,
+  force = FALSE,
+  run_report = TRUE,
+  zip_release = TRUE,
+  datasets = list_datasets()
+)
 }
 \arguments{
 \item{path}{Path to write files to; must already exist}

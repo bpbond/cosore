@@ -4,8 +4,13 @@
 \alias{read_dataset}
 \title{Read a complete dataset from either standardized or raw files}
 \usage{
-read_dataset(dataset_name, raw_data, force_raw = FALSE, quiet = FALSE,
-  metadata_only = FALSE)
+read_dataset(
+  dataset_name,
+  raw_data,
+  force_raw = FALSE,
+  quiet = FALSE,
+  metadata_only = FALSE
+)
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}

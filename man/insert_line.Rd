@@ -4,8 +4,14 @@
 \alias{insert_line}
 \title{Insert new line(s) into existing metadata files.}
 \usage{
-insert_line(file, pattern, newlines, after = TRUE,
-  path = "./inst/extdata/datasets", write_files = TRUE)
+insert_line(
+  file,
+  pattern,
+  newlines,
+  after = TRUE,
+  path = "./inst/extdata/datasets",
+  write_files = TRUE
+)
 }
 \arguments{
 \item{file}{Filename, character}

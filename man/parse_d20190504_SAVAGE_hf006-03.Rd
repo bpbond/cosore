@@ -4,7 +4,7 @@
 \alias{parse_d20190504_SAVAGE_hf006-03}
 \title{Parse a custom file from d20190504_SAVAGE_hf006-03.}
 \usage{
-"parse_d20190504_SAVAGE_hf006-03"(path)
+`parse_d20190504_SAVAGE_hf006-03`(path)
 }
 \arguments{
 \item{path}{Data directory path, character}

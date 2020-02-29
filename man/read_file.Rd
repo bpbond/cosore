@@ -4,8 +4,7 @@
 \alias{read_file}
 \title{Read a text file and strip out comments}
 \usage{
-read_file(dataset_name, file_name, file_data = NULL,
-  comment_char = "#")
+read_file(dataset_name, file_name, file_data = NULL, comment_char = "#")
 }
 \arguments{
 \item{dataset_name}{Dataset name, character}

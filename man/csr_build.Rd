@@ -4,9 +4,14 @@
 \alias{csr_build}
 \title{Build the COSORE database}
 \usage{
-csr_build(raw_data, dataset_names = list_datasets(), force_raw = FALSE,
+csr_build(
+  raw_data,
+  dataset_names = list_datasets(),
+  force_raw = FALSE,
   write_standardized = FALSE,
-  standardized_path = "./inst/extdata/datasets", quiet = FALSE)
+  standardized_path = "./inst/extdata/datasets",
+  quiet = FALSE
+)
 }
 \arguments{
 \item{raw_data}{The raw data folder to use, character path}

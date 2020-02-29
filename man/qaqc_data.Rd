@@ -4,9 +4,16 @@
 \alias{qaqc_data}
 \title{QA/QC a dataset.}
 \usage{
-qaqc_data(dsd, diag, remove_na = TRUE, remove_error = TRUE,
-  remove_flux = TRUE, remove_temp = TRUE, flux_limits = c(-10, 50),
-  temp_limits = c(-50, 60))
+qaqc_data(
+  dsd,
+  diag,
+  remove_na = TRUE,
+  remove_error = TRUE,
+  remove_flux = TRUE,
+  remove_temp = TRUE,
+  flux_limits = c(-10, 50),
+  temp_limits = c(-50, 60)
+)
 }
 \arguments{
 \item{dsd}{Dataset data, a tibble}

@@ -4,7 +4,7 @@
 \alias{parse_LI-8100A_RAW}
 \title{Read raw multiplexed Licor-8100 data}
 \usage{
-"parse_LI-8100A_RAW"(path)
+`parse_LI-8100A_RAW`(path)
 }
 \arguments{
 \item{path}{Data directory path, character}
