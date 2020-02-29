@@ -224,15 +224,8 @@ parse_d20190527_GOULDEN <- function(path) {
 
   # Flux fields
   fluxcols <- grep("^flux", names(dat))
-  x <- dat[-fluxcols]
-  results <- list()
-  for(i in seq_along(fluxcols)) {
-    results[[i]] <- x
-    results[[i]]$flux <- dat[,fluxcols[i]]
-    results[[i]]$CSR_PORT <- i
-  }
-
-  rbind_list(results)
+  minigather(dat, names(dat)[fluxcols], "CSR_PORT", "flux",
+             new_categories = seq_along(fluxcols))
 }
 
 
@@ -282,15 +275,7 @@ parse_d20190430_DESAI <- function(path) {
 
   # Flux fields
   fluxcols <- grep("^SR", names(dat))
-  x <- dat[-fluxcols]
-  results <- list()
-  for(i in seq_along(fluxcols)) {
-    results[[i]] <- x
-    results[[i]]$flux <- unlist(dat[,fluxcols[i]])
-    results[[i]]$port <- i
-  }
-
-  rbind_list(results)
+  minigather(dat, names(dat)[fluxcols], "port", "flux", new_categories = seq_along(fluxcols))
 }
 
 #' Parse a custom file from d20200109_HIRANO_PDF.
@@ -325,16 +310,9 @@ parse_d20190430_DESAI <- function(path) {
 
   # Flux fields
   fluxcols <- grep("^flux_", names(dat))
-  x <- dat[-fluxcols]
-  results <- list()
-  port_seq <- c(2, 3, 4, 5, 6, 9, 10, 11, 12) # custom sequence
-  for(i in seq_along(fluxcols)) {
-    results[[i]] <- x
-    results[[i]]$flux <- dat[,fluxcols[i]]
-    results[[i]]$port <- port_seq[i]
-  }
-
-  rbind_list(results)
+  minigather(dat, names(dat)[fluxcols], "port", "flux",
+             new_categories = c(2, 3, 4, 5, 6, 9, 10, 11, 12) # custom sequence
+  )
 }
 
 #' Parse a custom file from d20200212_ATAKA.
@@ -347,16 +325,9 @@ parse_d20200212_ATAKA <- function(path) {
 
   # Flux fields
   fluxcols <- grep("^RS[12]$", names(dat))
-  x <- dat[-fluxcols]
-  results <- list()
-  port_seq <- c(1, 2)
-  for(i in seq_along(fluxcols)) {
-    results[[i]] <- x
-    results[[i]]$flux <- dat[,fluxcols[i]]
-    results[[i]]$port <- port_seq[i]
-  }
-
-  rbind_list(results)
+  minigather(dat, names(dat)[fluxcols], "port", "flux",
+             new_categories = c(1, 2) # custom sequence
+  )
 }
 
 #' Parse a custom file from d20200214_SZUTU_BOULDINC.
