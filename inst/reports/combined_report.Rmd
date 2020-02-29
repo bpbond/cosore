@@ -156,7 +156,14 @@ ggplot(x, aes(x = CSR_FLUX)) + geom_histogram(bins = 30) +
 x <- system.file(file.path("extdata", "database_growth.csv"), 
                  package = "cosore", mustWork = TRUE)
 growth <- read.csv(x, colClasses = c("Date", rep("numeric", 3), "character"))
-growth <- tidyr::gather(growth, Variable, Value, Records, Size_Mb, Datasets)
+growth <- rbind(growth,
+                data.frame(Date = Sys.Date(),
+                           Records = records,
+                           Size_Mb = as.numeric(db_size) / 1024 / 1024,
+                           Datasets = length(list_datasets()),
+                           Version = "*", stringsAsFactors = FALSE))
+growth <- cosore:::minigather(growth, c("Records", "Size_Mb", "Datasets"), 
+                              "Variable", "Value")
 ggplot(growth, aes(Date, Value, label = Version)) + 
   geom_line() + geom_label() + 
   facet_wrap(~Variable, scales = "free")
