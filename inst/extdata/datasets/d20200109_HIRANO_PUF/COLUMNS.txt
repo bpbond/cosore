@@ -10,8 +10,8 @@
 Database,			Dataset,			Computation,				Notes
 CSR_FLUX,			flux
 CSR_PORT,			port
-CSR_SM10,			Soil_moisture1
-CSR_SM30,			Soil_moisture2
+CSR_SM25,			Soil_moisture1
+CSR_SM15,			Soil_moisture2
 CSR_T5,				Soil_temperature
 CSR_TIMESTAMP_END,	DOYfrac,			"paste(Year, DOYfrac)"
 CSR_WTD,			Groundwater_level,	-100 * Groundwater_level 
