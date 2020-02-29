@@ -7,7 +7,7 @@
 #' text file with a standard set of columns.
 #' @importFrom utils read.delim
 #' @keywords internal
-`parse_PROCESSED` <- function(path) {
+parse_PROCESSED <- function(path) {
   files <- list.files(path, pattern = ".(txt|csv)$", full.names = TRUE, recursive = TRUE)
   dat <- do.call("rbind", lapply(files, read.delim,
                                  na.strings = c("NA", "-9999", "#VALUE!", "#REF!"),
@@ -26,7 +26,7 @@
 #' text file with a standard set of columns.
 #' @importFrom utils read.csv
 #' @keywords internal
-`parse_PROCESSED_CSV` <- function(path) {
+parse_PROCESSED_CSV <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
   dat <- rbind_list(lapply(files, read.csv,
                            na.strings = c("NA", "-9999", "#VALUE!", "#REF!"),

@@ -26,21 +26,21 @@
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
-CSR_SITE_NAME: Shale Hills
-CSR_LONGITUDE: -77.9044
-CSR_LATITUDE: 40.6653
-CSR_ELEVATION: 290
+CSR_SITE_NAME: Shale Hills-LSE
+CSR_LONGITUDE: -77.90460
+CSR_LATITUDE:  40.66474
+CSR_ELEVATION: 276
 CSR_TIMEZONE: Etc/GMT+5
 CSR_IGBP: Deciduous broadleaf forest
 CSR_NETWORK: Susquehanna Shale Hills CZO
 CSR_SITE_ID: Shale Hills catchment
 CSR_INSTRUMENT: LI-8100A
 CSR_MSMT_LENGTH: 90
-CSR_FILE_FORMAT: Processed
-CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_FILE_FORMAT: Processed_csv
+CSR_TIMESTAMP_FORMAT: %m/%d/%Y %H:%M
 CSR_TIMESTAMP_TZ: Etc/GMT+4
 CSR_PRIMARY_PUB:
 CSR_OTHER_PUBS:
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: Financial Support was provided by U.S. Department of Energy, Office of Science, Office of Biological & Environmental Research, under Award Number DE-SC0012003. Logistical support and/or data were provided by the NSF-supported Susquehanna Shale Hills Critical Zone Observatory. This research was conducted in Penn State's Stone Valley Forest, which is funded by the Penn State College of Agriculture Sciences, Department of Ecosystem Science and Management and managed by the staff of the Forestlands Management Office.
-CSR_NOTE: Spikes in soil respiration were detected and removed. We computed the mean and standard deviation for a series of moving windows of length L (here L=24, equals two days data). The window moves one data point at a time through the series. Any data in the window that exceeds 3.5 standard deviation is considered as a spike and replaced with NaN.
+CSR_NOTE: Spikes in soil respiration were detected and removed. We computed the mean and standard deviation for a series of moving windows of length L (here L=24, equals two days data). The window moves one data point at a time through the series. Any data in the window that exceeds 3.5 standard deviation is considered as a spike and replaced with NaN. (The raw data are included in COSORE.)
