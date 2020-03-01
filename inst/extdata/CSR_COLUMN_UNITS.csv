@@ -1,10 +1,10 @@
-# Metadata for COSORE version %VERSION,,
-# %DATE,,
-#,,
+# Metadata for COSORE version %VERSION,,,,,
+# %DATE,,,,,
+#,,,,,
 Table_name,Field_name,Description,Class,Units,Required
-#,,
-# `data`: flux data table,,
-#,,
+#,,,,,
+# `data`: flux data table,,,,,
+#,,,,,
 data,CSR_CDRY,Chamber CO2 concentration,numeric,ppmv,FALSE
 data,CSR_CO2_AMB,Ambient CO2 concentration,numeric,ppmv,FALSE
 data,CSR_COMMENTS,"Comments, text",character,,FALSE
@@ -28,9 +28,9 @@ data,CSR_TIMESTAMP_BEGIN,"Timestamp, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_TIMESTAMP_END,"Timestamp, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_WIND,Wind speed,numeric,m/s,FALSE
 data,CSR_WTD,"Water table depth, positive numbers are depth",numeric,cm,FALSE
-#,,
-# `description`: dataset and site description,,
-#,,
+#,,,,,
+# `description`: dataset and site description,,,,,
+#,,,,,
 description,CSR_DATASET,Dataset name,character,,TRUE
 description,CSR_SITE_NAME,Site name,character,,TRUE
 description,CSR_LONGITUDE,"Decimal longitude, positive = north",numeric,degrees,TRUE
@@ -51,9 +51,9 @@ description,CSR_DATA_URL,Data URL or DOI,character,,FALSE
 description,CSR_ACKNOWLEDGMENT,Acknowledgment text,character,,FALSE
 description,CSR_NOTES,Miscellaneous notes,character,,FALSE
 description,CSR_EMBARGO,Embargo flag. If this field is present data will not be released,character,,FALSE
-#,,
-# `ports`: individual chamber metadata,,
-#,,
+#,,,,,
+# `ports`: individual chamber metadata,,,,,
+#,,,,,
 ports,CSR_PORT,"Port (chamber) number; ""0"" means all ports",numeric,,TRUE
 ports,CSR_MSMT_VAR,"Measurement variable: ""Rs"", ""Rh"", ""Reco"", or ""NEE""",character,,TRUE
 ports,CSR_TREATMENT,"Collar treatment; default is ""None""",character,,TRUE
@@ -61,16 +61,16 @@ ports,CSR_AREA,Area of measurement chamber,numeric,cm2,FALSE
 ports,CSR_DEPTH,Depth of collar insertion,numeric,cm,FALSE
 ports,CSR_SPECIES,Comma-separated species list,character,,FALSE
 ports,CSR_SENSOR_DEPTHS,"Comma-separated sensor depths, each in cm",character,,FALSE
-#,,
-# `columns`: mapping of raw data columns to COSORE columns,,
-#,,
+#,,,,,
+# `columns`: mapping of raw data columns to COSORE columns,,,,,
+#,,,,,
 columns,Database,Database column name (e.g. CSR_FLUX),character,,TRUE
 columns,Dataset,Dataset columns name,character,,TRUE
 columns,Computation,"Optional R computation to be performed changing units, etc.",character,,FALSE
 columns,Notes,Notes,character,,FALSE
-#,,
-# `ancillary`: other site-level data,,
-#,,
+#,,,,,
+# `ancillary`: other site-level data,,,,,
+#,,,,,
 ancillary,Variable,Variable name (one of entries below),character,,TRUE
 ancillary,Value,Value (see units below),character,,TRUE
 ancillary,CSR_AGE,Time since disturbance,numeric,years,FALSE
@@ -90,17 +90,17 @@ ancillary,CSR_SAND,Sand,numeric,percent,FALSE
 ancillary,CSR_SILT,Silt,numeric,percent,FALSE
 ancillary,CSR_STC,Total soil carbon,numeric,percent,FALSE
 ancillary,CSR_STN,Total soil nitrogen,numeric,percent,FALSE
-#,,
-# `contributors`: data contributor information,,
-#,,
+#,,,,,
+# `contributors`: data contributor information,,,,,
+#,,,,,
 contributors,CSR_FIRST_NAME,First (personal) name,character,,FALSE
 contributors,CSR_FAMILY_NAME,Family name,character,,FALSE
 contributors,CSR_EMAIL,Email address,character,,FALSE
 contributors,CSR_ORCID,ORCID ID; see https://orcid.org,character,,FALSE
 contributors,CSR_ROLE,CReDiT role; see https://www.casrai.org/credit.html,character,,FALSE
-#,,
-# Diagnostic fields,,
-#,,
+#,,,,,
+# Diagnostic fields,,,,,
+#,,,,,
 diagnostics,CSR_ASSUMED_MSMT_LENGTH,If no measurement length is provided this is set to assumed value,numeric,s,FALSE
 diagnostics,CSR_BAD_TEMPERATURE,Number of observations removed for bad temperature values,numeric,,TRUE
 diagnostics,CSR_EXAMPLE_BAD_TIMESTAMPS,Example bad timestamps,character,,FALSE
