@@ -170,16 +170,16 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "CONTRIBUTORS.txt", file_data)
   cfd <- read_csv_data(file_data, required = c("CSR_FIRST_NAME", "CSR_FAMILY_NAME"))
 
-  # Have to provide at least one contributor
-  if(cfd$CSR_FIRST_NAME[1] == "" | cfd$CSR_FAMILY_NAME[1] == "" | cfd$CSR_EMAIL[1] == "") {
-    stop(dataset_name, ": name and/or email for primary contributor is blank")
+  # Have to provide first contributor email
+  if(is.na(cfd$CSR_EMAIL[1])) {
+    stop(dataset_name, ": email for primary contributor is missing")
   }
   # Check for invalid email addresses
   eml <- sapply(strsplit(cfd$CSR_EMAIL, ";"), function(x) x[1])
   invalid_emails <- grep("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
                          eml, ignore.case = TRUE, invert = TRUE)
   if(length(invalid_emails) && any(cfd$CSR_EMAIL[invalid_emails] != "")) {
-    stop(dataset_name, ": Invalid emails for contributors ", invalid_emails)
+    stop(dataset_name, ": invalid emails for contributors ", invalid_emails)
   }
   # Check for invalid ORCID ID
   invalid_orcids <- grep("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$",
