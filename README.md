@@ -45,7 +45,7 @@ COSORE is designed to be a relatively lightweight database, and metadata are kep
 Each dataset has seven _tables_:
 
 * `description` - includes data on the
-site name; location;[timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+site name; location; [timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 and [IGBP cover type](http://www.eomf.ou.edu/static/IGBP.pdf); measurement instrument;
 publication and data links; and acknowledgments and notes.
 * `contributors` - contributor information, including name, email, [ORCID](https://orcid.org), and
@@ -75,7 +75,7 @@ and each individual dataset (`csr_report_dataset()`).
 There are a number of developer functions as well, i.e. not intended for the average
 COSORE user. Perhaps most importantly this includes `csr_build()`, which scans for
 and parses metadata on all installed datasets, then loads the data,
-parsing raw data is necessary and available.
+parsing raw data as necessary and available.
 
 ## Data access
 
