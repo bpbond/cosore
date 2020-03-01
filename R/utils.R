@@ -121,13 +121,21 @@ insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/ex
 #'
 #' @param x List of data frames
 #' @return A single \code{data.frame} with all data together
+#' @importFrom tibble tibble as_tibble
 #' @export
 rbind_list <- function(x) {
   stopifnot(is.list(x))
+  if(length(x) == 0) return(tibble())
+
+  # Everything in x has to be data.frame-equivalent or NULL
+  stopifnot(all(sapply(x, function(x) {
+    any(c("data.frame", "NULL") %in% class(x))
+  }
+  )))
 
   all_names <- unique(unlist(lapply(x, function(x) names(x))))
 
-  tibble::as_tibble(
+  as_tibble(
     do.call(rbind,
             c(lapply(x, function(x_entry) {
               if(is.null(x_entry)) {

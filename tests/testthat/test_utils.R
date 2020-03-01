@@ -3,6 +3,11 @@
 context("utils")
 
 test_that("rbind_list", {
+  # Bad input
+  expect_error(rbind_list(list(cars, 1)))
+
+  # Empties and nulls
+  expect_equivalent(rbind_list(list()), data.frame())
   expect_equivalent(rbind_list(list(NULL)), data.frame())
   expect_equivalent(rbind_list(list(cars, NULL)), cars)
   expect_error(rbind_list(cars))
