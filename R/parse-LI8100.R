@@ -106,8 +106,9 @@ parse_LI8100_record <- function(record, results, i, bfn, rec_start) {
   # 3 - record-level data AFTER the table
   # This is tricky, as the CrvFitStatus line might or might not be there
   cfs <- extract_line(record, "CrvFitStatus", required = FALSE)
-  if(cfs == "" | is.na(cfs)) cfs <- "Lin"  # ?
+  if(is.na(cfs)) cfs <- "Lin"  # ?
   results$CrvFitStatus[i] <- cfs
+
   results$Flux[i] <- extract_line(record, paste0(cfs, "_Flux"), required = TRUE, numeric_data = TRUE)
   results$R2[i] <- extract_line(record, paste0(cfs, "_R2"), required = TRUE, numeric_data = TRUE)
   return(results)
