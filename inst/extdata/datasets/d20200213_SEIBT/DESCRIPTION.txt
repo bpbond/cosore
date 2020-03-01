@@ -7,8 +7,8 @@
 # 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
 # 	CSR_ELEVATION: elevation above sea level, meters
 #	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-#		For US sites, a corresponding Central American timezone is used if 
-#		the instrument does not follow daylight savings 
+#		For US sites, a corresponding Central American timezone is used if
+#		the instrument does not follow daylight savings
 # 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
@@ -21,19 +21,19 @@
 #	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
 #	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
 		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
-# 	Primary publication: optional DOI (preferred) or other primary publication 
+# 	Primary publication: optional DOI (preferred) or other primary publication
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
 # --------------------------------------
 CSR_SITE_NAME: Stunt Ranch Santa Monica Mountains UC Reserve
 CSR_LONGITUDE: -118.6572
-CSR_LATITUDE: 34.0939	
+CSR_LATITUDE: 34.0939
 CSR_ELEVATION: 397
 CSR_TIMEZONE: Etc/GMT+8
 CSR_IGBP: Closed shrubland
-CSR_NETWORK: 
-CSR_SITE_ID: 
+CSR_NETWORK:
+CSR_SITE_ID:
 CSR_INSTRUMENT: Aerodyne QC-TILDAS-CS
 CSR_MSMT_LENGTH: 480
 CSR_FILE_FORMAT: Processed_csv
@@ -42,5 +42,5 @@ CSR_TIMESTAMP_TZ: UTC
 CSR_PRIMARY_PUB: 10.1002/2015JG003149
 CSR_OTHER_PUBS: 10.5194/gmd-8-3055-2015
 CSR_DATA_URL: 10.15146/R3PP45
-CSR_ACKNOWLEDGMENT: 
-CSR_NOTE: Litter layers kept intact in both chambers, chamber 3 used as empty (control) chamber
+CSR_ACKNOWLEDGMENT:
+CSR_NOTES: Litter layers kept intact in both chambers, chamber 3 used as empty (control) chamber
