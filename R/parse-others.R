@@ -412,3 +412,46 @@ parse_d20200228_RENCHON <- function(path) {
   }
   rbind_list(results)
 }
+
+#' Parse a custom file from d20200229_PHILLIPS
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @importFrom lubridate mdy_hm round_date
+#' @keywords internal
+parse_d20200229_PHILLIPS <- function(path) {
+  dat <- read.csv(file.path(path, "Claire Phillips - Rs_May2009_to_Aug2011.csv"),
+                  stringsAsFactors = FALSE)
+  # Flux fields
+  fluxcols <- grep("^TR", names(dat))
+  dat <- minigather(dat, names(dat)[fluxcols], "port", "flux",
+                    new_categories = c(2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14) # custom sequence
+  )
+
+  x <- read.csv(file.path(path, "Claire Phillips - SoilTemp_May2009_to_July2010.csv"),
+                stringsAsFactors = FALSE)
+  dat_t5 <- x[c("Time")]
+  dat_t5$TR02.tcm <- rowMeans(x[c("TR02.T5cm.1", "TR02.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR03.tcm <- rowMeans(x[c("TR03.T5cm.1", "TR03.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR04.tcm <- rowMeans(x[c("TR04.T5cm.1", "TR04.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR05.tcm <- rowMeans(x[c("TR05.T5cm.1", "TR05.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR06.tcm <- rowMeans(x[c("TR06.T5cm.1", "TR06.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR07.tcm <- rowMeans(x[c("TR07.T5cm.1", "TR07.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR09.tcm <- rowMeans(x[c("TR09.T5cm.1", "TR09.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR10.tcm <- rowMeans(x[c("TR10.T5cm.1", "TR10.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR11.tcm <- rowMeans(x[c("TR11.T5cm.1", "TR11.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR12.tcm <- rowMeans(x[c("TR12.T5cm.1", "TR12.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR13.tcm <- rowMeans(x[c("TR13.T5cm.1", "TR13.T5cm.2")], na.rm = TRUE)
+  dat_t5$TR14.tcm <- rowMeans(x[c("TR14.T5cm.1", "TR14.T5cm.2")], na.rm = TRUE)
+  dat_t5$mergetime <- mdy_hm(dat_t5$Time)
+  tempcols <- grep("^TR", names(dat_t5))
+  dat_t5 <- minigather(dat_t5, names(dat_t5)[tempcols], "port", "t5",
+                       new_categories = c(2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14))
+
+  # Temperature data are rounded to nearest :30
+  # Merge flux data with averaged temperature data
+  dat$mergetime <- round_date(mdy_hm(dat$Period.Start), "30 minutes")
+  dat <- merge(dat, dat_t5)
+  dat$mergetime <- dat$Time <- NULL
+  dat
+}

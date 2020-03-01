@@ -30,11 +30,11 @@ CSR_NETWORK:
 CSR_SITE_ID: 
 CSR_INSTRUMENT: LI-6262
 CSR_MSMT_LENGTH: 60
-CSR_FILE_FORMAT: LI-8100A_raw
-CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %m/%d/%Y %H:%M
 CSR_TIMESTAMP_TZ: Etc/GMT+8
 CSR_PRIMARY_PUB: 10.1007/s10533-016-0204-x
 CSR_OTHER_PUBS: 10.1111/j.1365-2486.2011.02483.x
 CSR_DATA_URL:
 CSR_ACKNOWLEDGMENT: This research was supported by the Smithsonian Environmental Research Center.
-CSR_NOTE: These data are from a whole-ecosystem warming experiment. Each collar was in a sunlit, climate controlled chamber that was either held at ambient temperature, warmed symetrically (+3.5 degrees day and night) or warmed asymetrically (+5C at dawn, decreasing to +2C at mid-afternoon). There are 12 collars representing 4 replicates per treatment.
+CSR_NOTES: These data are from a whole-ecosystem warming experiment. Each collar was in a sunlit, climate controlled chamber that was either held at ambient temperature, warmed symetrically (+3.5 degrees day and night) or warmed asymetrically (+5C at dawn, decreasing to +2C at mid-afternoon). There are 12 collars representing 4 replicates per treatment. Both the warming treatments were +3.5C on average, but the asymmetric treatment had a lower diurnal temperature range by 2C. Biomass and NPP data are available as well but have not been integrated in this version of COSORE.

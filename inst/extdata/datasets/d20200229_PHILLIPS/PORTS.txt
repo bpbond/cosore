@@ -7,5 +7,16 @@
 # 	CSR_TREATMENT: "None" or experimental manipulation
 # 	CSR_SPECIES: optional field describing species measured
 #
-CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			79,			1,			"Festuca roemeri, Danthonia californica"
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,			CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+2,			Rs,				None,					79,			1,			"Festuca roemeri, Danthonia californica"
+3,			Rs,				Symmetrically warmed,	79,			1,			"Festuca roemeri, Danthonia californica"
+4,			Rs,				Asymmetrically warmed,	79,			1,			"Festuca roemeri, Danthonia californica"
+5,			Rs,				Symmetrically warmed,	79,			1,			"Festuca roemeri, Danthonia californica"
+6,			Rs,				None,					79,			1,			"Festuca roemeri, Danthonia californica"
+7,			Rs,				Asymmetrically warmed ,	79,			1,			"Festuca roemeri, Danthonia californica"
+9,			Rs,				Asymmetrically warmed,	79,			1,			"Festuca roemeri, Danthonia californica"
+10,			Rs,				None,					79,			1,			"Festuca roemeri, Danthonia californica"
+11,			Rs,				Symmetrically warmed,	79,			1,			"Festuca roemeri, Danthonia californica"
+12,			Rs,				Asymmetrically warmed,	79,			1,			"Festuca roemeri, Danthonia californica"
+13,			Rs,				Symmetrically warmed,	79,			1,			"Festuca roemeri, Danthonia californica"
+14,			Rs,				None,					79,			1,			"Festuca roemeri, Danthonia californica"
