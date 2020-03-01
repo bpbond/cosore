@@ -7,6 +7,8 @@
 #' @param run_report Include \code{combined_report.Rmd} in release? For testing
 #' @param zip_release Run /code{utils::zip()} on output files? For testing
 #' @param datasets Datasets to include, character; used for testing
+#' @param sys_call System call to use, function; testing only; normally
+#' \code{\link{system2}}
 #' @return Fully qualified name of zip file containing release.
 #' @importFrom utils packageVersion write.csv object.size
 #' @details To make a new release, the git working directory
@@ -22,7 +24,8 @@
 #' @export
 csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
                              run_report = TRUE, zip_release = TRUE,
-                             datasets = list_datasets()) {
+                             datasets = list_datasets(),
+                             sys_call = system2) {
 
   stopifnot(is.character(path))
   stopifnot(is.logical(vignette_rebuilt))
@@ -30,6 +33,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
   stopifnot(is.logical(run_report))
   stopifnot(is.logical(zip_release))
   stopifnot(is.character(datasets))
+  stopifnot(is.function(sys_call))
 
   if(!dir.exists(path)) {
     stop("Path ", path, " doesn't exist")
@@ -40,7 +44,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
   }
 
   if(!force) {
-    if(length(system2("git", args = c("status", "--porcelain"), stdout = TRUE))) {
+    if(length(sys_call("git", args = c("status", "--porcelain"), stdout = TRUE))) {
       stop("Not allowed: git working directory is not clean")
     }
   }
@@ -62,25 +66,10 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
     write.csv(x, file.path(path, fn), row.names = FALSE)
   }
 
+  # Write datasets' data
   for(dataset_name in datasets) {
     ds <- csr_dataset(dataset_name)
-
-    # If dataset is under embargo, don't write data
-    if(!is.na(ds$description$CSR_EMBARGO)) {
-      message(ds$description$CSR_DATASET, " has an embargo entry--skipping data")
-      next
-    }
-
-    # For data, we write each dataset separately into a data/ folder
-    db_size <- db_size + object.size(ds$data)
-    message("\tWriting data...")
-    p <- file.path(path, "datasets")
-    dir.create(p, showWarnings = FALSE)
-    if(is.data.frame(ds$data)) {
-      write.csv(ds$data,
-                file = file.path(p, paste0("data_", dataset_name, ".csv")),
-                row.names = FALSE)
-    }
+    db_size <- write_dataset_data(dataset_name, ds, path, db_size)
   } # for ds
 
   # Copy column metadata and README files
@@ -112,6 +101,8 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
   # Copy vignette file
   if(file.exists("doc/cosore-data-example.html")) {
     file.copy("doc/cosore-data-example.html", to = path)
+  } else { # write a blank file
+    file.create(file.path(path, "cosore-data-example.html"))
   }
 
   # Run combined_report and copy it there
@@ -126,16 +117,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
   all_files <- list.files(path, recursive = FALSE)
   release_file <- paste0("cosore-", packageVersion("cosore"), ".zip")
   all_files <- setdiff(all_files, release_file)
-  missing <- !all_files %in% names(file_descriptions)
-  if(any(missing)) {
-    stop("Missing description for files: ",
-         paste(all_files[missing], collapse = ", "))
-  }
-  extra <- !names(file_descriptions) %in% all_files
-  if(any(missing)) {
-    stop("Missing file for descriptions: ",
-         paste(all_files[extra], collapse = ", "))
-  }
+  check_file_description_consistency(all_files, file_descriptions)
 
   # Almost done! Zip everything up into a single file
   if(zip_release) {
@@ -158,7 +140,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
 #' @param force Ignore git dirty status? Logical
 #' @return The file data with substitutions made.
 #' @note Called only by \code{\link{csr_make_release}}.
-#' @export
+#' @keywords internal
 substitute_release_info <- function(f_data, file_descriptions, db_size, force) {
   stopifnot(is.character(f_data))
   stopifnot(is.character(file_descriptions))
@@ -180,4 +162,63 @@ substitute_release_info <- function(f_data, file_descriptions, db_size, force) {
     file_descriptions,
     collapse = "\n"
   ), f_data)
+}
+
+#' Substitute Git SHA, date, etc., into file data.
+#'
+#' @param dataset_name Dataset name, character
+#' @param ds Dataset, a list
+#' @param path Output path, character
+#' @param db_size Database size, numeric
+#' @return Updated database size.
+#' @note Called only by \code{\link{csr_make_release}}.
+#' @keywords internal
+write_dataset_data <- function(dataset_name, ds, path, db_size) {
+  stopifnot(is.character(dataset_name))
+  stopifnot(is.list(ds))
+  stopifnot(is.character(path))
+  stopifnot(is.numeric(db_size))
+
+  # If dataset is under embargo, don't write data
+  if(!is.null(ds$description$CSR_EMBARGO) &&
+     !is.na(ds$description$CSR_EMBARGO)) {
+    message(dataset_name, " has an embargo entry--skipping data")
+    return(db_size)
+  }
+
+  # For data, we write each dataset separately into a data/ folder
+  message("\tWriting data...")
+  p <- file.path(path, "datasets")
+  dir.create(p, showWarnings = FALSE)
+  if(is.data.frame(ds$data)) {
+    write.csv(ds$data,
+              file = file.path(p, paste0("data_", dataset_name, ".csv")),
+              row.names = FALSE)
+  }
+  db_size + object.size(ds$data)
+}
+
+
+#' Check that files have descriptions and descriptions have files.
+#'
+#' @param all_files Vector of filenames, characfter
+#' @param file_descriptions Vector of file descriptions, character
+#' @return Nothing; run for side effect of error if necessary.
+#' @keywords internal
+#' @note Called only by \code{\link{csr_make_release}}.
+check_file_description_consistency <- function(all_files, file_descriptions) {
+  stopifnot(is.character(all_files))
+  stopifnot(is.character(file_descriptions))
+
+  missing <- !all_files %in% names(file_descriptions)
+  if(any(missing)) {
+    stop("Missing description for files: ",
+         paste(all_files[missing], collapse = ", "))
+  }
+  extra <- !names(file_descriptions) %in% all_files
+  if(any(extra)) {
+    stop("Missing file for descriptions: ",
+         paste(names(file_descriptions)[extra], collapse = ", "))
+  }
+
 }

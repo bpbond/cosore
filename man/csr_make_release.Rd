@@ -10,7 +10,8 @@ csr_make_release(
   force = FALSE,
   run_report = TRUE,
   zip_release = TRUE,
-  datasets = list_datasets()
+  datasets = list_datasets(),
+  sys_call = system2
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ csr_make_release(
 \item{zip_release}{Run /code{utils::zip()} on output files? For testing}
 
 \item{datasets}{Datasets to include, character; used for testing}
+
+\item{sys_call}{System call to use, function; testing only; normally
+\code{\link{system2}}}
 }
 \value{
 Fully qualified name of zip file containing release.

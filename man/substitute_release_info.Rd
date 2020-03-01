@@ -24,3 +24,4 @@ Substitute Git SHA, date, etc., into file data.
 \note{
 Called only by \code{\link{csr_make_release}}.
 }
+\keyword{internal}

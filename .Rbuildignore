@@ -2,7 +2,6 @@
 ^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-.drake/
 misc/
 rsconnect/
 .pdf$
