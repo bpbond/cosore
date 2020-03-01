@@ -56,7 +56,9 @@ extract_line <- function(file_data, line_label,
 #' list_datasets()
 list_datasets <- function(path = resolve_dataset("")) {
   ds <- list.files(path)
-  ds[grep("^d[0-9]{8}_", ds)]  # dataset folders start with "d" followed by eight numbers
+  # dataset folders start with "d" followed by eight numbers (as opposed to test
+  # datasets we don't want to return to the user)
+  ds[grep("^d[0-9]{8}_", ds)]
 }
 
 #' Get the full path of a dataset folder(s)

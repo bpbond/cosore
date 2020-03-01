@@ -1,8 +1,16 @@
-# test-processing.R
+# test-reports.R
 
-context("processing")
+context("dataset_read")
 
 test_that("dataset read and report", {
+
+  # Missing raw data folder
+  expect_message(x <- read_dataset("TEST_licordata", raw_data = tempdir()),
+                 regexp = "No data folder found")
+  expect_is(x, "list")
+  expect_null(x$data)
+
+  # read_dataset
   x <- read_dataset("TEST_licordata", raw_data = "test_raw_data/")
   expect_is(x, "list")
   csr_report_dataset(x, output_dir = tempdir(), quiet = TRUE)
@@ -15,6 +23,10 @@ test_that("dataset read and report", {
   # No-data dataset
   expect_message(x_no_data <- read_dataset("TEST_licordata"))
   csr_report_dataset(x_no_data, output_dir = tempdir(), quiet = TRUE)
+
+  # Custom file format dataset
+  expect_error(read_dataset("TEST_custom", raw_data = "test_raw_custom/"), regexp = "TEST_custom dispatched OK")
+  expect_warning(read_dataset("TEST_custom_missing", raw_data = "test_raw_custom/"), regexp = "Unknown format")
 
   # Unusual error conditions
   for(fn in list.files(pattern = "*.txt", path = "test_raw_problems", full.names = TRUE)) {
