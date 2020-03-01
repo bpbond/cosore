@@ -16,6 +16,12 @@ test_that("check_file_description_consistency", {
   af <- names(fd)[1]
   expect_error(check_file_description_consistency(af, fd),
                regexp = "Missing file for descriptions")
+  # Missing description
+  fd <- fd[1]
+  af <- c("x", "y")
+  expect_error(check_file_description_consistency(af, fd),
+               regexp = "Missing description for files")
+
 })
 
 test_that("write_dataset_data", {
