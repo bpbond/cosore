@@ -14,19 +14,29 @@ csr_table <- function(table, datasets = list_datasets(), quiet = FALSE) {
          "'ports', 'columns', 'data', 'diagnostics', or 'ancillary'")
   }
 
-  extract <- function(dataset_name, table, quiet) {
-    mdo <- !table %in% c("data", "diagnostics") # only these require actual data read (which is slow)
-    x <- csr_dataset(dataset_name, metadata_only = mdo, quiet = quiet)
+  rbind_list(lapply(datasets, extract_table, table, quiet))
+}
 
-    if(is.null(x[[table]])) { return(NULL) }
-    if(!is.data.frame(x[[table]])) { return(NULL) }
-    if(nrow(x[[table]]) == 0) { return(NULL) }
 
-    x[[table]]$CSR_DATASET <- x$description$CSR_DATASET
-    x[[table]]
-  }
+#' Internal function to extract a table from a dataset.
+#'
+#' @param dataset_name Dataset name, character
+#' @param table Table name, character
+#' @param quiet Print progress messages and warnings? Logical
+#' @param retrieval_function Dataset retrieval function,
+#' normally \code{\link{csr_dataset}}; used only in testing
+#' @return The extracted data frame.
+#' @keywords internal
+extract_table <- function(dataset_name, table, quiet, retrieval_function = csr_dataset) {
+  mdo <- !table %in% c("data", "diagnostics") # only these require actual data read (which is slow)
+  x <- retrieval_function(dataset_name, metadata_only = mdo, quiet = quiet)
 
-  rbind_list(lapply(datasets, extract, table, quiet))
+  if(is.null(x[[table]])) { return(NULL) }
+  if(!is.data.frame(x[[table]])) { return(NULL) }
+  if(nrow(x[[table]]) == 0) { return(NULL) }
+
+  x[[table]]$CSR_DATASET <- x$description$CSR_DATASET
+  x[[table]]
 }
 
 #' Return a single COSORE dataset.

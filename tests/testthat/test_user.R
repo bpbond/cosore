@@ -30,3 +30,10 @@ test_that("csr_database", {
   y <- list_datasets()
   expect_identical(nrow(x), length(y))  # should be one row per dataset
 })
+
+test_that("extract_table", {
+  expect_s3_class(extract_table("TEST_licordata", "description", TRUE), "data.frame")
+  expect_null(extract_table("x", "x", TRUE, retrieval_function = function(...) NULL))
+  expect_null(extract_table("x", "x", TRUE, retrieval_function = function(...) list(x = 1)))
+  expect_null(extract_table("x", "x", TRUE, retrieval_function = function(...) list(x = data.frame())))
+})
