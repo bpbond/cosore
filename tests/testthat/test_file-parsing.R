@@ -109,50 +109,37 @@ test_that("read_contributors_file", {
   # contributors file
   labels <- c("CSR_FIRST_NAME", "CSR_FAMILY_NAME", "CSR_EMAIL", "CSR_ORCID", "CSR_ROLE")
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-0000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
+  fd <- function(dat, labels) c(paste(labels, collapse = ","), paste(dat, collapse = ","))
 
-  x <- read_contributors_file("x", file_data = fd)
+  x <- read_contributors_file("x", file_data = fd(dat, labels))
   expect_is(x, "data.frame")
   expect_equivalent(nrow(x), 1)
   expect_true(all(labels %in% names(x)))
 
-  # Catches blank names
-  dat <- c("", "BL", "ben@bbl.com", "0000-0000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_error(read_contributors_file("x", file_data = fd))
-  dat <- c("Ben", "", "ben@bbl.com", "0000-0000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_error(read_contributors_file("x", file_data = fd))
+  # Catches missing first email
+  dat <- c("Ben", "BL", "", "0000-0000-0000-0000", "role")
+  expect_error(read_contributors_file("x", file_data = fd(dat, labels)),
+               regexp = "email for primary contributor is missing")
 
   # Catches invalid emails
   dat <- c("Ben", "BL", "bbl.com", "0000-0000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_error(read_contributors_file("x", file_data = fd))
+  expect_error(read_contributors_file("x", file_data = fd(dat, labels)), regexp = "invalid emails")
   dat <- c("Ben", "BL", "ben@", "0000-0000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_error(read_contributors_file("x", file_data = fd))
-  dat <- c("Ben", "BL", "", "0000-0000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_error(read_contributors_file("x", file_data = fd))
+  expect_error(read_contributors_file("x", file_data = fd(dat, labels)), regexp = "invalid emails")
   # Handles multiple (semicolon) emails
   dat <- c("Ben", "BL", "ben@bbl.com; ben@gmail.com", "0000-0000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_silent(read_contributors_file("x", file_data = fd))
+  expect_silent(read_contributors_file("x", file_data = fd(dat, labels)))
 
   # Catches invalid ORCIDs
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_error(read_contributors_file("x", file_data = fd))
+  expect_error(read_contributors_file("x", file_data = fd(dat, labels)), regexp = "invalid ORCID")
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-000X-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_error(read_contributors_file("x", file_data = fd))
+  expect_error(read_contributors_file("x", file_data = fd(dat, labels)), regexp = "invalid ORCID")
   # Valid forms
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-0000-0000-0000", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_silent(read_contributors_file("x", file_data = fd))
+  expect_silent(read_contributors_file("x", file_data = fd(dat, labels)))
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-0000-0000-000X", "role")
-  fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
-  expect_silent(read_contributors_file("x", file_data = fd))
+  expect_silent(read_contributors_file("x", file_data = fd(dat, labels)))
 })
 
 test_that("read_ports_file", {

@@ -1,0 +1,39 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
+# --------------------------------------
+CSR_SITE_NAME: SERC-GCReW Forest
+CSR_LONGITUDE: -76.552
+CSR_LATITUDE: 38.875
+CSR_ELEVATION: 5
+CSR_TIMEZONE: Etc/GMT+5
+CSR_IGBP: Deciduous broadleaf forest
+CSR_NETWORK: 
+CSR_SITE_ID: 
+CSR_INSTRUMENT: LI-8100A
+CSR_MSMT_LENGTH: 
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
+CSR_TIMESTAMP_TZ: Etc/GMT+5
+CSR_PRIMARY_PUB:
+CSR_OTHER_PUBS:
+CSR_DATA_URL:
+CSR_ACKNOWLEDGMENT: This research was supported by the Smithsonian Environmental Research Center.

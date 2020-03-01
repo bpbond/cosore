@@ -377,3 +377,36 @@ test_that("convert_to_numeric", {
   expect_identical(y$Time, y1$Time)
   expect_identical(y$val, y1$val)
 })
+
+test_that("remove_invalid_timestamps", {
+  # Bad input
+  expect_error(remove_invalid_timestamps(1, "", ""))
+  expect_error(remove_invalid_timestamps(data.frame(), 1, ""))
+  expect_error(remove_invalid_timestamps(data.frame(), "", 1))
+
+  df <- data.frame(CSR_TIMESTAMP_BEGIN = c(1, NA), CSR_TIMESTAMP_END = 1)
+  expect_silent(out <- remove_invalid_timestamps(df, "", ""))
+  expect_identical(nrow(out), 1L)
+  df <- data.frame(CSR_TIMESTAMP_BEGIN = 1, CSR_TIMESTAMP_END = c(1, NA))
+  expect_silent(out <- remove_invalid_timestamps(df,"", ""))
+  expect_identical(nrow(out), 1L)
+  df <- data.frame(CSR_TIMESTAMP_BEGIN = NA, CSR_TIMESTAMP_END = NA)
+  expect_error(remove_invalid_timestamps(df, "", ""), regexp = "Timestamps could not be parsed")
+})
+
+test_that("add_port_column", {
+  # Bad input
+  expect_error(add_port_column(1))
+
+  # Adds missing PORT
+  df <- data.frame(x = 1)
+  expect_silent(out <- add_port_column(df))
+  expect_s3_class(out, "data.frame")
+  expect_true("CSR_PORT" %in% colnames(out))
+
+  # Changes non-numeric PORT to numeric
+  df <- data.frame(CSR_PORT = "1", stringsAsFactors = FALSE)
+  expect_silent(out <- add_port_column(df))
+  expect_true("CSR_PORT" %in% colnames(out))
+  expect_type(out$CSR_PORT, "double")
+})

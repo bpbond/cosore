@@ -455,3 +455,8 @@ parse_d20200229_PHILLIPS <- function(path) {
   dat$mergetime <- dat$Time <- NULL
   dat
 }
+
+# Test code to ensure correct dispatching for custom file format.
+parse_TEST_custom <- function(path) {
+  stop("TEST_custom dispatched OK")
+}

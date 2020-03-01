@@ -504,3 +504,39 @@ minigather <- function(x, gather_cols, category_col_name, value_col_name,
   }
   do.call(rbind, results)
 }
+
+#' Remove rows with invalid timestamps.
+#'
+#' @param dsd Dataset data, a \code{data.frame}
+#' @param tf Timestamp format, character
+#' @param tz Timezone, character
+#' @return The data frame with any NA-timestamp rows removed
+#' @keywords internal
+remove_invalid_timestamps <- function(dsd, tf, tz) {
+  stopifnot(is.data.frame(dsd))
+  stopifnot(is.character(tf))
+  stopifnot(is.character(tz))
+
+  dsd <- dsd[!is.na(dsd$CSR_TIMESTAMP_BEGIN),]
+  dsd <- dsd[!is.na(dsd$CSR_TIMESTAMP_END),]
+
+  if(nrow(dsd) == 0) {
+    stop("Timestamps could not be parsed with ", tf, " and tz ", tz)
+  }
+  dsd
+}
+
+#' Add port column, if necessary, and convert to numeric.
+#'
+#' @param dsd Dataset data, a \code{data.frame}
+#' @return The data frame with a numeric PORT column.
+#' @keywords internal
+add_port_column <- function(dsd) {
+  stopifnot(is.data.frame(dsd))
+
+  if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
+    dsd$CSR_PORT <- 0
+  }
+  dsd$CSR_PORT <- convert_to_numeric(dsd$CSR_PORT, "CSR_PORT")
+  dsd
+}

@@ -56,7 +56,9 @@ extract_line <- function(file_data, line_label,
 #' list_datasets()
 list_datasets <- function(path = resolve_dataset("")) {
   ds <- list.files(path)
-  ds[grep("^d[0-9]{8}_", ds)]  # dataset folders start with "d" followed by eight numbers
+  # dataset folders start with "d" followed by eight numbers (as opposed to test
+  # datasets we don't want to return to the user)
+  ds[grep("^d[0-9]{8}_", ds)]
 }
 
 #' Get the full path of a dataset folder(s)
@@ -170,16 +172,16 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "CONTRIBUTORS.txt", file_data)
   cfd <- read_csv_data(file_data, required = c("CSR_FIRST_NAME", "CSR_FAMILY_NAME"))
 
-  # Have to provide at least one contributor
-  if(cfd$CSR_FIRST_NAME[1] == "" | cfd$CSR_FAMILY_NAME[1] == "" | cfd$CSR_EMAIL[1] == "") {
-    stop(dataset_name, ": name and/or email for primary contributor is blank")
+  # Have to provide first contributor email
+  if(is.na(cfd$CSR_EMAIL[1])) {
+    stop(dataset_name, ": email for primary contributor is missing")
   }
   # Check for invalid email addresses
   eml <- sapply(strsplit(cfd$CSR_EMAIL, ";"), function(x) x[1])
   invalid_emails <- grep("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
                          eml, ignore.case = TRUE, invert = TRUE)
   if(length(invalid_emails) && any(cfd$CSR_EMAIL[invalid_emails] != "")) {
-    stop(dataset_name, ": Invalid emails for contributors ", invalid_emails)
+    stop(dataset_name, ": invalid emails for contributors ", invalid_emails)
   }
   # Check for invalid ORCID ID
   invalid_orcids <- grep("^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}$",
@@ -388,12 +390,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     # Remove records with invalid timestamps
     diag$CSR_RECORDS_REMOVED_TIMESTAMP <- sum(ctlist$na_ts)
     diag$CSR_EXAMPLE_BAD_TIMESTAMPS <- ctlist$bad_examples
-    dsd <- dsd[!is.na(dsd$CSR_TIMESTAMP_BEGIN),]
-    dsd <- dsd[!is.na(dsd$CSR_TIMESTAMP_END),]
-
-    if(nrow(dsd) == 0) {
-      stop("Timestamps could not be parsed with ", tf, " and tz ", tz)
-    }
+    dsd <- remove_invalid_timestamps(dsd, tf, tz)
 
     # Change to the site's timezone (which is usually the same but might be different)
     dsd <- lubridate::with_tz(dsd, tzone = dataset$description$CSR_TIMEZONE)
@@ -403,10 +400,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     diag$CSR_TIME_END <- format(max(dsd$CSR_TIMESTAMP_END), format = "%Y-%m-%d")
 
     # Add port column if necessary
-    if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
-      dsd$CSR_PORT <- 0
-    }
-    dsd$CSR_PORT <- convert_to_numeric(dsd$CSR_PORT, "CSR_PORT")
+    dsd <- add_port_column(dsd)
 
     # Rearrange columns
     dsd <- rearrange_columns(dsd, required_cols =
