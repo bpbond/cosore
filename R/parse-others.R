@@ -441,7 +441,8 @@ parse_d20200229_PHILLIPS <- function(path) {
   dat_t5$TR10.tcm <- rowMeans(x[c("TR10.T5cm.1", "TR10.T5cm.2")], na.rm = TRUE)
   dat_t5$TR11.tcm <- rowMeans(x[c("TR11.T5cm.1", "TR11.T5cm.2")], na.rm = TRUE)
   dat_t5$TR12.tcm <- rowMeans(x[c("TR12.T5cm.1", "TR12.T5cm.2")], na.rm = TRUE)
-  dat_t5$TR13.tcm <- rowMeans(x[c("TR13.T5cm.1", "TR13.T5cm.2")], na.rm = TRUE)
+  # 2020-03-03: removed TR13, probe 2 per Claire Phillips request - it's bad
+  dat_t5$TR13.tcm <- rowMeans(x[c("TR13.T5cm.1")], na.rm = TRUE)
   dat_t5$TR14.tcm <- rowMeans(x[c("TR14.T5cm.1", "TR14.T5cm.2")], na.rm = TRUE)
   dat_t5$mergetime <- mdy_hm(dat_t5$Time)
   tempcols <- grep("^TR", names(dat_t5))
