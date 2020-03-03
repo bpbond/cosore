@@ -24,7 +24,7 @@ As of this writing the current version of COSORE is `r packageVersion("cosore")`
 
 ### Structure
 
-### Table X
+### Table X_IGBP
 
 ```{r table_igbp}
 db %>% 
@@ -87,3 +87,8 @@ make_table(db_fields, "diagnostics")
 ### Figure X
 
 Map of sites
+
+# Figure X
+
+Density plot of fluxes, by IGBP, one line per dataset or per dataset + year
+
