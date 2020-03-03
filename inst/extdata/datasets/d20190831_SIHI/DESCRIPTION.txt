@@ -29,7 +29,7 @@
 CSR_SITE_NAME: El Verde Field Station at the Luquillo Experimental Forest
 CSR_LONGITUDE: -65.8
 CSR_LATITUDE: 18.3
-CSR_ELEVATION: 725
+CSR_ELEVATION: 350
 CSR_TIMEZONE: Etc/GMT+4
 CSR_IGBP: Evergreen broadleaf forest
 CSR_NETWORK: 
