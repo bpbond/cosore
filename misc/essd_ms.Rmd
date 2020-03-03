@@ -20,7 +20,7 @@ db_fields <- read_csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "
                       col_types  = "cccccl", comment = "#")
 ```
 
-As of this writing the current version of COSORE is `r packageVersion("cosore")`. It has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X,  Figure X).
+As of this writing the current version of COSORE is `r packageVersion("cosore")`. It currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X,  Figure X).
 
 ### Structure
 
