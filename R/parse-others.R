@@ -460,3 +460,12 @@ parse_d20200229_PHILLIPS <- function(path) {
 parse_TEST_custom <- function(path) {
   stop("TEST_custom dispatched OK")
 }
+
+#' Parse a custom file from d20190919_MIGLIAVACCA
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20190919_MIGLIAVACCA <- function(path) {
+  parse_PROCESSED_CSV(path, extension_pattern = "dat$")
+}

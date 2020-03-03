@@ -4,10 +4,12 @@
 \alias{parse_PROCESSED_CSV}
 \title{Read processed data in CSV format}
 \usage{
-parse_PROCESSED_CSV(path)
+parse_PROCESSED_CSV(path, extension_pattern = ".csv$")
 }
 \arguments{
 \item{path}{Data directory path, character}
+
+\item{extension_pattern}{Filename extensions, character}
 }
 \value{
 A data frame with all data read from file(s).
