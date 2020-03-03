@@ -1,0 +1,89 @@
+---
+title: "essd_manuscript"
+output: html_document
+---
+
+This document is intended to be the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(cosore)
+library(dplyr)
+library(lubridate)
+library(readr)
+library(tidyr)
+db <- csr_database() %>% mutate(CTB = ymd(CSR_TIME_BEGIN), CTE  = ymd(CSR_TIME_END))
+db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
+db_years <- max(year(db$CTE), na.rm = TRUE) - min(year(db$CTB), na.rm = TRUE) + 1
+db_fields <- read_csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "cosore"), 
+                      col_types  = "cccccl", comment = "#")
+```
+
+As of this writing the current version of COSORE is `r packageVersion("cosore")`. It has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X,  Figure X).
+
+### Structure
+
+### Table X
+
+```{r table_igbp}
+db %>% 
+  select(`IGBP class` = CSR_IGBP, CSR_RECORDS, CTB, CTE) %>% 
+  group_by(`IGBP class`) %>% 
+  summarise(Datasets = n(),
+            Records = format(sum(CSR_RECORDS, na.rm = TRUE), big.mark = ","),
+            `First record` = min(CTB, na.rm = TRUE),
+            `Last record` = max(CTE, na.rm = TRUE)) %>% 
+  kableExtra::kable(format = "markdown")
+```
+
+### Table X_description
+
+```{r table_description}
+options(knitr.kable.NA = "")
+make_table <- function(db_fields, table) {
+  db_fields %>% 
+    rename(`Field name` = Field_name) %>% 
+    filter(Table_name == table) %>%
+    mutate(Required = if_else(Required, "*", "")) %>% 
+    select(-Table_name) %>% 
+    kableExtra::kable(format = "markdown")
+}
+make_table(db_fields, "description")
+```
+
+### Table X_contributors
+
+```{r table_contributors}
+make_table(db_fields, "contributors")
+```
+
+### Table X_ports
+
+```{r table_ports}
+make_table(db_fields, "ports")
+```
+
+### Table X_ancillary
+
+```{r table_ancillary}
+db_fields %>% 
+  #  filter(Field_name %in%  c("Variable", "Value")) %>% 
+  make_table("ancillary")
+```
+
+### Table X_columns
+
+```{r table_columns}
+make_table(db_fields, "columns")
+```
+
+### Table X_diagnostics
+
+```{r table_diagnostics}
+make_table(db_fields, "diagnostics")
+```
+
+### Figure X
+
+Map of sites
