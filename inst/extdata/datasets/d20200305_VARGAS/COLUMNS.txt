@@ -7,17 +7,15 @@
 #	Computation: optional R-parseable computation to change units, etc.
 #	Notes: optional; generally to explain the computation
 #
-Database,		Dataset,	Computation,				Notes
-CSR_CDRY,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_ERROR,		Error,
-CSR_FLUX,  		Flux,
-CSR_LABEL,		Label,
-CSR_PORT,		Port,
-CSR_R2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V4
-CSR_T5,			V3
-CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP,	Timestamp
+Database,				Dataset,	Computation,				Notes
+CSR_FLUX,  				flux,
+CSR_LABEL,				label,
+CSR_PAR,				PAR,
+CSR_PORT,				port,
+CSR_RH,					RH,
+CSR_SM10,				SM10
+CSR_T2,					Ts_2
+CSR_T8,					Ts_8
+CSR_T16,				Ts_16
+CSR_TAIR,				Ta
+CSR_TIMESTAMP_BEGIN,	DOY,		"paste(Year, fractional_doy(Year, DOY))"
