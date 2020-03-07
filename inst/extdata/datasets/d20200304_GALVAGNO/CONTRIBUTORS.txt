@@ -1,0 +1,14 @@
+# CONTRIBUTORS.txt
+#
+# This comma-separated data file provides information about dataset
+# contributors. Entries below include: 
+# 	CSR_FIRST_NAME: first name
+# 	CSR_FAMILY_NAME: family (last) name
+# 	CSR_EMAIL: email address
+# 	CSR_ORCID: optional CSR_ORCID ID (see https://orcid.org)
+# 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
+#     common roles include "Funding acquisition", "Investigation", "Data curation"
+#
+CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,				CSR_ORCID,				CSR_ROLE
+Marta,			Galvagno,			m.galvagno@arpa.vda.it,	0000-0002-0827-487X,	
+Edoardo,		Cremonese,			e.cremonese@arpa.vda.it

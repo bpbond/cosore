@@ -146,8 +146,9 @@ ggplot(dpm_igbp, aes(Time, CSR_IGBP, fill = Day)) + geom_tile(na.rm = TRUE) +
 ```{r igbp}
 x <- cosore:::rbind_list(flux_dist)
 x <- x[x$CSR_FLUX > -1 & x$CSR_FLUX < 20,]
-ggplot(x, aes(x = CSR_FLUX)) + geom_histogram(bins = 30) +
-  facet_wrap(~CSR_IGBP) 
+ggplot(x, aes(x = CSR_FLUX)) + 
+  geom_histogram(bins = 30) +
+  facet_wrap(~CSR_IGBP, scales = "free_y") 
 ```
 
 ### Database growth

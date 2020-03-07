@@ -141,6 +141,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
               CSR_EMBARGO = extract_line(f, "CSR_EMBARGO", required = FALSE))
 
   if(!x$CSR_IGBP %in% c("Wetland",
+                        "Broadleaf evergreen forest",
                         "Evergreen needleleaf forest",
                         "Evergreen needleleaf plantation", # TODO
                         "Deciduous broadleaf forest", "Open shrubland",

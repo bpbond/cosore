@@ -470,3 +470,63 @@ parse_TEST_custom <- function(path) {
 parse_d20190919_MIGLIAVACCA <- function(path) {
   parse_PROCESSED_CSV(path, extension_pattern = "dat$")
 }
+
+#' Parse a custom file from d20200305_VARGAS
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom tibble tibble
+parse_d20200305_VARGAS <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  # Argh who does this to their dates?!?
+  y2007 <- dat$Year == 2007
+  dat$DOY[y2007] <- dat$DOY[y2007] - 365
+  y2008 <- dat$Year == 2008
+  dat$DOY[y2008] <- dat$DOY[y2008] - 729
+
+  dat1 <- tibble(
+    Year = dat$Year,
+    DOY = dat$DOY,
+    port = 1,
+    flux = dat$EffluxL_avg,
+    PAR = dat$PAR,
+    RH = dat$RHL_avg,
+    SM10 = dat$SVWCL,
+    Ta = dat$TaL_avg,
+    Ts_16 = dat$Ts_16L_avg,
+    Ts_2 = dat$Ts_2L_avg,
+    Ts_8 = dat$Ts_8L_avg,
+    label = "Lower plot"
+  )
+  dat2 <- tibble(
+    Year = dat$Year,
+    DOY = dat$DOY,
+    port = 2,
+    flux = dat$EffluxM_avg,
+    PAR = dat$PAR,
+    RH = dat$RHM_avg,
+    SM10 = dat$SVWCM,
+    Ta = dat$TaM_avg,
+    Ts_16 = dat$Ts_16M_avg,
+    Ts_2 = dat$Ts_2M_avg,
+    Ts_8 = dat$Ts_8M_avg,
+    label = "Middle plot"
+  )
+  dat3 <- tibble(
+    Year = dat$Year,
+    DOY = dat$DOY,
+    port = 3,
+    flux = dat$EffluxU_avg,
+    PAR = dat$PAR,
+    RH = dat$RHU_avg,
+    SM10 = dat$SVWCU,
+    Ta = dat$TaU_avg,
+    Ts_16 = dat$Ts_16U_avg,
+    Ts_2 = dat$Ts_2U_avg,
+    Ts_8 = dat$Ts_8U_avg,
+    label = "Upper plot"
+  )
+  rbind(dat1, dat2, dat3)
+}
