@@ -5,3 +5,5 @@
 /*_cache/
 /cache/
 
+# authors file
+*.csv
