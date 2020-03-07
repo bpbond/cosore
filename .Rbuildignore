@@ -3,6 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 misc/
+essd/
 rsconnect/
 .pdf$
 .travis.yml
