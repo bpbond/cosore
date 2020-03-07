@@ -4,7 +4,7 @@ output: html_document
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
-This document is intended to be the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc.
+This document is intended to be the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc. Most of the text with citations will be in the Google Doc.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -14,7 +14,9 @@ library(dplyr)
 library(lubridate)
 library(readr)
 library(tidyr)
-db <- csr_database() %>% mutate(CTB = ymd(CSR_TIME_BEGIN), CTE  = ymd(CSR_TIME_END))
+library(covr)
+
+db <- csr_database() %>% mutate(CTB = ymd(CSR_TIME_BEGIN), CTE = ymd(CSR_TIME_END))
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
 db_years <- max(year(db$CTE), na.rm = TRUE) - min(year(db$CTB), na.rm = TRUE) + 1
 db_fields <- read_csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "cosore"), 
@@ -22,13 +24,80 @@ db_fields <- read_csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "
 db_vers <- packageVersion("cosore")
 ```
 
-As of this writing (`r Sys.Date()`) the current version of COSORE is `r db_vers`. It currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
+```{r authors}
+csr_table("contributors") %>% 
+  group_by(CSR_DATASET) %>% 
+  mutate(`Author?` = "No", `Institution and address` = "") %>% 
+  select(CSR_DATASET, CSR_FAMILY_NAME, CSR_FIRST_NAME, `Author?`,
+         CSR_EMAIL, CSR_ORCID, `Institution and address`) %>% 
+  write_csv("authors_no.csv", na = "")
+```
 
-### Structure
+
+## A database for COntinuous SOil REspiration and other chamber fluxes
+
+Philosophy.
+
+As of this writing (`r Sys.Date()`) the version of COSORE is `r db_vers`. It currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
+
+### Overall database structure
+
+### Individual dataset structure
+
+## Accessing COSORE data
+
+### Downloading a release
+
+### Using the R package
+
+Installing it from GitHub. Loading it.
+
+#### Documentation and vignettes
+
+#### Testing and quality assurance
+
+When contributed data are imported into COSORE, the package code performs a number of quality assurance checks. These include:
+
+* Timestamp errors, for example illegal dates and times for the specified time zone
+* Bad email addresses or ORCID identifiers
+* Records with no flux value
+* Records for which the analyzer recorded an error condition
+* Extremely low or high (<-10 and >50 µmol m^-2^ s^-1^ respectively) flux rates
+* Extremely low or high temperature values
+
+```{r errors, cache=TRUE}
+# Calculate what percent of observations are removed across all datasets
+csr_table("diagnostics", quiet = TRUE) %>% 
+  group_by(CSR_DATASET, CSR_RECORDS) %>% 
+  summarise(removed = CSR_RECORDS_REMOVED_NA + CSR_RECORDS_REMOVED_ERR +
+                          CSR_RECORDS_REMOVED_TOOLOW + CSR_RECORDS_REMOVED_TOOHIGH +
+                          CSR_RECORDS_REMOVED_TIMESTAMP) %>% 
+  ungroup() %>% 
+  mutate(removed_pct = removed / (removed + CSR_RECORDS) * 100) %>% 
+  pull(removed_pct) -> errs
+```
+
+Any errors flagged or records removed during this process are summarized in the _diagnostics_ table that is part of each dataset (**Table 7** below). Across all contributed datasets, a median of `r round(median(errs), 1)`% of raw observations were removed for one of these reasons.
+
+```{r coverage, cache=TRUE}
+# We exclude parse-others.R from the coverage calculation, because it's all
+# temporary code for handling specific raw datasets, and will eventually go away
+package_coverage(line_exclusions = list("R/parse-others.R")) %>% 
+  percent_coverage() ->
+  csr_cov
+```
+
+The `cosore` R package also has a wide variety of unit tests (CITATION TODO) that test code functionality, typically via assertions about function behavior, but also by verifying behavior of those functions when importing test datasets (of different formats and with a variety of errors, for example). Together these tests cover `r round(csr_cov, 1)`% of the codebase.
+
+## The `cosore` repository
+
+3.3.1 Reporting issues
+
+
 
 ### Tables
 
-**Table 1.** Summary of COSORE v. `r db_vers` datasets with deposited data, by International Geosphere-Biosphere Programme land cover classification (http://www.eomf.ou.edu/static/IGBP.pdf). Columns include number of datasets, total number of records (flux observations), and dates of first and last records.
+**Table 1.** Summary of COSORE v. `r db_vers` datasets with deposited data, by International Geosphere-Biosphere Programme land cover classification (CITATION TODO). Columns include number of datasets, total number of records (flux observations), and dates of first and last records.
 
 ```{r table_igbp}
 smrise <- function(x) {
@@ -74,7 +143,7 @@ make_table(db_fields, "contributors")
 make_table(db_fields, "ports")
 ```
 
-**Table 4.** Summary of COSORE's _ancillary_ table, which holds ecosystem-level optional information, typically soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required. Here the first two rows (Variable and Value) describe the actual columns in the table; subsequent rows give examples of "Variable" entries.
+**Table 5.** Summary of COSORE's _ancillary_ table, which holds ecosystem-level optional information, typically soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required. Here the first two rows (Variable and Value) describe the actual columns in the table; subsequent rows give examples of "Variable" entries.
 
 ```{r table_ancillary}
 db_fields %>% 
@@ -82,13 +151,13 @@ db_fields %>%
   make_table("ancillary")
 ```
 
-**Table 4.** Summary of COSORE's _columns_ table, which maps raw dataset columns to standardized COSORE columns. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Table 6.** Summary of COSORE's _columns_ table, which maps raw dataset columns to standardized COSORE columns. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_columns}
 make_table(db_fields, "columns")
 ```
 
-**Table 4.** Summary of COSORE's _diagnostics_ table, which is populated automatically when parsing and importing non-COSORE data. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Table 7.** Summary of COSORE's _diagnostics_ table, which is populated automatically when parsing and importing non-COSORE data. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_diagnostics}
 make_table(db_fields, "diagnostics")
@@ -96,7 +165,11 @@ make_table(db_fields, "diagnostics")
 
 ### Figures
 
-**Figure 1.** Map of sites
+**Figure 1.** Map of sites...
+
+```{r worldmap}
+# db %>% ...
+```
 
 **Figure 2.** Density plot of fluxes, by IGBP, one line per dataset or per dataset + year
 
