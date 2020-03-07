@@ -481,9 +481,10 @@ parse_d20200305_VARGAS <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
   # Argh who does this to their dates?!?
-  dat$DOY <- dat$DOY %% 366
-  after2006 <- dat$Year > 2006
-  dat$DOY[after2006] <- dat$DOY[after2006] + 1
+  y2007 <- dat$Year == 2007
+  dat$DOY[y2007] <- dat$DOY[y2007] - 365
+  y2008 <- dat$Year == 2008
+  dat$DOY[y2008] <- dat$DOY[y2008] - 729
 
   dat1 <- tibble(
     Year = dat$Year,
