@@ -45,9 +45,9 @@ description,CSR_MSMT_LENGTH,Measurement length,numeric,s,TRUE
 description,CSR_FILE_FORMAT,Data file format,character,,TRUE
 description,CSR_TIMESTAMP_FORMAT,"Data timestamp format, in R's `strptime()` format",character,,TRUE
 description,CSR_TIMESTAMP_TZ,Instrument timestamp timezone; usually the same as CSR_TIMEZONE,character,,TRUE
-description,CSR_PRIMARY_PUB,Primary publication,character,,FALSE
-description,CSR_OTHER_PUBS,Other publications,character,,FALSE
-description,CSR_DATA_URL,Data URL or DOI,character,,FALSE
+description,CSR_PRIMARY_PUB,Primary publication (DOI or URL),character,,FALSE
+description,CSR_OTHER_PUBS,Other publications (DOI or URL),character,,FALSE
+description,CSR_DATA_URL,Data link (DOI or URL),character,,FALSE
 description,CSR_ACKNOWLEDGMENT,Acknowledgment text,character,,FALSE
 description,CSR_NOTES,Miscellaneous notes,character,,FALSE
 description,CSR_EMBARGO,Embargo flag. If this field is present data will not be released,character,,FALSE

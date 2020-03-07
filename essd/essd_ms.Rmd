@@ -1,6 +1,7 @@
 ---
-title: "essd_manuscript"
+title: "COSORE ESSD ms"
 output: html_document
+date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
 This document is intended to be the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc.
@@ -18,26 +19,35 @@ db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
 db_years <- max(year(db$CTE), na.rm = TRUE) - min(year(db$CTB), na.rm = TRUE) + 1
 db_fields <- read_csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "cosore"), 
                       col_types  = "cccccl", comment = "#")
+db_vers <- packageVersion("cosore")
 ```
 
-As of this writing the current version of COSORE is `r packageVersion("cosore")`. It currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X,  Figure X).
+As of this writing (`r Sys.Date()`) the current version of COSORE is `r db_vers`. It currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
 
 ### Structure
 
-### Table X_IGBP
+### Tables
+
+**Table 1.** Summary of COSORE v. `r db_vers` datasets with deposited data, by International Geosphere-Biosphere Programme land cover classification (http://www.eomf.ou.edu/static/IGBP.pdf). Columns include number of datasets, total number of records (flux observations), and dates of first and last records.
 
 ```{r table_igbp}
+smrise <- function(x) {
+  x %>% 
+    summarise(Datasets = n(),
+              Records = format(sum(CSR_RECORDS, na.rm = TRUE), big.mark = ","),
+              `First record` = min(CTB, na.rm = TRUE),
+              `Last record` = max(CTE, na.rm = TRUE)) 
+}
 db %>% 
+  filter(CSR_RECORDS > 0) %>% 
   select(`IGBP class` = CSR_IGBP, CSR_RECORDS, CTB, CTE) %>% 
   group_by(`IGBP class`) %>% 
-  summarise(Datasets = n(),
-            Records = format(sum(CSR_RECORDS, na.rm = TRUE), big.mark = ","),
-            `First record` = min(CTB, na.rm = TRUE),
-            `Last record` = max(CTE, na.rm = TRUE)) %>% 
-  kableExtra::kable(format = "markdown")
+  smrise() %>% 
+  bind_rows(bind_cols(tibble(`IGBP class` = "(Total)"), smrise(db))) %>% 
+  knitr::kable(format = "markdown", align = c("l", "r", "r", "r", "r"))
 ```
 
-### Table X_description
+**Table 2.** Individual datsets in COSORE have a number of sub-tables. The first of these is the _description_ table, the fields of which are summarized below. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_description}
 options(knitr.kable.NA = "")
@@ -52,19 +62,19 @@ make_table <- function(db_fields, table) {
 make_table(db_fields, "description")
 ```
 
-### Table X_contributors
+**Table 3.** Summary of COSORE's _contributors_ table, which provides information on the researchers who measured and contributed each dataset. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_contributors}
 make_table(db_fields, "contributors")
 ```
 
-### Table X_ports
+**Table 4.** Summary of COSORE's _ports_ table, which provides information on the various multiplexed chambers that are frequently connected to a single measurement analyzer. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_ports}
 make_table(db_fields, "ports")
 ```
 
-### Table X_ancillary
+**Table 4.** Summary of COSORE's _ancillary_ table, which holds ecosystem-level optional information, typically soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required. Here the first two rows (Variable and Value) describe the actual columns in the table; subsequent rows give examples of "Variable" entries.
 
 ```{r table_ancillary}
 db_fields %>% 
@@ -72,23 +82,21 @@ db_fields %>%
   make_table("ancillary")
 ```
 
-### Table X_columns
+**Table 4.** Summary of COSORE's _columns_ table, which maps raw dataset columns to standardized COSORE columns. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_columns}
 make_table(db_fields, "columns")
 ```
 
-### Table X_diagnostics
+**Table 4.** Summary of COSORE's _diagnostics_ table, which is populated automatically when parsing and importing non-COSORE data. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_diagnostics}
 make_table(db_fields, "diagnostics")
 ```
 
-### Figure X
+### Figures
 
-Map of sites
+**Figure 1.** Map of sites
 
-# Figure X
-
-Density plot of fluxes, by IGBP, one line per dataset or per dataset + year
+**Figure 2.** Density plot of fluxes, by IGBP, one line per dataset or per dataset + year
 
