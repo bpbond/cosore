@@ -50,7 +50,26 @@ As of this writing (`r Sys.Date()`) the version of COSORE is `r db_vers`. It cur
 
 ### Using the R package
 
-Installing it from GitHub. Loading it.
+```{r dbsize, include=FALSE, cache=TRUE}
+db_memsize <- sum(sapply(db$CSR_DATASET, function(x) object.size(csr_dataset(x)$data))) / 1e6
+db_disksize <- system2("git", args = c("count-objects", "-vH"), stdout = TRUE)
+db_disksize <- db_disksize[grepl("size:",db_disksize)]
+db_disksize <- gsub("size: ", "", db_disksize)
+```
+
+Because currently the flux data are included in the repository itself, the latter is quite large (compared to most Git repositories) to download, ~`r db_disksize`. (Note that the data are stored in R's compressed `RDS` file format; when loaded into memory, the entire database is significantly larger, ~`r round(db_memsize, 0)` MiB.) It thus cannot be hosted on CRAN (the Comprehensive R Archive Network), the canonical source for R packages. Installing directly from GitHub is however straightforward using the `devtools` or `remotes` package:
+
+```
+devtools::install_github("bpbond/cosore")
+library(cosore)
+```
+
+A specific release number may also be installed:
+
+```
+devtools::install_github("bpbond/cosore@v0.4")
+```
+
 
 #### Documentation and vignettes
 
