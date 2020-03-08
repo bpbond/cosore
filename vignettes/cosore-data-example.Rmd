@@ -1,5 +1,5 @@
 ---
-title: "Working with COSORE data"
+title: "cosore-working-with-data"
 author: "Ben Bond-Lamberty"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

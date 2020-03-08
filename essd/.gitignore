@@ -1,9 +1,8 @@
-# Ignore RMarkdown output
+# Ignore RMarkdown outputs
 *.html
+*.csv
+*.png
 
 # knitr and R markdown default cache directories
 /*_cache/
 /cache/
-
-# authors file
-*.csv

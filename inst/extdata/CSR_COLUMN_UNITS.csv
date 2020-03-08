@@ -5,27 +5,27 @@ Table_name,Field_name,Description,Class,Units,Required
 #,,,,,
 # `data`: flux data table,,,,,
 #,,,,,
-data,CSR_CDRY,Chamber CO2 concentration,numeric,ppmv,FALSE
-data,CSR_CO2_AMB,Ambient CO2 concentration,numeric,ppmv,FALSE
-data,CSR_COMMENTS,"Comments, text",character,,FALSE
+data,CSR_CDRY,Chamber CO~2~ concentration,numeric,ppmv,FALSE
+data,CSR_CO2_AMB,Ambient CO~2~ concentration,numeric,ppmv,FALSE
+data,CSR_COMMENTS,Comments,character,,FALSE
 data,CSR_CRVFIT,"Flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
-data,CSR_ERROR,"Error raised by instrument or during import, logical",logical,,FALSE
-data,CSR_FLUX,Soil respiration flux,numeric,μmol CO2/m2/s,TRUE
-data,CSR_FLUX_SE,"Standard error of soil respiration flux, µmol CO2/m2/s",numeric,,FALSE
+data,CSR_ERROR,Error raised by instrument or during import,logical,,FALSE
+data,CSR_FLUX,Soil respiration flux,numeric,µmol CO~2~/m^2^/s,TRUE
+data,CSR_FLUX_SE,Standard error of soil respiration flux,numeric,µmol CO2/m^2^/s,FALSE
 data,CSR_LABEL,Port/chamber label,character,,FALSE
-data,CSR_NEE,Net ecosystem exchange,numeric,μmol/m2/s,FALSE
-data,CSR_PAR,Photosynthetically active radiation,numeric,μmol photons/m2/s,FALSE
+data,CSR_NEE,Tower (not chamber) net ecosystem exchange,numeric,µmol CO~2~/m^2^/s,FALSE
+data,CSR_PAR,Photosynthetically active radiation,numeric,µmol photons/m^2^/s,FALSE
 data,CSR_PORT,Port/chamber number,numeric,,TRUE
-data,CSR_PRECIP,Precipitation},numeric,mm,FALSE
-data,CSR_R2,Flux computation R2,numeric,fraction,FALSE
+data,CSR_PRECIP,Precipitation,numeric,mm,FALSE
+data,CSR_R2,Flux computation R^2^,numeric,fraction,FALSE
 data,CSR_RECORD,Record number within file,numeric,,FALSE
-data,CSR_RH,Chamber relative humidity,numeric,percent,FALSE
-data,CSR_SMx,Volumetric soil moisture at x cm (other CSR_SMx fields follow same format),numeric,m3/m3,FALSE
+data,CSR_RH,Chamber relative humidity,numeric,%,FALSE
+data,CSR_SMx,Volumetric soil moisture at x cm (other CSR_SMx fields follow same format),numeric,m^3^/m^3^,FALSE
 data,CSR_Tx,Temperature at x cm (other CSR_Tx fields follow same format),numeric,°C,FALSE
-data,CSR_TAIR,Air temperature,numeric,°C,FALSE
+data,CSR_TAIR,Ambient air temperature,numeric,°C,FALSE
 data,CSR_TCHAMBER,Chamber temperature,numeric,°C,FALSE
-data,CSR_TIMESTAMP_BEGIN,"Timestamp, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
-data,CSR_TIMESTAMP_END,"Timestamp, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
+data,CSR_TIMESTAMP_BEGIN,"Timestamp of beginning of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
+data,CSR_TIMESTAMP_END,"Timestamp of end of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_WIND,Wind speed,numeric,m/s,FALSE
 data,CSR_WTD,"Water table depth, positive numbers are depth",numeric,cm,FALSE
 #,,,,,
@@ -33,18 +33,18 @@ data,CSR_WTD,"Water table depth, positive numbers are depth",numeric,cm,FALSE
 #,,,,,
 description,CSR_DATASET,Dataset name,character,,TRUE
 description,CSR_SITE_NAME,Site name,character,,TRUE
-description,CSR_LONGITUDE,"Decimal longitude, positive = north",numeric,degrees,TRUE
-description,CSR_LATITUDE,"Decimal latitude, positive = east",numeric,degrees,TRUE
-description,CSR_ELEVATION,Elevation,numeric,m,TRUE
+description,CSR_LONGITUDE,"Decimal longitude of site, positive = north",numeric,degrees,TRUE
+description,CSR_LATITUDE,"Decimal latitude of site, positive = east",numeric,degrees,TRUE
+description,CSR_ELEVATION,Elevation of site,numeric,m,TRUE
 description,CSR_TIMEZONE,"Timezone code, from https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",character,,TRUE
 description,CSR_IGBP,"IGBP class, from http://www.eomf.ou.edu/static/IGBP.pdf",character,,TRUE
 description,CSR_NETWORK,Site network name,character,,FALSE
 description,CSR_SITE_ID,Site ID in network,character,,FALSE
 description,CSR_INSTRUMENT,Measurement instrument (i.e. model),character,,TRUE
 description,CSR_MSMT_LENGTH,Measurement length,numeric,s,TRUE
-description,CSR_FILE_FORMAT,Data file format,character,,TRUE
-description,CSR_TIMESTAMP_FORMAT,"Data timestamp format, in R's `strptime()` format",character,,TRUE
-description,CSR_TIMESTAMP_TZ,Instrument timestamp timezone; usually the same as CSR_TIMEZONE,character,,TRUE
+description,CSR_FILE_FORMAT,Raw data file format,character,,TRUE
+description,CSR_TIMESTAMP_FORMAT,"Raw data timestamp format, in R's `strptime()` format",character,,TRUE
+description,CSR_TIMESTAMP_TZ,Instrument timestamp timezone; usually but not always the same as CSR_TIMEZONE,character,,TRUE
 description,CSR_PRIMARY_PUB,Primary publication (DOI or URL),character,,FALSE
 description,CSR_OTHER_PUBS,Other publications (DOI or URL),character,,FALSE
 description,CSR_DATA_URL,Data link (DOI or URL),character,,FALSE
@@ -56,11 +56,11 @@ description,CSR_EMBARGO,Embargo flag. If this field is present data will not be 
 #,,,,,
 ports,CSR_PORT,"Port (chamber) number; ""0"" means all ports",numeric,,TRUE
 ports,CSR_MSMT_VAR,"Measurement variable: ""Rs"", ""Rh"", ""Reco"", or ""NEE""",character,,TRUE
-ports,CSR_TREATMENT,"Collar treatment; default is ""None""",character,,TRUE
-ports,CSR_AREA,Area of measurement chamber,numeric,cm2,FALSE
+ports,CSR_TREATMENT,"Chamber treatment; default is ""None""",character,,TRUE
+ports,CSR_AREA,Area of measurement chamber,numeric,cm^2^,FALSE
 ports,CSR_DEPTH,Depth of collar insertion,numeric,cm,FALSE
 ports,CSR_SPECIES,Comma-separated species list,character,,FALSE
-ports,CSR_SENSOR_DEPTHS,"Comma-separated sensor depths, each in cm",character,,FALSE
+ports,CSR_SENSOR_DEPTHS,Comma-separated sensor depths,character,cm,FALSE
 #,,,,,
 # `columns`: mapping of raw data columns to COSORE columns,,,,,
 #,,,,,
@@ -74,22 +74,22 @@ columns,Notes,Notes,character,,FALSE
 ancillary,Variable,Variable name (one of entries below),character,,TRUE
 ancillary,Value,Value (see units below),character,,TRUE
 ancillary,CSR_AGE,Time since disturbance,numeric,years,FALSE
-ancillary,CSR_ANPP,Aboveground NPP,numeric,gC/m2/yr,FALSE
-ancillary,CSR_BD,Soil bulk density,numeric,g/cm3,FALSE
-ancillary,CSR_BNPP,Belowground NPP,numeric,gC/m2/yr,FALSE
-ancillary,CSR_CLAY,Clay,numeric,percent,FALSE
-ancillary,CSR_LAI,Leaf area index,numeric,m2/m2,FALSE
-ancillary,CSR_LITTERFALL,Litterfall,numeric,g/m2/yr,FALSE
+ancillary,CSR_ANPP,Aboveground NPP,numeric,gC/m^2^/yr,FALSE
+ancillary,CSR_BD,Soil bulk density,numeric,g/cm^3^,FALSE
+ancillary,CSR_BNPP,Belowground NPP,numeric,gC/m^2^/yr,FALSE
+ancillary,CSR_CLAY,Clay,numeric,%,FALSE
+ancillary,CSR_LAI,Leaf area index,numeric,m^2^/m^2^,FALSE
+ancillary,CSR_LITTERFALL,Litterfall,numeric,g/m^2^/yr,FALSE
 ancillary,CSR_MAT,Mean annual air temperature,numeric,°C,FALSE
 ancillary,CSR_MAP,Mean annual precipitation,numeric,mm,FALSE
-ancillary,CSR_NH4,Ammonium,numeric,mg kg−1 soil,FALSE
-ancillary,CSR_NO3,Nitrate,numeric,mg kg−1 soil,FALSE
-ancillary,CSR_NPP,Total NPP,numeric,gC/m2/yr,FALSE
+ancillary,CSR_NH4,Ammonium,numeric,mg/kg soil,FALSE
+ancillary,CSR_NO3,Nitrate,numeric,mg/kg soil,FALSE
+ancillary,CSR_NPP,Total NPP,numeric,gC/m^2^/yr,FALSE
 ancillary,CSR_PH,pH,numeric,,FALSE
-ancillary,CSR_SAND,Sand,numeric,percent,FALSE
-ancillary,CSR_SILT,Silt,numeric,percent,FALSE
-ancillary,CSR_STC,Total soil carbon,numeric,percent,FALSE
-ancillary,CSR_STN,Total soil nitrogen,numeric,percent,FALSE
+ancillary,CSR_SAND,Sand,numeric,%,FALSE
+ancillary,CSR_SILT,Silt,numeric,%,FALSE
+ancillary,CSR_STC,Total soil carbon,numeric,%,FALSE
+ancillary,CSR_STN,Total soil nitrogen,numeric,%,FALSE
 #,,,,,
 # `contributors`: data contributor information,,,,,
 #,,,,,
