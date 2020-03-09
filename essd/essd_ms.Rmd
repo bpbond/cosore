@@ -37,17 +37,15 @@ csr_table("contributors") %>%
 
 ## The COSORE database
 
-COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. It is targeted at continuous soil respiration flux data--i.e., those measured by
-automated systems on a e.g. half hourly basis (CITATION TODO)--but its design accomodates
-survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange
-as well. Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. The deatabase currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
+COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. 
+It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis (CITATION TODO)--but its design accomodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well. 
+Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
+The deatabase currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
 
 ### Overall database structure
 
-The database is structured as a collection of independent contributed _datasets_, all of which
-have been standardized to a common structure, units, etc. Each dataset is given a reference name
-that links its constituent tables, provides a point of reference in reports, and is used
-when calling the R package accessor functions (see below).
+The database is structured as a collection of independent contributed _datasets_, all of which have been standardized to a common structure, units, etc. 
+Each dataset is given a reference name that links its constituent tables, provides a point of reference in reports, and is used when calling the R package accessor functions (see below).
 
 ### Individual dataset structure
 
@@ -69,27 +67,21 @@ certain ecosystem types, or isolate only non-treatment (control) chamber fluxes,
 ### Database versioning and archiving
 
 COSORE uses semantic versioning (https://semver.org/), meaning that its version numbers
-generally follow an "x.y.z" format, where _x_ is the major version number (changing only when
-there are major changes to the database structure and/or functioning); _y_ is the minor
-version number (typically changing with significant data updates); and _z_ the patch number
-(bug fixes, documentation upgrades, or other changes that are completely backwards compatible).
-Following each official (major) release a DOI will be issued and the data archived
-by Zenodo (https://zenodo.org/).
-All changes to the data or codebase are immediately available through the
-GitHub repository, but only official releases will be issued a DOI.
+generally follow an "x.y.z" format, where _x_ is the major version number (changing only when there are major changes to the database structure and/or functioning); _y_ is the minor version number (typically changing with significant data updates); and _z_ the patch number (bug fixes, documentation upgrades, or other changes that are completely backwards compatible).
+Following each official (major) release a DOI will be issued and the data archived by Zenodo (https://zenodo.org/).
+All changes to the data or codebase are immediately available through the GitHub repository, but only official releases will be issued a DOI.
 
 ### Database license
 
-The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/). This is identical
-to that used by e.g. Ameriflux and FLUXNET Tier 1. 
+The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/). This is identical to that used by e.g. Ameriflux and FLUXNET Tier 1. 
 In general, this license provides that users may copy and redistribute the database and R package code in any medium or format, adapting and building upon them for any scientific or commercial purpose, as long as appropriate credit is given.
 We request that users cite this database definition paper, and strongly encourage them to (i) cite all constituent dataset primary publications, and (ii) involve data contributors as co-authors when possible.
 
 ### Citing COSORE
 
-Papers or other research products using ISRaD should cite this publication. In addition, users
-should also reference the specific version of the data they used (e.g. `r db_vers`), access date,
-and ideally the specific Git commit number. This provides full reproducibility of any analyses.
+Papers or other research products using ISRaD should cite this publication. 
+In addition, users should also reference the specific version of the data they used (e.g. `r db_vers`), access date, and ideally the specific Git commit number. 
+This provides full reproducibility of any analyses.
 As noted above, we encourage data users to cite the primary publication for each dataset
 they use in analyses as well.
 
@@ -98,14 +90,14 @@ they use in analyses as well.
 ### Downloading a release
 
 COSORE data releases are currently available via the GitHub "Releases" page at https://github.com/bpbond/cosore/releases, although we anticipate that institutional repositories such as ESS-DIVE may host releases at some point in the future. Downloads via this page are 
-flat-file CSV (comma-separated value) and readable by any modern computing system, and are 
+flat-file CSV (comma-separated value), readable by any modern computing system, and are 
 fully self-contained, with full data and documentation, links to this publication, a file manifest, etc.
 
 ### Using the R package
 
 An alternative way to access COSORE data is to install and use the `cosore` R package.
 This provides a robust framework, including dedicated access functions, dataset and database
-report generation, and QA/QC (see below for all).
+report generation, and QA/QC (see below).
 
 ```{r dbsize, include=FALSE, cache=TRUE}
 db_memsize <- sum(sapply(db$CSR_DATASET, function(x) object.size(csr_dataset(x)$data))) / 1e6
