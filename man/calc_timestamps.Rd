@@ -26,3 +26,4 @@ Calculate all timestamps based on timestamps given and measurement length
 \note{
 This is called from \code{\link{read_raw_dataset}}.
 }
+\keyword{internal}

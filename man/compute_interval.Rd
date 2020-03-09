@@ -18,3 +18,4 @@ Compute measurement interval for a dataset
 \note{
 This is used by the reports.
 }
+\keyword{internal}

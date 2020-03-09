@@ -13,7 +13,7 @@
 #' @return A list with the `dsd` and `diag` tibbles.
 #' @importFrom tibble is_tibble
 #' @note This is normally called from \code{\link{read_raw_dataset}}.
-#' @export
+#' @keywords internal
 qaqc_data <- function(dsd, diag,
                       remove_na = TRUE,
                       remove_error = TRUE,

@@ -19,3 +19,4 @@ A count of how many times each metadata entry appeared in the dataset.
 \description{
 Check dataset for name and class consistency with metadata file
 }
+\keyword{internal}

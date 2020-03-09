@@ -24,3 +24,4 @@ Read a complete dataset from raw files
 \note{
 This is normally called only from \code{\link{read_dataset}}.
 }
+\keyword{internal}

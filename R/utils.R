@@ -76,7 +76,7 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
 #' @param path Path to search; normally the metadata are in \code{inst/extdata/datasets}
 #' @param write_files Write resulting files back out? Logical
 #' @return Nothing; run for side effects
-#' @export
+#' @keywords internal
 insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/extdata/datasets", write_files = TRUE) {
   files <- list.files(path, pattern = file, full.names = TRUE, recursive = TRUE)
   message("Found ", length(files), " files")
@@ -249,7 +249,7 @@ convert_and_qc_timestamp <- function(ts, timestamp_format, time_zone) {
 #' @param ml Measurement length, numeric (seconds)
 #' @param tf Timestamp format, a \code{\link{strptime}} format string
 #' @param tz Timezone, character
-#' @export
+#' @keywords internal
 #' @note This is called from \code{\link{read_raw_dataset}}.
 #' @return A list with (i) the new dataset data.frame, (ii) a logical vector
 #' indicating which ones are invalid (and thus now NA), and
@@ -303,6 +303,7 @@ calc_timestamps <- function(dsd, ml, tf, tz) {
 #' @param dsd Dataset data (a data frame)
 #' @return Median interval between timestamps.
 #' @importFrom stats median
+#' @keywords internal
 #' @note This is used by the reports.
 compute_interval <- function(dsd) {
   stopifnot(is.data.frame(dsd))
@@ -375,7 +376,7 @@ rearrange_columns <- function(dsd, required_cols) {
 #' @param dataset An individual dataset
 #' @param field_metadata Field metadata file, from \code{inst/extdata/CSR_COLUMN_UNITS.csv}
 #' @return A count of how many times each metadata entry appeared in the dataset.
-#' @export
+#' @keywords internal
 check_dataset_names <- function(dataset_name, dataset, field_metadata) {
 
   stopifnot(is.character(dataset_name))
@@ -425,7 +426,7 @@ check_dataset_names <- function(dataset_name, dataset, field_metadata) {
 #' @param name Name of object (for warning)
 #' @param warn Warn if non-numeric? Logical
 #' @return A numeric vector.
-#' @export
+#' @keywords internal
 convert_to_numeric <- function(x, name, warn = TRUE) {
   stopifnot(is.character(name))
   stopifnot(is.logical(warn))

@@ -329,6 +329,7 @@ map_columns <- function(dat, columns) {
 #' @param raw_data Path to the raw data folder (not in package)
 #' @param dataset The dataset (metadata only when called)
 #' @importFrom utils head
+#' @keywords internal
 #' @return A list with (at least) elements:
 #' \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
 #' \item{diagnostics}{Diagnostics on the data parsing and QC process}

@@ -41,3 +41,4 @@ QA/QC a dataset.
 \note{
 This is normally called from \code{\link{read_raw_dataset}}.
 }
+\keyword{internal}

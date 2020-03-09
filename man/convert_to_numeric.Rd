@@ -19,3 +19,4 @@ A numeric vector.
 \description{
 Convert a vector to numeric, giving an informative warning.
 }
+\keyword{internal}
