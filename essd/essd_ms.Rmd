@@ -29,8 +29,8 @@ csr_table("contributors") %>%
   left_join(select(db, CSR_DATASET, CSR_RECORDS), by = "CSR_DATASET") %>% 
   filter(CSR_RECORDS > 0) %>%  # only authors who contribute data
   group_by(CSR_DATASET) %>% 
-  mutate(`Author?` = "No", `
-         Institution and address` = "") %>% 
+  mutate(`Author?` = "No", 
+         `Institution and address` = "") %>% 
   select(CSR_DATASET, CSR_FAMILY_NAME, CSR_FIRST_NAME, `Author?`,
          CSR_EMAIL, CSR_ORCID, `Institution and address`) %>% 
   write_csv("authors_no.csv", na = "")
