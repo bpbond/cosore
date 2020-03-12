@@ -313,6 +313,7 @@ scale_shape_manual(values = 18)
 
 **Figure 2.** Density plot of fluxes, by IGBP, one line per dataset or per dataset + year
 ```{r flux-density}
-ggplot()
+csr_table(table = 'data') %>% left_join(db) -> data_meta
+ggplot(data_meta, aes(x = CSR_IGBP))
 
 ```
