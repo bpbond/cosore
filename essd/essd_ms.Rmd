@@ -273,8 +273,46 @@ make_table(db_fields, "diagnostics")
 **Figure 1.** Map of sites...
 
 ```{r worldmap}
-# db %>% ...
+# We want a satellite image with COSORE points overlayed
+
+ggplot(data = world, aes(x = long, y = lat)) + 
+  geom_polygon(aes(group = group), fill = "white", color = "grey") + 
+  coord_map(xlim=c(-180,180)) + 
+  theme_minimal() + 
+  geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE))
+
+#what about coloring by no of records? a sort of heatmap of COSORE coverage
+
+bbox <- make_bbox(lon = c(-170, 170), lat = c(-70,70), f = 0)
+map <- get_map(location = bbox, source = "google", maptype = "satellite", zoom = 1)
+
+ggmap(map) + 
+  geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE), alpha = 0.4, color = "red", size = 2) + 
+  coord_fixed(xlim= c(-160,160), ylim= c(-75,75)) +
+# xlim(c(-160, 160)) + 
+#  ylim(c(-75,75)) +
+  labs(x = "Longitude", y = "Latitude")
+
+# Third option (best)
+mapWorld <- borders("world", colour="grey85", fill="grey95")
+
+ggplot() + 
+  mapWorld + 
+  theme(panel.background = element_rect(fill = "slategray1",
+                                    colour = "slategray1"), panel.grid = element_blank(),
+        legend.position="bottom") + 
+   geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE, fill = "COSORE Submission Site"), 
+             alpha = 0.5, color = "#FC4E07", size = 4, shape = 18) +
+  labs(x = "Longitude", y = "Latitude") +
+#  scale_color_discrete(values="#FC4E07",
+#                     labels = "COSORE Submissions")
+scale_fill_manual(name = "", values = c("COSORE Submission Site" = "#FC4E07")) +
+scale_shape_manual(values = 18)
+
 ```
 
 **Figure 2.** Density plot of fluxes, by IGBP, one line per dataset or per dataset + year
+```{r flux-density}
+ggplot()
 
+```
