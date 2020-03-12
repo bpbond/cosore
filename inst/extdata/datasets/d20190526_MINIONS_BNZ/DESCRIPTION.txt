@@ -19,7 +19,7 @@
 #	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
 #	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
 		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
-# 	Primary publication: optional DOI (preferred) or other primary publication 
+# 	Primary publication: optional DOI (preferred) or other primary publication
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
@@ -27,13 +27,13 @@
 CSR_SITE_NAME: Bonanza Creek (BNZ)
 CSR_LONGITUDE: -148.325677
 CSR_LATITUDE: 64.695999
-CSR_ELEVATION: 
+CSR_ELEVATION:
 CSR_TIMEZONE: Etc/GMT+9
 CSR_IGBP: Evergreen needleleaf forest
-CSR_NETWORK: 
-CSR_SITE_ID: 
+CSR_NETWORK:
+CSR_SITE_ID:
 CSR_INSTRUMENT: eosFD
-CSR_MSMT_LENGTH: 1800
+CSR_MSMT_LENGTH: 150
 CSR_FILE_FORMAT: Processed_csv
 CSR_TIMESTAMP_FORMAT: %Y-%m-%d %H:%M:%S
 CSR_TIMESTAMP_TZ: Etc/GMT+9

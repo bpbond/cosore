@@ -336,7 +336,11 @@ parse_d20200212_ATAKA <- function(path) {
 #' @return A \code{data.frame} containing extracted data.
 #' @keywords internal
 parse_d20200214_SZUTU_BOULDINC <- function(path) {
-  dat <- parse_PROCESSED_CSV(path)
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- rbind_list(lapply(files, read.csv,
+                           na.strings = c("NA", "-9999", "#VALUE!", "#REF!"),
+                           stringsAsFactors = FALSE,
+                           check.names = TRUE))
 
   cn <- c("datetime", "flux", "t5")
   x <- dat[c(1:3)]

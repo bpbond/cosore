@@ -4,7 +4,7 @@ output: html_document
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
-This document is the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc. Most of the text with citations will be in the Google Doc.
+This document is the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc. Most of the introductory text with citations will be in the Google Doc.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -29,7 +29,8 @@ csr_table("contributors") %>%
   left_join(select(db, CSR_DATASET, CSR_RECORDS), by = "CSR_DATASET") %>% 
   filter(CSR_RECORDS > 0) %>%  # only authors who contribute data
   group_by(CSR_DATASET) %>% 
-  mutate(`Author?` = "No", `Institution and address` = "") %>% 
+  mutate(`Author?` = "No", 
+         `Institution and address` = "") %>% 
   select(CSR_DATASET, CSR_FAMILY_NAME, CSR_FIRST_NAME, `Author?`,
          CSR_EMAIL, CSR_ORCID, `Institution and address`) %>% 
   write_csv("authors_no.csv", na = "")
@@ -73,7 +74,8 @@ All changes to the data or codebase are immediately available through the GitHub
 
 ### Database license
 
-The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/). This is identical to that used by e.g. Ameriflux and FLUXNET Tier 1. 
+The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/); see the "LICENSE.md` file in the repository.
+This is identical to that used by e.g. Ameriflux and FLUXNET Tier 1. 
 In general, this license provides that users may copy and redistribute the database and R package code in any medium or format, adapting and building upon them for any scientific or commercial purpose, as long as appropriate credit is given.
 We request that users cite this database definition paper, and strongly encourage them to (i) cite all constituent dataset primary publications, and (ii) involve data contributors as co-authors when possible.
 
@@ -122,7 +124,7 @@ devtools::install_github("bpbond/cosore@v0.4")
 Three primary user-facing functions are available:
 
 * `csr_database()` summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-8** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured.
-* `csr_dataset()` returns a single dataset: an R list structure, with each element a table (`description`, `contributors`, etc., as described above). 
+* `csr_dataset()` returns a single dataset: an R list structure, each element of which is a table (`description`, `contributors`, etc., as described above). 
 * `csr_table()` collects, into a single data frame, one of the tables (`description`, `contributors`, etc., as described above) of the database, for any or all datasets.
 
 Two additional reporting functions may also be useful to COSORE users:
@@ -130,7 +132,7 @@ Two additional reporting functions may also be useful to COSORE users:
 * `csr_report_database()` generates an HTML report on the entire database: number of datasets, locations, number of observations, distribution of flux values, etc.
 * `csr_report_dataset()` generates an HTML report on a single dataset, including tabular and graphical summaries of location, flux data, diagnostics, etc.
 
-Finally, a number of functions are targeted at developers, and include functionality to ingest contributed data, standardize data, and prepare a new release. See the package documentation for more details
+Finally, a number of functions are targeted at developers, and include functionality to ingest contributed data, standardize data, and prepare a new release. See the package documentation for more details on these.
 
 #### Documentation and vignettes
 
@@ -179,7 +181,7 @@ The `cosore` R package also has a wide variety of unit tests (CITATION TODO) tha
 
 Like any dataset or piece of software, COSORE undoubtedly has problems: incomplete or incorrect data, faulty logic, documentation gaps. 
 We use the `cosore` GitHub issue tracker (https://github.com/bpbond/cosore/issues) to track and categorize user improvement suggestions, problems or errors with the R package code or database data, requests for new variables or functionality, and/or asking questions on any other aspect of COSORE.
-All user questions and contributions are subject to a code of conduct (TODO).
+The COSORE team welcomes questions, contributions, and suggestions; all issues and discussion are subject to a code of conduct (see the "CODE_OF_CONDUCT.md" file in the repository).
 
 ### Contributing data
 
@@ -316,4 +318,10 @@ scale_shape_manual(values = 18)
 csr_table(table = 'data') %>% left_join(db) -> data_meta
 ggplot(data_meta, aes(x = CSR_IGBP))
 
+
+# R session information
+```
+
+```{r sessionInfo}
+sessionInfo()
 ```
