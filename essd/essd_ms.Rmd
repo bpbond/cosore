@@ -1,6 +1,9 @@
 ---
-title: "COSORE: a community database for continuous soil respiration and other chamber fluxes"
-output: html_document
+title: 'COSORE: a community database for continuous soil respiration and other chamber
+  fluxes'
+output:
+  html_document: default
+  word_document: default
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
@@ -32,16 +35,21 @@ csr_table("contributors") %>%
   mutate(`Author?` = "No", 
          `Institution and address` = "") %>% 
   select(CSR_DATASET, CSR_FAMILY_NAME, CSR_FIRST_NAME, `Author?`,
-         CSR_EMAIL, CSR_ORCID, `Institution and address`) %>% 
-  write_csv("authors_no.csv", na = "")
+         CSR_EMAIL, CSR_ORCID, `Institution and address`) %T>% 
+  write_csv("authors_no.csv", na = "") %>% 
+  group_by(CSR_DATASET) %>% 
+  filter(CSR_FAMILY_NAME == first(CSR_FAMILY_NAME)) %>% 
+  pull(CSR_EMAIL) %>% 
+  unique() %>% 
+  write_lines("authors_contact.csv")
 ```
 
 ## The COSORE database
 
 COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. 
-It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis (CITATION TODO)--but its design accomodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well. 
+It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis (CITATION TODO)--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well. 
 Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
-The deatabase currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
+The database currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
 
 ### Overall database structure
 
@@ -108,7 +116,7 @@ db_disksize <- db_disksize[grepl("size:",db_disksize)]
 db_disksize <- gsub("size: ", "", db_disksize)
 ```
 
-Because currently the flux data are included in the repository itself, the latter is quite large (compared to most Git repositories) to download, ~`r db_disksize`. (Note that the data are stored in R's compressed `RDS` file format; when loaded into memory, the entire database is significantly larger, ~`r round(db_memsize, 0)` MiB.) It thus cannot be hosted on CRAN (the Comprehensive R Archive Network), the canonical source for R packages. Installing directly from GitHub is however straightforward using the `devtools` or `remotes` packages:
+Because currently the flux data are included in the repository itself, the latter is quite large (compared to most Git repositories) to download, ~`r db_disksize`. (Note that the data are stored in R's compressed `RDS` file format; when loaded into memory, the entire database is significantly larger, ~`r round(db_memsize, 0)` MiB.) It thus cannot easily be hosted on CRAN (the Comprehensive R Archive Network), the canonical source for R packages. Installing directly from GitHub is however straightforward using the `devtools` or `remotes` packages:
 
 ```
 devtools::install_github("bpbond/cosore")
@@ -213,7 +221,7 @@ db %>%
   knitr::kable(format = "markdown", align = c("l", "r", "r", "r", "r"))
 ```
 
-**Table 2.** Individual datsets in COSORE have a number of sub-tables. The first of these is the _description_ table, the fields of which are summarized below. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Table 2.** Individual datasets in COSORE have a number of sub-tables. The first of these is the _description_ table, the fields of which are summarized below. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_description}
 options(knitr.kable.NA = "")
@@ -242,7 +250,7 @@ make_table(db_fields, "contributors")
 make_table(db_fields, "ports")
 ```
 
-**Table 5.** Summary of COSORE's _data_ table, which hold the actual flux observations. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Table 5.** Summary of COSORE's _data_ table, which holds the actual flux observations. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_data}
 make_table(db_fields, "data")

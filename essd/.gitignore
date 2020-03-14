@@ -2,6 +2,7 @@
 *.html
 *.csv
 *.png
+*.docx
 
 # knitr and R markdown default cache directories
 /*_cache/
