@@ -47,7 +47,7 @@ csr_table("contributors") %>%
 ## The COSORE database
 
 COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. 
-It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis (CITATION TODO)--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well. 
+It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis (CITATION TODO)--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well, paralleling the recent SIdB database (TODO). 
 Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
 The database currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
 
@@ -82,14 +82,14 @@ All changes to the data or codebase are immediately available through the GitHub
 
 ### Database license
 
-The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/); see the "LICENSE.md` file in the repository.
+The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/); see the "LICENSE` file in the repository.
 This is identical to that used by e.g. Ameriflux and FLUXNET Tier 1. 
 In general, this license provides that users may copy and redistribute the database and R package code in any medium or format, adapting and building upon them for any scientific or commercial purpose, as long as appropriate credit is given.
 We request that users cite this database definition paper, and strongly encourage them to (i) cite all constituent dataset primary publications, and (ii) involve data contributors as co-authors when possible.
 
 ### Citing COSORE
 
-Papers or other research products using ISRaD should cite this publication. 
+Papers or other research products using COSORE should cite this publication. 
 In addition, users should also reference the specific version of the data they used (e.g. `r db_vers`), access date, and ideally the specific Git commit number. 
 This provides full reproducibility of any analyses.
 As noted above, we encourage data users to cite the primary publication for each dataset
