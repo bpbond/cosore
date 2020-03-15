@@ -180,19 +180,44 @@ csr_standardize_data <- function(dataset, path, create_dirs = FALSE) {
     }
   }
 
-  datafiles <- character(0)
+  write_stan_data(dataset, outpath)
+
+  invisible(NULL)
+}
+
+#' Write standardized data, diagnostics, and perhaps a gitignore file
+#'
+#' @param dataset Dataset, a list
+#' @param outpath Output path to write to, character
+#' @return Nothing.
+#' @keywords internal
+#' @note This is called only by \code{\link{csr_standardize_data}}.
+write_stan_data <- function(dataset, outpath) {
+  stopifnot(is.list(dataset))
+  stopifnot(is.character(outpath))
+
   if(is.data.frame(dataset$data)) {
     # Write respiration data
     # csv (big, version control friendly) or RDS (small, fast, preserves types)?
     # Going with the latter for now
     outfile <- file.path(outpath, "data.RDS")
     saveRDS(dataset$data, file = outfile)
+
     # Write diagnostics data
     diagfile <- file.path(outpath, "diag.RDS")
     saveRDS(dataset$diagnostics, file = diagfile)
-  }
 
-  invisible(NULL)
+    # If these data are embargoed, write a .gitignore file
+    # If not, remove any existing .gitignore file
+    gitignore <- file.path(outpath, ".gitignore")
+    if("CSR_EMBARGO" %in% names(dataset$description) &&
+       !is.na(dataset$description$CSR_EMBARGO)) {
+      message("This dataset has an embargo entry--writing .gitignore")
+      cat("# This dataset is embargoed", "*.RDS", file = gitignore, sep = "\n")
+    } else {
+      unlink(gitignore)
+    }
+  }
 }
 
 #' Remove standardized dataset(s)
