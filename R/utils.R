@@ -212,8 +212,8 @@ write_stan_data <- function(dataset, outpath) {
     gitignore <- file.path(outpath, ".gitignore")
     if("CSR_EMBARGO" %in% names(dataset$description) &&
        !is.na(dataset$description$CSR_EMBARGO)) {
-      message("This dataset has an embargo entry--writing .gitignore")
-      cat("# This dataset is embargoed", "*.RDS", file = gitignore, sep = "\n")
+      message("This dataset has an embargo entry; writing .gitignore")
+      cat("# This dataset is embargoed", "*.RDS", sep = "\n", file = gitignore)
     } else {
       unlink(gitignore)
     }
