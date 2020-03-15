@@ -13,3 +13,4 @@ CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,				CSR_ROLE
 Mirco,			Migliavacca,		mmiglia@bgc-jena.mpg.de,	0000-0003-3546-8407,	"Funding acquisition, Investigation"
 Thomas,			Wutzler,			twutz@bgc-jena.mpg.de,		0000-0003-4159-5445,  	"Data curation, Investigation"
 Tarek,			El-Madany,			telmad@bgc-jena.mpg.de,		0000-0002-0726-7141,	"Data curation, Investigation"
+Marion,			Schrumpf,			mschrumpf@bgc-jena.mpg.de,	,
