@@ -12,4 +12,4 @@
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			,			,			"Quercus Ilex, Herbaceous C3 species"
+0,			Rs,				None,			1050,		3.5,		"Quercus Ilex, Herbaceous C3 species"
