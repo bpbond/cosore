@@ -82,6 +82,7 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
     "ports.csv" = "Port-specific information: species, collar areas and depths, treatments",
     "datasets" = "A folder containing the various `data` tables for each dataset",
     "CSR_COLUMN_UNITS.csv" = "Metadata for all database fields",
+    "LICENSE" = "CC-BY-4 license governing data use",
     "Report-all.html" = "A summary report on the entire database",
     "cosore-data-example.html" = "A vignette showing how to load and work with the database",
     "README.md" = "This file."
@@ -97,6 +98,10 @@ csr_make_release <- function(path, vignette_rebuilt = FALSE, force = FALSE,
     message("Writing ", f, "...")
     writeLines(f_data, file.path(path, f))
   }
+
+  # Copy license file
+  file.copy(system.file("LICENSE", package = "cosore", mustWork = TRUE),
+            to = path)
 
   # Copy vignette file
   if(file.exists("doc/cosore-data-example.html")) {

@@ -366,3 +366,41 @@ test_that("add_port_column", {
   expect_true("CSR_PORT" %in% colnames(out))
   expect_type(out$CSR_PORT, "double")
 })
+
+test_that("write_stan_data", {
+  # Bad input
+  expect_error(write_stan_data(1, "1"))
+  expect_error(write_stan_data(list(), 1))
+
+  td <- tempdir()
+  x <- list(description = data.frame(CSR_DATASET = "test",
+                                     CSR_EMBARGO = "yes"),
+            data = cars,
+            diagnostics = iris)
+  datafile <- file.path(td, "data.RDS")
+  diagfile <- file.path(td, "diag.RDS")
+  gitfile <- file.path(td, ".gitignore")
+
+  unlink(datafile)
+  unlink(diagfile)
+  unlink(gitfile)
+
+  # Write embargoed data with a .gitignore file
+  expect_message(write_stan_data(x, td), regexp = "embargo")
+  expect_true(file.exists(datafile))
+  expect_true(file.exists(diagfile))
+  expect_true(file.exists(gitfile))
+  expect_equal(cars, readRDS(datafile))
+  expect_equal(iris, readRDS(diagfile))
+
+  # Writes non-embargoed data removing any .gitignore
+  unlink(datafile)
+  unlink(diagfile)
+  x$description$CSR_EMBARGO <- NULL
+  expect_silent(write_stan_data(x, td))
+  expect_true(file.exists(datafile))
+  expect_true(file.exists(diagfile))
+  expect_false(file.exists(gitfile))
+  expect_equal(cars, readRDS(datafile))
+  expect_equal(iris, readRDS(diagfile))
+})
