@@ -13,7 +13,7 @@ data,CSR_CRVFIT_CO2,"CO2 flux computation method (""Lin"" or ""Exp"" for linear 
 data,CSR_CRVFIT_CH4,"CH4 flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
 data,CSR_ERROR,Error raised by instrument or during import,logical,,FALSE
 data,CSR_FLUX_CO2,Soil respiration flux,numeric,µmol CO~2~/m^2^/s,TRUE
-data,CSR_FLUX_CH4,Methane flux (positive = to atmosphere),numeric,nmol CH~4~/m^2^/s,TRUE
+data,CSR_FLUX_CH4,Methane flux (positive = to atmosphere),numeric,nmol CH~4~/m^2^/s,FALSE
 data,CSR_FLUX_SE_CO2,Standard error of soil respiration flux,numeric,µmol CO2/m^2^/s,FALSE
 data,CSR_FLUX_SE_CH4,Standard error of soil methane flux,numeric,nmol CH~4~/m^2^/s,FALSE
 data,CSR_LABEL,Port/chamber label,character,,FALSE
