@@ -17,7 +17,7 @@ test_that("dataset read and report", {
 
   expect_true(is.POSIXct(x$data$CSR_TIMESTAMP_BEGIN))
   expect_true(is.POSIXct(x$data$CSR_TIMESTAMP_END))
-  expect_type(x$data$CSR_FLUX, "double")
+  expect_type(x$data$CSR_FLUX_CO2, "double")
   expect_true(is.numeric(x$data$CSR_PORT))
 
   # No-data dataset
