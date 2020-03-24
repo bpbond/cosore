@@ -8,7 +8,7 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,	Computation,				Notes
-CSR_FLUX,			Rsoil
+CSR_FLUX_CO2,			Rsoil
 CSR_NEE,			NEE
 CSR_PORT,			port
 CSR_PRECIP,			Precip

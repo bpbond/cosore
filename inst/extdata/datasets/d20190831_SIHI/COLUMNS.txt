@@ -8,6 +8,6 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,			Computation,				Notes
-CSR_FLUX,  		CO2_flux_umol_m2_s,
+CSR_FLUX_CO2,  		CO2_flux_umol_m2_s,
 CSR_PORT,		Chamber_COSORE,		as.factor(Chamber_COSORE)
 CSR_TIMESTAMP_MID,	DateTime

@@ -8,6 +8,6 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,	Computation,				Notes
-CSR_FLUX,  			efflux,
+CSR_FLUX_CO2,  			efflux,
 CSR_PORT,			Chamber,
 CSR_TIMESTAMP_END,	Year,		"paste(Year, Doy, Hour)"

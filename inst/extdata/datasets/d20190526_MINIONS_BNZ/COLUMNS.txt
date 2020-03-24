@@ -8,6 +8,6 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,	Computation,				Notes
-CSR_FLUX,  		avg_flux
-CSR_FLUX_SE,	se_flux,
+CSR_FLUX_CO2,  		avg_flux
+CSR_FLUX_CO2_SE,	se_flux,
 CSR_TIMESTAMP_END,	date,		"paste(date, time)"

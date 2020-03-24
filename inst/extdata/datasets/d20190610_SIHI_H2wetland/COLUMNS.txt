@@ -8,7 +8,7 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,		Computation,					Notes
-CSR_FLUX,  		CO2_FLUX,		CO2_FLUX /1000/12 * 1e6 /60/60,	mg C m-2 hr-1
+CSR_FLUX_CO2,  		CO2_FLUX,		CO2_FLUX /1000/12 * 1e6 /60/60,	mg C m-2 hr-1
 CSR_LABEL,		Treatment
 # This next one is kind of ugly--extract port number from beginning of string
 CSR_PORT,		chamber_id,		"sapply(strsplit(chamber_id, '_'), function(x) x[1])"

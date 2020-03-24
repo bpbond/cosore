@@ -8,8 +8,8 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,	Computation,				Notes
-CSR_CDRY,		CO2_IV,
-CSR_FLUX,  		Exp_Flux,
+CSR_DRY_CO2,		CO2_IV,
+CSR_FLUX_CO2,  		Exp_Flux,
 CSR_RH,			RH_IV,
 CSR_SM5,		VWC_IV
 CSR_T5,			V1_IV
