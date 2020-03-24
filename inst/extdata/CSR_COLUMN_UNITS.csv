@@ -6,18 +6,23 @@ Table_name,Field_name,Description,Class,Units,Required
 # `data`: flux data table,,,,,
 #,,,,,
 data,CSR_DRY_CO2,Chamber CO~2~ concentration,numeric,ppmv,FALSE
+data,CSR_DRY_CH4,Chamber CH~4~ concentration,numeric,ppbv,FALSE
 data,CSR_CO2_AMB,Ambient CO~2~ concentration,numeric,ppmv,FALSE
 data,CSR_COMMENTS,Comments,character,,FALSE
 data,CSR_CRVFIT_CO2,"CO2 flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
+data,CSR_CRVFIT_CH4,"CH4 flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
 data,CSR_ERROR,Error raised by instrument or during import,logical,,FALSE
 data,CSR_FLUX_CO2,Soil respiration flux,numeric,µmol CO~2~/m^2^/s,TRUE
+data,CSR_FLUX_CH4,Methane flux (positive = to atmosphere),numeric,nmol CH~4~/m^2^/s,TRUE
 data,CSR_FLUX_SE_CO2,Standard error of soil respiration flux,numeric,µmol CO2/m^2^/s,FALSE
+data,CSR_FLUX_SE_CH4,Standard error of soil methane flux,numeric,nmol CH~4~/m^2^/s,FALSE
 data,CSR_LABEL,Port/chamber label,character,,FALSE
 data,CSR_NEE,Tower (not chamber) net ecosystem exchange,numeric,µmol CO~2~/m^2^/s,FALSE
 data,CSR_PAR,Photosynthetically active radiation,numeric,µmol photons/m^2^/s,FALSE
 data,CSR_PORT,Port/chamber number,numeric,,TRUE
 data,CSR_PRECIP,Precipitation,numeric,mm,FALSE
 data,CSR_R2_CO2,CO2 flux computation R^2^,numeric,fraction,FALSE
+data,CSR_R2_CH4,CH4 flux computation R^2^,numeric,fraction,FALSE
 data,CSR_RECORD,Record number within file,numeric,,FALSE
 data,CSR_RH,Chamber relative humidity,numeric,%,FALSE
 data,CSR_SMx,Volumetric soil moisture at x cm (other CSR_SMx fields follow same format),numeric,m^3^/m^3^,FALSE
