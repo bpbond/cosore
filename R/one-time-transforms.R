@@ -44,6 +44,7 @@ add_ch4 <- function() {
       dsd <- rename(dsd, "CSR_R2", "CSR_R2_CO2")
 
       outfile <- file.path("./inst/extdata/datasets/", ds, "data", "data.RDS")
+      stopifnot(file.exists(outfile))
       saveRDS(dsd, file = outfile)
 
       # Rename diagnostics
