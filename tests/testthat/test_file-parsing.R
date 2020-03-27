@@ -145,6 +145,7 @@ test_that("read_contributors_file", {
 test_that("read_ports_file", {
   # ports file
   labels <- c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT")
+  missing_defaults <- c("CSR_OPAQUE", "CSR_PLANTS_REMOVED")
   dat <- c("0", "Rs", "None")
   fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
 
@@ -152,6 +153,7 @@ test_that("read_ports_file", {
   expect_is(x, "data.frame")
   expect_equivalent(nrow(x), 1)
   expect_true(all(labels %in% names(x)))
+  expect_true(all(missing_defaults %in% names(x)))
 
   # Catches missing required variable
   for(i in seq_along(labels)) {
