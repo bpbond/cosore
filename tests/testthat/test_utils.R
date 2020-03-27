@@ -2,6 +2,22 @@
 
 context("utils")
 
+test_that("insert_defaults", {
+  # Bad input
+  expect_error(insert_defaults(1, list()))
+  expect_error(insert_defaults(data.frame(), list()))
+  expect_error(insert_defaults(cars, 1))
+
+  # Inserts
+  x <- insert_defaults(data.frame(x = 1), list(y = 2))
+  expect_identical(x, data.frame(x = 1, y = 2))
+  expect_identical(insert_defaults(cars, list()), cars)
+
+  # Doesn't overwrite existing
+  x <- insert_defaults(data.frame(x = 1, y = 1), list(y = 2))
+  expect_identical(x, data.frame(x = 1, y = 1))
+})
+
 test_that("rbind_list", {
   # Bad input
   expect_error(rbind_list(list(cars, 1)))

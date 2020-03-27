@@ -11,12 +11,12 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
-CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-1,			Rs,				None,			527.2727,	2,			"Arctostaphylos glandulosa"
-2,			Rs,				None,			527.2727,	2,			"Arctostaphylos glandulosa"
-3,			Rs,				None,			527.2727,	2,			"Arctostaphylos glandulosa"
-4,			Rs,				None,			527.2727,	2,			"Arctostaphylos glandulosa"
-5,			Rs,				None,			527.2727,	2,			"Quercus kelloggii"
-6,			Rs,				None,			527.2727,	2,			"Quercus kelloggii"
-7,			Rs,				None,			527.2727,	2,			"Quercus kelloggii"
-8,			Rs,				None,			527.2727,	2,			"Quercus kelloggii"
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_PLANTS_REMOVED,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+1,			Rs,				None,			FALSE,				527.2727,	2,			"Arctostaphylos glandulosa"
+2,			Rs,				None,			FALSE,				527.2727,	2,			"Arctostaphylos glandulosa"
+3,			Rs,				None,			FALSE,				527.2727,	2,			"Arctostaphylos glandulosa"
+4,			Rs,				None,			FALSE,				527.2727,	2,			"Arctostaphylos glandulosa"
+5,			Rs,				None,			FALSE,				527.2727,	2,			"Quercus kelloggii"
+6,			Rs,				None,			FALSE,				527.2727,	2,			"Quercus kelloggii"
+7,			Rs,				None,			FALSE,				527.2727,	2,			"Quercus kelloggii"
+8,			Rs,				None,			FALSE,				527.2727,	2,			"Quercus kelloggii"
