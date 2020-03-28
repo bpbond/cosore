@@ -8,7 +8,7 @@
 #' @param remove_error Remove records marked as errors? Logical
 #' @param remove_flux Remove extreme flux values? Logical
 #' @param remove_temp Remove extreme temperature values? Logical
-#' @param flux_limits Two-value numeric vector giving flux limits
+#' @param flux_limits_co2 Two-value numeric vector giving CO2 flux limits
 #' @param temp_limits Two-value numeric vector giving temperature limits
 #' @return A list with the `dsd` and `diag` tibbles.
 #' @importFrom tibble is_tibble
@@ -19,7 +19,7 @@ qaqc_data <- function(dsd, diag,
                       remove_error = TRUE,
                       remove_flux = TRUE,
                       remove_temp = TRUE,
-                      flux_limits = c(-10, 50),
+                      flux_limits_co2 = c(-10, 50),
                       temp_limits = c(-50, 60)) {
 
   stopifnot(is_tibble(dsd))
@@ -28,15 +28,15 @@ qaqc_data <- function(dsd, diag,
   stopifnot(is.logical(remove_error))
   stopifnot(is.logical(remove_flux))
   stopifnot(is.logical(remove_temp))
-  stopifnot(is.numeric(flux_limits))
+  stopifnot(is.numeric(flux_limits_co2))
   stopifnot(is.numeric(temp_limits))
-  stopifnot(length(flux_limits) == 2)
+  stopifnot(length(flux_limits_co2) == 2)
   stopifnot(length(temp_limits) == 2)
 
   # Remove NA flux records
   diag$CSR_RECORDS_REMOVED_NA <- 0
   if(remove_na) {
-    na_flux <- is.na(dsd$CSR_FLUX)
+    na_flux <- is.na(dsd$CSR_FLUX_CO2)
     diag$CSR_RECORDS_REMOVED_NA <- sum(na_flux)
     dsd <- dsd[!na_flux,]
   }
@@ -52,18 +52,18 @@ qaqc_data <- function(dsd, diag,
 
   # Remove records with flux data way out of anything possible
   if(remove_flux) {
-    diag$CSR_FLUX_LOWBOUND <- min(flux_limits)
-    diag$CSR_FLUX_HIGHBOUND <- max(flux_limits)
-    toolow <- dsd$CSR_FLUX < min(flux_limits)
-    diag$CSR_RECORDS_REMOVED_TOOLOW <- sum(toolow, na.rm = TRUE)
-    toohigh <- dsd$CSR_FLUX > max(flux_limits)
-    diag$CSR_RECORDS_REMOVED_TOOHIGH <- sum(toohigh, na.rm = TRUE)
+    diag$CSR_FLUX_LOW_LIM_CO2 <- min(flux_limits_co2)
+    diag$CSR_FLUX_HIGH_LIM_CO2 <- max(flux_limits_co2)
+    toolow <- dsd$CSR_FLUX_CO2 < min(flux_limits_co2)
+    diag$CSR_REMOVED_LOW_CO2 <- sum(toolow, na.rm = TRUE)
+    toohigh <- dsd$CSR_FLUX_CO2 > max(flux_limits_co2)
+    diag$CSR_REMOVED_HIGH_CO2 <- sum(toohigh, na.rm = TRUE)
     dsd <- dsd[!toolow & !toohigh,]
   } else {
-    diag$CSR_FLUX_LOWBOUND <- NA
-    diag$CSR_FLUX_HIGHBOUND <- NA
-    diag$CSR_RECORDS_REMOVED_TOOLOW <- 0
-    diag$CSR_RECORDS_REMOVED_TOOHIGH <- 0
+    diag$CSR_FLUX_LOW_LIM_CO2 <- NA
+    diag$CSR_FLUX_HIGH_LIM_CO2 <- NA
+    diag$CSR_REMOVED_LOW_CO2 <- 0
+    diag$CSR_REMOVED_HIGH_CO2 <- 0
   }
 
   diag$CSR_RECORDS <- nrow(dsd)

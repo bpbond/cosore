@@ -8,7 +8,7 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,		Computation,					Notes
-CSR_FLUX,  		CO2_FLUX,		CO2_FLUX /1000/12 * 1e6 /60/60,	mg C m-2 hr-1
+CSR_FLUX_CO2,  		CO2_FLUX,		CO2_FLUX /1000/12 * 1e6 /60/60,	mg C m-2 hr-1
 CSR_PORT,		chamber_id,		"substr(chamber_id, 1, 1)"
 CSR_SM10,		VSM_10cm
 CSR_T10,		10cm_Soil_T

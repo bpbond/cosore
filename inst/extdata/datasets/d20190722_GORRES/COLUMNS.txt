@@ -11,15 +11,15 @@
 #
 # Database,	Dataset,	Computation,					Notes
 # CSR_T5	V1,
-# CSR_FLUX, Flux, 		Flux / 12 * 10^6 / 24/60/60, 	gC/day to µmol/s - all ports
+# CSR_FLUX_CO2, Flux, 		Flux / 12 * 10^6 / 24/60/60, 	gC/day to µmol/s - all ports
 # CSR_PAR,  V5, 		V5 / 1000, 						µmol to mmol - port 1 only
 #
 Database,		Dataset,	Computation,				Notes
-CSR_CDRY,		IV.Cdry
-CSR_FLUX,  		Exp_Flux,
+CSR_DRY_CO2,		IV.Cdry
+CSR_FLUX_CO2,  		Exp_Flux,
 CSR_LABEL,		Label,
 CSR_PORT,		Port.,
-CSR_R2,			Exp_R2,
+CSR_R2_CO2,			Exp_R2,
 CSR_RH,			Mean.RH,
 CSR_SM5,		Mean.V3
 CSR_T5,			Mean.V2

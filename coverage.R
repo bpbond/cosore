@@ -3,6 +3,6 @@
 ## put the commands inline in the after_success section
 
 library(covr)
-x <- package_coverage(line_exclusions = list("R/parse-others.R"))
+x <- package_coverage(line_exclusions = list("R/parse-others.R", "R/one-time-transforms.R"))
 cat("coverage = ", percent_coverage(x), " %\n")
 codecov(coverage = x)

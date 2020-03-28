@@ -125,8 +125,8 @@ Records removed (error)     | `r diag$CSR_RECORDS_REMOVED_ERR`
 Records removed (invalid timestamp)     | `r diag$CSR_RECORDS_REMOVED_TIMESTAMP`
 Bad timestamp examples     | `r diag$CSR_EXAMPLE_BAD_TIMESTAMPS`
 Records removed (no flux)   | `r diag$CSR_RECORDS_REMOVED_NA`
-Records (flux < `r diag$CSR_FLUX_LOWBOUND`)  | `r diag$CSR_RECORDS_REMOVED_TOOLOW`
-Records (flux > `r diag$CSR_FLUX_HIGHBOUND`) | `r diag$CSR_RECORDS_REMOVED_TOOHIGH`
+Records (flux < `r diag$CSR_FLUX_LOW_LIM_CO2`)  | `r diag$CSR_REMOVED_LOW_CO2`
+Records (flux > `r diag$CSR_FLUX_HIGH_LIM_CO2`) | `r diag$CSR_REMOVED_HIGH_CO2`
 Bad temperature values removed | `r diag$CSR_BAD_TEMPERATURE`
 Size                | `r format(object.size(ds), "Mb")`
 
@@ -134,28 +134,28 @@ Size                | `r format(object.size(ds), "Mb")`
 
 ```{r flux-graphs}
 if(is.data.frame(dsd) & !quick) {
-  dsd <- subset(dsd, !is.na(CSR_FLUX) & CSR_FLUX > 0)
+  dsd <- subset(dsd, !is.na(CSR_FLUX_CO2) & CSR_FLUX_CO2 > 0)
   dsd$CSR_PORT <- as.factor(dsd$CSR_PORT)
   
-  print(summary(ds$data$CSR_FLUX))
+  print(summary(ds$data$CSR_FLUX_CO2))
   
   # flux over time
-  p1 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) + 
+  p1 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX_CO2, color = CSR_PORT)) + 
     geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
   print(p1)
   
-  p2 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX, color = CSR_PORT)) +
+  p2 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX_CO2, color = CSR_PORT)) +
     geom_point(size = 0.2) + scale_y_log10()
   print(p2)
   
   dsd$Month = month(dsd$CSR_TIMESTAMP)
-  smry <- aggregate(CSR_FLUX ~ CSR_PORT + Month, data = dsd, mean)
-  ggplot(smry, aes(Month, CSR_FLUX, color = CSR_PORT, group = CSR_PORT)) + 
+  smry <- aggregate(CSR_FLUX_CO2 ~ CSR_PORT + Month, data = dsd, mean)
+  ggplot(smry, aes(Month, CSR_FLUX_CO2, color = CSR_PORT, group = CSR_PORT)) + 
     geom_line() ->
     p3
   print(p3)
   # histogram
-  p4 <- ggplot(dsd, aes(x = CSR_FLUX)) + geom_histogram(bins = 30)
+  p4 <- ggplot(dsd, aes(x = CSR_FLUX_CO2)) + geom_histogram(bins = 30)
   print(p4)
 }
 ```
@@ -168,14 +168,14 @@ if(is.data.frame(dsd) & !quick) {
   if(length(tcols)) {
     results <- list()
     for(col in tcols) {
-      x <- dsd[c("CSR_FLUX", "CSR_PORT")]
+      x <- dsd[c("CSR_FLUX_CO2", "CSR_PORT")]
       x$Temperature <- unlist(dsd[,col])
       x$Which_temp <- names(dsd)[col]
       results[[as.character(col)]] <- x
     }
     results <- cosore:::rbind_list(results)
     
-    p1 <- ggplot(results, aes(Temperature, CSR_FLUX, color = CSR_PORT)) + 
+    p1 <- ggplot(results, aes(Temperature, CSR_FLUX_CO2, color = CSR_PORT)) + 
       geom_point(size = 0.2, alpha = I(0.25)) + 
       geom_smooth(method = "lm", se = FALSE) +
       facet_wrap(~Which_temp, scales = "free")
@@ -192,14 +192,14 @@ if(is.data.frame(ds$data) & !quick) {
   if(length(smcols)) {
     results <- list()
     for(col in smcols) {
-      x <- dsd[c("CSR_FLUX", "CSR_PORT")]
+      x <- dsd[c("CSR_FLUX_CO2", "CSR_PORT")]
       x$SM <- unlist(dsd[,col])
       x$Which_sm <- names(dsd)[col]
       results[[as.character(col)]] <- x
     }
     results <- cosore:::rbind_list(results)
     
-    p1 <- ggplot(results, aes(SM, CSR_FLUX, color = CSR_PORT)) + 
+    p1 <- ggplot(results, aes(SM, CSR_FLUX_CO2, color = CSR_PORT)) + 
       geom_point(size = 0.2, alpha = I(0.25)) + 
       geom_smooth(method = "lm", se = FALSE) +
       facet_wrap(~Which_sm, scales = "free") +

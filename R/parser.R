@@ -142,6 +142,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 
   if(!x$CSR_IGBP %in% c("Wetland",
                         "Broadleaf evergreen forest",
+                        "Deciduous needleleaf forest",
                         "Evergreen needleleaf forest",
                         "Evergreen needleleaf plantation", # TODO
                         "Deciduous broadleaf forest", "Open shrubland",
@@ -344,10 +345,14 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
   diag <- tibble(CSR_RECORDS = 0,
                  CSR_RECORDS_REMOVED_NA = 0,
                  CSR_RECORDS_REMOVED_ERR = 0,
-                 CSR_RECORDS_REMOVED_TOOLOW = 0,
-                 CSR_RECORDS_REMOVED_TOOHIGH = 0,
-                 CSR_FLUX_LOWBOUND = NA,
-                 CSR_FLUX_HIGHBOUND = NA,
+                 CSR_REMOVED_LOW_CO2 = 0,
+                 CSR_REMOVED_HIGH_CO2 = 0,
+                 CSR_REMOVED_LOW_CH4 = 0,
+                 CSR_REMOVED_HIGH_CH4 = 0,
+                 CSR_FLUX_LOW_LIM_CO2 = NA,
+                 CSR_FLUX_HIGH_LIM_CO2 = NA,
+                 CSR_FLUX_LOW_LIM_CH4 = NA,
+                 CSR_FLUX_HIGH_LIM_CH4 = NA,
                  CSR_BAD_TEMPERATURE = 0,
                  CSR_RECORDS_REMOVED_TIMESTAMP = 0,
                  CSR_EXAMPLE_BAD_TIMESTAMPS = "",
@@ -410,7 +415,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     # Rearrange columns
     dsd <- rearrange_columns(dsd, required_cols =
                                c("CSR_PORT", "CSR_TIMESTAMP_BEGIN",
-                                 "CSR_TIMESTAMP_END", "CSR_FLUX"))
+                                 "CSR_TIMESTAMP_END", "CSR_FLUX_CO2"))
 
     return(qaqc_data(dsd, diag))
   }

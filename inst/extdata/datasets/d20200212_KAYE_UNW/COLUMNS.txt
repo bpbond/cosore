@@ -8,7 +8,7 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,	Computation,				Notes
-CSR_FLUX,  			rawSR,
+CSR_FLUX_CO2,  			rawSR,
 CSR_SM5,			SM
 CSR_T5,				ST
 CSR_TIMESTAMP_END,	Dtime

@@ -3,7 +3,7 @@
 context("qaqc")
 
 test_that("qaqc_dataset", {
-  dsd <- tibble(CSR_FLUX = c(-100, 0, 1, 100),
+  dsd <- tibble(CSR_FLUX_CO2 = c(-100, 0, 1, 100),
                 CSR_T5 = c(-1, 0, 100, 0))
   diag <- tibble(X = 1)
 
@@ -20,7 +20,7 @@ test_that("qaqc_dataset", {
   fl <- c(-10, 50)
   tl <- c(-50, 60)
 
-  inside_fl <- sum(dsd$CSR_FLUX >= min(fl) & dsd$CSR_FLUX <= max(fl))
+  inside_fl <- sum(dsd$CSR_FLUX_CO2 >= min(fl) & dsd$CSR_FLUX_CO2 <= max(fl))
   outside_tl <- sum(dsd$CSR_T5 < min(tl) | dsd$CSR_T5 > max(tl))
 
   # No flags, no change
@@ -34,7 +34,7 @@ test_that("qaqc_dataset", {
   x <- qaqc_data(dsd, diag, flux_limits = fl, temp_limits = tl,
                  remove_flux = TRUE, remove_temp = FALSE)
   expect_identical(nrow(x$dsd), inside_fl)
-  expect_identical(x$diag$CSR_RECORDS_REMOVED_TOOLOW + x$diag$CSR_RECORDS_REMOVED_TOOHIGH, nrow(dsd) - inside_fl)
+  expect_identical(x$diag$CSR_REMOVED_LOW_CO2 + x$diag$CSR_REMOVED_HIGH_CO2, nrow(dsd) - inside_fl)
 
   x <- qaqc_data(dsd, diag, flux_limits = fl, temp_limits = tl,
                  remove_flux = FALSE, remove_temp = TRUE)
@@ -43,7 +43,7 @@ test_that("qaqc_dataset", {
   expect_equal(x$diag$CSR_BAD_TEMPERATURE, outside_tl)
 
   # Removes errors and NAs
-  dsd$CSR_FLUX[1] <- NA
+  dsd$CSR_FLUX_CO2[1] <- NA
   x <- qaqc_data(dsd, diag, flux_limits = fl, remove_flux = FALSE,
                  remove_na = TRUE, remove_temp = FALSE)
   expect_equal(nrow(x$dsd), nrow(dsd) - 1)

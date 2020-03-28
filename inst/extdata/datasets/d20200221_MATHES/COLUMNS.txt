@@ -8,7 +8,7 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,	Computation,				Notes
-CSR_FLUX,  			EFFLUX,
+CSR_FLUX_CO2,  			EFFLUX,
 CSR_LABEL,			Plot_ID
 CSR_PORT,			Plot_ID,	as.integer(as.factor(Plot_ID))
 CSR_T7,				Tsoil_C,

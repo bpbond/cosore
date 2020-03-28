@@ -8,10 +8,10 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,	Computation,				Notes
-CSR_FLUX,  		Exp_Flux,
+CSR_FLUX_CO2,  		Exp_Flux,
 CSR_LABEL,		Label,
 CSR_PORT,		Port#,
-CSR_CRVFIT,		CrvFitStatus,
+CSR_CRVFIT_CO2,		CrvFitStatus,
 CSR_RECORD,		Obs#,
 CSR_RH,			Mean RH,
 CSR_TCHAMBER,	Mean Tcham

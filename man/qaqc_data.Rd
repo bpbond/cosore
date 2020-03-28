@@ -11,7 +11,7 @@ qaqc_data(
   remove_error = TRUE,
   remove_flux = TRUE,
   remove_temp = TRUE,
-  flux_limits = c(-10, 50),
+  flux_limits_co2 = c(-10, 50),
   temp_limits = c(-50, 60)
 )
 }
@@ -28,7 +28,7 @@ qaqc_data(
 
 \item{remove_temp}{Remove extreme temperature values? Logical}
 
-\item{flux_limits}{Two-value numeric vector giving flux limits}
+\item{flux_limits_co2}{Two-value numeric vector giving CO2 flux limits}
 
 \item{temp_limits}{Two-value numeric vector giving temperature limits}
 }
