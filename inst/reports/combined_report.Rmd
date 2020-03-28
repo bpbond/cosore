@@ -26,42 +26,42 @@ compute_interval <- function(dsd) {
 
 compute_years <- function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    tibble(CSR_DATASET = x$description$CSR_DATASET,
-           CSR_RECORDS = x$diagnostics$CSR_RECORDS,
+    tibble(Dataset = x$description$CSR_DATASET,
+           Records = x$diagnostics$CSR_RECORDS,
            Start = min(x$data$CSR_TIMESTAMP_BEGIN),
            End = max(x$data$CSR_TIMESTAMP_BEGIN),
-           `Interval (m)` = as.integer(compute_interval(x$data)),
+           `Interval (min)` = as.integer(compute_interval(x$data)),
            Size  = format(object.size(x), units = "Mb"))
   } else {
-    tibble(CSR_DATASET = x$description$CSR_DATASET,
-           CSR_RECORDS = 0,
-           Start = NA, End = NA, `Interval (m)` = NA,
+    tibble(Dataset = x$description$CSR_DATASET,
+           Records = 0,
+           Start = NA, End = NA, `Interval (min)` = NA,
            Size = format(object.size(NULL), units = "Mb"))    
   }
 }
 
 compute_coverage <- function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    tibble(CSR_DATASET = x$description$CSR_DATASET,
-           CSR_IGBP = x$description$CSR_IGBP,
+    tibble(Dataset = x$description$CSR_DATASET,
+           IGBP = x$description$CSR_IGBP,
            Year = year(x$data$CSR_TIMESTAMP_BEGIN), 
            Month = month(x$data$CSR_TIMESTAMP_BEGIN),
            Day = day(x$data$CSR_TIMESTAMP_BEGIN))
   } else {
-    tibble(CSR_DATASET = x$description$CSR_DATASET,
-           CSR_IGBP = x$description$CSR_IGBP,
+    tibble(Dataset = x$description$CSR_DATASET,
+           IGBP = x$description$CSR_IGBP,
            Year = NA, Month = NA, Day = NA)
   }
 }
 
 compute_flux_dist <- function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    tibble(CSR_DATASET = x$description$CSR_DATASET,
-           CSR_IGBP = x$description$CSR_IGBP,
+    tibble(Dataset = x$description$CSR_DATASET,
+           IGBP = x$description$CSR_IGBP,
            CSR_FLUX_CO2 = x$data$CSR_FLUX_CO2)
   } else {
-    tibble(CSR_DATASET = x$description$CSR_DATASET,
-           CSR_IGBP = x$description$CSR_IGBP,
+    tibble(Dataset = x$description$CSR_DATASET,
+           IGBP = x$description$CSR_IGBP,
            CSR_FLUX_CO2 = NA)
   }
 }
@@ -80,6 +80,7 @@ db_size <- 0
 records <- 0
 for(dsn in datasets) {
   x <- csr_dataset(dsn, quiet = TRUE)
+  
   years[[dsn]] <- compute_years(x)
   coverage[[dsn]] <- compute_coverage(x)
   flux_dist[[dsn]] <- compute_flux_dist(x)
@@ -92,6 +93,10 @@ for(dsn in datasets) {
 years <- cosore:::rbind_list(years)
 years$Start <- format(years$Start, format = "%Y-%m")
 years$End <- format(years$End, format = "%Y-%m")
+
+ports <- aggregate(CSR_MSMT_VAR ~ CSR_DATASET, data = csr_table("ports"), FUN = function(x) paste(unique(x), collapse = ", "))
+names(ports) <- c("Dataset", "Var")
+years <- merge(years, ports)
 ```
 
 Datasets: `r length(list_datasets())`
@@ -122,10 +127,10 @@ addTiles(lflt)
 ```{r temporal, fig.height=8}
 coverage <- cosore:::rbind_list(coverage)
 cover_day <- unique(coverage) # this is super slow compared to dplyr::distinct!
-dpm <- aggregate(Day ~ CSR_DATASET + CSR_IGBP + Year + Month, 
+dpm <- aggregate(Day ~ Dataset + IGBP + Year + Month, 
                  data = cover_day, length)
 dpm$Time <- lubridate::ymd(paste(dpm$Year, dpm$Month, "1"))
-ggplot(dpm, aes(Time, CSR_DATASET, fill = Day)) + 
+ggplot(dpm, aes(Time, Dataset, fill = Day)) + 
   geom_tile(na.rm = TRUE) +
   scale_fill_continuous("Days per month",
                         high = "#132B43", low = "#56B1F7")
@@ -134,9 +139,9 @@ ggplot(dpm, aes(Time, CSR_DATASET, fill = Day)) +
 ### IGBP coverage
 
 ```{r, temporal-igbp}
-dpm_igbp <- aggregate(Day ~ CSR_IGBP + Year + Month, data = cover_day, length)
+dpm_igbp <- aggregate(Day ~ IGBP + Year + Month, data = cover_day, length)
 dpm_igbp$Time <- lubridate::ymd(paste(dpm_igbp$Year, dpm_igbp$Month, "1"))
-ggplot(dpm_igbp, aes(Time, CSR_IGBP, fill = Day)) + geom_tile(na.rm = TRUE) +
+ggplot(dpm_igbp, aes(Time, IGBP, fill = Day)) + geom_tile(na.rm = TRUE) +
   scale_fill_continuous("Days per month",
                         high = "#132B43", low = "#56B1F7")
 ```
@@ -145,10 +150,10 @@ ggplot(dpm_igbp, aes(Time, CSR_IGBP, fill = Day)) + geom_tile(na.rm = TRUE) +
 
 ```{r igbp}
 x <- cosore:::rbind_list(flux_dist)
-x <- x[x$CSR_FLUX_CO2 > -1 & x$CSR_FLUX_CO2 < 20,]
+x <- x[x$CSR_FLUX_CO2 > -1 & x$CSR_FLUX_CO2 < 20 & is.finite(x$CSR_FLUX_CO2),]
 ggplot(x, aes(x = CSR_FLUX_CO2)) + 
   geom_histogram(bins = 30) +
-  facet_wrap(~CSR_IGBP, scales = "free_y") 
+  facet_wrap(~IGBP, scales = "free_y") 
 ```
 
 ### Database growth
