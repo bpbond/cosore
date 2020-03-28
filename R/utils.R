@@ -67,6 +67,25 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
   invisible(filenum)
 }
 
+#' Insert default fields into a data frame
+#'
+#' @param d A tibble or data.frame
+#' @param extra_fields A list of fields (the names) and their default values (elements)
+#' @return The (possibly modified) data frame.
+#' @keywords internal
+insert_defaults <- function(d, extra_fields) {
+  stopifnot(is.data.frame(d))
+  stopifnot(nrow(d) > 0)
+  stopifnot(is.list(extra_fields))
+
+  for(ef in names(extra_fields)) {
+    if(!ef %in% names(d)) {
+      d[[ef]] <- extra_fields[[ef]]
+    }
+  }
+  d
+}
+
 #' Insert new line(s) into existing metadata files.
 #'
 #' @param file Filename, character

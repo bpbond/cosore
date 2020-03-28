@@ -11,13 +11,13 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
-CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-2,			Rs,				None,			2160,		3,			"Picea mariana, Sphagnum"		
-3,			Rh,				None,			2160,		3,			"Picea mariana, feather mosses"	
-4,			Rs,				None,			2160,		3,			"Picea mariana, feather mosses"		
-5,			Rs,				None,			2160,		3,			"Picea mariana, Sphagnum"	
-6,			Rs,				None,			2160,		3,			"Picea mariana, lichen"		
-9,			Rh,				None,			2160,		3,			"Picea mariana, feather mosses"		
-10,			Rs,				None,			2160,		3,			"Picea mariana, feather mosses"	
-11,			Rs,				None,			2160,		3,			"Picea mariana, feather mosses"		
-12,			Rh,				None,			2160,		3,			"Picea mariana, feather mosses"
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_PLANTS_REMOVED,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+2,			Rs,				None,			TRUE,				2160,		3,			"Picea mariana, Sphagnum"		
+3,			Rh,				None,			TRUE,				2160,		3,			"Picea mariana, feather mosses"	
+4,			Rs,				None,			TRUE,				2160,		3,			"Picea mariana, feather mosses"		
+5,			Rs,				None,			TRUE,				2160,		3,			"Picea mariana, Sphagnum"	
+6,			Rs,				None,			TRUE,				2160,		3,			"Picea mariana, lichen"		
+9,			Rh,				None,			TRUE,				2160,		3,			"Picea mariana, feather mosses"		
+10,			Rs,				None,			TRUE,				2160,		3,			"Picea mariana, feather mosses"	
+11,			Rs,				None,			TRUE,				2160,		3,			"Picea mariana, feather mosses"		
+12,			Rh,				None,			TRUE,				2160,		3,			"Picea mariana, feather mosses"

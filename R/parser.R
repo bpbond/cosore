@@ -233,6 +233,9 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "PORTS.txt", file_data)
   pfd <- read_csv_data(file_data, required = c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT"))
 
+  # Insert default fields if not given otherwise
+  pfd <- insert_defaults(pfd, extra_fields = list(CSR_OPAQUE = TRUE, CSR_PLANTS_REMOVED = TRUE))
+
   # Measurement variable is highly standardized; make sure all ok
   ok <- pfd$CSR_MSMT_VAR %in% c("Rs", "Rh", "Reco", "NEE")
   if(!all(ok)) {

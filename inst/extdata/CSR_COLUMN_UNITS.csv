@@ -63,7 +63,11 @@ ports,CSR_PORT,"Port (chamber) number; ""0"" means all ports",numeric,,TRUE
 ports,CSR_MSMT_VAR,"Measurement variable: ""Rs"", ""Rh"", ""Reco"", or ""NEE""",character,,TRUE
 ports,CSR_TREATMENT,"Chamber treatment; default is ""None""",character,,TRUE
 ports,CSR_AREA,Area of measurement chamber,numeric,cm^2^,FALSE
+ports,CSR_VOLUME,Volume of measurement chamber,numeric,cm^3^,FALSE
 ports,CSR_DEPTH,Depth of collar insertion,numeric,cm,FALSE
+ports,CSR_OPAQUE,Opaque chamber?,logical,,TRUE
+ports,CSR_PLANTS_REMOVED,Plants removed from chamber?,logical,,TRUE
+ports,CSR_FAN,Mixing fan in chamber?,logical,,FALSE
 ports,CSR_SPECIES,Comma-separated species list,character,,FALSE
 ports,CSR_SENSOR_DEPTHS,Comma-separated sensor depths,character,cm,FALSE
 #,,,,,
