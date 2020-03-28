@@ -79,7 +79,7 @@ resolve_dataset <- function(dataset_name) {
 #' @param file_data File data, character vector; optional for testing
 #' @param comment_char Start-of-line comment character
 #' @keywords internal
-#' @return Contents of file in a character vector.
+#' @return Contents of file, stripped of any comments, in a character vector.
 read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = "#") {
   if(is.null(file_data)) {
     f <- file.path(resolve_dataset(dataset_name), file_name)
