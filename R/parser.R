@@ -82,7 +82,12 @@ resolve_dataset <- function(dataset_name) {
 #' @return Contents of file in a character vector.
 read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = "#") {
   if(is.null(file_data)) {
-    file_data <- readLines(file.path(resolve_dataset(dataset_name), file_name))
+    f <- file.path(resolve_dataset(dataset_name), file_name)
+    if(file.exists(f)) {
+      file_data <- readLines()
+    } else {
+      stop("Can't find file ", file_name, " for dataset ", dataset_name)
+    }
   }
   file_data[grep(paste0("^", comment_char), file_data, invert = TRUE)]
 }
@@ -271,8 +276,8 @@ read_columns_file <- function(dataset_name, file_data = NULL) {
 #' @note This is simply a comma-separated table.
 #' @return A \code{data.frame} containing any data in the file.
 read_ancillary_file <- function(dataset_name, file_data = NULL) {
-  file_data <- read_file(dataset_name, "ANCILLARY.txt", file_data)
-  read_csv_data(file_data)
+  file_data <- read_file(dataset_name, "ANCILLARY.csv", file_data)
+  read.csv(textConnection(file_data))
 }
 
 

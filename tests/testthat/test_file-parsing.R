@@ -56,6 +56,9 @@ test_that("read_file", {
   # strips out comments
   fd <- c("One", "# Two", "Three")
   expect_identical(length(read_file(file_data = fd)), 2L)
+
+  # errors on non-existent file
+  expect_error(read_file(list_datasets()[1], "xxxxxxx"), regexp = "Can't find file")
 })
 
 test_that("read_csv_data", {
