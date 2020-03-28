@@ -176,9 +176,6 @@ test_that("calc_timestamps", {
   expect_error(calc_timestamps(data.frame(), 1, 1, "1"))
   expect_error(calc_timestamps(data.frame(), 1, "1", 1))
 
-  # If data.frame doesn't enough information, error
-  expect_error(calc_timestamps(data.frame(), 1, "1", "1"))
-
   # We're going to run these tests a bunch so...
   validate_list <- function(x, ml, description) {
     expect_type(x, "list")

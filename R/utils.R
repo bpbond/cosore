@@ -304,6 +304,16 @@ calc_timestamps <- function(dsd, ml, tf, tz) {
   stopifnot(is.character(tf))
   stopifnot(is.character(tz))
 
+  if(nrow(dsd) == 0) {
+    return(list(dsd = dsd,
+         new_ts = NA,
+         na_ts = NA,
+         bad_example = ""))
+  }
+  stopifnot(is.numeric(ml))
+  stopifnot(is.character(tf))
+  stopifnot(is.character(tz))
+
   ts_begin <- "CSR_TIMESTAMP_BEGIN" %in% names(dsd)
   ts_mid <- "CSR_TIMESTAMP_MID" %in% names(dsd)
   ts_end <- "CSR_TIMESTAMP_END" %in% names(dsd)

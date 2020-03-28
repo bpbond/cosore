@@ -277,7 +277,18 @@ read_columns_file <- function(dataset_name, file_data = NULL) {
 #' @return A \code{data.frame} containing any data in the file.
 read_ancillary_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "ANCILLARY.csv", file_data)
-  tibble::as_tibble(read.csv(textConnection(file_data), stringsAsFactors = FALSE))
+  anc <- read.csv(textConnection(file_data), stringsAsFactors = FALSE)
+
+  # Need to convert these to character in case no timestamps (and thus read as logical)
+  anc$CSR_TIMESTAMP_BEGIN <- as.character(anc$CSR_TIMESTAMP_BEGIN)
+  anc$CSR_TIMESTAMP_END <- as.character(anc$CSR_TIMESTAMP_END)
+  x <- calc_timestamps(anc, 0, "%F %T", "")
+
+  if(any(x$na_ts, na.rm = TRUE)) {
+    stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
+         " e.g. rows: ", head(which(x$na_ts)))
+  }
+  tibble::as_tibble(x$dsd)
 }
 
 
@@ -389,7 +400,6 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     dsd <- map_columns(dsd, dataset$columns)
 
     # Compute timestamp begin and/or ends
-
     tf <- dataset$description$CSR_TIMESTAMP_FORMAT
     tz <- dataset$description$CSR_TIMESTAMP_TZ
     ml <- dataset$description$CSR_MSMT_LENGTH
