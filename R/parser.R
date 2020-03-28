@@ -84,7 +84,7 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
   if(is.null(file_data)) {
     f <- file.path(resolve_dataset(dataset_name), file_name)
     if(file.exists(f)) {
-      file_data <- readLines()
+      file_data <- readLines(f)
     } else {
       stop("Can't find file ", file_name, " for dataset ", dataset_name)
     }
@@ -277,7 +277,7 @@ read_columns_file <- function(dataset_name, file_data = NULL) {
 #' @return A \code{data.frame} containing any data in the file.
 read_ancillary_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "ANCILLARY.csv", file_data)
-  read.csv(textConnection(file_data))
+  tibble::as_tibble(read.csv(textConnection(file_data), stringsAsFactors = FALSE))
 }
 
 
