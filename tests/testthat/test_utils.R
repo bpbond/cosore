@@ -212,6 +212,10 @@ test_that("calc_timestamps", {
                    CSR_TIMESTAMP_END = "2020-02-06 18:49", stringsAsFactors = FALSE)
   x <- calc_timestamps(df, ml = ml, tf = "%Y-%m-%d %H:%M", tz = "UTC")
   validate_list(x,  ml, "Supply begin and end")
+
+  # Supply neither
+  expect_error(calc_timestamps(cars, ml = ml, tf = "", tz = "UTC"),
+               regexp = "No timestamp begin, mid, or end provided")
 })
 
 test_that("rearrange_colunns", {

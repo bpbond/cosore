@@ -348,7 +348,7 @@ calc_timestamps <- function(dsd, ml, tf, tz) {
                 bad_examples = paste(x_begin$bad_examples, x_end$bad_examples, collapse = " ")))
 
   } else {
-    stop("No timestamp begin or end provided")
+    stop("No timestamp begin, mid, or end provided")
   }
 }
 
