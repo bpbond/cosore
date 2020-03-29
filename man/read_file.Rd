@@ -16,7 +16,7 @@ read_file(dataset_name, file_name, file_data = NULL, comment_char = "#")
 \item{comment_char}{Start-of-line comment character}
 }
 \value{
-Contents of file in a character vector.
+Contents of file, stripped of any comments, in a character vector.
 }
 \description{
 Read a text file and strip out comments

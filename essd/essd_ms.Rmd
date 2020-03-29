@@ -258,7 +258,7 @@ make_table(db_fields, "ports")
 make_table(db_fields, "data")
 ```
 
-**Table 6.** Summary of COSORE's _ancillary_ table, which holds ecosystem-level optional information, typically soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required. Here the first two rows (Variable and Value) describe the actual columns in the table; subsequent rows give examples of "Variable" entries.
+**Table 6.** Summary of COSORE's _ancillary_ table, which optional information, typically ecosystem-level soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_ancillary}
 db_fields %>% 

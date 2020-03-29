@@ -56,6 +56,9 @@ test_that("read_file", {
   # strips out comments
   fd <- c("One", "# Two", "Three")
   expect_identical(length(read_file(file_data = fd)), 2L)
+
+  # errors on non-existent file
+  expect_error(read_file(list_datasets()[1], "xxxxxxx"), regexp = "Can't find file")
 })
 
 test_that("read_csv_data", {
@@ -166,6 +169,26 @@ test_that("read_ports_file", {
   dat <- c("0", "Rz", "None")
   fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
   expect_error(read_ports_file("x", file_data = fd))
+})
+
+test_that("read_ancillary_file", {
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
+          "2014-01-01 00:00:00,2015-01-01 00:00:00,0")
+  x <- read_ancillary_file("x", file_data = fd)
+  expect_s3_class(x$CSR_TIMESTAMP_BEGIN, "POSIXct")
+  expect_s3_class(x$CSR_TIMESTAMP_END, "POSIXct")
+  expect_identical(nrow(x), 1L)
+
+  # errors on improperly-formatted date
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
+          "2014-01-01 00:00,2015-01-01 00:00:00,0")
+  expect_error(read_ancillary_file("x", file_data = fd))
+
+  # doesn't error on no timestamps
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
+          ",,0")
+  expect_silent(x <- read_ancillary_file("x", file_data = fd))
+  expect_identical(nrow(x), 1L)
 })
 
 test_that("map_columns", {
