@@ -327,6 +327,29 @@ ggplot(data_meta, aes(x = CSR_IGBP)) +
   geom_density() + 
   theme(axis.text.x = element_text(angle=90))
 
+data_meta %>% mutate(Date = date(CSR_TIMESTAMP_BEGIN), Month = month(CSR_TIMESTAMP_BEGIN), Year = year(CSR_TIMESTAMP_BEGIN)) %>% 
+  group_by(Year, CSR_IGBP) %>%
+  summarise(CSR_FLUX = mean(CSR_FLUX, na.rm = TRUE), Date = mean(Date), n = n()) -> avg
+
+# tile plot by IGBP
+ggplot(avg, aes(x = Date, y = CSR_IGBP, color = n)) + geom_tile(size = 2)
+
+#box plot by IGBP
+ggplot(avg, aes(x = Date, y = CSR_IGBP, group = CSR_IGBP)) + geom_violin() + theme_minimal()
+
+# waffle plot no of records by IGBP
+ggplot(avg_clean, aes(fill = CSR_IGBP, values = n)) +
+        geom_waffle(color = "white", size = .25, n_rows = 10, flip = TRUE) +
+        facet_wrap(~Year, nrow = 2, strip.position = "bottom") +  coord_equal() +
+     labs(title = "Faceted Waffle Bar Chart",
+        subtitle = "annual COSORE coverage by IGBP",
+        x = "Year",
+        y = "Count") +
+     theme_minimal() +
+     theme(panel.grid = element_blank(), axis.ticks.y = element_line()) + 
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
 
 # R session information
 ```
