@@ -567,5 +567,8 @@ parse_d20200328_UEYAMA_FAIRBANKS <- function(path) {
   dat <- rbind(dat1, dat3, dat4)
   dat$Fch4 <- as.numeric(dat$Fch4)
   dat$Fco2 <- as.numeric(dat$Fco2)
+  dat$O2 <- rowMeans(dat[c("O2_1", "O2_2")], na.rm = TRUE)
+  dat$VWC <- rowMeans(dat[c("VWC1", "VWC2")], na.rm = TRUE) / 100
+  dat$T5 <- rowMeans(dat[c("Tsoil1", "Tsoil2", "Tsoil3")], na.rm = TRUE)
   dat
 }
