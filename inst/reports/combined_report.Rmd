@@ -28,8 +28,8 @@ compute_years <- function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
     tibble(Dataset = x$description$CSR_DATASET,
            Records = x$diagnostics$CSR_RECORDS,
-           Start = min(x$data$CSR_TIMESTAMP_BEGIN),
-           End = max(x$data$CSR_TIMESTAMP_BEGIN),
+           Start = min(x$data$CSR_TIMESTAMP_BEGIN, na.rm = TRUE),
+           End = max(x$data$CSR_TIMESTAMP_BEGIN, na.rm = TRUE),
            `Interval (min)` = as.integer(compute_interval(x$data)),
            Size  = format(object.size(x), units = "Mb"))
   } else {
