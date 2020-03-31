@@ -30,6 +30,7 @@ data,CSR_SMx,Volumetric soil moisture at x cm (other CSR_SMx fields follow same 
 data,CSR_Tx,Temperature at x cm (other CSR_Tx fields follow same format),numeric,°C,FALSE
 data,CSR_TAIR,Ambient air temperature,numeric,°C,FALSE
 data,CSR_TCHAMBER,Chamber temperature,numeric,°C,FALSE
+data,CSR_TWATER,Groundwater temperature,numeric,°C,FALSE
 data,CSR_TIMESTAMP_BEGIN,"Timestamp of beginning of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_TIMESTAMP_END,"Timestamp of end of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_WIND,Wind speed,numeric,m/s,FALSE

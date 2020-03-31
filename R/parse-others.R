@@ -601,3 +601,34 @@ parse_d20200328_UEYAMA_HOKUROKU <- function(path) {
 
   rbind_list(dats)
 }
+
+#' Parse a custom file from d20200328_UEYAMA_TESHIO
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom tibble tibble
+parse_d20200328_UEYAMA_TESHIO <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- read.csv(files, na.strings = c("#N/A", "#DIV/0!"),
+                  stringsAsFactors = FALSE, check.names = FALSE, skip = 1)
+
+  dat_all <- dat[c("TIMESTAMP", "Ts1", "Twater", "WaterTable")]
+  dat_all$SWC <- rowMeans(dat[c("SWC1", "SWC3")])
+  dat1 <- dat2 <- dat3 <- dat4 <- dat_all
+
+  dat1$Fch4 <- dat$Fch4_1
+  dat1$Fco2 <- dat$Fco2_1
+  dat1$Port <- 1
+  dat2$Fch4 <- dat$Fch4_2
+  dat2$Fco2 <- dat$Fco2_2
+  dat2$Port <- 2
+  dat3$Fch4 <- dat$Fch4_3
+  dat3$Fco2 <- dat$Fco2_3
+  dat3$Port <- 3
+  dat4$Fch4 <- dat$Fch4_w
+  dat4$Fco2 <- dat$Fco2_w
+  dat4$Port <- 4
+
+  rbind(dat1, dat2, dat3, dat4)
+}
