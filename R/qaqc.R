@@ -36,7 +36,11 @@ qaqc_data <- function(dsd, diag,
   # Remove NA flux records
   diag$CSR_RECORDS_REMOVED_NA <- 0
   if(remove_na) {
-    na_flux <- is.na(dsd$CSR_FLUX_CO2) & is.na(dsd$CSR_FLUX_CH4)
+    if("CSR_FLUX_CH4" %in% names(dsd)) {
+      na_flux <- is.na(dsd$CSR_FLUX_CO2) & is.na(dsd$CSR_FLUX_CH4)
+    } else {
+      na_flux <- is.na(dsd$CSR_FLUX_CO2)
+    }
     diag$CSR_RECORDS_REMOVED_NA <- sum(na_flux)
     dsd <- dsd[!na_flux,]
   }
