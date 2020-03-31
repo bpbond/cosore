@@ -185,7 +185,7 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
   }
   # Check for invalid email addresses
   eml <- sapply(strsplit(cfd$CSR_EMAIL, ";"), function(x) x[1])
-  invalid_emails <- grep("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
+  invalid_emails <- grep("^[A-Z0-9ä._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
                          eml, ignore.case = TRUE, invert = TRUE)
   if(length(invalid_emails) && any(cfd$CSR_EMAIL[invalid_emails] != "")) {
     stop(dataset_name, ": invalid emails for contributors ", invalid_emails)
