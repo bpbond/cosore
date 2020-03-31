@@ -19,8 +19,8 @@ ds <- params$dataset
 # Compute a mean timestamp for ease of use below
 dsd <- ds$data
 dsd$CSR_TIMESTAMP <- do.call(c, Map(function(x, y) mean(c(x, y)), 
-                                        ds$data$CSR_TIMESTAMP_BEGIN, 
-                                        ds$data$CSR_TIMESTAMP_END))
+                                    ds$data$CSR_TIMESTAMP_BEGIN, 
+                                    ds$data$CSR_TIMESTAMP_END))
 quick <- params$quick
 ```
 
@@ -133,6 +133,8 @@ Size                | `r format(object.size(ds), "Mb")`
 **Flux summary**:
 
 ```{r flux-graphs}
+has_ch4 <- any(!is.na(dsd$CSR_FLUX_CH4))
+
 if(is.data.frame(dsd) & !quick) {
   dsd <- subset(dsd, !is.na(CSR_FLUX_CO2) & CSR_FLUX_CO2 > 0)
   dsd$CSR_PORT <- as.factor(dsd$CSR_PORT)
@@ -148,15 +150,27 @@ if(is.data.frame(dsd) & !quick) {
     geom_point(size = 0.2) + scale_y_log10()
   print(p2)
   
+  if(has_ch4) {
+    p2_ch4 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX_CH4, color = CSR_PORT)) + 
+      geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
+    print(p2_ch4)
+  }
+  
   dsd$Month = month(dsd$CSR_TIMESTAMP)
   smry <- aggregate(CSR_FLUX_CO2 ~ CSR_PORT + Month, data = dsd, mean)
   ggplot(smry, aes(Month, CSR_FLUX_CO2, color = CSR_PORT, group = CSR_PORT)) + 
     geom_line() ->
     p3
   print(p3)
-  # histogram
+  
+  # Histogram
   p4 <- ggplot(dsd, aes(x = CSR_FLUX_CO2)) + geom_histogram(bins = 30)
   print(p4)
+  
+  if(has_ch4) {
+    p4_ch4 <- ggplot(dsd, aes(x = CSR_FLUX_CH4)) + geom_histogram(bins = 30)
+    print(p4_ch4)
+  }
 }
 ```
 
