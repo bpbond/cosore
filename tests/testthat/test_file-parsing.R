@@ -132,6 +132,10 @@ test_that("read_contributors_file", {
   # Handles multiple (semicolon) emails
   dat <- c("Ben", "BL", "ben@bbl.com; ben@gmail.com", "0000-0000-0000-0000", "role")
   expect_silent(read_contributors_file("x", file_data = fd(dat, labels)))
+  # Handles names with diacriticals
+  # Unicode 00E9 is e with an accent mark
+  dat <- c("Ben", "BL", "b\U00E9n@bbl.com", "0000-0000-0000-0000", "role")
+  expect_silent(read_contributors_file("x", file_data = fd(dat, labels)))
 
   # Catches invalid ORCIDs
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-000-0000-0000", "role")
