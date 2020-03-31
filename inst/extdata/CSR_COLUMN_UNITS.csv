@@ -18,6 +18,7 @@ data,CSR_FLUX_SE_CO2,Standard error of soil respiration flux,numeric,µmol CO2/m
 data,CSR_FLUX_SE_CH4,Standard error of soil methane flux,numeric,nmol CH~4~/m^2^/s,FALSE
 data,CSR_LABEL,Port/chamber label,character,,FALSE
 data,CSR_NEE,Tower (not chamber) net ecosystem exchange,numeric,µmol CO~2~/m^2^/s,FALSE
+data,CSR_O2,Soil oxygen level,numeric,%,FALSE
 data,CSR_PAR,Photosynthetically active radiation,numeric,µmol photons/m^2^/s,FALSE
 data,CSR_PORT,Port/chamber number,numeric,,TRUE
 data,CSR_PRECIP,Precipitation,numeric,mm,FALSE

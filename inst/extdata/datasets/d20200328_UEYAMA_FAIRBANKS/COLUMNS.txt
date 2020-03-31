@@ -7,17 +7,19 @@
 #	Computation: optional R-parseable computation to change units, etc.
 #	Notes: optional; generally to explain the computation
 #
-Database,		Dataset,	Computation,				Notes
-CSR_DRY_CO2,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_ERROR,		Error,
-CSR_FLUX_CO2,  		Flux,
-CSR_LABEL,		Label,
-CSR_PORT,		Port,
-CSR_R2_CO2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V4
-CSR_T5,			V3
-CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP_BEGIN,	Timestamp
+Database,				Dataset,	Computation,				Notes
+CSR_FLUX_CO2,  			Fco2,
+CSR_FLUX_CH4,			Fch4,
+CSR_O2,					O2_1,		"mean(c(O2_1, O2_2), na.rm = TRUE)"
+CSR_PAR,				PPFD_IN_F
+CSR_PORT,				Port,
+CSR_PRECIP,				P_RAIN
+CSR_RH,					RH_1_1_1,
+CSR_SM5,				VWC1,		"mean(c(VWC1, VWC2, VWC3), na.rm = TRUE)"
+CSR_T5,					Tsoil1,		"mean(c(Tsoil1, Tsoil2, Tsoil3), na.rm = TRUE)"
+CSR_T10,				Tsoil1_10cm
+CSR_T20,				Tsoil1_20cm,
+CSR_T30,				Tsoil1_30cm,
+CSR_T40,				Tsoil1_40cm,
+CSR_TAIR,				TA_1_1_1
+CSR_TIMESTAMP_BEGIN,	StartTime

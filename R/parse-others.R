@@ -534,3 +534,38 @@ parse_d20200305_VARGAS <- function(path) {
   )
   rbind(dat1, dat2, dat3)
 }
+
+#' Parse a custom file from d20200305_VARGAS
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom tibble tibble
+parse_d20200328_UEYAMA_FAIRBANKS <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- read.csv(files, na.strings = c("#N/A", "#DIV/0!"),
+                  stringsAsFactors = FALSE, check.names = FALSE, skip = 1)
+
+  dat4 <- dat
+  dat4$Fch4_4 <- dat4$Fco2_4 <- dat4$Fch4_3 <- dat4$Fco2_3 <- NULL
+  dat4 <- rename(dat4, "Fch4_1", "Fch4")
+  dat4 <- rename(dat4, "Fco2_1", "Fco2")
+  dat4$Port <- 4
+
+  dat1 <- dat
+  dat1$Fch4_1 <- dat1$Fco2_1 <- dat1$Fch4_3 <- dat1$Fco2_3 <- NULL
+  dat1 <- rename(dat1, "Fch4_4", "Fch4")
+  dat1 <- rename(dat1, "Fco2_4", "Fco2")
+  dat1$Port <- 1
+
+  dat3 <- dat
+  dat3$Fch4_4 <- dat3$Fco2_4 <- dat3$Fch4_1 <- dat3$Fco2_1 <- NULL
+  dat3 <- rename(dat3, "Fch4_3", "Fch4")
+  dat3 <- rename(dat3, "Fco2_3", "Fco2")
+  dat3$Port <- 3
+
+  dat <- rbind(dat1, dat3, dat4)
+  dat$Fch4 <- as.numeric(dat$Fch4)
+  dat$Fco2 <- as.numeric(dat$Fco2)
+  dat
+}
