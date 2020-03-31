@@ -535,7 +535,7 @@ parse_d20200305_VARGAS <- function(path) {
   rbind(dat1, dat2, dat3)
 }
 
-#' Parse a custom file from parse_d20200328_UEYAMA_FAIRBANKS
+#' Parse a custom file from d20200328_UEYAMA_FAIRBANKS
 #'
 #' @param path Data directory path, character
 #' @return A \code{data.frame} containing extracted data.
@@ -578,4 +578,26 @@ parse_d20200328_UEYAMA_FAIRBANKS <- function(path) {
   dat$VWC <- dat$VWC / 100
 
   dat
+}
+
+#' Parse a custom file from d20200328_UEYAMA_HOKUROKU
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom tibble tibble
+parse_d20200328_UEYAMA_HOKUROKU <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- read.csv(files, na.strings = c("#N/A", "#DIV/0!"),
+                  stringsAsFactors = FALSE, check.names = FALSE, skip = 1)
+
+  fields <- c("Fch4", "Fco2", "Ts", "SWC")
+  dats <- list()
+  for(i in 1:6) {
+    dats[[i]] <- dat[c("StartTime", paste(fields, i, sep = "_"))]
+    names(dats[[i]]) <- c("StartTime", fields)
+    dats[[i]]$Port <- i
+  }
+
+  rbind_list(dats)
 }

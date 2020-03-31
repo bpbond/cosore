@@ -16,4 +16,4 @@
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_OPAQUE,	CSR_PLANTS_REMOVED,	CSR_FAN,	CSR_AREA,	CSR_VOLUME,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			FALSE,		FALSE,				FALSE,		361,		9025,		10,			"Japanese larch (Larix Kaempferi Sarg.)"	
+0,			NEE,			None,			FALSE,		FALSE,				FALSE,		361,		9025,		10,			"Japanese larch (Larix Kaempferi Sarg.)"
