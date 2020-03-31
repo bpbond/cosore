@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse-others.R
 \name{parse_d20200328_UEYAMA_FAIRBANKS}
 \alias{parse_d20200328_UEYAMA_FAIRBANKS}
-\title{Parse a custom file from d20200305_VARGAS}
+\title{Parse a custom file from parse_d20200328_UEYAMA_FAIRBANKS}
 \usage{
 parse_d20200328_UEYAMA_FAIRBANKS(path)
 }
@@ -13,6 +13,6 @@ parse_d20200328_UEYAMA_FAIRBANKS(path)
 A \code{data.frame} containing extracted data.
 }
 \description{
-Parse a custom file from d20200305_VARGAS
+Parse a custom file from parse_d20200328_UEYAMA_FAIRBANKS
 }
 \keyword{internal}

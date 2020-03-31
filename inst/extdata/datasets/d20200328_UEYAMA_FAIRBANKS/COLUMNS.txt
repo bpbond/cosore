@@ -15,7 +15,7 @@ CSR_PAR,				PPFD_IN_F
 CSR_PORT,				Port,
 CSR_PRECIP,				P_RAIN
 CSR_RH,					RH_1_1_1,
-CSR_SM5,				VWC,
+CSR_SM10,				VWC,
 CSR_T5,					T5,
 CSR_T10,				Tsoil1_10cm
 CSR_T20,				Tsoil1_20cm,
