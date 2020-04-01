@@ -614,20 +614,23 @@ parse_d20200328_UEYAMA_TESHIO <- function(path) {
                   stringsAsFactors = FALSE, check.names = FALSE, skip = 1)
 
   dat_all <- dat[c("TIMESTAMP", "Ts1", "Twater", "WaterTable")]
-  dat_all$SWC <- rowMeans(dat[c("SWC1", "SWC3")])
   dat1 <- dat2 <- dat3 <- dat4 <- dat_all
 
   dat1$Fch4 <- dat$Fch4_1
   dat1$Fco2 <- dat$Fco2_1
+  dat1$SWC <- dat$SWC1
   dat1$Port <- 1
   dat2$Fch4 <- dat$Fch4_2
   dat2$Fco2 <- dat$Fco2_2
+  dat2$SWC <- dat$SWC1
   dat2$Port <- 2
   dat3$Fch4 <- dat$Fch4_3
   dat3$Fco2 <- dat$Fco2_3
+  dat3$SWC <- dat$SWC3
   dat3$Port <- 3
   dat4$Fch4 <- dat$Fch4_w
   dat4$Fco2 <- dat$Fco2_w
+  dat4$SWC <- NA_real_
   dat4$Port <- 4
 
   rbind(dat1, dat2, dat3, dat4)

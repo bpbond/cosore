@@ -12,7 +12,7 @@ CSR_FLUX_CO2,  			Fco2,
 CSR_FLUX_CH4,			Fch4,
 CSR_PORT,				Port,
 CSR_SM5,				SWC,
-CSR_T5,					Ts1,
+CSR_T1,					Ts1,
 CSR_TIMESTAMP_BEGIN,	TIMESTAMP
 CSR_TWATER,				Twater
 CSR_WTD,				WaterTable,	WaterTable / 100
