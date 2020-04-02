@@ -644,14 +644,18 @@ parse_d20200328_UEYAMA_TESHIO <- function(path) {
 #' @importFrom tibble tibble
 parse_d20200328_UEYAMA_YAMASHIRO <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
-  dat <- read.csv(files, na.strings = c("#N/A", "#DIV/0!"),
-                  stringsAsFactors = FALSE, check.names = FALSE, skip = 1)
+  dat <- rbind_list(lapply(files, read.csv,
+                           na.strings = c("#N/A", "#DIV/0!"),
+                           stringsAsFactors = FALSE,
+                           check.names = FALSE, skip = 1))
 
   dat1 <- dat2 <- dat3 <- dat4 <- dat[c("TIMESTAMP")]
 
+  # per Ueyama email 2020-04-02 SWC headers in file not correct, which is
+  # why assignments below
   dat1$Fch4 <- dat$Fch4_1
   dat1$Fco2 <- dat$Fco2_1
-  dat1$SWC <- dat$SWC.4
+  dat1$SWC <- dat$`SWC.1_0-5cm`
   dat1$Tsoil <- dat$Tsoil.1_3cm
   dat1$Port <- 1
   dat2$Fch4 <- dat$Fch4_2
