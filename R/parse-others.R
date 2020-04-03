@@ -588,8 +588,10 @@ parse_d20200328_UEYAMA_FAIRBANKS <- function(path) {
 #' @importFrom tibble tibble
 parse_d20200328_UEYAMA_HOKUROKU <- function(path) {
   files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
-  dat <- read.csv(files, na.strings = c("#N/A", "#DIV/0!"),
-                  stringsAsFactors = FALSE, check.names = FALSE, skip = 1)
+  dat <- rbind_list(lapply(files, read.csv,
+                           na.strings = c("#N/A", "#DIV/0!"),
+                           stringsAsFactors = FALSE,
+                           check.names = FALSE, skip = 1))
 
   fields <- c("Fch4", "Fco2", "Ts", "SWC")
   dats <- list()
