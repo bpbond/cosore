@@ -9,6 +9,6 @@
 # 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
-CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,	CSR_ROLE
-Mioko,			Ataka,				teshimamioko@yahoo.co.jp,	,			"Funding acquisition, Investigation, Data curation"
-Yuji,			Kominami,			kominy@ffpri.affrc.go.jp, 	,			Investigation
+CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,				CSR_ROLE
+Mioko,			Ataka,				teshimamioko@yahoo.co.jp,	0000-0002-2981-2235,	"Funding acquisition, Investigation, Data curation"
+Yuji,			Kominami,			kominy@ffpri.affrc.go.jp, 	,						Investigation

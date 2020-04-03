@@ -8,8 +8,8 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_AREA: optional chamber area, cm2
 #
-CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-1,			Rs,				None,		78.5,	,		Acer saccharum
-2,			Rs,				None,		78.5,	,		Acer saccharum
-3,			Rs,				None,		78.5,	,		Acer saccharum
-4,			Rh,				Trenched,	78.5,	,		Acer saccharum
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_PLANTS_REMOVED,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+1,			Rs,				None,			TRUE,				78.5,		,		Acer saccharum
+2,			Rs,				None,			TRUE,				78.5,		,		Acer saccharum
+3,			Rs,				None,			TRUE,				78.5,		,		Acer saccharum
+4,			Rh,				Trenched,		TRUE,				78.5,		,		Acer saccharum

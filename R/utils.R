@@ -67,6 +67,25 @@ split_licor_file <- function(filename, split_lines = 25000, out_dir = dirname(fi
   invisible(filenum)
 }
 
+#' Insert default fields into a data frame
+#'
+#' @param d A tibble or data.frame
+#' @param extra_fields A list of fields (the names) and their default values (elements)
+#' @return The (possibly modified) data frame.
+#' @keywords internal
+insert_defaults <- function(d, extra_fields) {
+  stopifnot(is.data.frame(d))
+  stopifnot(nrow(d) > 0)
+  stopifnot(is.list(extra_fields))
+
+  for(ef in names(extra_fields)) {
+    if(!ef %in% names(d)) {
+      d[[ef]] <- extra_fields[[ef]]
+    }
+  }
+  d
+}
+
 #' Insert new line(s) into existing metadata files.
 #'
 #' @param file Filename, character
@@ -285,6 +304,16 @@ calc_timestamps <- function(dsd, ml, tf, tz) {
   stopifnot(is.character(tf))
   stopifnot(is.character(tz))
 
+  if(nrow(dsd) == 0) {
+    return(list(dsd = dsd,
+         new_ts = NA,
+         na_ts = NA,
+         bad_example = ""))
+  }
+  stopifnot(is.numeric(ml))
+  stopifnot(is.character(tf))
+  stopifnot(is.character(tz))
+
   ts_begin <- "CSR_TIMESTAMP_BEGIN" %in% names(dsd)
   ts_mid <- "CSR_TIMESTAMP_MID" %in% names(dsd)
   ts_end <- "CSR_TIMESTAMP_END" %in% names(dsd)
@@ -319,7 +348,7 @@ calc_timestamps <- function(dsd, ml, tf, tz) {
                 bad_examples = paste(x_begin$bad_examples, x_end$bad_examples, collapse = " ")))
 
   } else {
-    stop("No timestamp begin or end provided")
+    stop("No timestamp begin, mid, or end provided")
   }
 }
 
@@ -468,27 +497,6 @@ convert_to_numeric <- function(x, name, warn = TRUE) {
   }
   y
 }
-
-
-# A utility function that I may need again sometime, if something gets added to diags
-# and I don't want to re-run csr_build()
-redo_diagnostics <- function() { # nocov start
-  for(ds in list_datasets()) {
-    message(ds)
-    dsd <- csr_table("data", ds)
-    diag <- csr_table("diagnostics", ds)
-
-    if(is.data.frame(dsd) & nrow(dsd)) {
-      # Diagnostic information
-      diag$CSR_DATASET <- NULL  # this is added by csr_table(); remove
-      diag$CSR_TIME_BEGIN <- format(min(dsd$CSR_TIMESTAMP_BEGIN), format = "%Y-%m-%d")
-      diag$CSR_TIME_END <- format(max(dsd$CSR_TIMESTAMP_END), format = "%Y-%m-%d")
-      outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
-      stopifnot(file.exists(outfile))
-      saveRDS(diag, file = outfile)
-    }
-  }
-} # nocov end
 
 
 #' Simple function to gather (reshape) data.

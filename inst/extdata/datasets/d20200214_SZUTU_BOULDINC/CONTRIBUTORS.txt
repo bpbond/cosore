@@ -9,7 +9,7 @@
 # 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
-CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,				CSR_ORCID,	CSR_ROLE
-Daphne,			Szutu,				daphneszutu@berkeley.edu,,			"Investigation, Data curation"
-Dennis,			Baldocchi,			baldocchi@berkeley.edu,	,			"Funding acquisition, Investigation"
-Joseph,			Verfaillie,			jverfail@berkeley.edu,	,			"Investigation, Data curation"
+CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,				CSR_ROLE
+Daphne,			Szutu,				daphneszutu@berkeley.edu,	0000-0001-7698-0461,	"Investigation, Data curation"
+Dennis,			Baldocchi,			baldocchi@berkeley.edu,		0000-0003-3496-4919,	"Funding acquisition, Investigation"
+Joseph,			Verfaillie,			jverfail@berkeley.edu,		0000-0002-7009-8942,	"Investigation, Data curation"

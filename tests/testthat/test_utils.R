@@ -2,6 +2,22 @@
 
 context("utils")
 
+test_that("insert_defaults", {
+  # Bad input
+  expect_error(insert_defaults(1, list()))
+  expect_error(insert_defaults(data.frame(), list()))
+  expect_error(insert_defaults(cars, 1))
+
+  # Inserts
+  x <- insert_defaults(data.frame(x = 1), list(y = 2))
+  expect_identical(x, data.frame(x = 1, y = 2))
+  expect_identical(insert_defaults(cars, list()), cars)
+
+  # Doesn't overwrite existing
+  x <- insert_defaults(data.frame(x = 1, y = 1), list(y = 2))
+  expect_identical(x, data.frame(x = 1, y = 1))
+})
+
 test_that("rbind_list", {
   # Bad input
   expect_error(rbind_list(list(cars, 1)))
@@ -160,9 +176,6 @@ test_that("calc_timestamps", {
   expect_error(calc_timestamps(data.frame(), 1, 1, "1"))
   expect_error(calc_timestamps(data.frame(), 1, "1", 1))
 
-  # If data.frame doesn't enough information, error
-  expect_error(calc_timestamps(data.frame(), 1, "1", "1"))
-
   # We're going to run these tests a bunch so...
   validate_list <- function(x, ml, description) {
     expect_type(x, "list")
@@ -199,6 +212,10 @@ test_that("calc_timestamps", {
                    CSR_TIMESTAMP_END = "2020-02-06 18:49", stringsAsFactors = FALSE)
   x <- calc_timestamps(df, ml = ml, tf = "%Y-%m-%d %H:%M", tz = "UTC")
   validate_list(x,  ml, "Supply begin and end")
+
+  # Supply neither
+  expect_error(calc_timestamps(cars, ml = ml, tf = "", tz = "UTC"),
+               regexp = "No timestamp begin, mid, or end provided")
 })
 
 test_that("rearrange_colunns", {

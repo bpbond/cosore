@@ -8,12 +8,12 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,	Computation,				Notes
-CSR_CDRY,		Cdry,
+CSR_DRY_CO2,		Cdry,
 CSR_COMMENTS,	Comments,
-CSR_FLUX,  		Flux,
+CSR_FLUX_CO2,  		Flux,
 CSR_LABEL,		Label,
 CSR_PORT,		Port,
-CSR_R2,			R2,
+CSR_R2_CO2,			R2,
 CSR_RH,			RH,
 CSR_SM5,		SMoist
 CSR_T5,			T5

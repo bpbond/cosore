@@ -79,10 +79,15 @@ resolve_dataset <- function(dataset_name) {
 #' @param file_data File data, character vector; optional for testing
 #' @param comment_char Start-of-line comment character
 #' @keywords internal
-#' @return Contents of file in a character vector.
+#' @return Contents of file, stripped of any comments, in a character vector.
 read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = "#") {
   if(is.null(file_data)) {
-    file_data <- readLines(file.path(resolve_dataset(dataset_name), file_name))
+    f <- file.path(resolve_dataset(dataset_name), file_name)
+    if(file.exists(f)) {
+      file_data <- readLines(f)
+    } else {
+      stop("Can't find file ", file_name, " for dataset ", dataset_name)
+    }
   }
   file_data[grep(paste0("^", comment_char), file_data, invert = TRUE)]
 }
@@ -142,6 +147,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 
   if(!x$CSR_IGBP %in% c("Wetland",
                         "Broadleaf evergreen forest",
+                        "Deciduous needleleaf forest",
                         "Evergreen needleleaf forest",
                         "Evergreen needleleaf plantation", # TODO
                         "Deciduous broadleaf forest", "Open shrubland",
@@ -179,8 +185,9 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
   }
   # Check for invalid email addresses
   eml <- sapply(strsplit(cfd$CSR_EMAIL, ";"), function(x) x[1])
-  invalid_emails <- grep("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
-                         eml, ignore.case = TRUE, invert = TRUE)
+  # 	\p{L} matches all Perl letters; we need this for diacriticals etc.
+  invalid_emails <- grep("^[0-9\\p{L}._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
+                         eml, ignore.case = TRUE, invert = TRUE, perl = TRUE)
   if(length(invalid_emails) && any(cfd$CSR_EMAIL[invalid_emails] != "")) {
     stop(dataset_name, ": invalid emails for contributors ", invalid_emails)
   }
@@ -233,6 +240,9 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "PORTS.txt", file_data)
   pfd <- read_csv_data(file_data, required = c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT"))
 
+  # Insert default fields if not given otherwise
+  pfd <- insert_defaults(pfd, extra_fields = list(CSR_OPAQUE = TRUE, CSR_PLANTS_REMOVED = TRUE))
+
   # Measurement variable is highly standardized; make sure all ok
   ok <- pfd$CSR_MSMT_VAR %in% c("Rs", "Rh", "Reco", "NEE")
   if(!all(ok)) {
@@ -267,8 +277,19 @@ read_columns_file <- function(dataset_name, file_data = NULL) {
 #' @note This is simply a comma-separated table.
 #' @return A \code{data.frame} containing any data in the file.
 read_ancillary_file <- function(dataset_name, file_data = NULL) {
-  file_data <- read_file(dataset_name, "ANCILLARY.txt", file_data)
-  read_csv_data(file_data)
+  file_data <- read_file(dataset_name, "ANCILLARY.csv", file_data)
+  anc <- read.csv(textConnection(file_data), stringsAsFactors = FALSE)
+
+  # Need to convert these to character in case no timestamps (and thus read as logical)
+  anc$CSR_TIMESTAMP_BEGIN <- as.character(anc$CSR_TIMESTAMP_BEGIN)
+  anc$CSR_TIMESTAMP_END <- as.character(anc$CSR_TIMESTAMP_END)
+  x <- calc_timestamps(anc, 0, "%F %T", "")
+
+  if(any(x$na_ts, na.rm = TRUE)) {
+    stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
+         " e.g. rows: ", head(which(x$na_ts)))
+  }
+  tibble::as_tibble(x$dsd)
 }
 
 
@@ -341,10 +362,14 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
   diag <- tibble(CSR_RECORDS = 0,
                  CSR_RECORDS_REMOVED_NA = 0,
                  CSR_RECORDS_REMOVED_ERR = 0,
-                 CSR_RECORDS_REMOVED_TOOLOW = 0,
-                 CSR_RECORDS_REMOVED_TOOHIGH = 0,
-                 CSR_FLUX_LOWBOUND = NA,
-                 CSR_FLUX_HIGHBOUND = NA,
+                 CSR_REMOVED_LOW_CO2 = 0,
+                 CSR_REMOVED_HIGH_CO2 = 0,
+                 CSR_REMOVED_LOW_CH4 = 0,
+                 CSR_REMOVED_HIGH_CH4 = 0,
+                 CSR_FLUX_LOW_LIM_CO2 = NA,
+                 CSR_FLUX_HIGH_LIM_CO2 = NA,
+                 CSR_FLUX_LOW_LIM_CH4 = NA,
+                 CSR_FLUX_HIGH_LIM_CH4 = NA,
                  CSR_BAD_TEMPERATURE = 0,
                  CSR_RECORDS_REMOVED_TIMESTAMP = 0,
                  CSR_EXAMPLE_BAD_TIMESTAMPS = "",
@@ -376,7 +401,6 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     dsd <- map_columns(dsd, dataset$columns)
 
     # Compute timestamp begin and/or ends
-
     tf <- dataset$description$CSR_TIMESTAMP_FORMAT
     tz <- dataset$description$CSR_TIMESTAMP_TZ
     ml <- dataset$description$CSR_MSMT_LENGTH
@@ -407,7 +431,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     # Rearrange columns
     dsd <- rearrange_columns(dsd, required_cols =
                                c("CSR_PORT", "CSR_TIMESTAMP_BEGIN",
-                                 "CSR_TIMESTAMP_END", "CSR_FLUX"))
+                                 "CSR_TIMESTAMP_END", "CSR_FLUX_CO2"))
 
     return(qaqc_data(dsd, diag))
   }

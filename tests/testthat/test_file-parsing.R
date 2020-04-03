@@ -56,6 +56,9 @@ test_that("read_file", {
   # strips out comments
   fd <- c("One", "# Two", "Three")
   expect_identical(length(read_file(file_data = fd)), 2L)
+
+  # errors on non-existent file
+  expect_error(read_file(list_datasets()[1], "xxxxxxx"), regexp = "Can't find file")
 })
 
 test_that("read_csv_data", {
@@ -129,6 +132,10 @@ test_that("read_contributors_file", {
   # Handles multiple (semicolon) emails
   dat <- c("Ben", "BL", "ben@bbl.com; ben@gmail.com", "0000-0000-0000-0000", "role")
   expect_silent(read_contributors_file("x", file_data = fd(dat, labels)))
+  # Handles names with diacriticals
+  # Unicode 00E9 is e with an accent mark
+  dat <- c("Ben", "BL", "b\U00E9n@bbl.com", "0000-0000-0000-0000", "role")
+  expect_silent(read_contributors_file("x", file_data = fd(dat, labels)))
 
   # Catches invalid ORCIDs
   dat <- c("Ben", "BL", "ben@bbl.com", "0000-000-0000-0000", "role")
@@ -145,6 +152,7 @@ test_that("read_contributors_file", {
 test_that("read_ports_file", {
   # ports file
   labels <- c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT")
+  missing_defaults <- c("CSR_OPAQUE", "CSR_PLANTS_REMOVED")
   dat <- c("0", "Rs", "None")
   fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
 
@@ -152,6 +160,7 @@ test_that("read_ports_file", {
   expect_is(x, "data.frame")
   expect_equivalent(nrow(x), 1)
   expect_true(all(labels %in% names(x)))
+  expect_true(all(missing_defaults %in% names(x)))
 
   # Catches missing required variable
   for(i in seq_along(labels)) {
@@ -164,6 +173,26 @@ test_that("read_ports_file", {
   dat <- c("0", "Rz", "None")
   fd <- c(paste(labels, collapse = ","), paste(dat, collapse = ","))
   expect_error(read_ports_file("x", file_data = fd))
+})
+
+test_that("read_ancillary_file", {
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
+          "2014-01-01 00:00:00,2015-01-01 00:00:00,0")
+  x <- read_ancillary_file("x", file_data = fd)
+  expect_s3_class(x$CSR_TIMESTAMP_BEGIN, "POSIXct")
+  expect_s3_class(x$CSR_TIMESTAMP_END, "POSIXct")
+  expect_identical(nrow(x), 1L)
+
+  # errors on improperly-formatted date
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
+          "2014-01-01 00:00,2015-01-01 00:00:00,0")
+  expect_error(read_ancillary_file("x", file_data = fd))
+
+  # doesn't error on no timestamps
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
+          ",,0")
+  expect_silent(x <- read_ancillary_file("x", file_data = fd))
+  expect_identical(nrow(x), 1L)
 })
 
 test_that("map_columns", {

@@ -9,6 +9,6 @@
 # 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
-CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,					CSR_ROLE
-Marguerite,	Mauritz,		memauritz@utep.edu,		0000-0001-8733-9119,	"Investigation, Data curation, Data analysis"
-David,		Lipson,			dlipson@sdsu.edu,		,						"Funding aquisition, Advising, Investigation"
+CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,				CSR_ORCID,				CSR_ROLE
+Marguerite,		Mauritz,			memauritz@utep.edu,		0000-0001-8733-9119,	"Investigation, Data curation, Data analysis"
+David,			Lipson,				dlipson@sdsu.edu,		0000-0003-4530-1539,	"Funding aquisition, Advising, Investigation"

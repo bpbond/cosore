@@ -9,5 +9,7 @@
 # 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
-CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,					CSR_ROLE
+CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,		CSR_ORCID,				CSR_ROLE
 Junliang,	Zou,			jlzou@nwafu.edu.cn,		0000-0001-9635-0686,	Investigation
+Matthew,	Saunders,		SAUNDEM@tcd.ie,			0000-0002-1965-8932
+Bruce,		Osborne,		bruce.osborne@ucd.ie,	0000-0003-2208-7285

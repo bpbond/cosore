@@ -8,8 +8,8 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,		Computation,				Notes
-CSR_CDRY,		Cdry,
-CSR_FLUX,  		Flux.lin,
+CSR_DRY_CO2,		Cdry,
+CSR_FLUX_CO2,  		Flux.lin,
 CSR_RH,			RH,
 CSR_T0,			Soiltemp_0cm1,	(Soiltemp_0cm1 + Soiltemp_0cm2) / 2
 CSR_T10,		Soiltemp_10cm

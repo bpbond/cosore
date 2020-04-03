@@ -8,8 +8,8 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,				Dataset,			Computation,		Notes
-CSR_FLUX,  				f_co2,
-CSR_FLUX_SE,			sd_f_co2,
+CSR_FLUX_CO2,  				f_co2,
+CSR_FLUX_CO2_SE,			sd_f_co2,
 CSR_PORT,				ch_no	
 CSR_SM5,				w_soil_sfc
 CSR_T5,					T_soil_sfc

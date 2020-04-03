@@ -10,4 +10,4 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,					CSR_ROLE
-Russ,			Scott,				russ.scott@ars.usda.gov,	0000-0003-2987-5380
+Russell,		Scott,				russ.scott@ars.usda.gov,	0000-0003-2987-5380

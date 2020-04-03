@@ -8,10 +8,10 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,		Dataset,	Computation,				Notes
-CSR_FLUX,  			Flux,
-CSR_FLUX_SE,		Std_err_Flux
+CSR_FLUX_CO2,  			Flux,
+CSR_FLUX_CO2_SE,		Std_err_Flux
 CSR_PORT,			ActiveChamber,
-CSR_R2,				R.2,
+CSR_R2_CO2,				R.2,
 CSR_T5,				Soiltemp
 CSR_TCHAMBER,		Chambertemp
 CSR_TIMESTAMP_END,	Date

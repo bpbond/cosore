@@ -1,0 +1,45 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+#		For US sites, a corresponding Central American timezone is used if 
+#		the instrument does not follow daylight savings 
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+#	CSR_MSMT_LENGTH: measurement length (seconds)
+#	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
+#	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
+		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
+# --------------------------------------
+CSR_SITE_NAME: Teshio CC-LaG
+CSR_LONGITUDE: 142.107222
+CSR_LATITUDE: 45.055833
+CSR_ELEVATION: 70
+CSR_TIMEZONE: Etc/GMT-9
+CSR_IGBP: Deciduous needleleaf forest
+CSR_NETWORK: AsiaFlux
+CSR_SITE_ID: TSE
+CSR_INSTRUMENT: Los Gatos FGGA-24r-EP 
+CSR_MSMT_LENGTH: 120
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %m/%d/%y %H:%M
+CSR_TIMESTAMP_TZ: Etc/GMT-9
+CSR_PRIMARY_PUB: 10.1016/j.atmosenv.2018.04.025
+CSR_OTHER_PUBS: 
+CSR_DATA_URL:
+CSR_ACKNOWLEDGMENT: This study was supported by JSPS KAKENHI Grant Number 26701002.

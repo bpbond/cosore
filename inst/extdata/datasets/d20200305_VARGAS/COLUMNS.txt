@@ -8,7 +8,7 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,				Dataset,	Computation,				Notes
-CSR_FLUX,  				flux,
+CSR_FLUX_CO2,  				flux,
 CSR_LABEL,				label,
 CSR_PAR,				PAR,
 CSR_PORT,				port,

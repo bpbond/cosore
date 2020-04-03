@@ -8,7 +8,7 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,				Computation,		Notes
-CSR_FLUX,  			flux (umol/m2/s)
+CSR_FLUX_CO2,  			flux (umol/m2/s)
 CSR_PORT,			flux (umol/m2/s),		1
 CSR_SM10,			soil_water (vol/vol)
 CSR_T10,			soil_temp (degree C)

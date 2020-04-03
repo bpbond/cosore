@@ -534,3 +534,147 @@ parse_d20200305_VARGAS <- function(path) {
   )
   rbind(dat1, dat2, dat3)
 }
+
+#' Parse a custom file from d20200328_UEYAMA_FAIRBANKS
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom tibble tibble
+parse_d20200328_UEYAMA_FAIRBANKS <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- read.csv(files, na.strings = c("#N/A", "#DIV/0!"),
+                  stringsAsFactors = FALSE, check.names = FALSE, skip = 1)
+
+  dat1 <- dat
+  dat1$Fch4 <- dat$Fch4_1
+  dat1$Fco2 <- dat$Fco2_1
+  dat1$T5 <- dat$Tsoil1
+  dat1$VWC <- dat$VWC1
+  dat1$Port <- 1
+
+  dat3 <- dat
+  dat3$Fch4 <- dat$Fch4_3
+  dat3$Fco2 <- dat$Fco2_3
+  dat3$T5 <- dat$Tsoil3
+  dat3$VWC <- dat$VWC3
+  dat3$Port <- 3
+
+  dat4 <- dat
+  dat4$Fch4 <- dat$Fch4_4
+  dat4$Fco2 <- dat$Fco2_4
+  dat4$T5 <- dat$Tsoil1  # per author
+  dat4$VWC <- dat$VWC1
+  dat4$Port <- 4
+
+  dat <- rbind(dat1, dat3, dat4)
+  dat$Fch4_1 <- dat1$Fco2_1 <-
+    dat1$Fch4_3 <- dat1$Fco2_3 <-
+    dat1$Fch4_4 <- dat1$Fco2_4 <-
+    dat$Tsoil1 <- dat$Tsoil2 <- dat$Tsoil3 <-
+    dat$VWC1 <- dat$VWC2 <- NULL
+
+  dat$O2 <- rowMeans(dat[c("O2_1", "O2_2")], na.rm = TRUE)
+  dat$VWC <- dat$VWC / 100
+
+  dat
+}
+
+#' Parse a custom file from d20200328_UEYAMA_HOKUROKU
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom tibble tibble
+parse_d20200328_UEYAMA_HOKUROKU <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- rbind_list(lapply(files, read.csv,
+                           na.strings = c("#N/A", "#DIV/0!"),
+                           stringsAsFactors = FALSE,
+                           check.names = FALSE, skip = 1))
+
+  fields <- c("Fch4", "Fco2", "Ts", "SWC")
+  dats <- list()
+  for(i in 1:6) {
+    dats[[i]] <- dat[c("StartTime", paste(fields, i, sep = "_"))]
+    names(dats[[i]]) <- c("StartTime", fields)
+    dats[[i]]$Port <- i
+  }
+
+  rbind_list(dats)
+}
+
+#' Parse a custom file from d20200328_UEYAMA_TESHIO
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom tibble tibble
+parse_d20200328_UEYAMA_TESHIO <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- read.csv(files, na.strings = c("#N/A", "#DIV/0!"),
+                  stringsAsFactors = FALSE, check.names = FALSE, skip = 1)
+
+  dat_all <- dat[c("TIMESTAMP", "Ts1", "Twater", "WaterTable")]
+  dat1 <- dat2 <- dat3 <- dat4 <- dat_all
+
+  dat1$Fch4 <- dat$Fch4_1
+  dat1$Fco2 <- dat$Fco2_1
+  dat1$SWC <- dat$SWC1
+  dat1$Port <- 1
+  dat2$Fch4 <- dat$Fch4_2
+  dat2$Fco2 <- dat$Fco2_2
+  dat2$SWC <- dat$SWC1
+  dat2$Port <- 2
+  dat3$Fch4 <- dat$Fch4_3
+  dat3$Fco2 <- dat$Fco2_3
+  dat3$SWC <- dat$SWC3
+  dat3$Port <- 3
+  dat4$Fch4 <- dat$Fch4_w
+  dat4$Fco2 <- dat$Fco2_w
+  dat4$SWC <- NA_real_
+  dat4$Port <- 4
+
+  rbind(dat1, dat2, dat3, dat4)
+}
+
+#' Parse a custom file from d20200328_UEYAMA_YAMASHIRO
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom tibble tibble
+parse_d20200328_UEYAMA_YAMASHIRO <- function(path) {
+  files <- list.files(path, pattern = ".csv$", full.names = TRUE, recursive = TRUE)
+  dat <- rbind_list(lapply(files, read.csv,
+                           na.strings = c("#N/A", "#DIV/0!"),
+                           stringsAsFactors = FALSE,
+                           check.names = FALSE, skip = 1))
+
+  dat1 <- dat2 <- dat3 <- dat4 <- dat[c("TIMESTAMP")]
+
+  # per Ueyama email 2020-04-02 SWC headers in file not correct, which is
+  # why assignments below
+  dat1$Fch4 <- dat$Fch4_1
+  dat1$Fco2 <- dat$Fco2_1
+  dat1$SWC <- dat$`SWC.1_0-5cm`
+  dat1$Tsoil <- dat$Tsoil.1_3cm
+  dat1$Port <- 1
+  dat2$Fch4 <- dat$Fch4_2
+  dat2$Fco2 <- dat$Fco2_2
+  dat2$SWC <- dat$`SWC.2_0-5cm`
+  dat2$Tsoil <- dat$Tsoil.2_3cm
+  dat2$Port <- 2
+  dat3$Fch4 <- dat$Fch4_3
+  dat3$Fco2 <- dat$Fco2_3
+  dat3$SWC <- dat$`SWC.3_0-5cm`
+  dat3$Tsoil <- dat$Tsoil.3_3cm
+  dat3$Port <- 3
+  dat4$Fch4 <- dat$Fch4_4
+  dat4$Fco2 <- dat$Fco2_4
+  dat4$SWC <- dat$`SWC.4_0-5cm`
+  dat4$Tsoil <- NA_real_
+  dat4$Port <- 4
+
+  rbind(dat1, dat2, dat3, dat4)
+}

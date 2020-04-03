@@ -8,6 +8,6 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,				Dataset,	Computation,				Notes
-CSR_FLUX,  				flux,
+CSR_FLUX_CO2,  				flux,
 CSR_PORT,				port,
 CSR_TIMESTAMP_BEGIN,	datetime

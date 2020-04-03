@@ -92,11 +92,11 @@ This dataset has `r nrow(sr)` observations; extends from April 2003 to December 
 
 ```{r visualize-varner}
 library(ggplot2)
-ggplot(sr, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_PORT)) +
+ggplot(sr, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX_CO2, color = CSR_PORT)) +
   geom_point(size = 0.5) + ggtitle("Flux over time")
 
 library(lubridate, warn.conflicts = FALSE)
-ggplot(sr, aes(CSR_T5, CSR_FLUX)) + 
+ggplot(sr, aes(CSR_T5, CSR_FLUX_CO2)) + 
   facet_wrap(~month(CSR_TIMESTAMP_BEGIN), scales = "free") +
   geom_point(size = 0.5, alpha = 0.5) +
   ggtitle("5 cm soil temp vs. flux, by month")
@@ -146,7 +146,7 @@ There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 
 ```{r dbf-data}
 tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
-ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX, color = CSR_DATASET)) + 
+ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX_CO2, color = CSR_DATASET)) + 
   geom_point(size = 0.5) + 
   coord_cartesian(ylim = c(0, 20)) +
   ggtitle("Flux over time, colored by dataset")
@@ -164,10 +164,10 @@ tdf_combined$Month <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
 tdf_combined$Year <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
 
 # for each month, compute mean flux for each hour of the day
-tdf_smry <- aggregate(CSR_FLUX ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hour,
+tdf_smry <- aggregate(CSR_FLUX_CO2 ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hour,
                       FUN = mean, data = tdf_combined)
 
-ggplot(tdf_smry, aes(Hour, CSR_FLUX, color = CSR_LATITUDE)) + 
+ggplot(tdf_smry, aes(Hour, CSR_FLUX_CO2, color = CSR_LATITUDE)) + 
   geom_point(size = 0.5) + facet_wrap(~Month) +
   ggtitle("Flux by hour of day and month of year")
 ```

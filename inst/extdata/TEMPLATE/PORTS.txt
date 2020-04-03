@@ -7,7 +7,11 @@
 #	CSR_MSMT_VAR: measurement variable: "Rs", "Rh", or "NEE" [req]
 # 	CSR_TREATMENT: "None" or experimental manipulation [req]
 #	CSR_AREA: optional chamber area, cm2
+#	CSR_VOLUME: optional volume of chamber, cm3
 #	CSR_DEPTH: optional collar insertion depth, cm
+#	CSR_OPAQUE: opaque chamber? Assumed TRUE unless appears below  [req]
+#	CSR_PLANTS_REMOVED: plants removed? Assumed TRUE unless appears below [req] 
+#	CSR_FAN: mixing fan in chamber? Optional
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
