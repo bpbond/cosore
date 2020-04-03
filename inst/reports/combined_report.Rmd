@@ -26,17 +26,23 @@ compute_interval <- function(dsd) {
 
 compute_years <- function(x) {
   if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
+    co2 <- "CSR_FLUX_CO2" %in% names(x$data) && any(!is.na(x$data$CSR_FLUX_CO2))
+    ch4 <- "CSR_FLUX_CH4" %in% names(x$data) && any(!is.na(x$data$CSR_FLUX_CH4))
+    gases <- paste(c("CO2", "CH4")[c(co2, ch4)], collapse = ", ")
+    
     tibble(Dataset = x$description$CSR_DATASET,
            Records = x$diagnostics$CSR_RECORDS,
            Start = min(x$data$CSR_TIMESTAMP_BEGIN, na.rm = TRUE),
            End = max(x$data$CSR_TIMESTAMP_BEGIN, na.rm = TRUE),
            `Interval (min)` = as.integer(compute_interval(x$data)),
-           Size  = format(object.size(x), units = "Mb"))
+           Size  = format(object.size(x), units = "Mb"),
+           Gas = gases)
   } else {
     tibble(Dataset = x$description$CSR_DATASET,
            Records = 0,
            Start = NA, End = NA, `Interval (min)` = NA,
-           Size = format(object.size(NULL), units = "Mb"))    
+           Size = format(object.size(NULL), units = "Mb"),
+           Gas = NA)
   }
 }
 
