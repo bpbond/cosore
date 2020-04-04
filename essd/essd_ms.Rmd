@@ -191,8 +191,9 @@ When contributed data are imported into COSORE, the package code performs a numb
 csr_table("diagnostics", quiet = TRUE) %>% 
   group_by(CSR_DATASET, CSR_RECORDS) %>% 
   summarise(removed = CSR_RECORDS_REMOVED_NA + CSR_RECORDS_REMOVED_ERR +
-                          CSR_RECORDS_REMOVED_TOOLOW + CSR_RECORDS_REMOVED_TOOHIGH +
-                          CSR_RECORDS_REMOVED_TIMESTAMP) %>% 
+              CSR_REMOVED_LOW_CO2 + CSR_REMOVED_HIGH_CO2 +
+              CSR_REMOVED_LOW_CH4 + CSR_REMOVED_HIGH_CH4 +
+              CSR_RECORDS_REMOVED_TIMESTAMP) %>% 
   ungroup() %>% 
   mutate(removed_pct = removed / (removed + CSR_RECORDS) * 100) %>% 
   pull(removed_pct) -> errs
@@ -303,19 +304,91 @@ make_table(db_fields, "columns")
 make_table(db_fields, "diagnostics")
 ```
 
-# Figures
+**Figure 1.** World satellite image with COSORE data submission sites shown as blue diamonds. Areas with multiple submissions are shown as darker.
 
-**Figure 1.** Map of sites...
+```{r worldmap, message = FALSE, echo = FALSE, warning = FALSE}
+# We would like a world map with COSORE submission coordinates
 
-```{r worldmap}
-# db %>% ...
+# First option: a satellite image with COSORE points overlayed, this uses Google Maps
+library(ggmap)
+
+# Note that the following code assumes you have called `ggmap::register_google()` already
+
+bbox <- make_bbox(lon = c(-170, 170), lat = c(-70,70), f = 0) # make a coordinate box 
+map <- get_map(location = bbox, source = "google", maptype = "roadmap", zoom = 1) # load map from online
+
+ggmap(map) + 
+  geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE, fill = "COSORE Submission Site"), 
+             alpha = 0.6, color = "blue4", size = 2.5, shape = 18) + 
+  xlim(c(-160, 160)) + 
+  ylim(c(-40,70)) +
+  labs(x = "Longitude", y = "Latitude") +
+  scale_fill_manual(name = "", values = c("COSORE Submission Site" = "#FC4E07")) +
+  scale_shape_manual(values = 18) + theme(legend.position="bottom")
+##FC4E07
+
+#need to find and resolve removed datapoint throwing warning
 ```
 
-**Figure 2.** Density plot of fluxes, by IGBP, one line per dataset or per dataset + year
+**Figure 2.** Waffle plot of COSORE Coverage by IGBP by year of measurement. Here, one square equals 1,000 datapoints.
 
+```{r flux-density, message = FALSE, echo = FALSE, eval=FALSE}
+library(waffle)
 
-# R session information
+# SP I set this chunk to do-not-run because it requires loading the entire `data` table, 
+# which is a killer (hundreds of MB in size and steady getting bigger). Let's rewrite.
+# Can you just get the information you need from `csr_database()`?
+
+csr_table(table = 'data') %>% left_join(db) -> data_meta
+
+data_meta %>% 
+  mutate(Date = date(CSR_TIMESTAMP_BEGIN), 
+         Month = month(CSR_TIMESTAMP_BEGIN), 
+         Year = year(CSR_TIMESTAMP_BEGIN)) %>% 
+  group_by(Year, CSR_IGBP) %>%
+  summarise(CSR_FLUX = mean(CSR_FLUX, na.rm = TRUE), Date = mean(Date), n = n()/1000) -> avg
+
+# waffle plot no of records by IGBP
+ggplot(avg, aes(fill = CSR_IGBP, values = n)) +
+  geom_waffle(color = "white", size = .25, n_rows = 10, flip = TRUE) +
+  facet_wrap(~Year, nrow = 2, strip.position = "bottom") +  coord_equal() +
+  labs(title = subtitle = "1 block = 1,000 data points",
+       x = "Year",
+       y = "Count") +
+  theme_minimal() +
+  theme(panel.grid = element_blank()) + 
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
+
+#still need to figure out what happens to datapoints under 1000
+
+```
+
+**Figure 3.** Temporal data coverage by latitude.
+
+```{r lat-coverage, message = FALSE, echo = FALSE, eval=FALSE}
+
+data_meta %>% 
+  select(CSR_DATASET, CSR_LATITUDE, CSR_TIMESTAMP_BEGIN, CSR_TIMESTAMP_END, CSR_IGBP) %>% 
+  group_by(CSR_DATASET, CSR_IGBP) %>% 
+  summarise(Latitude = mean(CSR_LATITUDE), 
+            Timestamp_begin = min(CSR_TIMESTAMP_BEGIN), 
+            Timestamp_end = max(CSR_TIMESTAMP_END), n = n()) -> 
+  timestamp_lengths
+
+lat_intervals <- as.character(cut_interval(timestamp_lengths$Latitude, length = 5))
+
+ggplot(timestamp_lengths, aes()) + 
+  geom_segment(aes(x = Timestamp_begin, y = lat_intervals, 
+                   xend = Timestamp_end, yend = lat_intervals),
+               color = "blue4", size = 2) + 
+  theme_minimal() + labs(x = "Timestamp", y = "Latitude Interval")
+
+#still need to reorder intervals to [-35,30] is at the bottom of the plot
+```
 
 ```{r sessionInfo}
+# R session information
 sessionInfo()
 ```
