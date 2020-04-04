@@ -9,7 +9,7 @@
 # 	CSR_ROLE: optional CRediT role (see https://www.casrai.org/credit.html)
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
-CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,							CSR_ORCID,					CSR_ROLE
-Ankur,		Desai,			desai@aos.wisc.edu,				0000-0002-5226-6041,	Funding acquisition
-Claire,		Phillips,		Claire.Phillips@oregonstate.edu,0000-0001-9072-6806,	Investigation
-Karis,	McFarlane,			mcfarlane3@llnl.gov,			0000-0001-6390-7863,	Funding acquisition
+CSR_FIRST_NAME,	CSR_FAMILY_NAME,		CSR_EMAIL,						CSR_ORCID,				CSR_ROLE
+Ankur,			Desai,					desai@aos.wisc.edu,				0000-0002-5226-6041,	Funding acquisition
+Claire L.,		Phillips,				Claire.Phillips@oregonstate.edu,0000-0001-9072-6806,	Investigation
+Karis,			McFarlane,				mcfarlane3@llnl.gov,			0000-0001-6390-7863,	Funding acquisition
