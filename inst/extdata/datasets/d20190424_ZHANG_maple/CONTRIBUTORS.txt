@@ -12,4 +12,4 @@
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,				CSR_ORCID,				CSR_ROLE
 Quan,			Zhang,				quan.zhang@whu.edu.cn, 	0000-0003-1127-5969,	"Investigation, Data curation"
 Kimberly,		Novick,				knovick@indiana.edu,	,						Funding acquisition
-Richard,		Phillips,			rpp6@indiana.edu,		0000-0002-1345-4138,	Funding acquisition
+Richard P.,		Phillips,			rpp6@indiana.edu,		0000-0002-1345-4138,	Funding acquisition

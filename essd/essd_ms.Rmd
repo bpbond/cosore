@@ -18,6 +18,7 @@ library(lubridate)
 library(readr)
 library(tidyr)
 library(covr)
+library(magrittr)
 
 db <- csr_database() %>% mutate(CTB = ymd(CSR_TIME_BEGIN), CTE = ymd(CSR_TIME_END))
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
@@ -27,7 +28,8 @@ db_fields <- read_csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "
 db_vers <- packageVersion("cosore")
 ```
 
-```{r authors}
+```{r authors, results='asis'}
+# Generate a list of potential authors from the database
 csr_table("contributors") %>% 
   left_join(select(db, CSR_DATASET, CSR_RECORDS), by = "CSR_DATASET") %>% 
   filter(CSR_RECORDS > 0) %>%  # only authors who contribute data
@@ -36,12 +38,35 @@ csr_table("contributors") %>%
          `Institution and address` = "") %>% 
   select(CSR_DATASET, CSR_FAMILY_NAME, CSR_FIRST_NAME, `Author?`,
          CSR_EMAIL, CSR_ORCID, `Institution and address`) %T>% 
-  write_csv("authors_no.csv", na = "") %>% 
+  write_csv("authors_from_database.csv", na = "") %>% 
   group_by(CSR_DATASET) %>% 
   filter(CSR_FAMILY_NAME == first(CSR_FAMILY_NAME)) %>% 
   pull(CSR_EMAIL) %>% 
   unique() %>% 
   write_lines("authors_contact.csv")
+
+# Read the edited list of potential authors, from the Google Sheet, and generate the
+# author list and contact list
+read_csv("authors_from_google_sheets.csv", col_types = "ccccccc") %>% 
+  rename(institution = `Institution, city, postal code, country`) %>% 
+  mutate(institution = if_else(is.na(institution), 
+                               paste("<b>TODO missing:</b>", CSR_DATASET, CSR_FAMILY_NAME), institution)) %>% 
+  filter(`Author?` %in% c("Yes", "yes", "Y")) %>%
+  distinct(CSR_FAMILY_NAME, CSR_FIRST_NAME, CSR_EMAIL, .keep_all = TRUE) %T>% 
+  write_csv("author_final.csv") ->
+  authors
+
+# First four authors are fixed; after that it's alphabetical
+authors <- bind_rows(authors[1:4,],
+                     arrange(authors[-1:-4,], CSR_FAMILY_NAME, CSR_FIRST_NAME))
+a_names <- paste(authors$CSR_FIRST_NAME, authors$CSR_FAMILY_NAME)
+a_inst_numbers <- as.numeric(factor(authors$institution, 
+                                    levels = unique(authors$institution)))
+institution_list <- authors$institution[!duplicated(a_inst_numbers)]
+cat(paste0(a_names, "<sup>", a_inst_numbers, "</sup>"), sep = ", ")
+cat("<ol>\n") # unordered list
+cat(paste0("\t<li>", institution_list, "</li>"), sep = "\n")
+cat("</ol>\n")
 ```
 
 ## The COSORE database
