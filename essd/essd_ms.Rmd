@@ -52,13 +52,13 @@ read_csv("authors_from_google_sheets.csv", col_types = "ccccccc") %>%
   mutate(institution = if_else(is.na(institution), 
                                paste("<b>TODO missing:</b>", CSR_DATASET, CSR_FAMILY_NAME), institution)) %>% 
   filter(`Author?` %in% c("Yes", "yes", "Y")) %>%
-  distinct(CSR_FAMILY_NAME, CSR_FIRST_NAME, CSR_EMAIL, .keep_all = TRUE) %T>% 
+  distinct(CSR_FAMILY_NAME, CSR_FIRST_NAME, CSR_EMAIL, institution, .keep_all = TRUE) %T>% 
   write_csv("author_final.csv") ->
   authors
 
 # First four authors are fixed; after that it's alphabetical
-authors <- bind_rows(authors[1:4,],
-                     arrange(authors[-1:-4,], CSR_FAMILY_NAME, CSR_FIRST_NAME))
+authors <- bind_rows(authors[1:5,],
+                     arrange(authors[-1:-5,], CSR_FAMILY_NAME, CSR_FIRST_NAME))
 a_names <- paste(authors$CSR_FIRST_NAME, authors$CSR_FAMILY_NAME)
 a_inst_numbers <- as.numeric(factor(authors$institution, 
                                     levels = unique(authors$institution)))
