@@ -2,8 +2,8 @@
 title: 'COSORE: a community database for continuous soil respiration and other chamber
   fluxes'
 output:
-  html_document: default
   word_document: default
+  html_document: default
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
@@ -47,7 +47,7 @@ csr_table("contributors") %>%
 
 # Read the edited list of potential authors, from the Google Sheet, and generate the
 # author list and contact list
-read_csv("authors_from_google_sheets.csv", col_types = "ccccccc") %>% 
+read_csv("authors_from_google_sheets.csv", skip = 1, col_types = "ccccccc") %>% 
   rename(institution = `Institution, city, postal code, country`) %>% 
   mutate(institution = if_else(is.na(institution), 
                                paste("<b>TODO missing:</b>", CSR_DATASET, CSR_FAMILY_NAME), institution)) %>% 
@@ -64,7 +64,7 @@ a_inst_numbers <- as.numeric(factor(authors$institution,
                                     levels = unique(authors$institution)))
 institution_list <- authors$institution[!duplicated(a_inst_numbers)]
 cat(paste0(a_names, "<sup>", a_inst_numbers, "</sup>"), sep = ", ")
-cat("<ol>\n") # unordered list
+cat("<ol>\n") # ordered HTML list
 cat(paste0("\t<li>", institution_list, "</li>"), sep = "\n")
 cat("</ol>\n")
 ```
@@ -74,7 +74,7 @@ cat("</ol>\n")
 COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. 
 It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well, paralleling the recent SIdB database (TODO). 
 Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
-The database currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figure X).
+The database currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figures X and Y). 
 
 ### Overall database structure
 
@@ -183,7 +183,7 @@ When contributed data are imported into COSORE, the package code performs a numb
 * Bad email addresses or ORCID identifiers
 * Records with no flux value
 * Records for which the analyzer recorded an error condition
-* Extremely low or high (<-10 and >50 µmol m^-2^ s^-1^ respectively) flux rates
+* Extremely low or high (<-10 and >50 µmol CO~2~ m^-2^ s^-1^ respectively; currently there are no CH~4~ limits) flux rates
 * Extremely low or high temperature values
 
 ```{r errors, cache=TRUE}
@@ -224,7 +224,7 @@ The COSORE team welcomes questions, contributions, and suggestions; all issues a
 The COSORE team welcomes data contributions of chamber flux data. We prioritize continuously-measured
 (i.e. from automated systems) soil respiration datasets, but the database structure also accommodates
 long-term survey (discontinuous) data; measurements of methane, net ecosystem exchange, and
-heterotrophic respiration fluxes.
+heterotrophic respiration fluxes. There currently is no standardized template data contributors must follow, but we anticipate this changing before version 1.0 (planned for late 2020).
 
 It is important to note that COSORE itself is not designed to be, and should not be treated as, a permanent data repository. 
 It is an open community database, but not an institutionally-backed repository like Figshare (https://figshare.com), DataONE (https://www.dataone.org), ESS-DIVE (https://ess-dive.lbl.gov), ORNL-DAAC (https://daac.ornl.gov), etc. 
@@ -278,13 +278,13 @@ make_table(db_fields, "contributors")
 make_table(db_fields, "ports")
 ```
 
-**Table 5.** Summary of COSORE's _data_ table, which holds the actual flux observations. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Table 5.** Summary of COSORE's _data_ table, which holds the actual flux observations and accompanying time-stamped data. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_data}
 make_table(db_fields, "data")
 ```
 
-**Table 6.** Summary of COSORE's _ancillary_ table, which optional information, typically ecosystem-level soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Table 6.** Summary of COSORE's _ancillary_ table, which includes optional information, typically ecosystem-level soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_ancillary}
 db_fields %>% 
