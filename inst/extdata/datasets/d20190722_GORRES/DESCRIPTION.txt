@@ -7,8 +7,8 @@
 # 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
 # 	CSR_ELEVATION: elevation above sea level, meters
 #	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-#		For US sites, a corresponding Central American timezone is used if 
-#		the instrument does not follow daylight savings 
+#		For US sites, a corresponding Central American timezone is used if
+#		the instrument does not follow daylight savings
 # 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
 #		Evergreen needleleaf forest, Evergreen broadleaf forest,
 #		Deciduous needleleaf forest, Deciduous broadleaf forest,
@@ -21,7 +21,7 @@
 #	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
 #	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
 		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
-# 	Primary publication: optional DOI (preferred) or other primary publication 
+# 	Primary publication: optional DOI (preferred) or other primary publication
 #		that should be cited when these data are used. Leave empty if unpublished.
 # 	Other publications: optional comma-separated DOIs
 # 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
@@ -31,7 +31,7 @@ CSR_LONGITUDE: 3.850444
 CSR_LATITUDE: 51.11219
 CSR_ELEVATION: 5
 CSR_TIMEZONE: Etc/GMT-1
-CSR_IGBP: Poplar short rotation coppice plantation
+CSR_IGBP: Deciduous broadleaf plantation
 CSR_NETWORK: ICOS
 CSR_SITE_ID: BE-Lcr
 CSR_INSTRUMENT: LI-8100A
