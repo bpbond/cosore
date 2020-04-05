@@ -429,10 +429,18 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     # Add port column if necessary
     dsd <- add_port_column(dsd)
 
+    # Check for missing flux columns and add if necessary
+    if(!"CSR_FLUX_CO2" %in% names(dsd)) {
+      dsd$CSR_FLUX_CO2 <- NA_real_
+    }
+    if(!"CSR_FLUX_CH4" %in% names(dsd)) {
+      dsd$CSR_FLUX_CH4 <- NA_real_
+    }
+
     # Rearrange columns
     dsd <- rearrange_columns(dsd, required_cols =
                                c("CSR_PORT", "CSR_TIMESTAMP_BEGIN",
-                                 "CSR_TIMESTAMP_END", "CSR_FLUX_CO2"))
+                                 "CSR_TIMESTAMP_END", "CSR_FLUX_CO2", "CSR_FLUX_CH4"))
 
     return(qaqc_data(dsd, diag))
   }

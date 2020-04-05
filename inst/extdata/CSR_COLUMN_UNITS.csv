@@ -33,6 +33,7 @@ data,CSR_TCHAMBER,Chamber temperature,numeric,°C,FALSE
 data,CSR_TWATER,Groundwater temperature,numeric,°C,FALSE
 data,CSR_TIMESTAMP_BEGIN,"Timestamp of beginning of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_TIMESTAMP_END,"Timestamp of end of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
+data,CSR_VPD,Vapor pressure deficit,numeric,Pa,FALSE
 data,CSR_WIND,Wind speed,numeric,m/s,FALSE
 data,CSR_WTD,"Water table depth, positive numbers are depth",numeric,cm,FALSE
 #,,,,,
