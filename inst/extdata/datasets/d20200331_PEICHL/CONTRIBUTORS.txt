@@ -11,5 +11,5 @@
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,							CSR_ORCID,	CSR_ROLE
 Matthias,		Peichl,				matthias.peichl@slu.se,	0000-0002-9940-5846,	"Funding acquisition, Investigation, Data curation"
-Järvi,			Järveoja,			Järvi.Järveoja@slu.se,	0000-0001-6317-660X, 	"Investigation, Data curation"
+Järvi,			Järveoja,			Jarvi.Jarveoja@slu.se,	0000-0001-6317-660X, 	"Investigation, Data curation"
 Mats B.,		Nilsson,			Mats.B.Nilsson@slu.se,	0000-0003-3765-6399,	"Funding acquisition, Investigation"

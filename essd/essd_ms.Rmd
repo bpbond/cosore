@@ -2,8 +2,8 @@
 title: 'COSORE: a community database for continuous soil respiration and other chamber
   fluxes'
 output:
-  word_document: default
   html_document: default
+  word_document: default
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
@@ -47,7 +47,7 @@ csr_table("contributors") %>%
 
 # Read the edited list of potential authors, from the Google Sheet, and generate the
 # author list and contact list
-read_csv("authors_from_google_sheets.csv", skip = 1, col_types = "ccccccc") %>% 
+read_csv("authors_from_google_sheets.csv", skip = 1, col_types = "cccccccc") %>% 
   rename(institution = `Institution, city, postal code, country`) %>% 
   mutate(institution = if_else(is.na(institution), 
                                paste("<b>TODO missing:</b>", CSR_DATASET, CSR_FAMILY_NAME), institution)) %>% 
@@ -60,9 +60,18 @@ read_csv("authors_from_google_sheets.csv", skip = 1, col_types = "ccccccc") %>%
 authors <- bind_rows(authors[1:5,],
                      arrange(authors[-1:-5,], CSR_FAMILY_NAME, CSR_FIRST_NAME))
 a_names <- paste(authors$CSR_FIRST_NAME, authors$CSR_FAMILY_NAME)
-a_inst_numbers <- as.numeric(factor(authors$institution, 
-                                    levels = unique(authors$institution)))
+a_inst_numbers <- as.character(as.numeric(factor(authors$institution, 
+                                                 levels = unique(authors$institution))))
 institution_list <- authors$institution[!duplicated(a_inst_numbers)]
+
+# Any duplicate names at this point mean multiple institutions; concatenate
+dupes <- which(duplicated(a_names))
+if(length(dupes)) {
+  a_inst_numbers[dupes - 1] <- paste(a_inst_numbers[dupes - 1], a_inst_numbers[dupes], sep = ",")
+  a_inst_numbers <- a_inst_numbers[-dupes]
+  a_names <- a_names[-dupes]
+}
+
 cat(paste0(a_names, "<sup>", a_inst_numbers, "</sup>"), sep = ", ")
 cat("<ol>\n") # ordered HTML list
 cat(paste0("\t<li>", institution_list, "</li>"), sep = "\n")
@@ -86,14 +95,14 @@ Each dataset is given a reference name that links its constituent tables, provid
 Each constituent dataset normally has a series of separate data tables that are linked by keys.
 These tables include:
 
-* `description` (**Table 2**) describing site and dataset characteristics;
-* `contributors` (**Table 3**) listing individuals who contributed to the measurement, analysis,
+* _description_ (**Table 2**) describing site and dataset characteristics;
+* _contributors_ (**Table 3**) listing individuals who contributed to the measurement, analysis,
 curation, and/or submission of the dataset; 
-* `ports` (**Table 4**) which gives the different _ports_ (generally equivalent to separate measurement chambers) in use, and what each is measuring: flux, species, and treatment, as well as characteristics of the measurement collar;
-* `data` (**Table 5**), the central table of the dataset, which records flux observations;
-* `ancillary` (**Table 6**) summarizing site-level ancillary measurements;
-* `columns` (**Table 7**), mapping raw data columns to standard COSORE columns, providing a record for reproducibility; and
-* `diagnostics` (**Table 8**), which provides statistics on the data import process: errors, columns and rows dropped, etc.
+* _ports_ (**Table 4**) which gives the different _ports_ (generally equivalent to separate measurement chambers) in use, and what each is measuring: flux, species, and treatment, as well as characteristics of the measurement collar;
+* _data_ (**Table 5**), the central table of the dataset, which records flux observations;
+* _ancillary_ (**Table 6**) summarizing site-level ancillary measurements;
+* _columns_ (**Table 7**), mapping raw data columns to standard COSORE columns, providing a record for reproducibility; and
+* _diagnostics_ (**Table 8**), which provides statistics on the data import process: errors, columns and rows dropped, etc.
 
 The common key linking these dataset tables is the `CSR_DATASET` field, which records the unique name assigned to the dataset. In addition, a `CSR_PORT` key field links the `ports` and `data` tables. These links make it straightforward to extract datasets that have measured particular fluxes in
 certain ecosystem types, or isolate only non-treatment (control) chamber fluxes, for example.

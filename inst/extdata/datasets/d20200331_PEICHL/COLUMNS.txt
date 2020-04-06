@@ -7,17 +7,18 @@
 #	Computation: optional R-parseable computation to change units, etc.
 #	Notes: optional; generally to explain the computation
 #
-Database,		Dataset,	Computation,				Notes
-CSR_DRY_CO2,		Cdry,
-CSR_COMMENTS,	Comments,
-CSR_ERROR,		Error,
-CSR_FLUX_CO2,  		Flux,
-CSR_LABEL,		Label,
-CSR_PORT,		Port,
-CSR_R2_CO2,			R2,
-CSR_RECORD,		Record,
-CSR_RH,			RH,
-CSR_SM5,		V4
-CSR_T5,			V3
-CSR_TCHAMBER,	Tcham
-CSR_TIMESTAMP_BEGIN,	Timestamp
+Database,				Dataset,		Computation,				Notes
+CSR_FLUX_CH4,  			CH4-flux,
+CSR_PAR,				CH4_PAR_mean
+CSR_PORT,				chamber#,
+CSR_PRECIP,				PPT
+CSR_R2_CH4,				CH4-R2,
+CSR_RH,					RH
+CSR_T10,				Ts_10
+CSR_T2,					Ts_2
+CSR_TAIR,				CH4_Ta_amb
+CSR_TCHAMBER,			CH4_Ta_mean
+CSR_TIMESTAMP_BEGIN,	year,			"paste(year, month, day, hour, min, sec)"
+CSR_VPD,				VPD
+CSR_WIND,				WS
+CSR_WTD,				WTL,			WTL * 100

@@ -62,6 +62,9 @@ qaqc_data <- function(dsd, diag,
     diag$CSR_REMOVED_LOW_CO2 <- sum(toolow, na.rm = TRUE)
     toohigh <- dsd$CSR_FLUX_CO2 > max(flux_limits_co2)
     diag$CSR_REMOVED_HIGH_CO2 <- sum(toohigh, na.rm = TRUE)
+    # Need to replace NAs with FALSE so we don't nuke data!
+    toolow[is.na(toolow)] <- FALSE
+    toohigh[is.na(toohigh)] <- FALSE
     dsd <- dsd[!toolow & !toohigh,]
   } else {
     diag$CSR_FLUX_LOW_LIM_CO2 <- NA
