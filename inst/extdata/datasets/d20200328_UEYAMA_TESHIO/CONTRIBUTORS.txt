@@ -11,4 +11,4 @@
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,						CSR_ORCID,				CSR_ROLE
 Masahito,		Ueyama,				miyabi-flux@muh.biglobe.ne.jp,	0000-0002-4000-4888,	"Funding acquisition, Investigation, Data curation"
-Kentaro,		Takagi
+Kentaro,		Takagi,				kentt@fsc.hokudai.ac.jp,		0000-0002-1321-2841 

@@ -60,9 +60,18 @@ read_csv("authors_from_google_sheets.csv", skip = 1, col_types = "cccccccc") %>%
 authors <- bind_rows(authors[1:5,],
                      arrange(authors[-1:-5,], CSR_FAMILY_NAME, CSR_FIRST_NAME))
 a_names <- paste(authors$CSR_FIRST_NAME, authors$CSR_FAMILY_NAME)
-a_inst_numbers <- as.numeric(factor(authors$institution, 
-                                    levels = unique(authors$institution)))
+a_inst_numbers <- as.character(as.numeric(factor(authors$institution, 
+                                                 levels = unique(authors$institution))))
 institution_list <- authors$institution[!duplicated(a_inst_numbers)]
+
+# Any duplicate names at this point mean multiple institutions; concatenate
+dupes <- which(duplicated(a_names))
+if(length(dupes)) {
+  a_inst_numbers[dupes - 1] <- paste(a_inst_numbers[dupes - 1], a_inst_numbers[dupes], sep = ",")
+  a_inst_numbers <- a_inst_numbers[-dupes]
+  a_names <- a_names[-dupes]
+}
+
 cat(paste0(a_names, "<sup>", a_inst_numbers, "</sup>"), sep = ", ")
 cat("<ol>\n") # ordered HTML list
 cat(paste0("\t<li>", institution_list, "</li>"), sep = "\n")
