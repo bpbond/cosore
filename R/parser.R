@@ -310,7 +310,12 @@ map_columns <- function(dat, columns) {
 
   stopifnot(is.data.frame(columns))
   stopifnot(all(c("Database", "Dataset") %in% names(columns)))
-  stopifnot(!any(duplicated(columns$Database)))
+
+  dupes <- duplicated(columns$Database)
+  if(any(dupes)) {
+    stop("More than one dataset column maps to the same database column ",
+         paste(unique(columns$Database[dupes]), collapse = " "))
+  }
 
   if(!"Computation" %in% names(columns)) {
     columns$Computation <- NA_character_

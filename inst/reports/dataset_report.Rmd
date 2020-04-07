@@ -136,22 +136,19 @@ Size                | `r format(object.size(ds), "Mb")`
 if(is.data.frame(dsd) & !quick) {
   has_ch4 <- any(!is.na(dsd$CSR_FLUX_CH4))
   has_co2 <- any(!is.na(dsd$CSR_FLUX_CO2))
-  dsd$Month = month(dsd$CSR_TIMESTAMP)
+  dsd$Month = month(dsd$CSR_TIMESTAMP_BEGIN)
   
   #dsd <- subset(dsd, !is.na(CSR_FLUX_CO2) & CSR_FLUX_CO2 > 0)
   dsd$CSR_PORT <- as.factor(dsd$CSR_PORT)
   
-  print(summary(ds$data$CSR_FLUX_CO2))
+  print(summary(dsd$CSR_FLUX_CO2))
+  print(summary(dsd$CSR_FLUX_CH4))
   
   # flux over time
   if(has_co2) {
     p1 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX_CO2, color = CSR_PORT)) + 
       geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
     print(p1)
-    
-    p2 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX_CO2, color = CSR_PORT)) +
-      geom_point(size = 0.2) + scale_y_log10()
-    print(p2)
     
     smry <- aggregate(CSR_FLUX_CO2 ~ CSR_PORT + Month, data = dsd, mean)
     p3 <- ggplot(smry, aes(Month, CSR_FLUX_CO2, color = CSR_PORT, group = CSR_PORT)) + 
@@ -163,10 +160,6 @@ if(is.data.frame(dsd) & !quick) {
     p1_ch4 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX_CH4, color = CSR_PORT)) + 
       geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
     print(p1_ch4)
-    
-    p2_ch4 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX_CH4, color = CSR_PORT)) +
-      geom_point(size = 0.2) + scale_y_log10()
-    print(p2_ch4)
     
     smry <- aggregate(CSR_FLUX_CH4 ~ CSR_PORT + Month, data = dsd, mean)
     p3_ch4 <- ggplot(smry, aes(Month, CSR_FLUX_CH4, color = CSR_PORT, group = CSR_PORT)) + 

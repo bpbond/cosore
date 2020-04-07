@@ -8,16 +8,18 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,				Dataset,		Computation,				Notes
+CSR_FLUX_CO2,  			CO2-flux,
 CSR_FLUX_CH4,  			CH4-flux,
-CSR_PAR,				CH4_PAR_mean
+CSR_PAR,				PAR_mean
 CSR_PORT,				chamber#,
 CSR_PRECIP,				PPT
 CSR_R2_CH4,				CH4-R2,
+CSR_R2_CO2,				CO2-R2,
 CSR_RH,					RH
 CSR_T10,				Ts_10
 CSR_T2,					Ts_2
-CSR_TAIR,				CH4_Ta_amb
-CSR_TCHAMBER,			CH4_Ta_mean
+CSR_TAIR,				Ta_amb
+CSR_TCHAMBER,			Ta_mean
 CSR_TIMESTAMP_BEGIN,	year,			"paste(year, month, day, hour, min, sec)"
 CSR_VPD,				VPD
 CSR_WIND,				WS
