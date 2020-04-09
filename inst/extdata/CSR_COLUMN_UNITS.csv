@@ -73,6 +73,9 @@ ports,CSR_PLANTS_REMOVED,Plants removed from chamber?,logical,,TRUE
 ports,CSR_FAN,Mixing fan in chamber?,logical,,FALSE
 ports,CSR_SPECIES,Comma-separated species list,character,,FALSE
 ports,CSR_SENSOR_DEPTHS,Comma-separated sensor depths,character,cm,FALSE
+ports,CSR_LONGITUDE,"Decimal longitude of measurement chamber, positive = north",numeric,degrees,FALSE
+ports,CSR_LATITUDE,"Decimal latitude of measurement chamber, positive = east",numeric,degrees,FALSE
+ports,CSR_ELEVATION,Elevation of measurement chamber,numeric,m,FALSE
 #,,,,,
 # `columns`: mapping of raw data columns to COSORE columns,,,,,
 #,,,,,
