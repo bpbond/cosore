@@ -678,3 +678,41 @@ parse_d20200328_UEYAMA_YAMASHIRO <- function(path) {
 
   rbind(dat1, dat2, dat3, dat4)
 }
+
+#' Parse a custom file from parse_d20200407_WANG
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+#' @importFrom lubridate round_date
+parse_d20200407_WANG <- function(path) {
+  files <- list.files(path, pattern = "Chamber.*csv$", full.names = TRUE, recursive = TRUE)
+  dat <- rbind_list(lapply(files, read.csv,
+                           na.strings = c("#N/A", "#DIV/0!"),
+                           stringsAsFactors = FALSE,
+                           check.names = FALSE))
+  # The T and SM data, helpfully provided in separate files and with different timestamp formats,
+  # are on the half-hour. Round the flux timestamps for merging
+  dat$ts <- strptime(paste(dat$Rtu_Date, dat$Rtu_Time), "%m/%d/%Y %H:%M:%S", tz = "UTC")
+  dat$ts_rnd <- as.character(round_date(dat$ts, "30 minutes"))
+
+  files <- list.files(path, pattern = "moisture.*csv$", full.names = TRUE, recursive = TRUE)
+  sm10 <- rbind_list(lapply(files, read.csv,
+                            na.strings = c("#N/A", "#DIV/0!"),
+                            stringsAsFactors = FALSE,
+                            check.names = FALSE))
+  sm10 <- minigather(sm10, c("Chamber 1", "Chamber 2", "Chamber 3"), "chamber", "sm10", new_categories = 1:3)
+  sm10$ts_rnd <- as.character(strptime(sm10$Time, "%Y/%m/%d %H:%M"))
+
+  files <- list.files(path, pattern = "temperature.*csv$", full.names = TRUE, recursive = TRUE)
+  t10 <- rbind_list(lapply(files, read.csv,
+                           na.strings = c("#N/A", "#DIV/0!"),
+                           stringsAsFactors = FALSE,
+                           check.names = FALSE))
+  t10 <- minigather(t10, c("Chamber1", "Chamber2", "Chamber 3"), "chamber", "t10", new_categories = 1:3)
+  t10$ts_rnd <- as.character(strptime(t10$Time, "%Y/%m/%d %H:%M"))
+
+  # merge chokes on merging by timestamp, so we've converted those to character
+  dat <- merge(merge(dat, sm10, all.x = TRUE), t10, all.x = TRUE)
+  dat[c("Chamber_name", "Rtu_Date", "Rtu_Time", "CH4_Flux_nmol/m2*s", "sm10", "t10")]
+}

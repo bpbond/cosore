@@ -222,19 +222,29 @@ if(is.data.frame(ds$data) & !quick) {
   if(length(smcols)) {
     results <- list()
     for(col in smcols) {
-      x <- dsd[c("CSR_FLUX_CO2", "CSR_PORT")]
+      x <- dsd[c("CSR_FLUX_CO2", "CSR_FLUX_CH4", "CSR_PORT")]
       x$SM <- unlist(dsd[,col])
       x$Which_sm <- names(dsd)[col]
       results[[as.character(col)]] <- x
     }
     results <- cosore:::rbind_list(results)
     
-    p1 <- ggplot(results, aes(SM, CSR_FLUX_CO2, color = CSR_PORT)) + 
-      geom_point(size = 0.2, alpha = I(0.25)) + 
-      geom_smooth(method = "lm", se = FALSE) +
-      facet_wrap(~Which_sm, scales = "free") +
-      xlab("Soil moisture")
-    print(p1)
+    if(has_co2) {
+      p1 <- ggplot(results, aes(SM, CSR_FLUX_CO2, color = CSR_PORT)) + 
+        geom_point(size = 0.2, alpha = I(0.25)) + 
+        geom_smooth(method = "lm", se = FALSE) +
+        facet_wrap(~Which_sm, scales = "free") +
+        xlab("Soil moisture")
+      print(p1)
+    }
+    if(has_ch4) {
+      p1_ch4 <- ggplot(results, aes(SM, CSR_FLUX_CH4, color = CSR_PORT)) + 
+        geom_point(size = 0.2, alpha = I(0.25)) + 
+        geom_smooth(method = "lm", se = FALSE) +
+        facet_wrap(~Which_sm, scales = "free") +
+        xlab("Soil moisture")
+      print(p1_ch4)
+    }  
   }
 }
 ```

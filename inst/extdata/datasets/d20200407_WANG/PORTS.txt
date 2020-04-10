@@ -16,4 +16,4 @@
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_PLANTS_REMOVED,	CSR_FAN,	CSR_OPAQUE,	CSR_AREA,	CSR_VOLUME,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			FALSE,				TRUE,		TRUE,		298.5,		3960,		7,			"Deschampsia caespitosa, Poa Pratensis, Elymus nutans, Agrostis hugoniana, Kobresia setchwanensis, Oxytropis kansuensis, Vicia sepium and Potentilla anserina"	
+0,			Reco,			None,			FALSE,				TRUE,		TRUE,		298.5,		3960,		7,			"Deschampsia caespitosa, Poa Pratensis, Elymus nutans, Agrostis hugoniana, Kobresia setchwanensis, Oxytropis kansuensis, Vicia sepium and Potentilla anserina"	
