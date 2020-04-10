@@ -52,9 +52,11 @@ Notes         | `r d$CSR_NOTES`
 ```{r map, echo=FALSE}
 library(sp)
 library(leaflet)
-df <- data.frame(lon = ds$description$CSR_LONGITUDE, lat = ds$description$CSR_LATITUDE)
+desc <- ds$description
+df <- data.frame(label = paste(desc$CSR_DATASET, desc$CSR_SITE_NAME),
+                 lon = desc$CSR_LONGITUDE, lat = desc$CSR_LATITUDE)
 coordinates(df) <- ~lon + lat
-x <- addMarkers(leaflet(df))
+x <- addMarkers(leaflet(df), label = df$label)
 addTiles(x, options = providerTileOptions(minZoom = 3, maxZoom = 5))
 ```
 

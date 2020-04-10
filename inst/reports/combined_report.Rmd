@@ -121,10 +121,11 @@ kableExtra::kable_styling(x, full_width = FALSE)
 ```{r spatial}
 library(sp)
 library(leaflet)
-df <- data.frame(lon = desc$CSR_LONGITUDE, lat = desc$CSR_LATITUDE)
+df <- data.frame(label = paste(desc$CSR_DATASET, desc$CSR_SITE_NAME),
+                 lon = desc$CSR_LONGITUDE, lat = desc$CSR_LATITUDE)
 df <- subset(df, !is.na(lon) & !is.na(lat))
 coordinates(df) <- ~lon + lat
-lflt <- addMarkers(leaflet(df))
+lflt <- addMarkers(leaflet(df), label = df$label)
 addTiles(lflt)
 ```
 
