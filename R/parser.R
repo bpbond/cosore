@@ -284,13 +284,7 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
   # Need to convert these to character in case no timestamps (and thus read as logical)
   anc$CSR_TIMESTAMP_BEGIN <- as.character(anc$CSR_TIMESTAMP_BEGIN)
   anc$CSR_TIMESTAMP_END <- as.character(anc$CSR_TIMESTAMP_END)
-  x <- calc_timestamps(anc, 0, "%F %T", "")
-
-  if(any(x$na_ts, na.rm = TRUE)) {
-    stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
-         " e.g. rows: ", head(which(x$na_ts)))
-  }
-  tibble::as_tibble(x$dsd)
+  tibble::as_tibble(anc)
 }
 
 
@@ -481,6 +475,16 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
                   ports = read_ports_file(dataset_name),
                   columns = read_columns_file(dataset_name),
                   ancillary = read_ancillary_file(dataset_name))
+
+  # Convert the ancillary table timestamps to POSIXct
+  # Couldn't do it in read_ancillary_file() above because need time zone information
+  x <- calc_timestamps(dataset$ancillary, 0, "%F %T", dataset$description$CSR_TIMESTAMP_TZ)
+
+  if(any(x$na_ts, na.rm = TRUE)) {
+    stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
+         " e.g. rows: ", head(which(x$na_ts)))
+  }
+  dataset$ancillary <- x$dsd
 
   if(!metadata_only) {
 
