@@ -380,8 +380,8 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
                  CSR_BAD_TEMPERATURE = 0L,
                  CSR_RECORDS_REMOVED_TIMESTAMP = 0L,
                  CSR_EXAMPLE_BAD_TIMESTAMPS = "",
-                 CSR_TIME_BEGIN = NA,
-                 CSR_TIME_END = NA)
+                 CSR_TIMESTAMP_BEGIN = NA,
+                 CSR_TIMESTAMP_END = NA)
 
   dsd <- NULL  # dataset data
 

@@ -20,9 +20,9 @@ library(tidyr)
 library(covr)
 library(magrittr)
 
-db <- csr_database() %>% mutate(CTB = ymd(CSR_TIME_BEGIN), CTE = ymd(CSR_TIME_END))
+db <- csr_database()
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
-db_years <- max(year(db$CTE), na.rm = TRUE) - min(year(db$CTB), na.rm = TRUE) + 1
+db_years <- max(year(db$CSR_DATE_END), na.rm = TRUE) - min(year(db$CSR_DATE_BEGIN), na.rm = TRUE) + 1
 db_fields <- read_csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "cosore"), 
                       col_types  = "cccccl", comment = "#")
 db_vers <- packageVersion("cosore")
@@ -248,12 +248,12 @@ smrise <- function(x) {
   x %>% 
     summarise(Datasets = n(),
               Records = format(sum(CSR_RECORDS, na.rm = TRUE), big.mark = ","),
-              `First record` = min(CTB, na.rm = TRUE),
-              `Last record` = max(CTE, na.rm = TRUE)) 
+              `First record` = min(CSR_DATE_BEGIN, na.rm = TRUE),
+              `Last record` = max(CSR_DATE_END, na.rm = TRUE)) 
 }
 db %>% 
   filter(CSR_RECORDS > 0) %>% 
-  select(`IGBP class` = CSR_IGBP, CSR_RECORDS, CTB, CTE) %>% 
+  select(`IGBP class` = CSR_IGBP, CSR_RECORDS, CSR_DATE_BEGIN, CSR_DATE_END) %>% 
   group_by(`IGBP class`) %>% 
   smrise() %>% 
   bind_rows(bind_cols(tibble(`IGBP class` = "(Total)"), smrise(db))) %>% 
