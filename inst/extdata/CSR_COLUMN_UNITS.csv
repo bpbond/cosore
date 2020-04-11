@@ -88,7 +88,6 @@ columns,Notes,Notes,character,,FALSE
 #,,,,,
 ancillary,CSR_TIMESTAMP_BEGIN,Timestamp of beginning of ancillary observation (YYYY-MM-DD HH:MM:SS),POSIXct,ISO 8601 date-time,TRUE
 ancillary,CSR_TIMESTAMP_END,Timestamp of end of ancillary observation (YYYY-MM-DD HH:MM:SS),POSIXct,ISO 8601 date-time,TRUE
-ancillary,CSR_PORT,"Port (chamber) number; ""0"" means all ports",numeric,,TRUE
 ancillary,CSR_ABM,Aboveground biomass,numeric,gC/m^2^,FALSE
 ancillary,CSR_AGE,Time since disturbance,numeric,years,FALSE
 ancillary,CSR_ANPP,Aboveground NPP,numeric,gC/m^2^/time,FALSE
