@@ -85,16 +85,17 @@ dc197 <- function() {
       dsd <- rename(dsd, "CSR_O2", "CSR_SOIL_O2")
       if("CSR_NEE" %in% names(dsd)) {
         message("\tNEE needs moving to ancillary")
-        write.csv(dsd[c("CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_PORT", "CSR_NEE")], paste0(ds, "_nee.csv"))
+        write.csv(dsd[c("CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_PORT", "CSR_NEE")],
+                  file.path("~/Desktop/", paste0(ds, "_nee.csv")), row.names = FALSE)
         dsd$CSR_NEE <- NULL
       }
       if("CSR_PAR" %in% names(dsd)) {
         message("\tPAR needs checking")
-        cat(contrib$CSR_EMAIL[1], "\n", file = "~/Desktop/par.txt", append = TRUE)
+        cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/par.txt", append = TRUE)
       }
       if("CSR_PRECIP" %in% names(dsd)) {
         message("\tPRECIP needs checking")
-        cat(contrib$CSR_EMAIL[1], "\n", file = "~/Desktop/precip.txt", append = TRUE)
+        cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/precip.txt", append = TRUE)
       }
       dsd$CSR_PORT <- as.integer(dsd$CSR_PORT)
       if("CSR_RECORD" %in% names(dsd)) {
@@ -102,24 +103,40 @@ dc197 <- function() {
       }
       if("CSR_WIND" %in% names(dsd)) {
         message("\tWIND needs checking")
-        cat(contrib$CSR_EMAIL[1], "\n", file = "~/Desktop/wind.txt", append = TRUE)
+        cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/wind.txt", append = TRUE)
       }
-      dsd <- rename(dsd, "TAIR", "TAIR_AMB")
-      dsd <- rename(dsd, "TCHAMBER", "TAIR")
+      dsd <- rename(dsd, "CSR_TAIR", "CSR_TAIR_AMB")
+      dsd <- rename(dsd, "CSR_TCHAMBER", "CSR_TAIR")
       if("CSR_TWATER" %in% names(dsd)) {
         message("\tTWATER needs checking")
-        cat(contrib$CSR_EMAIL[1], "\n", file = "~/Desktop/twater.txt", append = TRUE)
+        cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/twater.txt", append = TRUE)
       }
 
       outfile <- file.path("./inst/extdata/datasets/", ds, "data", "data.RDS")
       stopifnot(file.exists(outfile))
-      #      saveRDS(dsd, file = outfile)
+      saveRDS(dsd, file = outfile)
 
       # Rename diagnostics
+      diag$CSR_RECORDS <- as.integer(diag$CSR_RECORDS)
+      diag$CSR_RECORDS_REMOVED_ERR <- as.integer(diag$CSR_RECORDS_REMOVED_ERR)
+      diag$CSR_RECORDS_REMOVED_NA <- as.integer(diag$CSR_RECORDS_REMOVED_NA)
+      diag$CSR_RECORDS_REMOVED_TIMESTAMP <- as.integer(diag$CSR_RECORDS_REMOVED_TIMESTAMP)
+      diag$CSR_REMOVED_HIGH_CO2 <- as.integer(diag$CSR_REMOVED_HIGH_CO2)
+      diag$CSR_REMOVED_LOW_CO2 <- as.integer(diag$CSR_REMOVED_LOW_CO2)
+      diag$CSR_REMOVED_HIGH_CH4 <- as.integer(diag$CSR_REMOVED_HIGH_CH4)
+      diag$CSR_REMOVED_LOW_CH4 <- as.integer(diag$CSR_REMOVED_LOW_CH4)
 
       outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
       stopifnot(file.exists(outfile))
-      #      saveRDS(diag, file = outfile)
+      saveRDS(diag, file = outfile)
+
+      # Remove CSR_PORT from ancillary files
+      anc_file <- file.path("inst/extdata/datasets/", ds, "ANCILLARY.csv")
+      anc <- read.csv(anc_file, stringsAsFactors = FALSE)
+      if("CSR_PORT" %in% names(anc)) {
+        anc$CSR_PORT <- NULL
+        write.csv(anc, file = anc_file, row.names = FALSE, quote = FALSE, na = "")
+      }
     }
   }
 }
