@@ -380,8 +380,8 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
                  CSR_BAD_TEMPERATURE = 0L,
                  CSR_RECORDS_REMOVED_TIMESTAMP = 0L,
                  CSR_EXAMPLE_BAD_TIMESTAMPS = "",
-                 CSR_TIME_BEGIN = NA_character_,
-                 CSR_TIME_END = NA_character_)
+                 CSR_TIME_BEGIN = NA,
+                 CSR_TIME_END = NA)
 
   dsd <- NULL  # dataset data
 
@@ -429,8 +429,8 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     dsd <- lubridate::with_tz(dsd, tzone = dataset$description$CSR_TIMEZONE)
 
     # Diagnostic information
-    diag$CSR_TIME_BEGIN <- format(min(dsd$CSR_TIMESTAMP_BEGIN), format = "%Y-%m-%d")
-    diag$CSR_TIME_END <- format(max(dsd$CSR_TIMESTAMP_END), format = "%Y-%m-%d")
+    diag$CSR_TIMESTAMP_BEGIN <- min(dsd$CSR_TIMESTAMP_BEGIN)
+    diag$CSR_TIMESTAMP_END <- max(dsd$CSR_TIMESTAMP_END)
 
     # Add port column if necessary
     dsd <- add_port_column(dsd)
