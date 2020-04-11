@@ -12,6 +12,6 @@ CSR_FLUX_CO2,  		flux,
 CSR_PAR,		PAR
 CSR_PORT,		port
 CSR_SM7.5,		swc_7_5cm
-CSR_TAIR,		T_air
+CSR_TAIR_AMB,		T_air
 CSR_T2,			T_soil_2cm
 CSR_TIMESTAMP_BEGIN,Timestamp

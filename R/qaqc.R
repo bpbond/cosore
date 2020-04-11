@@ -46,7 +46,7 @@ qaqc_data <- function(dsd, diag,
   }
 
   # Remove error records
-  diag$CSR_RECORDS_REMOVED_ERR <- 0
+  diag$CSR_RECORDS_REMOVED_ERR <- 0L
   if(remove_error & "CSR_ERROR" %in% names(dsd)) {
     err <- dsd$CSR_ERROR
     diag$CSR_RECORDS_REMOVED_ERR <- sum(err)
@@ -78,7 +78,7 @@ qaqc_data <- function(dsd, diag,
   # Remove bad temperature values
   diag$CSR_BAD_TEMPERATURE <- 0
   if(remove_temp) {
-    for(tmp in c("CSR_TCHAMBER", "CSR_T5")) {
+    for(tmp in c("CSR_TAIR_AMB", "CSR_T5", "CSR_T10")) {
       if(tmp %in% names(dsd) && nrow(dsd)) {
         dsd[,tmp] <- convert_to_numeric(unlist(dsd[tmp]), tmp)
 

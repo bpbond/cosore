@@ -16,7 +16,7 @@ CSR_SM3,				wash soil 3cm VWC (m3 m-3)
 CSR_SM8,				oak soil 8cm VWC (m3 m-3)
 CSR_SM19,				oak soil19cm VWC (m3 m-3)
 CSR_SM21,				wash soil 21cm VWC (m3 m-3)
-CSR_TAIR,				Air T (deg C)
+CSR_TAIR_AMB,				Air T (deg C)
 CSR_T0,					oak soil 0cm T (deg C),	(`oak soil 0cm T (deg C)` + `wash soil 0cm T (deg C)`) / 2
 CSR_T2,					oak soil 2cm T (deg C),	(`oak soil 2cm T (deg C)` + `wash soil 2cm T (deg C)`) / 2
 CSR_T3,					oak soil 3cm T (deg C)
@@ -27,5 +27,5 @@ CSR_T31,				oak soil 31cm T (deg C)
 CSR_T32,				wash soil 32cm T (deg C)
 CSR_T40,				oak soil 40cm T (deg C),	(`oak soil 40cm T (deg C)` + `wash soil 40cm T (deg C)`) / 2
 CSR_T50,				oak soil 50cm T (deg C),	(`oak soil 50cm T (deg C)` + `wash soil 50cm T (deg C)`) / 2
-CSR_TCHAMBER,			Chamber T (deg C)
+CSR_TAIR,			Chamber T (deg C)
 CSR_TIMESTAMP_BEGIN,	Year,				"paste(Year, fractional_doy(Year, DOY.FOD))"

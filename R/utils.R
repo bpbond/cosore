@@ -569,8 +569,8 @@ add_port_column <- function(dsd) {
   stopifnot(is.data.frame(dsd))
 
   if(!"CSR_PORT" %in% names(dsd) & nrow(dsd)) {
-    dsd$CSR_PORT <- 0
+    dsd$CSR_PORT <- 0L
   }
-  dsd$CSR_PORT <- convert_to_numeric(dsd$CSR_PORT, "CSR_PORT")
+  dsd$CSR_PORT <- as.integer(convert_to_numeric(dsd$CSR_PORT, "CSR_PORT"))
   dsd
 }

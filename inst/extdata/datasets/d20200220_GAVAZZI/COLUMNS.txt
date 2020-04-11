@@ -15,5 +15,5 @@ CSR_PORT,			Exp_Flux,	1
 CSR_R2_CO2,				Exp_R2,		"ifelse(CrvFitStatus=='Exp', Exp_R2, Lin_R2)"
 CSR_RECORD,			Obs#
 CSR_RH,				Mean RH,
-CSR_TCHAMBER,		Mean Tcham
+CSR_TAIR,		Mean Tcham
 CSR_TIMESTAMP_BEGIN,IV Date

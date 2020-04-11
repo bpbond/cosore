@@ -13,5 +13,5 @@ CSR_FLUX_CO2,  		Flux.lin,
 CSR_RH,			RH,
 CSR_T0,			Soiltemp_0cm1,	(Soiltemp_0cm1 + Soiltemp_0cm2) / 2
 CSR_T10,		Soiltemp_10cm
-CSR_TCHAMBER,	Tcham
+CSR_TAIR,	Tcham
 CSR_TIMESTAMP_END,	Date,			"paste(Date, Time)"

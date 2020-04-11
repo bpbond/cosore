@@ -1,6 +1,6 @@
 # COLUMNS.txt
 #
-# This comma-separated data file maps columns from this dataset to 
+# This comma-separated data file maps columns from this dataset to
 # standardized column names in the main database. Entries below include:
 # 	Database: name of the standardized database column
 #	Dataset: name of the column in this dataset
@@ -17,5 +17,5 @@ CSR_R2_CO2,			R2,
 CSR_RH,			RH,
 CSR_SM5,		SMoist
 CSR_T5,			T5
-CSR_TCHAMBER,	Tcham
+CSR_TAIR,	Tcham
 CSR_TIMESTAMP_BEGIN,	Timestamp

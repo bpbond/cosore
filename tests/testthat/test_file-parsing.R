@@ -176,21 +176,19 @@ test_that("read_ports_file", {
 })
 
 test_that("read_ancillary_file", {
-  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
-          "2014-01-01 00:00:00,2015-01-01 00:00:00,0")
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_STATISTIC",
+          "2014-01-01 00:00:00,2015-01-01 00:00:00,mean")
   x <- read_ancillary_file("x", file_data = fd)
-  expect_s3_class(x$CSR_TIMESTAMP_BEGIN, "POSIXct")
-  expect_s3_class(x$CSR_TIMESTAMP_END, "POSIXct")
   expect_identical(nrow(x), 1L)
 
-  # errors on improperly-formatted date
-  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
-          "2014-01-01 00:00,2015-01-01 00:00:00,0")
-  expect_error(read_ancillary_file("x", file_data = fd))
+  # errors if no statistic
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_STATISTIC",
+          "2014-01-01 00:00:00,2015-01-01 00:00:00,")
+  expect_error(read_ancillary_file("x", file_data = fd), regexp = "CSR_STATISTIC")
 
   # doesn't error on no timestamps
-  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_PORT",
-          ",,0")
+  fd <- c("CSR_TIMESTAMP_BEGIN,CSR_TIMESTAMP_END,CSR_STATISTIC",
+          ",,mean")
   expect_silent(x <- read_ancillary_file("x", file_data = fd))
   expect_identical(nrow(x), 1L)
 })

@@ -18,8 +18,8 @@ CSR_R2_CO2,				CO2-R2,
 CSR_RH,					RH
 CSR_T10,				Ts_10
 CSR_T2,					Ts_2
-CSR_TAIR,				Ta_amb
-CSR_TCHAMBER,			Ta_mean
+CSR_TAIR_AMB,				Ta_amb
+CSR_TAIR,			Ta_mean
 CSR_TIMESTAMP_BEGIN,	year,			"paste(year, month, day, hour, min, sec)"
 CSR_VPD,				VPD
 CSR_WIND,				WS

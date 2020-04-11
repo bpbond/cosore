@@ -14,5 +14,5 @@ CSR_PORT,		Port#,
 CSR_CRVFIT_CO2,		CrvFitStatus,
 CSR_RECORD,		Obs#,
 CSR_RH,			Mean RH,
-CSR_TCHAMBER,	Mean Tcham
+CSR_TAIR,	Mean Tcham
 CSR_TIMESTAMP_END,	IV Date

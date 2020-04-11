@@ -381,7 +381,7 @@ test_that("add_port_column", {
   df <- data.frame(CSR_PORT = "1", stringsAsFactors = FALSE)
   expect_silent(out <- add_port_column(df))
   expect_true("CSR_PORT" %in% colnames(out))
-  expect_type(out$CSR_PORT, "double")
+  expect_type(out$CSR_PORT, "integer")
 })
 
 test_that("write_stan_data", {

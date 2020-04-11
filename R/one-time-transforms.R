@@ -21,6 +21,9 @@ redo_diagnostics <- function() {
 
 rename <- function(dsd, old, new) {
   if(old %in% names(dsd)) {
+    if(new %in% names(dsd)) {
+      stop(new, " already exists in data!")
+    }
     names(dsd)[names(dsd) == old] <- new
   }
   dsd
@@ -60,6 +63,97 @@ add_ch4 <- function() {
       outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
       stopifnot(file.exists(outfile))
       saveRDS(diag, file = outfile)
+    }
+  }
+}
+
+
+# A variety of mostly minor tweaks laid out in #197
+dc197 <- function() {
+  file.remove("~/Desktop/par.txt")
+  file.remove("~/Desktop/wind.txt")
+  file.remove("~/Desktop/precip.txt")
+  file.remove("~/Desktop/twater.txt")
+
+  for(ds in list_datasets()) {
+    message(ds)
+    dsd <- csr_table("data", ds)
+    dsd$CSR_DATASET <- NULL
+    diag <- csr_table("diagnostics", ds)
+    diag$CSR_DATASET <- NULL
+    contrib <- csr_table("contributors", ds)
+
+    if(is.data.frame(dsd) & nrow(dsd)) {
+      # Rename dataset fields
+      #      dsd <- rename(dsd, "CSR_O2", "CSR_SOIL_O2")
+      if("CSR_NEE" %in% names(dsd)) {
+        message("\tNEE needs moving to ancillary")
+        write.csv(dsd[c("CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_PORT", "CSR_NEE")],
+                  file.path("~/Desktop/", paste0(ds, "_nee.csv")), row.names = FALSE)
+        dsd$CSR_NEE <- NULL
+      }
+      if("CSR_PAR" %in% names(dsd)) {
+        message("\tPAR needs checking")
+        cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/par.txt", append = TRUE)
+      }
+      if("CSR_PRECIP" %in% names(dsd)) {
+        message("\tPRECIP needs checking")
+        cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/precip.txt", append = TRUE)
+      }
+      dsd$CSR_PORT <- as.integer(dsd$CSR_PORT)
+      if("CSR_RECORD" %in% names(dsd)) {
+        dsd$CSR_RECORD <- as.integer(dsd$CSR_RECORD)
+      }
+      if("CSR_WIND" %in% names(dsd)) {
+        message("\tWIND needs checking")
+        cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/wind.txt", append = TRUE)
+      }
+      # dsd <- rename(dsd, "CSR_TAIR", "CSR_TAIR_AMB")
+      # dsd <- rename(dsd, "CSR_TCHAMBER", "CSR_TAIR")
+      if("CSR_TWATER" %in% names(dsd)) {
+        message("\tTWATER needs checking")
+        cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/twater.txt", append = TRUE)
+      }
+
+      outfile <- file.path("./inst/extdata/datasets/", ds, "data", "data.RDS")
+      stopifnot(file.exists(outfile))
+      saveRDS(dsd, file = outfile)
+
+      # Rename diagnostics
+      diag$CSR_RECORDS <- as.integer(diag$CSR_RECORDS)
+      diag$CSR_RECORDS_REMOVED_ERR <- as.integer(diag$CSR_RECORDS_REMOVED_ERR)
+      diag$CSR_RECORDS_REMOVED_NA <- as.integer(diag$CSR_RECORDS_REMOVED_NA)
+      diag$CSR_RECORDS_REMOVED_TIMESTAMP <- as.integer(diag$CSR_RECORDS_REMOVED_TIMESTAMP)
+      diag$CSR_REMOVED_HIGH_CO2 <- as.integer(diag$CSR_REMOVED_HIGH_CO2)
+      diag$CSR_REMOVED_LOW_CO2 <- as.integer(diag$CSR_REMOVED_LOW_CO2)
+      diag$CSR_REMOVED_HIGH_CH4 <- as.integer(diag$CSR_REMOVED_HIGH_CH4)
+      diag$CSR_REMOVED_LOW_CH4 <- as.integer(diag$CSR_REMOVED_LOW_CH4)
+
+      outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
+      stopifnot(file.exists(outfile))
+      saveRDS(diag, file = outfile)
+
+      # Remove CSR_PORT from ancillary files and add CSR_DATE
+      anc_file <- file.path("inst/extdata/datasets/", ds, "ANCILLARY.csv")
+      anc <- read.csv(anc_file, stringsAsFactors = FALSE)
+      if(!"CSR_DATE" %in% names(anc)) {
+        if(nrow(anc)) {
+          anc$CSR_DATE <- NA
+        } else {
+          anc <- cbind(anc, data.frame(CSR_DATE = integer()))
+        }
+      }
+      if(!"CSR_STATISTIC" %in% names(anc)) {
+        if(nrow(anc)) {
+          anc$CSR_STATISTIC <- "mean"
+        } else {
+          anc <- cbind(anc, data.frame(CSR_STATISTIC = integer()))
+        }
+      }
+      if("CSR_PORT" %in% names(anc)) {
+        anc$CSR_PORT <- NULL
+      }
+      write.csv(anc, file = anc_file, row.names = FALSE, quote = FALSE, na = "")
     }
   }
 }

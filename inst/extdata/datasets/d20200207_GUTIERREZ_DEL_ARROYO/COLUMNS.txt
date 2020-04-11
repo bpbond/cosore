@@ -14,5 +14,5 @@ CSR_PORT,		Chamber,
 CSR_RH,			RelHum,
 CSR_SM10,		sm
 CSR_T5,			soiltemp
-CSR_TAIR,		AirTemp
+CSR_TAIR_AMB,		AirTemp
 CSR_TIMESTAMP_END,	Timestamp

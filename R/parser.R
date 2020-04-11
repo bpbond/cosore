@@ -284,13 +284,14 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
   # Need to convert these to character in case no timestamps (and thus read as logical)
   anc$CSR_TIMESTAMP_BEGIN <- as.character(anc$CSR_TIMESTAMP_BEGIN)
   anc$CSR_TIMESTAMP_END <- as.character(anc$CSR_TIMESTAMP_END)
-  x <- calc_timestamps(anc, 0, "%F %T", "")
 
-  if(any(x$na_ts, na.rm = TRUE)) {
-    stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
-         " e.g. rows: ", head(which(x$na_ts)))
+  if(nrow(anc)) {
+    if(any(is.na(anc$CSR_STATISTIC))) {
+      stop("CSR_STATISTIC needs to be completely filled out in ancillary file")
+    }
   }
-  tibble::as_tibble(x$dsd)
+
+  tibble::as_tibble(anc)
 }
 
 
@@ -365,19 +366,19 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
   df <- file.path(raw_data, dataset_name)
 
   # Processing statistics table
-  diag <- tibble(CSR_RECORDS = 0,
-                 CSR_RECORDS_REMOVED_NA = 0,
-                 CSR_RECORDS_REMOVED_ERR = 0,
-                 CSR_REMOVED_LOW_CO2 = 0,
-                 CSR_REMOVED_HIGH_CO2 = 0,
-                 CSR_REMOVED_LOW_CH4 = 0,
-                 CSR_REMOVED_HIGH_CH4 = 0,
+  diag <- tibble(CSR_RECORDS = 0L,
+                 CSR_RECORDS_REMOVED_NA = 0L,
+                 CSR_RECORDS_REMOVED_ERR = 0L,
+                 CSR_REMOVED_LOW_CO2 = 0L,
+                 CSR_REMOVED_HIGH_CO2 = 0L,
+                 CSR_REMOVED_LOW_CH4 = 0L,
+                 CSR_REMOVED_HIGH_CH4 = 0L,
                  CSR_FLUX_LOW_LIM_CO2 = NA,
                  CSR_FLUX_HIGH_LIM_CO2 = NA,
                  CSR_FLUX_LOW_LIM_CH4 = NA,
                  CSR_FLUX_HIGH_LIM_CH4 = NA,
-                 CSR_BAD_TEMPERATURE = 0,
-                 CSR_RECORDS_REMOVED_TIMESTAMP = 0,
+                 CSR_BAD_TEMPERATURE = 0L,
+                 CSR_RECORDS_REMOVED_TIMESTAMP = 0L,
                  CSR_EXAMPLE_BAD_TIMESTAMPS = "",
                  CSR_TIME_BEGIN = NA_character_,
                  CSR_TIME_END = NA_character_)
@@ -481,6 +482,16 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
                   ports = read_ports_file(dataset_name),
                   columns = read_columns_file(dataset_name),
                   ancillary = read_ancillary_file(dataset_name))
+
+  # Convert the ancillary table timestamps to POSIXct
+  # Couldn't do it in read_ancillary_file() above because need time zone information
+  x <- calc_timestamps(dataset$ancillary, 0, "%F %T", dataset$description$CSR_TIMESTAMP_TZ)
+
+  if(any(x$na_ts, na.rm = TRUE)) {
+    stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
+         " e.g. rows: ", head(which(x$na_ts)))
+  }
+  dataset$ancillary <- x$dsd
 
   if(!metadata_only) {
 
