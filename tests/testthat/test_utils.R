@@ -2,6 +2,19 @@
 
 context("utils")
 
+test_that("gases_string", {
+  # Bad input
+  expect_error(gases_string(1))
+
+  expect_identical(gases_string(data.frame()), "")
+  expect_identical(gases_string(cars), "")
+  expect_identical(gases_string(data.frame(CSR_FLUX_CO2 = NA)), "")
+  expect_identical(gases_string(data.frame(CSR_FLUX_CO2 = 1)), "CO2")
+  expect_identical(gases_string(data.frame(CSR_FLUX_CH4 = NaN)), "")
+  expect_identical(gases_string(data.frame(CSR_FLUX_CH4 = 1)), "CH4")
+  expect_identical(gases_string(data.frame(CSR_FLUX_CO2 = 1, CSR_FLUX_CH4 = 1)), "CO2, CH4")
+})
+
 test_that("insert_defaults", {
   # Bad input
   expect_error(insert_defaults(1, list()))

@@ -158,7 +158,7 @@ dc197 <- function() {
   }
 }
 
-# for PR #202
+# for PR #203
 keep_timestamps <- function() {
   for(ds in list_datasets()) {
     message(ds)
@@ -172,6 +172,27 @@ keep_timestamps <- function() {
      diag$CSR_TIMESTAMP_END <- max(dsd$CSR_TIMESTAMP_END)
      diag$CSR_TIME_BEGIN <- NULL
      diag$CSR_TIME_END <- NULL
+
+      outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
+      stopifnot(file.exists(outfile))
+      saveRDS(diag, file = outfile)
+    }
+  }
+}
+
+
+# for issue #202
+make_gases <- function() {
+  for(ds in list_datasets()) {
+    message(ds)
+    dsd <- csr_table("data", ds)
+    dsd$CSR_DATASET <- NULL
+    diag <- csr_table("diagnostics", ds)
+    diag$CSR_DATASET <- NULL
+
+    if(is.data.frame(dsd) & nrow(dsd)) {
+      diag$CSR_GASES <- gases_string(dsd)
+      message("\t", diag$CSR_GASES)
 
       outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
       stopifnot(file.exists(outfile))

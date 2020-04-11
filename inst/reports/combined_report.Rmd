@@ -25,51 +25,31 @@ compute_interval <- function(dsd) {
 }
 
 compute_years <- function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    co2 <- "CSR_FLUX_CO2" %in% names(x$data) && any(!is.na(x$data$CSR_FLUX_CO2))
-    ch4 <- "CSR_FLUX_CH4" %in% names(x$data) && any(!is.na(x$data$CSR_FLUX_CH4))
-    gases <- paste(c("CO2", "CH4")[c(co2, ch4)], collapse = ", ")
-    
-    tibble(Dataset = x$description$CSR_DATASET,
-           Records = x$diagnostics$CSR_RECORDS,
-           Start = min(x$data$CSR_TIMESTAMP_BEGIN, na.rm = TRUE),
-           End = max(x$data$CSR_TIMESTAMP_BEGIN, na.rm = TRUE),
-           `Interval (min)` = as.integer(compute_interval(x$data)),
-           Size  = format(object.size(x), units = "Mb"),
-           Gas = gases)
-  } else {
-    tibble(Dataset = x$description$CSR_DATASET,
-           Records = 0,
-           Start = NA, End = NA, `Interval (min)` = NA,
-           Size = format(object.size(NULL), units = "Mb"),
-           Gas = NA)
-  }
+  tibble(Dataset = x$description$CSR_DATASET,
+         Records = x$diagnostics$CSR_RECORDS,
+         Start = x$diag$CSR_TIMESTAMP_BEGIN,
+         End = x$diag$CSR_TIMESTAMP_END,
+         `Interval (min)` = as.integer(compute_interval(x$data)),
+         Size  = format(object.size(x), units = "Mb"),
+         Gas = x$diag$CSR_GASES)
 }
 
 compute_coverage <- function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    tibble(Dataset = x$description$CSR_DATASET,
-           IGBP = x$description$CSR_IGBP,
-           Year = year(x$data$CSR_TIMESTAMP_BEGIN), 
-           Month = month(x$data$CSR_TIMESTAMP_BEGIN),
-           Day = day(x$data$CSR_TIMESTAMP_BEGIN))
-  } else {
-    tibble(Dataset = x$description$CSR_DATASET,
-           IGBP = x$description$CSR_IGBP,
-           Year = NA, Month = NA, Day = NA)
-  }
+  tibble(Dataset = x$description$CSR_DATASET,
+         IGBP = x$description$CSR_IGBP,
+         Year = year(x$data$CSR_TIMESTAMP_BEGIN), 
+         Month = month(x$data$CSR_TIMESTAMP_BEGIN),
+         Day = day(x$data$CSR_TIMESTAMP_BEGIN))
 }
 
 compute_flux_dist <- function(x) {
-  if(is.data.frame(x$data) & "CSR_TIMESTAMP_BEGIN" %in% names(x$data)) {
-    tibble(Dataset = x$description$CSR_DATASET,
-           IGBP = x$description$CSR_IGBP,
-           CSR_FLUX_CO2 = x$data$CSR_FLUX_CO2)
-  } else {
-    tibble(Dataset = x$description$CSR_DATASET,
-           IGBP = x$description$CSR_IGBP,
-           CSR_FLUX_CO2 = NA)
-  }
+  if(!"CSR_FLUX_CO2" %in% names(x$data)) x$data$CSR_FLUX_CO2 <- NA_real_
+  if(!"CSR_FLUX_CH4" %in% names(x$data)) x$data$CSR_FLUX_CH4 <- NA_real_
+  
+  tibble(Dataset = x$description$CSR_DATASET,
+         IGBP = x$description$CSR_IGBP,
+         CSR_FLUX_CO2 = x$data$CSR_FLUX_CO2,
+         CSR_FLUX_CH4 = x$data$CSR_FLUX_CH4)
 }
 ```
 
@@ -87,11 +67,11 @@ records <- 0
 for(dsn in datasets) {
   x <- csr_dataset(dsn, quiet = TRUE)
   
-  years[[dsn]] <- compute_years(x)
-  coverage[[dsn]] <- compute_coverage(x)
-  flux_dist[[dsn]] <- compute_flux_dist(x)
-  db_size <- db_size + object.size(x)
   if(is.data.frame(x$data)) {
+    years[[dsn]] <- compute_years(x)
+    coverage[[dsn]] <- compute_coverage(x)
+    flux_dist[[dsn]] <- compute_flux_dist(x)
+    db_size <- db_size + object.size(x)
     records <- records + nrow(x$data)
   }
 }
@@ -131,7 +111,7 @@ addTiles(lflt)
 
 ## Temporal coverage
 
-```{r temporal, fig.height=8}
+```{r temporal, fig.height=10}
 coverage <- cosore:::rbind_list(coverage)
 cover_day <- unique(coverage) # this is super slow compared to dplyr::distinct!
 dpm <- aggregate(Day ~ Dataset + IGBP + Year + Month, 
@@ -153,14 +133,18 @@ ggplot(dpm_igbp, aes(Time, IGBP, fill = Day)) + geom_tile(na.rm = TRUE) +
                         high = "#132B43", low = "#56B1F7")
 ```
 
-### CO2 flux distribution
+### Flux distribution
 
 ```{r igbp}
 x <- cosore:::rbind_list(flux_dist)
-x <- x[x$CSR_FLUX_CO2 > -1 & x$CSR_FLUX_CO2 < 20 & is.finite(x$CSR_FLUX_CO2),]
-ggplot(x, aes(x = CSR_FLUX_CO2)) + 
+x_co2 <- x[x$CSR_FLUX_CO2 > -1 & x$CSR_FLUX_CO2 < 15 & is.finite(x$CSR_FLUX_CO2),]
+ggplot(x_co2, aes(x = CSR_FLUX_CO2)) + 
   geom_histogram(bins = 30) +
   facet_wrap(~IGBP, scales = "free_y") 
+x_ch4 <- x[x$CSR_FLUX_CH4 > -5 & x$CSR_FLUX_CH4 < 25 & is.finite(x$CSR_FLUX_CH4),]
+ggplot(x_ch4, aes(x = CSR_FLUX_CH4)) + 
+  geom_histogram(bins = 30) +
+  facet_wrap(~IGBP, scales = "free_y")
 ```
 
 ### Database growth
