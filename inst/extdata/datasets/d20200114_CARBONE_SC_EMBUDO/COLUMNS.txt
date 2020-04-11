@@ -16,11 +16,11 @@ CSR_RH,					Air RH (%)
 CSR_SM2,				soil 2cm VWC (m3 m-3)
 CSR_SM4,				soil 4cm VWC (m3 m-3)
 CSR_SM10,				soil 12cm VWC (m3 m-3)
-CSR_TAIR,				Air T (deg C)
+CSR_TAIR_AMB,				Air T (deg C)
 CSR_T2,					soil 2cm T under canopy (deg C),	"mean(c(`soil 2cm T under canopy (deg C)`, `soil 2cmT open cover (deg C)`))"
 CSR_T4,					soil 4cm T (deg C)
 CSR_T12,				soil 12cm T (deg C)
 CSR_T50,				soil 50cm T (deg C)
-CSR_TCHAMBER,			Chamber T (deg C)
+CSR_TAIR,			Chamber T (deg C)
 CSR_TIMESTAMP_BEGIN,	Year,				"paste(Year, fractional_doy(Year, DOY.FOD))"
 CSR_WIND,				Wind speed (m s-1)

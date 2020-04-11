@@ -17,5 +17,5 @@ CSR_SM10,				SM10
 CSR_T2,					Ts_2
 CSR_T8,					Ts_8
 CSR_T16,				Ts_16
-CSR_TAIR,				Ta
+CSR_TAIR_AMB,				Ta
 CSR_TIMESTAMP_BEGIN,	DOY,		"paste(Year, fractional_doy(Year, DOY))"

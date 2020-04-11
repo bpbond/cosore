@@ -19,6 +19,6 @@ CSR_RECORD,		Record,
 CSR_RH,			RH,
 CSR_SM5,		V3,			3.14*10^(-7)*V3*1000*V3*1000+1.16*10^(-3)*V3*1000-0.612,	From PI email 2019-12-30
 CSR_T5,			V2
-CSR_TCHAMBER,	Tcham
+CSR_TAIR,	Tcham
 CSR_TIMESTAMP_BEGIN,	Timestamp_begin
 CSR_TIMESTAMP_END,		Timestamp_end

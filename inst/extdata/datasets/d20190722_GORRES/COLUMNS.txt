@@ -23,5 +23,5 @@ CSR_R2_CO2,			Exp_R2,
 CSR_RH,			Mean.RH,
 CSR_SM5,		Mean.V3
 CSR_T5,			Mean.V2
-CSR_TCHAMBER,	Mean.Tcham
+CSR_TAIR,	Mean.Tcham
 CSR_TIMESTAMP_END,	ObsDateTime

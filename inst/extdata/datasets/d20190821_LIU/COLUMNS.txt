@@ -18,6 +18,6 @@ CSR_RECORD,		Record,
 CSR_RH,			RH,
 CSR_SM10,		V4
 CSR_T10,		V3
-CSR_TCHAMBER,	Tcham
+CSR_TAIR,	Tcham
 CSR_TIMESTAMP_BEGIN,	Timestamp_begin
 CSR_TIMESTAMP_END,		Timestamp_end

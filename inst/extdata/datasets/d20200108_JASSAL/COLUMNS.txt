@@ -14,7 +14,7 @@ CSR_PORT,		port
 CSR_SM4,		swc_4cm
 CSR_SM10,		swc_10cm
 CSR_SM30,		swc_30cm
-CSR_TAIR,		T_air
+CSR_TAIR_AMB,		T_air
 CSR_T2,			T_soil_2cm
 CSR_T5,			T_soil_5cm
 CSR_T10,		T_soil_10cm

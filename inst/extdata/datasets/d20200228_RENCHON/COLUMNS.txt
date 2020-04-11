@@ -14,5 +14,5 @@ CSR_PORT,			port
 CSR_PRECIP,			Precip
 CSR_SM21,			SWC
 CSR_T5,				Ts
-CSR_TAIR,			Ta,
+CSR_TAIR_AMB,			Ta,
 CSR_TIMESTAMP_END,	DateTime

@@ -19,5 +19,5 @@ CSR_FLUX_CO2,  		Exp_Flux,
 CSR_PORT,		plot,
 CSR_SM5,		soilMoisture filled
 CSR_T5,			SoilTemp_filtered
-CSR_TCHAMBER,	Filtered Tcham
+CSR_TAIR,	Filtered Tcham
 CSR_TIMESTAMP_MID,	Date,		"paste(Date, Time)"
