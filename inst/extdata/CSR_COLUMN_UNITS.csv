@@ -142,5 +142,5 @@ diagnostics,CSR_REMOVED_HIGH_CO2,Number of observations removed for CO2 flux too
 diagnostics,CSR_REMOVED_LOW_CO2,Number of observations removed for CO2 flux too low,integer,,TRUE
 diagnostics,CSR_REMOVED_HIGH_CH4,Number of observations removed for CH4 flux too high,integer,,TRUE
 diagnostics,CSR_REMOVED_LOW_CH4,Number of observations removed for CH4 flux too low,integer,,TRUE
-diagnostics,CSR_TIME_BEGIN,Year and month of first observation in dataset,character,,FALSE
-diagnostics,CSR_TIME_END,Year and month of last observation in dataset,character,,FALSE
+diagnostics,CSR_TIMESTAMP_BEGIN,"Timestamp of first flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
+diagnostics,CSR_TIMESTAMP_END,"Timestamp of last flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE

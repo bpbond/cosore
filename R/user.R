@@ -80,7 +80,10 @@ csr_database <- function() {
   ports <- aggregate(CSR_MSMT_VAR ~ CSR_DATASET, data = ports, FUN = function(x) paste(unique(x), collapse = ", "))
 
   diag <- csr_table("diagnostics", quiet = TRUE)
-  diag <- diag[c("CSR_DATASET", "CSR_RECORDS", "CSR_TIME_BEGIN", "CSR_TIME_END")]
+  diag <- diag[c("CSR_DATASET", "CSR_RECORDS", "CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END")]
+  diag$CSR_DATE_BEGIN <- as.Date(diag$CSR_TIMESTAMP_BEGIN)
+  diag$CSR_DATE_END <- as.Date(diag$CSR_TIMESTAMP_END)
+  diag$CSR_TIMESTAMP_BEGIN <- diag$CSR_TIMESTAMP_END <- NULL
 
   x <- merge(desc, diag, by = "CSR_DATASET", all.x = TRUE)
   tibble::as_tibble(merge(x, ports, by = "CSR_DATASET", all.x = TRUE))

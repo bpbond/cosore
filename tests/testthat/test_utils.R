@@ -129,7 +129,7 @@ test_that("csr_build", {
   expect_message(csr_build(dataset_names = list_datasets()[1], quiet = FALSE))
   expect_silent(csr_build(dataset_names = list_datasets()[1], quiet = TRUE))
   expect_message(csr_build(dataset_names = list_datasets()[1], write_standardized = TRUE,
-                           quiet = FALSE))
+                           quiet = FALSE, standardized_path = tempdir()))
 })
 
 test_that("check_dataset_names", {
