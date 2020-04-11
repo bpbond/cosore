@@ -85,7 +85,7 @@ dc197 <- function() {
 
     if(is.data.frame(dsd) & nrow(dsd)) {
       # Rename dataset fields
-#      dsd <- rename(dsd, "CSR_O2", "CSR_SOIL_O2")
+      #      dsd <- rename(dsd, "CSR_O2", "CSR_SOIL_O2")
       if("CSR_NEE" %in% names(dsd)) {
         message("\tNEE needs moving to ancillary")
         write.csv(dsd[c("CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_PORT", "CSR_NEE")],
@@ -141,6 +141,13 @@ dc197 <- function() {
           anc$CSR_DATE <- NA
         } else {
           anc <- cbind(anc, data.frame(CSR_DATE = integer()))
+        }
+      }
+      if(!"CSR_STATISTIC" %in% names(anc)) {
+        if(nrow(anc)) {
+          anc$CSR_STATISTIC <- "mean"
+        } else {
+          anc <- cbind(anc, data.frame(CSR_STATISTIC = integer()))
         }
       }
       if("CSR_PORT" %in% names(anc)) {

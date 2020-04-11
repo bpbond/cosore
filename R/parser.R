@@ -284,6 +284,13 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
   # Need to convert these to character in case no timestamps (and thus read as logical)
   anc$CSR_TIMESTAMP_BEGIN <- as.character(anc$CSR_TIMESTAMP_BEGIN)
   anc$CSR_TIMESTAMP_END <- as.character(anc$CSR_TIMESTAMP_END)
+
+  if(nrow(anc)) {
+    if(any(is.na(anc$CSR_STATISTIC))) {
+      stop("CSR_STATISTIC needs to be completely filled out in ancillary file")
+    }
+  }
+
   tibble::as_tibble(anc)
 }
 
