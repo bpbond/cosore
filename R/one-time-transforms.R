@@ -63,3 +63,63 @@ add_ch4 <- function() {
     }
   }
 }
+
+
+# A variety of mostly minor tweaks laid out in #197
+dc197 <- function() {
+  file.remove("~/Desktop/par.txt")
+  file.remove("~/Desktop/wind.txt")
+  file.remove("~/Desktop/precip.txt")
+  file.remove("~/Desktop/twater.txt")
+
+  for(ds in list_datasets()) {
+    message(ds)
+    dsd <- csr_table("data", ds)
+    dsd$CSR_DATASET <- NULL
+    diag <- csr_table("diagnostics", ds)
+    diag$CSR_DATASET <- NULL
+    contrib <- csr_table("contributors", ds)
+
+    if(is.data.frame(dsd) & nrow(dsd)) {
+      # Rename dataset fields
+      dsd <- rename(dsd, "CSR_O2", "CSR_SOIL_O2")
+      if("CSR_NEE" %in% names(dsd)) {
+        message("\tNEE needs moving to ancillary")
+        write.csv(dsd[c("CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_PORT", "CSR_NEE")], paste0(ds, "_nee.csv"))
+        dsd$CSR_NEE <- NULL
+      }
+      if("CSR_PAR" %in% names(dsd)) {
+        message("\tPAR needs checking")
+        cat(contrib$CSR_EMAIL[1], "\n", file = "~/Desktop/par.txt", append = TRUE)
+      }
+      if("CSR_PRECIP" %in% names(dsd)) {
+        message("\tPRECIP needs checking")
+        cat(contrib$CSR_EMAIL[1], "\n", file = "~/Desktop/precip.txt", append = TRUE)
+      }
+      dsd$CSR_PORT <- as.integer(dsd$CSR_PORT)
+      if("CSR_RECORD" %in% names(dsd)) {
+        dsd$CSR_RECORD <- as.integer(dsd$CSR_RECORD)
+      }
+      if("CSR_WIND" %in% names(dsd)) {
+        message("\tWIND needs checking")
+        cat(contrib$CSR_EMAIL[1], "\n", file = "~/Desktop/wind.txt", append = TRUE)
+      }
+      dsd <- rename(dsd, "TAIR", "TAIR_AMB")
+      dsd <- rename(dsd, "TCHAMBER", "TAIR")
+      if("CSR_TWATER" %in% names(dsd)) {
+        message("\tTWATER needs checking")
+        cat(contrib$CSR_EMAIL[1], "\n", file = "~/Desktop/twater.txt", append = TRUE)
+      }
+
+      outfile <- file.path("./inst/extdata/datasets/", ds, "data", "data.RDS")
+      stopifnot(file.exists(outfile))
+      #      saveRDS(dsd, file = outfile)
+
+      # Rename diagnostics
+
+      outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
+      stopifnot(file.exists(outfile))
+      #      saveRDS(diag, file = outfile)
+    }
+  }
+}
