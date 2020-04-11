@@ -12,24 +12,24 @@ data,CSR_COMMENTS,Comments,character,,FALSE
 data,CSR_CRVFIT_CO2,"CO2 flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
 data,CSR_CRVFIT_CH4,"CH4 flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
 data,CSR_ERROR,Error raised by instrument or during import,logical,,FALSE
-data,CSR_FLUX_CO2,Soil respiration (CO~2~) flux,numeric,µmol CO~2~/m^2^/s,TRUE
-data,CSR_FLUX_CH4,Methane flux (positive = to atmosphere),numeric,nmol CH~4~/m^2^/s,FALSE
-data,CSR_FLUX_SE_CO2,Standard error of soil respiration flux,numeric,µmol CO2/m^2^/s,FALSE
-data,CSR_FLUX_SE_CH4,Standard error of soil methane flux,numeric,nmol CH~4~/m^2^/s,FALSE
+data,CSR_FLUX_CO2,CO~2~ flux (positive = to atmosphere),numeric,µmol CO~2~/m^2^/s,TRUE
+data,CSR_FLUX_CH4,CH~4~ flux (positive = to atmosphere),numeric,nmol CH~4~/m^2^/s,FALSE
+data,CSR_FLUX_SE_CO2,Standard error of soil CO~2~ flux,numeric,µmol CO2/m^2^/s,FALSE
+data,CSR_FLUX_SE_CH4,Standard error of soil CH~4~ flux,numeric,nmol CH~4~/m^2^/s,FALSE
 data,CSR_LABEL,Port/chamber label,character,,FALSE
-data,CSR_NEE,Tower (not chamber) net ecosystem exchange,numeric,µmol CO~2~/m^2^/s,FALSE
-data,CSR_O2,Soil oxygen level,numeric,%,FALSE
-data,CSR_PAR,Photosynthetically active radiation,numeric,µmol photons/m^2^/s,FALSE
-data,CSR_PORT,Port/chamber number,numeric,,TRUE
-data,CSR_PRECIP,Precipitation,numeric,mm,FALSE
+data,CSR_PAR,Photosynthetically active radiation inside measurement chamber,numeric,µmol photons/m^2^/s,FALSE
+data,CSR_PAR_AMB,Photosynthetically active radiation outside measurement chamber,numeric,µmol photons/m^2^/s,FALSE
+data,CSR_PORT,Port/chamber number,integer,,TRUE
+data,CSR_PRECIP,Precipitation at measurement chamber,numeric,mm,FALSE
 data,CSR_R2_CO2,CO2 flux computation R^2^,numeric,fraction,FALSE
 data,CSR_R2_CH4,CH4 flux computation R^2^,numeric,fraction,FALSE
-data,CSR_RECORD,Record number within file,numeric,,FALSE
+data,CSR_RECORD,Record number within file,integer,,FALSE
 data,CSR_RH,Chamber relative humidity,numeric,%,FALSE
 data,CSR_SMx,Volumetric soil moisture at x cm (other CSR_SMx fields follow same format),numeric,m^3^/m^3^,FALSE
+data,CSR_SOIL_O2,Soil oxygen level,numeric,%,FALSE
 data,CSR_Tx,Temperature at x cm (other CSR_Tx fields follow same format),numeric,°C,FALSE
-data,CSR_TAIR,Ambient air temperature,numeric,°C,FALSE
-data,CSR_TCHAMBER,Chamber temperature,numeric,°C,FALSE
+data,CSR_TAIR_AMB,Ambient air temperature,numeric,°C,FALSE
+data,CSR_TAIR,Chamber air temperature,numeric,°C,FALSE
 data,CSR_TWATER,Groundwater temperature,numeric,°C,FALSE
 data,CSR_TIMESTAMP_BEGIN,"Timestamp of beginning of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_TIMESTAMP_END,"Timestamp of end of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
@@ -62,8 +62,8 @@ description,CSR_EMBARGO,Embargo flag. If this field is present data will not be 
 #,,,,,
 # `ports`: individual chamber metadata,,,,,
 #,,,,,
-ports,CSR_PORT,"Port (chamber) number; ""0"" means all ports",numeric,,TRUE
-ports,CSR_MSMT_VAR,"Measurement variable: ""Rs"", ""Rh"", ""Reco"", or ""NEE""",character,,TRUE
+ports,CSR_PORT,"Port (chamber) number; ""0"" means all ports",integer,,TRUE
+ports,CSR_MSMT_VAR,"Flux should be interpreted as: ""Rs"" (soil respiration, whether CO2 or CH4), ""Rh"" (heterotrophic respiration only), ""Reco"" (ecosystem respiratino), or ""NEE"" (net ecosystem exchange)",character,,TRUE
 ports,CSR_TREATMENT,"Chamber treatment; default is ""None""",character,,TRUE
 ports,CSR_AREA,Area of measurement chamber,numeric,cm^2^,FALSE
 ports,CSR_VOLUME,Volume of measurement chamber,numeric,cm^3^,FALSE
@@ -72,7 +72,7 @@ ports,CSR_OPAQUE,Opaque chamber?,logical,,TRUE
 ports,CSR_PLANTS_REMOVED,Plants removed from chamber?,logical,,TRUE
 ports,CSR_FAN,Mixing fan in chamber?,logical,,FALSE
 ports,CSR_SPECIES,Comma-separated species list,character,,FALSE
-ports,CSR_SENSOR_DEPTHS,Comma-separated sensor depths,character,cm,FALSE
+ports,CSR_SENSOR_DEPTHS,"Comma-separated depths of solid-state sensors, gradient method only",character,cm,FALSE
 ports,CSR_LONGITUDE,"Decimal longitude of measurement chamber, positive = north",numeric,degrees,FALSE
 ports,CSR_LATITUDE,"Decimal latitude of measurement chamber, positive = east",numeric,degrees,FALSE
 ports,CSR_ELEVATION,Elevation of measurement chamber,numeric,m,FALSE
@@ -103,12 +103,13 @@ ancillary,CSR_LAI,Leaf area index,numeric,m^2^/m^2^,FALSE
 ancillary,CSR_LITTERFALL,Litterfall,numeric,g/m^2^/time,FALSE
 ancillary,CSR_MAT,Mean annual air temperature,numeric,°C,FALSE
 ancillary,CSR_MAP,Mean annual precipitation,numeric,mm,FALSE
-ancillary,CSR_NEE,Net ecosystem exchange (positive = carbon sink),numeric,gC/m^2^/time,FALSE
+ancillary,CSR_NEE,Net ecosystem exchange (negative = carbon sink),numeric,gC/m^2^/time,FALSE
 ancillary,CSR_NEP,Net ecosystem production,numeric,gC/m^2^/time,FALSE
 ancillary,CSR_NH4,Ammonium,numeric,mg/kg soil,FALSE
 ancillary,CSR_NO3,Nitrate,numeric,mg/kg soil,FALSE
 ancillary,CSR_NPP,Total NPP,numeric,gC/m^2^/time,FALSE
 ancillary,CSR_PH,Soil pH,numeric,,FALSE
+ancillary,CSR_PRECIP,Precipitation at site,numeric,mm,FALSE
 ancillary,CSR_SAND,Sand,numeric,%,FALSE
 ancillary,CSR_SILT,Silt,numeric,%,FALSE
 ancillary,CSR_SOC,Soil organic carbon,numeric,m^2^/m^2^,FALSE
@@ -132,13 +133,13 @@ diagnostics,CSR_FLUX_HIGH_LIM_CO2,CO2 flux high bound; values above this are rem
 diagnostics,CSR_FLUX_LOW_LIM_CO2,CO2 flux low bound; values above this are removed,numeric,,TRUE
 diagnostics,CSR_FLUX_HIGH_LIM_CH4,CH4 flux high bound; values above this are removed,numeric,,TRUE
 diagnostics,CSR_FLUX_LOW_LIM_CH4,CH4 flux low bound; values above this are removed,numeric,,TRUE
-diagnostics,CSR_RECORDS,Records in final dataset,numeric,,TRUE
-diagnostics,CSR_RECORDS_REMOVED_ERR,Number of observations removed for error code,numeric,,TRUE
-diagnostics,CSR_RECORDS_REMOVED_NA,Number of observations removed for missing flux,numeric,,TRUE
-diagnostics,CSR_RECORDS_REMOVED_TIMESTAMP,Number of observations removed for bad timestamp,numeric,,TRUE
-diagnostics,CSR_REMOVED_HIGH_CO2,Number of observations removed for CO2 flux too high,numeric,,TRUE
-diagnostics,CSR_REMOVED_LOW_CO2,Number of observations removed for CO2 flux too low,numeric,,TRUE
-diagnostics,CSR_REMOVED_HIGH_CH4,Number of observations removed for CH4 flux too high,numeric,,TRUE
-diagnostics,CSR_REMOVED_LOW_CH4,Number of observations removed for CH4 flux too low,numeric,,TRUE
+diagnostics,CSR_RECORDS,Records in final dataset,integer,,TRUE
+diagnostics,CSR_RECORDS_REMOVED_ERR,Number of observations removed for error code,integer,,TRUE
+diagnostics,CSR_RECORDS_REMOVED_NA,Number of observations removed for missing flux,integer,,TRUE
+diagnostics,CSR_RECORDS_REMOVED_TIMESTAMP,Number of observations removed for bad timestamp,integer,,TRUE
+diagnostics,CSR_REMOVED_HIGH_CO2,Number of observations removed for CO2 flux too high,integer,,TRUE
+diagnostics,CSR_REMOVED_LOW_CO2,Number of observations removed for CO2 flux too low,integer,,TRUE
+diagnostics,CSR_REMOVED_HIGH_CH4,Number of observations removed for CH4 flux too high,integer,,TRUE
+diagnostics,CSR_REMOVED_LOW_CH4,Number of observations removed for CH4 flux too low,integer,,TRUE
 diagnostics,CSR_TIME_BEGIN,Year and month of first observation in dataset,character,,FALSE
 diagnostics,CSR_TIME_END,Year and month of last observation in dataset,character,,FALSE
