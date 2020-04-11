@@ -134,6 +134,7 @@ diagnostics,CSR_FLUX_HIGH_LIM_CO2,CO2 flux high bound; values above this are rem
 diagnostics,CSR_FLUX_LOW_LIM_CO2,CO2 flux low bound; values above this are removed,numeric,,TRUE
 diagnostics,CSR_FLUX_HIGH_LIM_CH4,CH4 flux high bound; values above this are removed,numeric,,TRUE
 diagnostics,CSR_FLUX_LOW_LIM_CH4,CH4 flux low bound; values above this are removed,numeric,,TRUE
+diagnostics,CSR_GASES,Gases for which is present in final dataset,character,,TRUE
 diagnostics,CSR_RECORDS,Records in final dataset,integer,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_ERR,Number of observations removed for error code,integer,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_NA,Number of observations removed for missing flux,integer,,TRUE

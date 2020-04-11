@@ -431,6 +431,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     # Diagnostic information
     diag$CSR_TIMESTAMP_BEGIN <- min(dsd$CSR_TIMESTAMP_BEGIN)
     diag$CSR_TIMESTAMP_END <- max(dsd$CSR_TIMESTAMP_END)
+    diag$CSR_GASES <- gases_string(dsd)
 
     # Add port column if necessary
     dsd <- add_port_column(dsd)

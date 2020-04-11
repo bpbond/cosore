@@ -560,6 +560,19 @@ remove_invalid_timestamps <- function(dsd, tf, tz) {
   dsd
 }
 
+
+#' Make a string (for diagnostics) saying which gases are represented in a dataset
+#'
+#' @param dsd Dataset data, a data.frame
+#' @return String with gases separated by commas
+#' @keywords internal
+gases_string <- function(dsd) {
+  stopifnot(is.data.frame(dsd))
+  co2 <- "CSR_FLUX_CO2" %in% names(dsd) && any(!is.na(dsd$CSR_FLUX_CO2))
+  ch4 <- "CSR_FLUX_CH4" %in% names(dsd) && any(!is.na(dsd$CSR_FLUX_CH4))
+  paste(c("CO2", "CH4")[c(co2, ch4)], collapse = ", ")
+}
+
 #' Add port column, if necessary, and convert to numeric.
 #'
 #' @param dsd Dataset data, a \code{data.frame}
