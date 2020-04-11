@@ -21,6 +21,9 @@ redo_diagnostics <- function() {
 
 rename <- function(dsd, old, new) {
   if(old %in% names(dsd)) {
+    if(new %in% names(dsd)) {
+      stop(new, " already exists in data!")
+    }
     names(dsd)[names(dsd) == old] <- new
   }
   dsd
@@ -82,7 +85,7 @@ dc197 <- function() {
 
     if(is.data.frame(dsd) & nrow(dsd)) {
       # Rename dataset fields
-      dsd <- rename(dsd, "CSR_O2", "CSR_SOIL_O2")
+#      dsd <- rename(dsd, "CSR_O2", "CSR_SOIL_O2")
       if("CSR_NEE" %in% names(dsd)) {
         message("\tNEE needs moving to ancillary")
         write.csv(dsd[c("CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_PORT", "CSR_NEE")],
@@ -105,8 +108,8 @@ dc197 <- function() {
         message("\tWIND needs checking")
         cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/wind.txt", append = TRUE)
       }
-      dsd <- rename(dsd, "CSR_TAIR", "CSR_TAIR_AMB")
-      dsd <- rename(dsd, "CSR_TCHAMBER", "CSR_TAIR")
+      # dsd <- rename(dsd, "CSR_TAIR", "CSR_TAIR_AMB")
+      # dsd <- rename(dsd, "CSR_TCHAMBER", "CSR_TAIR")
       if("CSR_TWATER" %in% names(dsd)) {
         message("\tTWATER needs checking")
         cat(ds, contrib$CSR_EMAIL[1], "\n", sep = "\t", file = "~/Desktop/twater.txt", append = TRUE)
@@ -130,13 +133,20 @@ dc197 <- function() {
       stopifnot(file.exists(outfile))
       saveRDS(diag, file = outfile)
 
-      # Remove CSR_PORT from ancillary files
+      # Remove CSR_PORT from ancillary files and add CSR_DATE
       anc_file <- file.path("inst/extdata/datasets/", ds, "ANCILLARY.csv")
       anc <- read.csv(anc_file, stringsAsFactors = FALSE)
+      if(!"CSR_DATE" %in% names(anc)) {
+        if(nrow(anc)) {
+          anc$CSR_DATE <- NA
+        } else {
+          anc <- cbind(anc, data.frame(CSR_DATE = integer()))
+        }
+      }
       if("CSR_PORT" %in% names(anc)) {
         anc$CSR_PORT <- NULL
-        write.csv(anc, file = anc_file, row.names = FALSE, quote = FALSE, na = "")
       }
+      write.csv(anc, file = anc_file, row.names = FALSE, quote = FALSE, na = "")
     }
   }
 }
