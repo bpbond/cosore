@@ -429,8 +429,8 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     dsd <- lubridate::with_tz(dsd, tzone = dataset$description$CSR_TIMEZONE)
 
     # Diagnostic information
-    diag$CSR_TIMESTAMP_BEGIN <- min(dsd$CSR_TIMESTAMP_BEGIN)
-    diag$CSR_TIMESTAMP_END <- max(dsd$CSR_TIMESTAMP_END)
+    diag$CSR_TIMESTAMP_BEGIN <- min(dsd$CSR_TIMESTAMP_BEGIN, na.rm = TRUE)
+    diag$CSR_TIMESTAMP_END <- max(dsd$CSR_TIMESTAMP_END, na.rm = TRUE)
     diag$CSR_GASES <- gases_string(dsd)
 
     # Add port column if necessary
