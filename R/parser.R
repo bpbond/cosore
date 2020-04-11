@@ -359,19 +359,19 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
   df <- file.path(raw_data, dataset_name)
 
   # Processing statistics table
-  diag <- tibble(CSR_RECORDS = 0,
-                 CSR_RECORDS_REMOVED_NA = 0,
-                 CSR_RECORDS_REMOVED_ERR = 0,
-                 CSR_REMOVED_LOW_CO2 = 0,
-                 CSR_REMOVED_HIGH_CO2 = 0,
-                 CSR_REMOVED_LOW_CH4 = 0,
-                 CSR_REMOVED_HIGH_CH4 = 0,
+  diag <- tibble(CSR_RECORDS = 0L,
+                 CSR_RECORDS_REMOVED_NA = 0L,
+                 CSR_RECORDS_REMOVED_ERR = 0L,
+                 CSR_REMOVED_LOW_CO2 = 0L,
+                 CSR_REMOVED_HIGH_CO2 = 0L,
+                 CSR_REMOVED_LOW_CH4 = 0L,
+                 CSR_REMOVED_HIGH_CH4 = 0L,
                  CSR_FLUX_LOW_LIM_CO2 = NA,
                  CSR_FLUX_HIGH_LIM_CO2 = NA,
                  CSR_FLUX_LOW_LIM_CH4 = NA,
                  CSR_FLUX_HIGH_LIM_CH4 = NA,
-                 CSR_BAD_TEMPERATURE = 0,
-                 CSR_RECORDS_REMOVED_TIMESTAMP = 0,
+                 CSR_BAD_TEMPERATURE = 0L,
+                 CSR_RECORDS_REMOVED_TIMESTAMP = 0L,
                  CSR_EXAMPLE_BAD_TIMESTAMPS = "",
                  CSR_TIME_BEGIN = NA_character_,
                  CSR_TIME_END = NA_character_)

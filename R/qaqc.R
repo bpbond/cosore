@@ -46,7 +46,7 @@ qaqc_data <- function(dsd, diag,
   }
 
   # Remove error records
-  diag$CSR_RECORDS_REMOVED_ERR <- 0
+  diag$CSR_RECORDS_REMOVED_ERR <- 0L
   if(remove_error & "CSR_ERROR" %in% names(dsd)) {
     err <- dsd$CSR_ERROR
     diag$CSR_RECORDS_REMOVED_ERR <- sum(err)
