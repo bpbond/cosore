@@ -401,7 +401,7 @@ parse_d20200214_SZUTU_TONZI <- function(path) {
 parse_d20200228_RENCHON <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
 
-  common_dat <- dat[c("DateTime", "NEE", "Ta", "Precip")]
+  common_dat <- dat[c("DateTime", "Ta")]
   results <- list()
   ports <- c(2, 3, 6)
   for(p in ports) {

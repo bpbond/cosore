@@ -8,11 +8,9 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,	Computation,				Notes
-CSR_FLUX_CO2,			Rsoil
-CSR_NEE,			NEE
+CSR_FLUX_CO2,		Rsoil
 CSR_PORT,			port
-CSR_PRECIP,			Precip
 CSR_SM21,			SWC
 CSR_T5,				Ts
-CSR_TAIR_AMB,			Ta,
+CSR_TAIR_AMB,		Ta,
 CSR_TIMESTAMP_END,	DateTime
