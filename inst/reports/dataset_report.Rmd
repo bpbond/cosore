@@ -30,7 +30,7 @@ quick <- params$quick
 d <- ds$description
 diag <- ds$diagnostics
 
-if(!is.na(d$CSR_EMBARGO)) {
+if(embargoed(ds)) {
   cat("---------------------------------------------------------------\n")
   cat("EMBARGO FLAG IS SET--DATA WILL NOT BE RELEASED\n")
   cat("---------------------------------------------------------------\n")
@@ -271,3 +271,12 @@ if(is.data.frame(ds$data) & !quick) {
   }
 }
 ```
+
+## Ancillary data
+
+Ancillary dataset has `r nrow(ds$ancillary)` rows.
+
+```{r ancillary}
+names(ds$ancillary)
+```
+
