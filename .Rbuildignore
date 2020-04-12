@@ -9,3 +9,4 @@ rsconnect/
 .travis.yml
 coverage.R
 CODE_OF_CONDUCT.md
+^\.github$
