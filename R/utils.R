@@ -229,14 +229,23 @@ write_stan_data <- function(dataset, outpath) {
     # If these data are embargoed, write a .gitignore file
     # If not, remove any existing .gitignore file
     gitignore <- file.path(outpath, ".gitignore")
-    if("CSR_EMBARGO" %in% names(dataset$description) &&
-       !is.na(dataset$description$CSR_EMBARGO)) {
+    if(embargoed(dataset)) {
       message("This dataset has an embargo entry; writing .gitignore")
       cat("# This dataset is embargoed", "*.RDS", sep = "\n", file = gitignore)
     } else {
       unlink(gitignore)
     }
   }
+}
+
+#' Check whether a dataset is embargoed
+#' @param ds The dataset
+#' @return TRUE or FALSE.
+#' @keywords internal
+embargoed <- function(ds) {
+  stopifnot(is.list(ds))
+  "CSR_EMBARGO" %in% names(ds$description) &&
+    !is.na(ds$description$CSR_EMBARGO)
 }
 
 #' Remove standardized dataset(s)
@@ -560,6 +569,16 @@ remove_invalid_timestamps <- function(dsd, tf, tz) {
   dsd
 }
 
+#' Remove empty (all-NA) columns from a data frame.
+#'
+#' @param x The data frame
+#' @return The data frame with all-empty columns removed.
+#' @keywords internal
+remove_empty_columns <- function(x) {
+  stopifnot(is.data.frame(x))
+  all_na <- sapply(x, function(x) all(is.na(x)))
+  x[!all_na]
+}
 
 #' Make a string (for diagnostics) saying which gases are represented in a dataset
 #'

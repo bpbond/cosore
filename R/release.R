@@ -185,8 +185,7 @@ write_dataset_data <- function(dataset_name, ds, path, db_size) {
   stopifnot(is.numeric(db_size))
 
   # If dataset is under embargo, don't write data
-  if(!is.null(ds$description$CSR_EMBARGO) &&
-     !is.na(ds$description$CSR_EMBARGO)) {
+  if(embargoed(ds)) {
     message(dataset_name, " has an embargo entry--skipping data")
     return(db_size)
   }

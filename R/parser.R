@@ -291,7 +291,7 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
     }
   }
 
-  tibble::as_tibble(anc)
+  tibble::as_tibble(remove_empty_columns(anc))
 }
 
 
@@ -486,13 +486,15 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
 
   # Convert the ancillary table timestamps to POSIXct
   # Couldn't do it in read_ancillary_file() above because need time zone information
-  x <- calc_timestamps(dataset$ancillary, 0, "%F %T", dataset$description$CSR_TIMESTAMP_TZ)
+  if("CSR_TIMESTAMP_BEGIN" %in% names(dataset$ancillary)) { # might have been removed if no data
+    x <- calc_timestamps(dataset$ancillary, 0, "%F %T", dataset$description$CSR_TIMESTAMP_TZ)
 
-  if(any(x$na_ts, na.rm = TRUE)) {
-    stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
-         " e.g. rows: ", head(which(x$na_ts)))
+    if(any(x$na_ts, na.rm = TRUE)) {
+      stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
+           " e.g. rows: ", head(which(x$na_ts)))
+    }
+    dataset$ancillary <- x$dsd
   }
-  dataset$ancillary <- x$dsd
 
   if(!metadata_only) {
 

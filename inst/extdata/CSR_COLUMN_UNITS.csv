@@ -86,10 +86,10 @@ columns,Notes,Notes,character,,FALSE
 #,,,,,
 # `ancillary`: other site-level data,,,,,
 #,,,,,
-ancillary,CSR_TIMESTAMP_BEGIN,Timestamp of beginning of ancillary observation (YYYY-MM-DD HH:MM:SS),POSIXct,ISO 8601 date-time,TRUE
-ancillary,CSR_TIMESTAMP_END,Timestamp of end of ancillary observation (YYYY-MM-DD HH:MM:SS),POSIXct,ISO 8601 date-time,TRUE
-ancillary,CSR_DATE,Date (YYYY or YYYY-MM or YYYY-MM-DD) that ancillary measurements are representative of; this and timestamps should not both be filled out,character,,TRUE
-ancillary,CSR_STATISTIC,"Statistic (mean, max, etc.) being reported in this row",character,,TRUE
+ancillary,CSR_TIMESTAMP_BEGIN,Timestamp of beginning of ancillary observation (YYYY-MM-DD HH:MM:SS),POSIXct,ISO 8601 date-time,FALSE
+ancillary,CSR_TIMESTAMP_END,Timestamp of end of ancillary observation (YYYY-MM-DD HH:MM:SS),POSIXct,ISO 8601 date-time,FALSE
+ancillary,CSR_DATE,Date (YYYY or YYYY-MM or YYYY-MM-DD) that ancillary measurements are representative of; this and timestamps should not both be filled out,character,,FALSE
+ancillary,CSR_STATISTIC,"Statistic (mean, max, etc.) being reported in this row",character,,FALSE
 ancillary,CSR_ABM,Aboveground biomass,numeric,gC/m^2^,FALSE
 ancillary,CSR_AGE,Time since disturbance,numeric,years,FALSE
 ancillary,CSR_ANPP,Aboveground NPP,numeric,gC/m^2^/time,FALSE

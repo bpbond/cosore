@@ -2,6 +2,21 @@
 
 context("utils")
 
+test_that("embargoed", {
+  expect_error(embargoed(1))
+})
+
+test_that("remove_empty_columns", {
+  # Bad input
+  expect_error(remove_empty_columns(1))
+
+  expect_identical(remove_empty_columns(data.frame()), data.frame())
+  expect_identical(remove_empty_columns(cars), cars)
+  x <- cars
+  x$x <- NA
+  expect_identical(remove_empty_columns(x), cars)
+})
+
 test_that("gases_string", {
   # Bad input
   expect_error(gases_string(1))
