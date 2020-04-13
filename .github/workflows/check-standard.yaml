@@ -60,6 +60,8 @@ jobs:
           sudo -s eval "$sysreqs"
 
       - name: Install dependencies
+        env:
+          _R_CHECK_FORCE_SUGGESTS_: false
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
