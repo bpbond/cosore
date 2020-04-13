@@ -117,8 +117,10 @@ Finally, we can use the `description` table information to get a full citation:
 ```{r pub-varner}
 doi <- varner$description$CSR_PRIMARY_PUB
 print(doi)
-require(rcrossref)  # using require here because errors in GitHub Actions otherwise
-try(cr_cn(dois = doi, format = "text"))
+try({  # in case you don't have 'rcrossref' installed...
+  library(rcrossref)
+  cr_cn(dois = doi, format = "text")
+})
 ```
 
 # Selecting and combining multiple datasets
