@@ -6,7 +6,5 @@ misc/
 essd/
 rsconnect/
 .pdf$
-.travis.yml
-coverage.R
 CODE_OF_CONDUCT.md
 ^\.github$
