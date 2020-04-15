@@ -1,8 +1,0 @@
-## Script to run the coverage tests.  This is needed for running the tests on
-## travis CI because the travis_wait command mangles the arguments you need to
-## put the commands inline in the after_success section
-
-library(covr)
-x <- package_coverage(line_exclusions = list("R/parse-others.R", "R/one-time-transforms.R"))
-cat("coverage = ", percent_coverage(x), " %\n")
-codecov(coverage = x)
