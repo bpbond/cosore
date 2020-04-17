@@ -23,7 +23,7 @@ parse_d20190830_LIANG <- function(path) {
 
   for(f in seq_along(co2files)) {
     fn <- files[co2files][f]
-    #    message(f, "/", length(co2files), " ", fn)
+    message(f, "/", length(co2files), " ", fn)
     #    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
 
     # Find and parse the header; its location varies by file
@@ -130,7 +130,7 @@ parse_d20190617_SCOTT_xxx <- function(path, skip, ports) {
   for(p in ports) {
     dp <- d
     dp$CSR_PORT <- p
-    dp$CSR_FLUX <- dat[,paste0("SR_", p)]
+    dp$CSR_FLUX_CO2 <- dat[,paste0("SR_", p)]
     dp$CSR_SM5 <- dat[,paste0("SM_", p)]
     dp$CSR_T5 <- dat[,paste0("T5_", p)]
     out <- rbind(out, dp)
@@ -237,13 +237,13 @@ parse_d20190527_GOULDEN <- function(path) {
 #' @keywords internal
 parse_d20190430_DESAI <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
+  dat <- as.data.frame(dat)
 
   results <- list()
   for(p in 1:4) {   # four separate ports in the file
     p_chr <- paste0("P", p)
     x <- dat[c("Time.UTC")]
-    x$CSR_FLUX <- dat[,paste0("QCCombo.Flux.", p_chr)]
-    x$CSR_ERROR <- x$CSR_FLUX > 50  # ad hoc
+    x$CSR_FLUX_CO2 <- dat[,paste0("QCCombo.Flux.", p_chr)]
     x$CSR_PORT <- p
 
     # Extract port-specific temperature at various depths...

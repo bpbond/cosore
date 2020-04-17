@@ -1,7 +1,7 @@
 # PORTS.txt
 #
 # This comma-separated data file provides information about multiplexer ports
-# and what conditions they represent. Entries below include: 
+# and what conditions they represent. Entries below include:
 #
 # 	CSR_PORT: CSR_PORT number, numeric; "0" means all ports [req]
 #	CSR_MSMT_VAR: measurement variable: "Rs", "Rh", or "NEE" [req]
@@ -11,12 +11,12 @@
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
-CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_PLANTS_REMOVED,	CCSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-1,			Rs,				None,			FALSE,				527.2727,	2,			"Pinus muricata"	
-2,			Rs,				None,			FALSE,				527.2727,	2,			"Pinus muricata"	
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_PLANTS_REMOVED,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
+1,			Rs,				None,			FALSE,				527.2727,	2,			"Pinus muricata"
+2,			Rs,				None,			FALSE,				527.2727,	2,			"Pinus muricata"
 3,			Rs,				None,			FALSE,				527.2727,	2,			"Arctostaphylos insularis, Quercus pacifica"
-4,			Rs,				None,			FALSE,				527.2727,	2,			"Pinus muricata"	
-5,			Rs,				None,			FALSE,				527.2727,	2,			"Pinus muricata"	
+4,			Rs,				None,			FALSE,				527.2727,	2,			"Pinus muricata"
+5,			Rs,				None,			FALSE,				527.2727,	2,			"Pinus muricata"
 6,			Rs,				None,			FALSE,				527.2727,	2,			"Bare ground"
 7,			Rs,				None,			FALSE,				527.2727,	2,			"Bare ground"
 8,			Rs,				None,			FALSE,				527.2727,	2,			"Bare ground"
