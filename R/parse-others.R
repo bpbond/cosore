@@ -23,7 +23,7 @@ parse_d20190830_LIANG <- function(path) {
 
   for(f in seq_along(co2files)) {
     fn <- files[co2files][f]
-    #    message(f, "/", length(co2files), " ", fn)
+    message(f, "/", length(co2files), " ", fn)
     #    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
 
     # Find and parse the header; its location varies by file
