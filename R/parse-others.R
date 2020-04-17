@@ -130,7 +130,7 @@ parse_d20190617_SCOTT_xxx <- function(path, skip, ports) {
   for(p in ports) {
     dp <- d
     dp$CSR_PORT <- p
-    dp$CSR_FLUX <- dat[,paste0("SR_", p)]
+    dp$CSR_FLUX_CO2 <- dat[,paste0("SR_", p)]
     dp$CSR_SM5 <- dat[,paste0("SM_", p)]
     dp$CSR_T5 <- dat[,paste0("T5_", p)]
     out <- rbind(out, dp)
