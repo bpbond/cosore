@@ -10,7 +10,7 @@
 Database,			Dataset,	Computation,				Notes
 CSR_DRY_CO2,			Mean Cdry,
 CSR_FLUX_CO2,  			Exp_Flux,	"ifelse(CrvFitStatus=='Exp', Exp_Flux, Lin_Flux)"
-CSR_FLUX_CO2_SE,		Exp_SE,		"ifelse(CrvFitStatus=='Exp', Exp_SE, Lin_SE)"
+CSR_FLUX_SE_CO2,		Exp_SE,		"ifelse(CrvFitStatus=='Exp', Exp_SE, Lin_SE)"
 CSR_PORT,			Exp_Flux,	1
 CSR_R2_CO2,				Exp_R2,		"ifelse(CrvFitStatus=='Exp', Exp_R2, Lin_R2)"
 CSR_RECORD,			Obs#
