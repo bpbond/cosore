@@ -323,14 +323,15 @@ library(ggmap)
 
 # Note that the following code assumes you have called `ggmap::register_google()` already
 
-bbox <- make_bbox(lon = c(-170, 170), lat = c(-70,70), f = 0) # make a coordinate box 
-map <- get_map(location = bbox, source = "google", maptype = "roadmap", zoom = 1) # load map from online
+bbox <- make_bbox(lon = c(-160, 160), lat = c(-70,70)) # make a coordinate box 
+map <- get_map(location = bbox, source = "stamen", maptype = "terrain") # load map from online
 
 ggmap(map) + 
-  geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE, fill = "COSORE Submission Site"), 
-             alpha = 0.6, color = "blue4", size = 2.5, shape = 18) + 
-  xlim(c(-160, 160)) + 
-  ylim(c(-40,70)) +
+  geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE, 
+                            fill = "COSORE Submission Site", size = CSR_RECORDS), 
+             alpha = 0.6, color = "blue4", shape = 18) + 
+ # xlim(c(-160, 160)) + 
+#  ylim(c(-40,70)) +
   labs(x = "Longitude", y = "Latitude") +
   scale_fill_manual(name = "", values = c("COSORE Submission Site" = "#FC4E07")) +
   scale_shape_manual(values = 18) + theme(legend.position="bottom")
@@ -355,13 +356,13 @@ data_meta %>%
          Month = month(CSR_TIMESTAMP_BEGIN), 
          Year = year(CSR_TIMESTAMP_BEGIN)) %>% 
   group_by(Year, CSR_IGBP) %>%
-  summarise(CSR_FLUX = mean(CSR_FLUX, na.rm = TRUE), Date = mean(Date), n = n()/1000) -> avg
+  summarise(CSR_FLUX_CO2 = mean(CSR_FLUX_CO2, na.rm = TRUE), Date = mean(Date), n = n()/1000) -> avg
 
 # waffle plot no of records by IGBP
 ggplot(avg, aes(fill = CSR_IGBP, values = n)) +
   geom_waffle(color = "white", size = .25, n_rows = 10, flip = TRUE) +
   facet_wrap(~Year, nrow = 2, strip.position = "bottom") +  coord_equal() +
-  labs(title = subtitle = "1 block = 1,000 data points",
+  labs(subtitle = "1 block = 1,000 data points",
        x = "Year",
        y = "Count") +
   theme_minimal() +
@@ -395,6 +396,21 @@ ggplot(timestamp_lengths, aes()) +
   theme_minimal() + labs(x = "Timestamp", y = "Latitude Interval")
 
 #still need to reorder intervals to [-35,30] is at the bottom of the plot
+```
+
+```{r doy-counts}
+data_meta %>% 
+  mutate(DOY = yday(CSR_TIMESTAMP_BEGIN),
+         Hemi = ifelse(CSR_LATITUDE < 0, "Southern Hemisphere", "Northern Hemisphere")) %>% 
+  group_by(Hemi, DOY) %>% 
+  summarise(CSR_FLUX_CO2 = mean(CSR_FLUX_CO2, na.rm = TRUE), n = n()) %>% 
+  filter(DOY <= 365 ) -> doy_counts
+
+ggplot(data = doy_counts, aes(x = DOY, y = n)) + 
+  geom_line(color = "blue4", size = 1) + 
+  facet_wrap(~Hemi, ncol = 1, scales = "free_y") +
+  labs(x= "Day of Year", y = "Number of Points") +
+  theme_minimal()
 ```
 
 ```{r sessionInfo}
