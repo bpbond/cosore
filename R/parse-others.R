@@ -237,13 +237,13 @@ parse_d20190527_GOULDEN <- function(path) {
 #' @keywords internal
 parse_d20190430_DESAI <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
+  dat <- as.data.frame(dat)
 
   results <- list()
   for(p in 1:4) {   # four separate ports in the file
     p_chr <- paste0("P", p)
     x <- dat[c("Time.UTC")]
-    x$CSR_FLUX <- dat[,paste0("QCCombo.Flux.", p_chr)]
-    x$CSR_ERROR <- x$CSR_FLUX > 50  # ad hoc
+    x$CSR_FLUX_CO2 <- dat[,paste0("QCCombo.Flux.", p_chr)]
     x$CSR_PORT <- p
 
     # Extract port-specific temperature at various depths...
