@@ -9,7 +9,7 @@
 #
 Database,		Dataset,	Computation,				Notes
 CSR_FLUX_CO2,  			Flux,
-CSR_FLUX_CO2_SE,		Std_err_Flux
+CSR_FLUX_SE_CO2,		Std_err_Flux
 CSR_PORT,			ActiveChamber,
 CSR_R2_CO2,				R.2,
 CSR_T5,				Soiltemp
