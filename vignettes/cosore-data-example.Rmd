@@ -22,7 +22,7 @@ vignette: >
 Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
 
 The database is distributed as an R package. Use the `devtools` package
-to install COSORE: `devtools::install_github()`.
+to install COSORE: `devtools::install_github("bpbond/cosore")`.
 
 (For non-R users, the database is also distrubuted as a zip file of comma-separated files for non-R users, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files, including a version of this vignette.)
 
