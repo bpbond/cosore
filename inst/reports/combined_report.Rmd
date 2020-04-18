@@ -87,6 +87,8 @@ years <- merge(years, ports)
 
 Datasets: `r length(list_datasets())`
 
+Datasets with data: `r nrow(years)`
+
 Total records: `r format(records, big.mark = ",")`
 
 Total size: `r format(db_size, "Mb")`
