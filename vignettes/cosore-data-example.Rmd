@@ -174,13 +174,13 @@ ggplot(tdf_smry, aes(Hour, CSR_FLUX_CO2, color = CSR_LATITUDE)) +
   ggtitle("Flux by hour of day and month of year")
 ```
 
-(Note that for simplicity, we're assuming above that data timestamps are in _local_ time, but that might not be true, e.g. if an instrument is set to UTC; see the `description` table.)
+Note that in COSORE all timestamps are in the site's _local_, _standard_ time.
 
 # Other tables and data
 
 This vignette has mostly focused on the `description` and `data` tables, and briefly mentioned `ports`. Others include:
 
-* The `contributors` table: dataset contributors. The first person listed should be considered the primary point of contact.
+* The `contributors` table: dataset contributors. The first person listed should be considered the primary point of contact for questions about the data or offers of co-authorship.
 * `ancillary`: ancillary site-level data such as leaf area index, net primary production, soil texture, etc. All optional.
 
 Two additional tables provide information about the processing of raw data into standardized COSORE datasets:
