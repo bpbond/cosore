@@ -23,8 +23,7 @@ library(magrittr)
 db <- csr_database()
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
 db_years <- max(year(db$CSR_DATE_END), na.rm = TRUE) - min(year(db$CSR_DATE_BEGIN), na.rm = TRUE) + 1
-db_fields <- read_csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "cosore"), 
-                      col_types  = "cccccl", comment = "#")
+db_fields <- csr_metadata()
 db_vers <- packageVersion("cosore")
 ```
 
@@ -165,11 +164,12 @@ A specific release number may also be installed:
 devtools::install_github("bpbond/cosore@v0.4")
 ```
 
-Three primary user-facing functions are available:
+Four primary user-facing functions are available:
 
 * `csr_database()` summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-8** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured.
 * `csr_dataset()` returns a single dataset: an R list structure, each element of which is a table (`description`, `contributors`, etc., as described above). 
 * `csr_table()` collects, into a single data frame, one of the tables (`description`, `contributors`, etc., as described above) of the database, for any or all datasets.
+* `csr_metadata()` provides metadata information about all fields in all tables.
 
 Two additional reporting functions may also be useful to COSORE users:
 
