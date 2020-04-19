@@ -2,6 +2,12 @@
 
 context("user")
 
+test_that("csr_metadata", {
+  # ¯\_(ツ)_/¯
+  md <- csr_metadata()
+  expect_true(tibble::is_tibble(md))
+})
+
 test_that("csr_table", {
   # Handles bad data
   expect_error(csr_table(), regexp = "should be one of")  # informative error message

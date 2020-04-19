@@ -141,3 +141,13 @@ csr_build <- function(raw_data,
     }
   }
 }
+
+#' Return metadata information about all COSORE tables
+#'
+#' @return Metadata information (as a data frame) about all COSORE tables.
+#' @export
+csr_metadata <- function() {
+  md <- read.csv(system.file("extdata", "CSR_COLUMN_UNITS.csv", package = "cosore"),
+                 comment.char = "#", stringsAsFactors = FALSE)
+  tibble::as_tibble(md)
+}
