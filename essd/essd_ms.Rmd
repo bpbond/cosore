@@ -19,6 +19,7 @@ library(readr)
 library(tidyr)
 library(covr)
 library(magrittr)
+library(ggplot2)
 
 db <- csr_database()
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
@@ -409,7 +410,7 @@ data_meta %>%
 ggplot(data = doy_counts, aes(x = DOY, y = n)) + 
   geom_line(color = "blue4", size = 1) + 
   facet_wrap(~Hemi, ncol = 1, scales = "free_y") +
-  labs(x= "Day of Year", y = "Number of Points") +
+  labs(x= "Day of year", y = "Number of observations") +
   theme_minimal()
 ```
 
