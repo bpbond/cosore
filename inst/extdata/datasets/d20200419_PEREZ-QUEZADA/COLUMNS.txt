@@ -10,5 +10,5 @@
 Database,				Dataset,	Computation,				Notes
 CSR_FLUX_CO2,  			FLUX,
 CSR_PORT,				port,
-CSR_T5,					TEMP
+CSR_TAIR,				TEMP
 CSR_TIMESTAMP_BEGIN,	Date,		"paste(Date, paste0(Hour, ':00'))"
