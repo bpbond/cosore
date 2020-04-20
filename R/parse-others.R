@@ -716,3 +716,21 @@ parse_d20200407_WANG <- function(path) {
   dat <- merge(merge(dat, sm10, all.x = TRUE), t10, all.x = TRUE)
   dat[c("Chamber_name", "Rtu_Date", "Rtu_Time", "CH4_Flux_nmol/m2*s", "sm10", "t10")]
 }
+
+#' Parse a custom file from d20200419_PEREZ_QUEZADA
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+`parse_d20200419_PEREZ-QUEZADA` <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  dats <- list()
+  for(i in 1:5) {
+    dats[[i]] <- dat[c("Date", "Hour", paste0("FLUX_", i), paste0("TEMP_", i))]
+    names(dats[[i]]) <- c("Date", "Hour", "FLUX", "TEMP")
+    dats[[i]]$port <- i
+  }
+
+  rbind_list(dats)
+}

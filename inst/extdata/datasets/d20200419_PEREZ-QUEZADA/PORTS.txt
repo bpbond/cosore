@@ -16,11 +16,4 @@
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
 CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_FAN,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-1,			Rs,				Treatment,		FALSE,		317.8,		10,			Tepualia stipularis
-2,			Rs,				Treatment,		FALSE,		317.8,		10,			Tepualia stipularis
-3,			Rs,				Treatment,		FALSE,		317.8,		10,			Tepualia stipularis
-4,			Rs,				Treatment,		FALSE,		317.8,		10,			Tepualia stipularis
-5,			Rs,				Treatment,		FALSE,		317.8,		10,			Tepualia stipularis
-6,			Rs,				None,			FALSE,		317.8,		10,			Tepualia stipularis
-7,			Rs,				None,			FALSE,		317.8,		10,			Tepualia stipularis
-8,			Rs,				None,			FALSE,		317.8,		10,			Tepualia stipularis
+0,			Rs,				None,			FALSE,		317.8,		10,			Tepualia stipularis
