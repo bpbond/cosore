@@ -183,7 +183,7 @@ if(is.data.frame(dsd) & !quick) {
 
 ```{r tsensitivity}
 if(is.data.frame(dsd) & !quick) {
-  tcols <- grep("^CSR_T(CHAMBER|[0-9]+)", names(dsd))
+  tcols <- grep("^CSR_T(AIR|[0-9]+)", names(dsd))
   if(length(tcols)) {
     
     if(has_co2) {
