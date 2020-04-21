@@ -11,6 +11,7 @@ Database,				Dataset,		Computation,				Notes
 CSR_FLUX_CO2,  			CO2-flux,
 CSR_FLUX_CH4,  			CH4-flux,
 CSR_PAR,				PAR_mean
+CSR_PAR_AMB,			PAR_amb
 CSR_PORT,				chamber#,
 CSR_PRECIP,				PPT
 CSR_R2_CH4,				CH4-R2,

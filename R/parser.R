@@ -388,7 +388,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     if(exists(func)) {
       dsd <- do.call(func, list(df))
     } else {
-      warning("Unknown format ", ff, " in ", dataset_name)
+      stop("Unknown format ", ff, " in ", dataset_name)
     }
   }
 
@@ -480,7 +480,7 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
   if("CSR_TIMESTAMP_BEGIN" %in% names(dataset$ancillary)) { # might have been removed if no data
     x <- calc_timestamps(dataset$ancillary, 0, "%F %T", dataset$description$CSR_TIMESTAMP_TZ)
 
-    if(any(x$na_ts, na.rm = TRUE)) {
+    if(any(x$na_ts & dataset$ancillary$CSR_TIMESTAMP_BEGIN != "", na.rm = TRUE)) {
       stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
            " e.g. rows: ", head(which(x$na_ts)))
     }

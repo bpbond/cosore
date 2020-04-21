@@ -10,7 +10,6 @@
 Database,				Dataset,			Computation,				Notes
 CSR_CO2_AMB,			AmbientCO2 (ppm)
 CSR_FLUX_CO2,  				Flux (mg C m-2),	"`Flux (mg C m-2)` / 1000 * 1e6 / 12 / 60 / 60"
-CSR_PAR,				PAR (umol m-2 s-1)
 CSR_PORT,				ChamberNumber
 CSR_RH,					Air RH (%)
 CSR_SM10,				soil 2-16 cm VWC (m3 m-3)
