@@ -388,7 +388,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     if(exists(func)) {
       dsd <- do.call(func, list(df))
     } else {
-      warning("Unknown format ", ff, " in ", dataset_name)
+      stop("Unknown format ", ff, " in ", dataset_name)
     }
   }
 

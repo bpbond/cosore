@@ -27,7 +27,7 @@ test_that("dataset read and report", {
 
   # Custom file format dataset
   expect_error(read_dataset("TEST_custom", raw_data = "test_raw_custom/"), regexp = "TEST_custom dispatched OK")
-  expect_warning(read_dataset("TEST_custom_missing", raw_data = "test_raw_custom/"), regexp = "Unknown format")
+  expect_error(read_dataset("TEST_custom_missing", raw_data = "test_raw_custom/"), regexp = "Unknown format")
 
   # Missing CrvFitStatus
   x <- parse_LI8100_file("test_raw_crvfitstatus/rp7_crvfitstatus.txt")
