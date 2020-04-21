@@ -4,12 +4,14 @@
 \alias{convert_ancillary_timestamps}
 \title{Convert ancillary timestamps to POSIXct}
 \usage{
-convert_ancillary_timestamps(ancillary, description)
+convert_ancillary_timestamps(ancillary, tz, dataset_name)
 }
 \arguments{
 \item{ancillary}{An ancillary data frame}
 
-\item{description}{A description data frame}
+\item{tz}{Time zone}
+
+\item{dataset_name}{The dataset name}
 }
 \value{
 The ancillary data frame
