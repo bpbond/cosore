@@ -296,6 +296,31 @@ convert_and_qc_timestamp <- function(ts, timestamp_format, time_zone) {
   list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
 }
 
+#' Convert ancillary timestamps to POSIXct
+#'
+#' @param ancillary An ancillary data frame
+#' @param tz Time zone
+#' @param dataset_name The dataset name
+#' @return The ancillary data frame
+#' @keywords internal
+#' @note Called only by \code{\link{read_dataset}}.
+convert_ancillary_timestamps <- function(ancillary, tz, dataset_name) {
+  stopifnot(is.data.frame(ancillary))
+  stopifnot(is.character(tz))
+
+  # Convert the ancillary table timestamps to POSIXct
+  if("CSR_TIMESTAMP_BEGIN" %in% names(ancillary)) { # might have been removed if no data
+    x <- calc_timestamps(ancillary, 0, "%F %T", tz)
+
+    if(any(x$na_ts & ancillary$CSR_TIMESTAMP_BEGIN != "", na.rm = TRUE)) {
+      stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
+           " e.g. rows: ", head(which(x$na_ts)))
+    }
+    ancillary <- x$dsd
+  }
+  ancillary
+}
+
 #' Calculate all timestamps based on timestamps given and measurement length
 #'
 #' @param dsd Dataset data, a data frame
@@ -604,5 +629,22 @@ add_port_column <- function(dsd) {
     dsd$CSR_PORT <- 0L
   }
   dsd$CSR_PORT <- as.integer(convert_to_numeric(dsd$CSR_PORT, "CSR_PORT"))
+  dsd
+}
+
+#' Add NA flux columns, if necessary
+#'
+#' @param dsd Dataset data, a \code{data.frame}
+#' @return The data frame with both CSR_FLUX_CH4 and CSR_FLUX_CO2.
+#' @keywords internal
+add_flux_columns <- function(dsd) {
+  stopifnot(is.data.frame(dsd))
+
+  if(!"CSR_FLUX_CO2" %in% names(dsd)) {
+    dsd$CSR_FLUX_CO2 <- NA_real_
+  }
+  if(!"CSR_FLUX_CH4" %in% names(dsd)) {
+    dsd$CSR_FLUX_CH4 <- NA_real_
+  }
   dsd
 }

@@ -160,6 +160,35 @@ test_that("csr_build", {
                            quiet = FALSE, standardized_path = tempdir()))
 })
 
+test_that("convert_ancillary_timestamps", {
+  expect_error(convert_ancillary_timestamps(1, "1"))
+  expect_error(convert_ancillary_timestamps(data.frame(), 1))
+
+  library(lubridate)
+
+  # Timestamps not present
+  out <- convert_ancillary_timestamps(cars, "UTC")
+  expect_identical(out, cars)
+
+  # Converts
+  anc <- data.frame(CSR_TIMESTAMP_BEGIN = "2018-04-11 03:10:00",
+                    CSR_TIMESTAMP_END = "2018-04-11 03:11:00", stringsAsFactors = FALSE)
+  out <- convert_ancillary_timestamps(anc, "UTC", "test")
+  expect_true(is.POSIXct(out$CSR_TIMESTAMP_BEGIN))
+  expect_true(is.POSIXct(out$CSR_TIMESTAMP_END))
+
+  # Bad timestamps
+  anc <- data.frame(CSR_TIMESTAMP_BEGIN = "2018-04-11 03:10",
+                    CSR_TIMESTAMP_END = "2018-04-11 03:11", stringsAsFactors = FALSE)
+  expect_error(convert_ancillary_timestamps(anc, "UTC", "test"), , regexp = "Invalid timestamps")
+
+  # Doesn't error when date given but no timestamp
+  anc <- data.frame(CSR_TIMESTAMP_BEGIN = "",
+                    CSR_TIMESTAMP_END = "",
+                    CSR_DATE = "2018", stringsAsFactors = FALSE)
+  expect_silent(convert_ancillary_timestamps(anc, "UTC", "test"))
+})
+
 test_that("check_dataset_names", {
 
   # handles bad input
@@ -203,6 +232,11 @@ test_that("calc_timestamps", {
   expect_error(calc_timestamps(data.frame(), "1", "1", "1"))
   expect_error(calc_timestamps(data.frame(), 1, 1, "1"))
   expect_error(calc_timestamps(data.frame(), 1, "1", 1))
+
+  # Empty data frame
+  expect_silent(out <- calc_timestamps(data.frame(), 1, "", ""))
+  expect_type(out, "list")
+  expect_identical(length(out), 4L)
 
   # We're going to run these tests a bunch so...
   validate_list <- function(x, ml, description) {
@@ -410,6 +444,32 @@ test_that("add_port_column", {
   expect_silent(out <- add_port_column(df))
   expect_true("CSR_PORT" %in% colnames(out))
   expect_type(out$CSR_PORT, "integer")
+})
+
+test_that("add_flux_columns", {
+  # Bad input
+  expect_error(add_port_column(1))
+
+  # Adds missing CO2
+  df <- data.frame(CRS_FLUX_CH4 = 1)
+  expect_silent(out <- add_flux_columns(df))
+  expect_s3_class(out, "data.frame")
+  expect_true("CSR_FLUX_CH4" %in% colnames(out))
+  expect_true("CSR_FLUX_CO2" %in% colnames(out))
+
+  # Adds missing CH4
+  df <- data.frame(CRS_FLUX_CO2 = 1)
+  expect_silent(out <- add_flux_columns(df))
+  expect_s3_class(out, "data.frame")
+  expect_true("CSR_FLUX_CH4" %in% colnames(out))
+  expect_true("CSR_FLUX_CO2" %in% colnames(out))
+
+  # Adds both
+  df <- data.frame(x = 1)
+  expect_silent(out <- add_flux_columns(df))
+  expect_s3_class(out, "data.frame")
+  expect_true("CSR_FLUX_CH4" %in% colnames(out))
+  expect_true("CSR_FLUX_CO2" %in% colnames(out))
 })
 
 test_that("write_stan_data", {

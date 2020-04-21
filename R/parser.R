@@ -426,15 +426,8 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 
     # Add port column if necessary
     dsd <- add_port_column(dsd)
-
     # Check for missing flux columns and add if necessary
-    if(!"CSR_FLUX_CO2" %in% names(dsd)) {
-      dsd$CSR_FLUX_CO2 <- NA_real_
-    }
-    if(!"CSR_FLUX_CH4" %in% names(dsd)) {
-      dsd$CSR_FLUX_CH4 <- NA_real_
-    }
-
+    dsd <- add_flux_columns(dsd)
     # Rearrange columns
     dsd <- rearrange_columns(dsd, required_cols =
                                c("CSR_PORT", "CSR_TIMESTAMP_BEGIN",
@@ -468,6 +461,8 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
   stopifnot(is.character(dataset_name))
   stopifnot(length(dataset_name) == 1)
   stopifnot(is.logical(force_raw))
+  stopifnot(is.logical(quiet))
+  stopifnot(is.logical(metadata_only))
 
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
@@ -475,17 +470,8 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
                   columns = read_columns_file(dataset_name),
                   ancillary = read_ancillary_file(dataset_name))
 
-  # Convert the ancillary table timestamps to POSIXct
-  # Couldn't do it in read_ancillary_file() above because need time zone information
-  if("CSR_TIMESTAMP_BEGIN" %in% names(dataset$ancillary)) { # might have been removed if no data
-    x <- calc_timestamps(dataset$ancillary, 0, "%F %T", dataset$description$CSR_TIMESTAMP_TZ)
-
-    if(any(x$na_ts & dataset$ancillary$CSR_TIMESTAMP_BEGIN != "", na.rm = TRUE)) {
-      stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
-           " e.g. rows: ", head(which(x$na_ts)))
-    }
-    dataset$ancillary <- x$dsd
-  }
+  dataset$ancillary <- convert_ancillary_timestamps(dataset$ancillary,
+                                                    dataset$description$CSR_TIMESTAMP_TZ)
 
   if(!metadata_only) {
 
