@@ -461,6 +461,7 @@ check_dataset_names <- function(dataset_name, dataset, field_metadata) {
       fm_table <- field_metadata[field_metadata$Table_name == tab,]
       names_found <- changed_names %in% fm_table$Field_name
       if(any(!names_found)) {
+        browser()
         warning(dataset_name, " - ", "fields not found in metadata for table '", tab, "': ",
                 paste(names(dst)[!names_found], collapse = ", "))
       }
