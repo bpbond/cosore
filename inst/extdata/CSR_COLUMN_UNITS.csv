@@ -34,7 +34,6 @@ data,CSR_TWATER,Groundwater temperature,numeric,°C,FALSE
 data,CSR_TIMESTAMP_BEGIN,"Timestamp of beginning of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_TIMESTAMP_END,"Timestamp of end of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_VPD,Vapor pressure deficit,numeric,Pa,FALSE
-data,CSR_WIND,Wind speed,numeric,m/s,FALSE
 data,CSR_WTD,"Water table depth, positive numbers are depth",numeric,cm,FALSE
 #,,,,,
 # `description`: dataset and site description,,,,,
@@ -117,6 +116,7 @@ ancillary,CSR_SILT,Silt,numeric,%,FALSE
 ancillary,CSR_SOC,Soil organic carbon,numeric,m^2^/m^2^,FALSE
 ancillary,CSR_STC,Total soil carbon,numeric,%,FALSE
 ancillary,CSR_STN,Total soil nitrogen,numeric,%,FALSE
+ancillary,CSR_WIND,Wind speed,numeric,m/s,FALSE
 #,,,,,
 # `contributors`: data contributor information,,,,,
 #,,,,,

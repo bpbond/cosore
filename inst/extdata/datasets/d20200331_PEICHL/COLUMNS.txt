@@ -13,7 +13,6 @@ CSR_FLUX_CH4,  			CH4-flux,
 CSR_PAR,				PAR_mean
 CSR_PAR_AMB,			PAR_amb
 CSR_PORT,				chamber#,
-CSR_PRECIP,				PPT
 CSR_R2_CH4,				CH4-R2,
 CSR_R2_CO2,				CO2-R2,
 CSR_RH,					RH
@@ -23,5 +22,4 @@ CSR_TAIR_AMB,				Ta_amb
 CSR_TAIR,			Ta_mean
 CSR_TIMESTAMP_BEGIN,	year,			"paste(year, month, day, hour, min, sec)"
 CSR_VPD,				VPD
-CSR_WIND,				WS
 CSR_WTD,				WTL,			WTL * 100
