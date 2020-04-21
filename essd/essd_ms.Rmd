@@ -414,6 +414,20 @@ ggplot(data = doy_counts, aes(x = DOY, y = n)) +
   theme_minimal()
 ```
 
+```{r mat-map}
+source("mat-map.R")
+
+ggplot() +
+  geom_hex(data = map_mat_global,
+             aes(x = mat, y = map), bins = 100) +
+  scale_fill_distiller(palette = "YlGnBu", name = "Grid cells") +
+  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
+             color = "darkorange", shape = 4, size = 1.5) +
+  theme_minimal() +
+  labs(x = "MAT (°C)", y = "MAP (mm)")
+
+```
+
 ```{r sessionInfo}
 # R session information
 sessionInfo()
