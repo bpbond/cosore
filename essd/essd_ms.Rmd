@@ -115,7 +115,7 @@ All changes to the data or codebase are immediately available through the GitHub
 
 ### Database license
 
-The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/); see the "LICENSE` file in the repository.
+The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/); see the "LICENSE" file in the repository.
 This is identical to that used by e.g. Ameriflux and FLUXNET Tier 1. 
 In general, this license provides that users may copy and redistribute the database and R package code in any medium or format, adapting and building upon them for any scientific or commercial purpose, as long as appropriate credit is given.
 We request that users cite this database definition paper, and strongly encourage them to (i) cite all constituent dataset primary publications, and (ii) involve data contributors as co-authors when possible.
