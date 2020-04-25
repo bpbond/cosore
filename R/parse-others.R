@@ -752,3 +752,22 @@ parse_d20200407_WANG <- function(path) {
 
   rbind_list(dats)
 }
+
+#' Parse a custom file from d20200423_SANCHEZ-CANETE
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+`parse_d20200423_SANCHEZ-CANETE` <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  dats <- list()
+  for(i in 1:3) {
+    dats[[i]] <- dat[c("TIMESTAMP", paste0("Fc_", i), paste0("SWC_", i), paste0("Temp_", i))]
+    names(dats[[i]]) <- c("TIMESTAMP", "Fc", "SWC", "Temp")
+    dats[[i]]$port <- i
+  }
+
+  rbind_list(dats)
+}
+
