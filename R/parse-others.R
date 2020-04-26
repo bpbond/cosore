@@ -771,3 +771,25 @@ parse_d20200407_WANG <- function(path) {
   rbind_list(dats)
 }
 
+#' Parse a custom file from d20200423_OYONARTE
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20200423_OYONARTE <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  dats <- list()
+  p <- 1
+  for(i in c("UP", "BS")) {
+    dats[[i]] <- dat[c(paste0("SF_", i), paste0("SWC_", i), paste0("Temp_", i))]
+    names(dats[[i]]) <- c("SF", "SWC", "Temp")
+    dats[[i]]$Timestamp <- with(dat, paste(Year, Month, Day, Hour, Minute))
+    dats[[i]]$port <- p
+    p <- p + 1
+  }
+
+  rbind_list(dats)
+}
+
+
