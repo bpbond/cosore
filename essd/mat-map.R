@@ -4,10 +4,6 @@
 # Load libraries
 library(raster)
 library(sp)
-library(dplyr)
-library(cosore)
-library(tidyr)
-library(ggplot2)
 library(RColorBrewer)
 
 # Download worldclim data for precip and tmean, store in essd/ folder
@@ -18,7 +14,7 @@ if(!file.exists("wc10/prec_10m_bil.zip")) {
 
 # Pull out cosore dataset latitudes and longitudes
 csr_table(table = "description") %>%
-  select(CSR_LONGITUDE, CSR_LATITUDE) -> cosore_coords
+  dplyr::select(CSR_LONGITUDE, CSR_LATITUDE) -> cosore_coords
 
 # Extract cosore location data from worldclim data for precip...
 raster::extract(precip, cosore_coords) -> precip_coords
@@ -40,7 +36,7 @@ raster::as.data.frame(precip, xy = TRUE) %>%
 
 # Calculate annual mean for precip...
 precip_global %>%
-  select(-x, -y) %>%
+  dplyr::select(-x, -y) %>%
   apply(1, mean) -> map_global
 
 raster::as.data.frame(tmean, xy = TRUE) %>%
@@ -48,7 +44,7 @@ raster::as.data.frame(tmean, xy = TRUE) %>%
 
 # ...and tmean
 tmean_global %>%
-  select(-x, -y) %>%
+  dplyr:select(-x, -y) %>%
   apply(1, mean) -> mat_global
 
 # Create tibble with corresponding coordinates

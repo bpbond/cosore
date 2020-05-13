@@ -307,14 +307,67 @@ ggsave("figures/figure1-map.png")
 **Figure 2.** Climate space.
 
 ```{r mat-map}
-source("mat-map.R")
+#source("mat-map.R")
+# Load libraries
+library(raster)
+library(sp)
+library(RColorBrewer)
+
+# Download worldclim data for precip and tmean, store in essd/ folder
+if(!file.exists("wc10/prec_10m_bil.zip")) {
+  precip <- getData("worldclim", path = "essd/", var = "prec", res = 10)
+  tmean <- getData("worldclim", path = "essd/", var = "tmean", res = 10)
+}
+
+# Pull out cosore dataset latitudes and longitudes
+db %>%
+  dplyr::select(CSR_LONGITUDE, CSR_LATITUDE) -> cosore_coords
+
+# Extract cosore location data from worldclim data for precip...
+raster::extract(precip, cosore_coords) -> precip_coords
+apply(precip_coords, 1, mean) -> map_cosore
+cbind(cosore_coords, map_cosore) -> map_coords
+
+# ...and tmean
+raster::extract(tmean, cosore_coords) -> tmean_vals
+apply(tmean_vals, 1, mean) -> mat_cosore
+cbind(map_coords, mat_cosore) -> mat_coords
+
+left_join(map_coords, mat_coords) %>%
+  # Temp data is stored in degC * 10, so we need to divide to get back to degC
+  mutate(mat_cosore = mat_cosore / 10) -> cosore_points
+
+# Extract global climate space data
+raster::as.data.frame(precip, xy = TRUE) %>%
+  drop_na() -> precip_global
+
+# Calculate annual mean for precip...
+precip_global %>%
+  dplyr::select(-x, -y) %>%
+  apply(1, mean) -> map_global
+
+raster::as.data.frame(tmean, xy = TRUE) %>%
+  drop_na() -> tmean_global
+
+# ...and tmean
+tmean_global %>%
+  dplyr::select(-x, -y) %>%
+  apply(1, mean) -> mat_global
+
+# Create tibble with corresponding coordinates
+tibble(x = tmean_global$x, y = tmean_global$y, mat = as.vector(mat_global)) -> mat
+tibble(x = precip_global$x, y = precip_global$y, map = as.vector(map_global)) -> map
+
+left_join(map, mat, by = c("x", "y")) %>%
+  # Temp data is stored in degC * 10, so we need to divide to get back to degC
+  mutate(mat = mat/10) -> map_mat_global
 
 p <- ggplot() +
   geom_hex(data = map_mat_global,
              aes(x = mat, y = map), bins = 100) +
   scale_fill_distiller(palette = "YlGnBu", name = "Grid cells") +
   geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
-             color = "darkorange", shape = 4, size = 1.5) +
+             color = "darkorange", shape = 4, size = 1.5, na.rm = TRUE) +
   theme_minimal() +
   labs(x = "MAT (°C)", y = "MAP (mm)")
 ggsave("figures/figure2-climate.png")
@@ -324,7 +377,7 @@ ggsave("figures/figure2-climate.png")
 
 ```{r flux-density, message = FALSE, echo = FALSE, eval=FALSE}
 # devtools::install_github("liamgilbey/ggwaffle")
-library(ggwaffle)
+# library(ggwaffle)
 
 db %>% 
   mutate(Date = date(CSR_DATE_BEGIN), 
@@ -335,7 +388,7 @@ db %>%
   avg
 
 p <- ggplot(avg, aes(Year, Records, fill = CSR_IGBP)) + 
-  geom_bar(stat = "identity") + 
+  geom_bar(stat = "identity", na.rm = TRUE) + 
   scale_y_continuous(labels = comma)
 print(p)
 ggsave("figures/figure3-waffle.png")
@@ -434,8 +487,7 @@ print(p)
 ggsave("figures/figure5-doy.png")
 ```
 
-
-```{r flux-dists}
+```{r flux-prep}
 results <- lapply(datasets, function(x) {
   d <- csr_dataset(x)
   if(!is.data.frame(d$data)) return(NULL)
@@ -443,11 +495,47 @@ results <- lapply(datasets, function(x) {
   if(!"CSR_FLUX_CH4" %in% names(d$data)) d$data$CSR_FLUX_CH4 <- NA_real_
   tibble(CSR_DATASET = d$description$CSR_DATASET,
          IGBP = d$description$CSR_IGBP,
-         CSR_FLUX_CO2 = d$CSR_FLUX_CO2,
+         CSR_FLUX_CO2 = d$data$CSR_FLUX_CO2,
          CSR_FLUX_CH4 = d$data$CSR_FLUX_CH4)
 })
 results_fluxes <- bind_rows(results)
 
+co2_limits <- c(-1, 15)
+ch4_limits <- c(-5, 25)
+out_co2 <- filter(results_fluxes, is.finite(CSR_FLUX_CO2), CSR_FLUX_CO2 < min(co2_limits) | CSR_FLUX_CO2 > max(co2_limits))
+out_ch4 <- filter(results_fluxes, is.finite(CSR_FLUX_CH4), CSR_FLUX_CH4 < min(ch4_limits) | CSR_FLUX_CH4 > max(ch4_limits))
+pct_co2 <- round(nrow(out_co2) / nrow(filter(results_fluxes, is.finite(CSR_FLUX_CO2))) * 100, 1)
+pct_ch4 <- round(nrow(out_ch4) / nrow(filter(results_fluxes, is.finite(CSR_FLUX_CH4))) * 100, 1)
+```
+
+Figure 6. Distribution of CO2 fluxes in COSORE datasets, by IGBP classification. For visual clarity this figure excludes fluxes <`r min(co2_limits)` and >`r max(co2_limits)` µmol m-2 s-1 (`r nrow(out_co2)` observations, `r pct_co2`% of the data).
+
+```{r flux-co2}
+
+p <- results_fluxes %>% 
+  filter(is.finite(CSR_FLUX_CO2), CSR_FLUX_CO2 >= min(co2_limits), CSR_FLUX_CO2 <= max(co2_limits)) %>% 
+  ggplot(aes(x = CSR_FLUX_CO2)) + 
+  geom_histogram(bins = 30) +
+  facet_wrap(~IGBP, scales = "free_y") +
+  scale_y_continuous(labels = comma) +
+  labs(x = expression(CO[2]~flux~(µmol~m^-2~s^-1)), y = "Number of observations")
+print(p)
+ggsave("figures/figure6-co2.png")
+```
+
+Figure 7. Distribution of CH4 fluxes in COSORE datasets, by IGBP classification. For visual clarity this figure excludes fluxes <`r min(ch4_limits)` and >`r max(ch4_limits)` nmol m-2 s-1 (`r nrow(out_ch4)` observations, `r pct_ch4`% of the data).
+
+
+```{r, flux-ch4}
+p <- results_fluxes %>% 
+  filter(is.finite(CSR_FLUX_CH4), CSR_FLUX_CH4 >= min(ch4_limits), CSR_FLUX_CH4 <= max(ch4_limits)) %>% 
+  ggplot(aes(x = CSR_FLUX_CH4)) + 
+  geom_histogram(bins = 30) +
+  facet_wrap(~IGBP, scales = "free") +
+  scale_y_continuous(labels = comma) +
+  labs(x = expression(CH[4]~flux~(nmol~m^-2~s^-1)), y = "Number of observations")
+print(p)
+ggsave("figures/figure7-ch4.png")
 ```
 
 
