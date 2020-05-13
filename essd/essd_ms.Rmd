@@ -190,10 +190,7 @@ When contributed data are imported into COSORE, the package code performs a numb
 # Calculate what percent of observations are removed across all datasets
 csr_table("diagnostics", quiet = TRUE) %>% 
   group_by(CSR_DATASET, CSR_RECORDS) %>% 
-  summarise(removed = CSR_RECORDS_REMOVED_NA + CSR_RECORDS_REMOVED_ERR +
-              CSR_REMOVED_LOW_CO2 + CSR_REMOVED_HIGH_CO2 +
-              CSR_REMOVED_LOW_CH4 + CSR_REMOVED_HIGH_CH4 +
-              CSR_RECORDS_REMOVED_TIMESTAMP) %>% 
+  summarise(removed = CSR_RECORDS_REMOVED_NA + CSR_RECORDS_REMOVED_ERR + CSR_RECORDS_REMOVED_TIMESTAMP) %>% 
   ungroup() %>% 
   mutate(removed_pct = removed / (removed + CSR_RECORDS) * 100) %>% 
   pull(removed_pct) -> errs
