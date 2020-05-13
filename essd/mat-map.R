@@ -11,8 +11,10 @@ library(ggplot2)
 library(RColorBrewer)
 
 # Download worldclim data for precip and tmean, store in essd/ folder
-precip <- getData("worldclim", path = "essd/", var="prec", res = 10)
-tmean <- getData("worldclim", path = "essd/", var = "tmean", res = 10)
+if(!file.exists("wc10/prec_10m_bil.zip")) {
+  precip <- getData("worldclim", path = "essd/", var = "prec", res = 10)
+  tmean <- getData("worldclim", path = "essd/", var = "tmean", res = 10)
+}
 
 # Pull out cosore dataset latitudes and longitudes
 csr_table(table = "description") %>%

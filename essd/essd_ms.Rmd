@@ -301,10 +301,26 @@ p <- ggmap(map) +
   scale_fill_manual(name = "", values = c("COSORE Submission Site" = "#FC4E07")) +
   scale_shape_manual(values = 18) + theme(legend.position = "bottom")
 print(p)
-ggsave("figures/figure1.png")
+ggsave("figures/figure1-map.png")
 ```
 
-**Figure 2.** Waffle plot of COSORE Coverage by IGBP by year of measurement. Here, one square equals 1,000 datapoints.
+**Figure 2.** Climate space.
+
+```{r mat-map}
+source("mat-map.R")
+
+p <- ggplot() +
+  geom_hex(data = map_mat_global,
+             aes(x = mat, y = map), bins = 100) +
+  scale_fill_distiller(palette = "YlGnBu", name = "Grid cells") +
+  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
+             color = "darkorange", shape = 4, size = 1.5) +
+  theme_minimal() +
+  labs(x = "MAT (°C)", y = "MAP (mm)")
+ggsave("figures/figure2-climate.png")
+```
+
+**Figure 3.** Waffle plot of COSORE Coverage by IGBP by year of measurement. Here, one square equals 1,000 datapoints.
 
 ```{r flux-density, message = FALSE, echo = FALSE, eval=FALSE}
 # devtools::install_github("liamgilbey/ggwaffle")
@@ -322,7 +338,7 @@ p <- ggplot(avg, aes(Year, Records, fill = CSR_IGBP)) +
   geom_bar(stat = "identity") + 
   scale_y_continuous(labels = comma)
 print(p)
-ggsave("figures/figure2.png")
+ggsave("figures/figure3-waffle.png")
 
 # waffle plot no of records by IGBP
 # ggplot(avg, aes(fill = CSR_IGBP, values = n)) +
@@ -341,7 +357,7 @@ ggsave("figures/figure2.png")
 
 ```
 
-**Figure 3.** Temporal data coverage by latitude.
+**Figure 4.** Temporal data coverage by latitude.
 
 ```{r lat-coverage, message = FALSE, echo = FALSE, eval=FALSE, cache=TRUE}
 # Get data density by month of year
@@ -349,8 +365,8 @@ datasets <- db$CSR_DATASET
 results <- lapply(datasets, function(x) {
   d <- csr_dataset(x)
   if(!is.data.frame(d$data)) return(NULL)
-  if(!"CSR_FLUX_CO2" %in% names(d$data)) d$data$CSR_FLUX_CO2 <- NA
-  if(!"CSR_FLUX_CH4" %in% names(d$data)) d$data$CSR_FLUX_CH4 <- NA
+  if(!"CSR_FLUX_CO2" %in% names(d$data)) d$data$CSR_FLUX_CO2 <- NA_real_
+  if(!"CSR_FLUX_CH4" %in% names(d$data)) d$data$CSR_FLUX_CH4 <- NA_real_
   d$data %>% 
     mutate(year = year(CSR_TIMESTAMP_BEGIN),
            month = month(CSR_TIMESTAMP_BEGIN)) %>% 
@@ -374,18 +390,17 @@ p <- results_lat %>%
   labs(x = "Year", y = "Latitude") +
   scale_color_continuous(labels = comma)
 print(p)
-ggsave("figures/figure3.png")
+ggsave("figures/figure4-latitude.png")
 ```
 
-**Figure 4.** Temporal data coverage by day of year and hemisphere
+**Figure 5.** Temporal data coverage by day of year and hemisphere
 
 ```{r doy-counts}
-datasets <- db$CSR_DATASET
 results <- lapply(datasets, function(x) {
   d <- csr_dataset(x)
   if(!is.data.frame(d$data)) return(NULL)
-  if(!"CSR_FLUX_CO2" %in% names(d$data)) d$data$CSR_FLUX_CO2 <- NA
-  if(!"CSR_FLUX_CH4" %in% names(d$data)) d$data$CSR_FLUX_CH4 <- NA
+  if(!"CSR_FLUX_CO2" %in% names(d$data)) d$data$CSR_FLUX_CO2 <- NA_real_
+  if(!"CSR_FLUX_CH4" %in% names(d$data)) d$data$CSR_FLUX_CH4 <- NA_real_
   d$data %>% 
     mutate(yearday = yday(CSR_TIMESTAMP_BEGIN)) %>% 
     group_by(yearday) %>% 
@@ -416,22 +431,25 @@ p <- ggplot(data = doy_counts, aes(x = yearday, y = value)) +
   labs(x = "Day of year", y = "Number of observations") +
   scale_y_continuous(labels = comma)
 print(p)
-ggsave("figures/figure4.png")
+ggsave("figures/figure5-doy.png")
 ```
 
-```{r mat-map}
-source("mat-map.R")
 
-ggplot() +
-  geom_hex(data = map_mat_global,
-             aes(x = mat, y = map), bins = 100) +
-  scale_fill_distiller(palette = "YlGnBu", name = "Grid cells") +
-  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
-             color = "darkorange", shape = 4, size = 1.5) +
-  theme_minimal() +
-  labs(x = "MAT (°C)", y = "MAP (mm)")
+```{r flux-dists}
+results <- lapply(datasets, function(x) {
+  d <- csr_dataset(x)
+  if(!is.data.frame(d$data)) return(NULL)
+  if(!"CSR_FLUX_CO2" %in% names(d$data)) d$data$CSR_FLUX_CO2 <- NA_real_
+  if(!"CSR_FLUX_CH4" %in% names(d$data)) d$data$CSR_FLUX_CH4 <- NA_real_
+  tibble(CSR_DATASET = d$description$CSR_DATASET,
+         IGBP = d$description$CSR_IGBP,
+         CSR_FLUX_CO2 = d$CSR_FLUX_CO2,
+         CSR_FLUX_CH4 = d$data$CSR_FLUX_CH4)
+})
+results_fluxes <- bind_rows(results)
 
 ```
+
 
 ```{r sessionInfo}
 # R session information
