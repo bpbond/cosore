@@ -344,24 +344,14 @@ ggsave("figures/figure2.png")
 **Figure 3.** Temporal data coverage by latitude.
 
 ```{r lat-coverage, message = FALSE, echo = FALSE, eval=FALSE}
-
-data_meta %>% 
-  select(CSR_DATASET, CSR_LATITUDE, CSR_TIMESTAMP_BEGIN, CSR_TIMESTAMP_END, CSR_IGBP) %>% 
-  group_by(CSR_DATASET, CSR_IGBP) %>% 
-  summarise(Latitude = mean(CSR_LATITUDE), 
-            Timestamp_begin = min(CSR_TIMESTAMP_BEGIN), 
-            Timestamp_end = max(CSR_TIMESTAMP_END), n = n()) -> 
-  timestamp_lengths
-
-lat_intervals <- as.character(cut_interval(timestamp_lengths$Latitude, length = 5))
-
-ggplot(timestamp_lengths, aes()) + 
-  geom_segment(aes(x = Timestamp_begin, y = lat_intervals, 
-                   xend = Timestamp_end, yend = lat_intervals),
+p <- db %>% 
+  mutate(Lat_bin = floor(CSR_LATITUDE / 2.5) * 2.5) %>% 
+  ggplot() + 
+  geom_segment(aes(x = CSR_DATE_BEGIN, y = Lat_bin, xend = CSR_DATE_END, yend = Lat_bin),
                color = "blue4", size = 2) + 
-  theme_minimal() + labs(x = "Timestamp", y = "Latitude Interval")
-
-#still need to reorder intervals to [-35,30] is at the bottom of the plot
+  labs(x = "Year", y = "Latitude")
+print(p)
+ggsave("figures/figure3.png")
 ```
 
 ```{r doy-counts}
