@@ -286,28 +286,21 @@ make_table(db_fields, "diagnostics")
 **Figure 1.** World satellite image with COSORE data submission sites shown as blue diamonds. Areas with multiple submissions are shown as darker.
 
 ```{r worldmap, message = FALSE, echo = FALSE, warning = FALSE}
-# We would like a world map with COSORE submission coordinates
-
-# First option: a satellite image with COSORE points overlayed, this uses Google Maps
 library(ggmap)
+library(scales)
 
-# Note that the following code assumes you have called `ggmap::register_google()` already
-
-bbox <- make_bbox(lon = c(-160, 160), lat = c(-70,70)) # make a coordinate box 
+bbox <- make_bbox(lon = c(-160, 150), lat = c(-50, 70)) # make a coordinate box 
 map <- get_map(location = bbox, source = "stamen", maptype = "terrain") # load map from online
 
-ggmap(map) + 
-  geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE, 
-                            fill = "COSORE Submission Site", size = CSR_RECORDS), 
+p <- ggmap(map) + 
+  geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE, size = CSR_RECORDS), 
              alpha = 0.6, color = "blue4", shape = 18) + 
- # xlim(c(-160, 160)) + 
-#  ylim(c(-40,70)) +
   labs(x = "Longitude", y = "Latitude") +
+  scale_size_continuous("", labels = comma) +
   scale_fill_manual(name = "", values = c("COSORE Submission Site" = "#FC4E07")) +
-  scale_shape_manual(values = 18) + theme(legend.position="bottom")
-##FC4E07
-
-#need to find and resolve removed datapoint throwing warning
+  scale_shape_manual(values = 18) + theme(legend.position = "bottom")
+print(p)
+ggsave("figures/figure1.png")
 ```
 
 **Figure 2.** Waffle plot of COSORE Coverage by IGBP by year of measurement. Here, one square equals 1,000 datapoints.
