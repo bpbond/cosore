@@ -168,10 +168,10 @@ keep_timestamps <- function() {
     diag$CSR_DATASET <- NULL
 
     if(is.data.frame(dsd) & nrow(dsd)) {
-     diag$CSR_TIMESTAMP_BEGIN <- min(dsd$CSR_TIMESTAMP_BEGIN)
-     diag$CSR_TIMESTAMP_END <- max(dsd$CSR_TIMESTAMP_END)
-     diag$CSR_TIME_BEGIN <- NULL
-     diag$CSR_TIME_END <- NULL
+      diag$CSR_TIMESTAMP_BEGIN <- min(dsd$CSR_TIMESTAMP_BEGIN)
+      diag$CSR_TIMESTAMP_END <- max(dsd$CSR_TIMESTAMP_END)
+      diag$CSR_TIME_BEGIN <- NULL
+      diag$CSR_TIME_END <- NULL
 
       outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
       stopifnot(file.exists(outfile))
@@ -199,4 +199,42 @@ make_gases <- function() {
       saveRDS(diag, file = outfile)
     }
   }
+}
+
+
+# for issue #207
+no_limits <- function() {
+  reprocess <- c()
+  for(ds in list_datasets()) {
+    message(ds)
+    dsd <- csr_table("data", ds)
+    dsd$CSR_DATASET <- NULL
+    diag <- csr_table("diagnostics", ds)
+    diag$CSR_DATASET <- NULL
+
+    if(is.data.frame(dsd) & nrow(dsd)) {
+      if(diag$CSR_REMOVED_HIGH_CO2 > 0 |
+         diag$CSR_REMOVED_LOW_CO2 > 0 |
+         diag$CSR_BAD_TEMPERATURE > 0) {
+        message("\tNeed to re-process!")
+        reprocess <- c(reprocess, ds)
+      }
+
+      diag$CSR_FLUX_HIGH_LIM_CO2 <-
+        diag$CSR_FLUX_LOW_LIM_CO2 <-
+        diag$CSR_FLUX_HIGH_LIM_CH4 <-
+        diag$CSR_FLUX_LOW_LIM_CH4 <-
+        diag$CSR_BAD_TEMPERATURE <-
+        diag$CSR_REMOVED_HIGH_CO2 <-
+        diag$CSR_REMOVED_LOW_CO2 <-
+        diag$CSR_REMOVED_HIGH_CH4 <-
+        diag$CSR_REMOVED_LOW_CH4 <- NULL
+
+      outfile <- file.path("./inst/extdata/datasets/", ds, "data", "diag.RDS")
+      stopifnot(file.exists(outfile))
+      saveRDS(diag, file = outfile)
+    }
+  }
+  message("Reprocess: ", reprocess)
+  writeLines(reprocess, "~/Desktop/reprocess.txt")
 }

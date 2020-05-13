@@ -10,7 +10,7 @@
 Database,				Dataset,	Computation,				Notes
 CSR_FLUX_CO2,  				flux,
 CSR_LABEL,				label,
-CSR_PAR,				PAR,
+CSR_PAR_AMB,				PAR,
 CSR_PORT,				port,
 CSR_RH,					RH,
 CSR_SM10,				SM10

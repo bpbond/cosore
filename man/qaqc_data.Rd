@@ -4,16 +4,7 @@
 \alias{qaqc_data}
 \title{QA/QC a dataset.}
 \usage{
-qaqc_data(
-  dsd,
-  diag,
-  remove_na = TRUE,
-  remove_error = TRUE,
-  remove_flux = TRUE,
-  remove_temp = TRUE,
-  flux_limits_co2 = c(-10, 50),
-  temp_limits = c(-50, 60)
-)
+qaqc_data(dsd, diag, remove_na = TRUE, remove_error = TRUE)
 }
 \arguments{
 \item{dsd}{Dataset data, a tibble}
@@ -23,14 +14,6 @@ qaqc_data(
 \item{remove_na}{Remove NA flux values? Logical}
 
 \item{remove_error}{Remove records marked as errors? Logical}
-
-\item{remove_flux}{Remove extreme flux values? Logical}
-
-\item{remove_temp}{Remove extreme temperature values? Logical}
-
-\item{flux_limits_co2}{Two-value numeric vector giving CO2 flux limits}
-
-\item{temp_limits}{Two-value numeric vector giving temperature limits}
 }
 \value{
 A list with the `dsd` and `diag` tibbles.

@@ -369,15 +369,6 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
   diag <- tibble(CSR_RECORDS = 0L,
                  CSR_RECORDS_REMOVED_NA = 0L,
                  CSR_RECORDS_REMOVED_ERR = 0L,
-                 CSR_REMOVED_LOW_CO2 = 0L,
-                 CSR_REMOVED_HIGH_CO2 = 0L,
-                 CSR_REMOVED_LOW_CH4 = 0L,
-                 CSR_REMOVED_HIGH_CH4 = 0L,
-                 CSR_FLUX_LOW_LIM_CO2 = NA,
-                 CSR_FLUX_HIGH_LIM_CO2 = NA,
-                 CSR_FLUX_LOW_LIM_CH4 = NA,
-                 CSR_FLUX_HIGH_LIM_CH4 = NA,
-                 CSR_BAD_TEMPERATURE = 0L,
                  CSR_RECORDS_REMOVED_TIMESTAMP = 0L,
                  CSR_EXAMPLE_BAD_TIMESTAMPS = "",
                  CSR_TIMESTAMP_BEGIN = NA,
@@ -397,7 +388,7 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
     if(exists(func)) {
       dsd <- do.call(func, list(df))
     } else {
-      warning("Unknown format ", ff, " in ", dataset_name)
+      stop("Unknown format ", ff, " in ", dataset_name)
     }
   }
 
@@ -435,15 +426,8 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 
     # Add port column if necessary
     dsd <- add_port_column(dsd)
-
     # Check for missing flux columns and add if necessary
-    if(!"CSR_FLUX_CO2" %in% names(dsd)) {
-      dsd$CSR_FLUX_CO2 <- NA_real_
-    }
-    if(!"CSR_FLUX_CH4" %in% names(dsd)) {
-      dsd$CSR_FLUX_CH4 <- NA_real_
-    }
-
+    dsd <- add_flux_columns(dsd)
     # Rearrange columns
     dsd <- rearrange_columns(dsd, required_cols =
                                c("CSR_PORT", "CSR_TIMESTAMP_BEGIN",
@@ -477,6 +461,8 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
   stopifnot(is.character(dataset_name))
   stopifnot(length(dataset_name) == 1)
   stopifnot(is.logical(force_raw))
+  stopifnot(is.logical(quiet))
+  stopifnot(is.logical(metadata_only))
 
   dataset <- list(description = read_description_file(dataset_name),
                   contributors = read_contributors_file(dataset_name),
@@ -484,17 +470,8 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE, quiet = FALS
                   columns = read_columns_file(dataset_name),
                   ancillary = read_ancillary_file(dataset_name))
 
-  # Convert the ancillary table timestamps to POSIXct
-  # Couldn't do it in read_ancillary_file() above because need time zone information
-  if("CSR_TIMESTAMP_BEGIN" %in% names(dataset$ancillary)) { # might have been removed if no data
-    x <- calc_timestamps(dataset$ancillary, 0, "%F %T", dataset$description$CSR_TIMESTAMP_TZ)
-
-    if(any(x$na_ts, na.rm = TRUE)) {
-      stop("Invalid timestamps in the ANCILLARY.csv file for ", dataset_name,
-           " e.g. rows: ", head(which(x$na_ts)))
-    }
-    dataset$ancillary <- x$dsd
-  }
+  dataset$ancillary <- convert_ancillary_timestamps(dataset$ancillary,
+                                                    dataset$description$CSR_TIMESTAMP_TZ)
 
   if(!metadata_only) {
 

@@ -14,25 +14,28 @@ community database for continuous soil respiration data.
 data analysis tool, click on the
 [Releases](https://github.com/bpbond/cosore/releases) tab above.
 
-**A step-by-step guide to using COSORE** is available [here](). [not available yet]
+**A step-by-step guide to using COSORE** is available [here](https://rpubs.com/bpbond/502069).
 
 **To contribute to the database**, fill out the [metadata form](https://forms.gle/xRSY7WwmWKTL6iCv5).
 
 ## Principles and general information
 
-Only free use data accepted.
-
-The package, and the process of contributing data, should be as focused and 
-simple as possible (but no simpler).
-
-All contributors will be included on an introductory database paper planned for spring 2020.
-
-The database is completely open for reuse, and licensed under the [CC BY 4](https://creativecommons.org/licenses/by/4.0/) license. We request that users cite the 
+Only free use data ([CC BY 4](https://creativecommons.org/licenses/by/4.0/)) accepted.
+We request that users cite the 
 database definition paper, and strongly encourage them to (i) cite all dataset primary
 publications, and (ii) involve data contributors as co-authors when possible.
 
+The package, and the process of contributing and accessing data, should be as focused and 
+simple as possible (but no simpler).
+
+All data contributors will be included on an introductory database paper planned for spring 2020.
+
 **COSORE is not designed to be, and should not be treated as, a permanent
-data repository.** It is a community database, but not an institutionally-backed repository like [Figshare](https://figshare.com), [DataONE](https://www.dataone.org), [ESS-DIVE](https://ess-dive.lbl.gov), etc. We recommend depositing your data in one of these first, and providing its DOI in your COSORE dataset metadata.
+data repository.** It is a community database, but not an institutionally-backed repository 
+like [Figshare](https://figshare.com), [DataONE](https://www.dataone.org),
+[ESS-DIVE](https://ess-dive.lbl.gov), etc. We recommend (but not require)
+depositing your data in one of these first,
+and providing its DOI in your COSORE dataset metadata.
 
 ## Database design
 
@@ -65,13 +68,14 @@ records that were dropped, problems found, etc.
 
 ## Operation
 
-Three primary functions are available for R users:
+Four primary functions are available for R users:
 * `csr_database()` returns a summary data frame about the entire database (all constituent datasets)
 * `csr_dataset()` returns a single _dataset_, as a list of data frames
 * `csr_table()` returns a single _table_, across one or many datasets
-* Reports can be generated for the overall database (`csr_report_database()`) 
-and each individual dataset (`csr_report_dataset()`).
+* `csr_metadata()` returns a metadata table describing all fields in dataset tables 
 
+Reports can be generated for the overall database (`csr_report_database()`) 
+and each individual dataset (`csr_report_dataset()`). 
 There are a number of developer functions as well, i.e. not intended for the average
 COSORE user. Perhaps most importantly this includes `csr_build()`, which scans for
 and parses metadata on all installed datasets, then loads the data,
@@ -81,7 +85,7 @@ parsing raw data as necessary and available.
 
 R users will find it easiest to install this package and then use the functions above. Anyone can also download flat (csv) files from the [Releases](https://github.com/bpbond/cosore/releases) page.
 
-## Priorities
+## Data priorities
 
 * Structured/standardized continuous IRGA data
 * Raw LI-8100A data

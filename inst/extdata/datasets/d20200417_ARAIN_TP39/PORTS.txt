@@ -1,0 +1,26 @@
+# PORTS.txt
+#
+# This comma-separated data file provides information about multiplexer ports
+# and what conditions they represent. Entries below include: 
+#
+# 	CSR_PORT: CSR_PORT number, numeric; "0" means all ports [req]
+#	CSR_MSMT_VAR: measurement variable: "Rs", "Rh", or "NEE" [req]
+# 	CSR_TREATMENT: "None" or experimental manipulation [req]
+#	CSR_AREA: optional chamber area, cm2
+#	CSR_VOLUME: optional volume of chamber, cm3
+#	CSR_DEPTH: optional collar insertion depth, cm
+#	CSR_OPAQUE: opaque chamber? Assumed TRUE unless appears below  [req]
+#	CSR_PLANTS_REMOVED: plants removed? Assumed TRUE unless appears below [req] 
+#	CSR_FAN: mixing fan in chamber? Optional
+# 	CSR_SPECIES: optional field describing species measured
+#	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
+#
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_OPAQUE,	CSR_FAN,	CSR_AREA,	CSR_VOLUME,	CSR_DEPTH,	CSR_SPECIES
+1,			Rs,				No litter,		FALSE,		TRUE,		2164.75,	60000,		4,			Pinus strobus L.
+2,			Rs,				None,			FALSE,		TRUE,		2164.75,	60000,		4,			Pinus strobus L.
+3,			Rh,				None,			FALSE,		TRUE,		2164.75,	60000,		4,			Pinus strobus L.
+4,			Rs,				Drought,		FALSE,		TRUE,		2164.75,	60000,		4,			Pinus strobus L.
+5,			Rs,				None,			FALSE,		TRUE,		2164.75,	60000,		4,			Pinus strobus L.
+6,			Rs,				Drought,		FALSE,		TRUE,		2164.75,	60000,		4,			Pinus strobus L.
+7,			Rs,				None,			FALSE,		TRUE,		2164.75,	60000,		4,			Pinus strobus L.
+8,			Rh,				None,			FALSE,		TRUE,		2164.75,	60000,		4,			Pinus strobus L.

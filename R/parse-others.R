@@ -23,7 +23,7 @@ parse_d20190830_LIANG <- function(path) {
 
   for(f in seq_along(co2files)) {
     fn <- files[co2files][f]
-    #    message(f, "/", length(co2files), " ", fn)
+    message(f, "/", length(co2files), " ", fn)
     #    cat(f, "/", length(co2files), " ", fn, "\n", file = "~/Desktop/log.txt", append = T)
 
     # Find and parse the header; its location varies by file
@@ -130,7 +130,7 @@ parse_d20190617_SCOTT_xxx <- function(path, skip, ports) {
   for(p in ports) {
     dp <- d
     dp$CSR_PORT <- p
-    dp$CSR_FLUX <- dat[,paste0("SR_", p)]
+    dp$CSR_FLUX_CO2 <- dat[,paste0("SR_", p)]
     dp$CSR_SM5 <- dat[,paste0("SM_", p)]
     dp$CSR_T5 <- dat[,paste0("T5_", p)]
     out <- rbind(out, dp)
@@ -237,13 +237,13 @@ parse_d20190527_GOULDEN <- function(path) {
 #' @keywords internal
 parse_d20190430_DESAI <- function(path) {
   dat <- parse_PROCESSED_CSV(path)
+  dat <- as.data.frame(dat)
 
   results <- list()
   for(p in 1:4) {   # four separate ports in the file
     p_chr <- paste0("P", p)
     x <- dat[c("Time.UTC")]
-    x$CSR_FLUX <- dat[,paste0("QCCombo.Flux.", p_chr)]
-    x$CSR_ERROR <- x$CSR_FLUX > 50  # ad hoc
+    x$CSR_FLUX_CO2 <- dat[,paste0("QCCombo.Flux.", p_chr)]
     x$CSR_PORT <- p
 
     # Extract port-specific temperature at various depths...
@@ -314,6 +314,24 @@ parse_d20190430_DESAI <- function(path) {
              new_categories = c(2, 3, 4, 5, 6, 9, 10, 11, 12) # custom sequence
   )
 }
+
+
+#' Parse a custom file from d20200108_JASSAL
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20200108_JASSAL <- function(path) {
+  dat <- parse_PROCESSED(path)
+
+  dat$Timestamp <- as.character(dat$Days_since_20060100 * 24 * 60 * 60 +
+                                  strptime("20060101", format("%Y%m%d")))
+
+  # Flux fields
+  fluxcols <- grep("^flux_", names(dat))
+  minigather(dat, names(dat)[fluxcols], "port", "flux", new_categories = 1:6)
+}
+
 
 #' Parse a custom file from d20200212_ATAKA.
 #'
@@ -716,3 +734,62 @@ parse_d20200407_WANG <- function(path) {
   dat <- merge(merge(dat, sm10, all.x = TRUE), t10, all.x = TRUE)
   dat[c("Chamber_name", "Rtu_Date", "Rtu_Time", "CH4_Flux_nmol/m2*s", "sm10", "t10")]
 }
+
+#' Parse a custom file from d20200419_PEREZ_QUEZADA
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+`parse_d20200419_PEREZ-QUEZADA` <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  dats <- list()
+  for(i in 1:5) {
+    dats[[i]] <- dat[c("Date", "Hour", paste0("FLUX_", i), paste0("TEMP_", i))]
+    names(dats[[i]]) <- c("Date", "Hour", "FLUX", "TEMP")
+    dats[[i]]$port <- i
+  }
+
+  rbind_list(dats)
+}
+
+#' Parse a custom file from d20200423_SANCHEZ-CANETE
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+`parse_d20200423_SANCHEZ-CANETE` <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  dats <- list()
+  for(i in 1:3) {
+    dats[[i]] <- dat[c("TIMESTAMP", paste0("Fc_", i), paste0("SWC_", i), paste0("Temp_", i))]
+    names(dats[[i]]) <- c("TIMESTAMP", "Fc", "SWC", "Temp")
+    dats[[i]]$port <- i
+  }
+
+  rbind_list(dats)
+}
+
+#' Parse a custom file from d20200423_OYONARTE
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20200423_OYONARTE <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
+
+  dats <- list()
+  p <- 1
+  for(i in c("UP", "BS")) {
+    dats[[i]] <- dat[c(paste0("SF_", i), paste0("SWC_", i), paste0("Temp_", i))]
+    names(dats[[i]]) <- c("SF", "SWC", "Temp")
+    dats[[i]]$Timestamp <- with(dat, paste(Year, Month, Day, Hour, Minute))
+    dats[[i]]$port <- p
+    p <- p + 1
+  }
+
+  rbind_list(dats)
+}
+
+

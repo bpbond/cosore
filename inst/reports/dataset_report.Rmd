@@ -127,9 +127,6 @@ Records removed (error)     | `r diag$CSR_RECORDS_REMOVED_ERR`
 Records removed (invalid timestamp)     | `r diag$CSR_RECORDS_REMOVED_TIMESTAMP`
 Bad timestamp examples     | `r diag$CSR_EXAMPLE_BAD_TIMESTAMPS`
 Records removed (no flux)   | `r diag$CSR_RECORDS_REMOVED_NA`
-Records (flux < `r diag$CSR_FLUX_LOW_LIM_CO2`)  | `r diag$CSR_REMOVED_LOW_CO2`
-Records (flux > `r diag$CSR_FLUX_HIGH_LIM_CO2`) | `r diag$CSR_REMOVED_HIGH_CO2`
-Bad temperature values removed | `r diag$CSR_BAD_TEMPERATURE`
 Size                | `r format(object.size(ds), "Mb")`
 
 **Flux summary**:
@@ -186,7 +183,7 @@ if(is.data.frame(dsd) & !quick) {
 
 ```{r tsensitivity}
 if(is.data.frame(dsd) & !quick) {
-  tcols <- grep("^CSR_T(CHAMBER|[0-9]+)", names(dsd))
+  tcols <- grep("^CSR_T(AIR|[0-9]+)", names(dsd))
   if(length(tcols)) {
     
     if(has_co2) {

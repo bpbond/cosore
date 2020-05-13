@@ -9,7 +9,6 @@
 #
 Database,		Dataset,	Computation,				Notes
 CSR_FLUX_CO2,  		flux,
-CSR_PAR,		PAR
 CSR_PORT,		Chamber,
 CSR_RH,			RelHum,
 CSR_SM10,		sm

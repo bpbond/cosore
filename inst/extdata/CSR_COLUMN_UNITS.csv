@@ -34,7 +34,6 @@ data,CSR_TWATER,Groundwater temperature,numeric,°C,FALSE
 data,CSR_TIMESTAMP_BEGIN,"Timestamp of beginning of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_TIMESTAMP_END,"Timestamp of end of flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 data,CSR_VPD,Vapor pressure deficit,numeric,Pa,FALSE
-data,CSR_WIND,Wind speed,numeric,m/s,FALSE
 data,CSR_WTD,"Water table depth, positive numbers are depth",numeric,cm,FALSE
 #,,,,,
 # `description`: dataset and site description,,,,,
@@ -109,6 +108,7 @@ ancillary,CSR_NEP,Net ecosystem production,numeric,gC/m^2^/time,FALSE
 ancillary,CSR_NH4,Ammonium,numeric,mg/kg soil,FALSE
 ancillary,CSR_NO3,Nitrate,numeric,mg/kg soil,FALSE
 ancillary,CSR_NPP,Total NPP,numeric,gC/m^2^/time,FALSE
+ancillary,CSR_PAR,Photosynthetically active radation,numeric,µmol/m^2^/s,FALSE
 ancillary,CSR_PH,Soil pH,numeric,,FALSE
 ancillary,CSR_PRECIP,Precipitation at site,numeric,mm,FALSE
 ancillary,CSR_SAND,Sand,numeric,%,FALSE
@@ -116,6 +116,7 @@ ancillary,CSR_SILT,Silt,numeric,%,FALSE
 ancillary,CSR_SOC,Soil organic carbon,numeric,m^2^/m^2^,FALSE
 ancillary,CSR_STC,Total soil carbon,numeric,%,FALSE
 ancillary,CSR_STN,Total soil nitrogen,numeric,%,FALSE
+ancillary,CSR_WIND,Wind speed,numeric,m/s,FALSE
 #,,,,,
 # `contributors`: data contributor information,,,,,
 #,,,,,
@@ -128,20 +129,11 @@ contributors,CSR_ROLE,CReDiT role; see https://www.casrai.org/credit.html,charac
 # Diagnostic fields,,,,,
 #,,,,,
 diagnostics,CSR_ASSUMED_MSMT_LENGTH,If no measurement length is provided this is set to assumed value,numeric,s,FALSE
-diagnostics,CSR_BAD_TEMPERATURE,Number of observations removed for bad temperature values,numeric,,TRUE
 diagnostics,CSR_EXAMPLE_BAD_TIMESTAMPS,Example bad timestamps,character,,FALSE
-diagnostics,CSR_FLUX_HIGH_LIM_CO2,CO2 flux high bound; values above this are removed,numeric,,TRUE
-diagnostics,CSR_FLUX_LOW_LIM_CO2,CO2 flux low bound; values above this are removed,numeric,,TRUE
-diagnostics,CSR_FLUX_HIGH_LIM_CH4,CH4 flux high bound; values above this are removed,numeric,,TRUE
-diagnostics,CSR_FLUX_LOW_LIM_CH4,CH4 flux low bound; values above this are removed,numeric,,TRUE
-diagnostics,CSR_GASES,Gases for which is present in final dataset,character,,TRUE
+diagnostics,CSR_GASES,Gases present in final dataset,character,,TRUE
 diagnostics,CSR_RECORDS,Records in final dataset,integer,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_ERR,Number of observations removed for error code,integer,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_NA,Number of observations removed for missing flux,integer,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_TIMESTAMP,Number of observations removed for bad timestamp,integer,,TRUE
-diagnostics,CSR_REMOVED_HIGH_CO2,Number of observations removed for CO2 flux too high,integer,,TRUE
-diagnostics,CSR_REMOVED_LOW_CO2,Number of observations removed for CO2 flux too low,integer,,TRUE
-diagnostics,CSR_REMOVED_HIGH_CH4,Number of observations removed for CH4 flux too high,integer,,TRUE
-diagnostics,CSR_REMOVED_LOW_CH4,Number of observations removed for CH4 flux too low,integer,,TRUE
 diagnostics,CSR_TIMESTAMP_BEGIN,"Timestamp of first flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE
 diagnostics,CSR_TIMESTAMP_END,"Timestamp of last flux observation, written YYYY-MM-DD HH:MM:SS",POSIXct,,TRUE

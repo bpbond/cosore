@@ -9,7 +9,7 @@
 #
 Database,		Dataset,	Computation,				Notes
 CSR_FLUX_CO2,  		F0,
-CSR_PAR,		PAR,
+CSR_PAR_AMB,		PAR,
 CSR_SM10,		SWC
 CSR_T2,			Ts2
 CSR_T8,			Ts8

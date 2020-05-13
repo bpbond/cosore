@@ -215,5 +215,7 @@ test_that("map_columns", {
 
   # errors on nonexistent or duplicated columns
   columns <- data.frame(Database = "z", Dataset = "q")
-  expect_error(map_columns(dat, columns))
+  expect_error(map_columns(dat, columns), regexp = "not found in dat")
+  columns <- data.frame(Database = c("z", "z"), Dataset = c("x", "y"))
+  expect_error(map_columns(dat, columns), regexp = "More than one dataset column maps")
 })

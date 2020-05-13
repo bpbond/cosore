@@ -1,0 +1,45 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+#		For US sites, a corresponding Central American timezone is used if 
+#		the instrument does not follow daylight savings 
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+#	CSR_MSMT_LENGTH: measurement length (seconds)
+#	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
+#	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
+		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
+# --------------------------------------
+CSR_SITE_NAME: Llano de los Juanes
+CSR_LONGITUDE: -2.752115
+CSR_LATITUDE: 36.926594
+CSR_ELEVATION: 1623
+CSR_TIMEZONE: UTC
+CSR_IGBP: Open shrubland
+CSR_NETWORK: FLUXNET 
+CSR_SITE_ID: ES-LJu
+CSR_INSTRUMENT: GMM-222, Vaisala
+CSR_MSMT_LENGTH: 1800
+CSR_FILE_FORMAT: Custom
+CSR_TIMESTAMP_FORMAT: %d/%m/%Y %H:%M
+CSR_TIMESTAMP_TZ: UTC 
+CSR_PRIMARY_PUB: 10.1002/2016JG003500
+CSR_OTHER_PUBS: 10.1111/ejss.12710
+CSR_DATA_URL: 10.6084/m9.figshare.12192570
+CSR_ACKNOWLEDGMENT: 

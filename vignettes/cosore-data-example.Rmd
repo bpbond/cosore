@@ -19,12 +19,12 @@ vignette: >
   
 # Introduction
 
-Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by continuous (typically hourly) measurement systems in many places over the last 25 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support data synthesis and transparency. 
+Soil respiration--the flux of CO2 from the soil surface to the atmosphere--has been measured by 'continuous' (e.g. half-hourly) measurement systems in many places over the last 20 years. The goal of the COSORE database is to collect many of these data into a single open community resource to support and speed up data synthesis and to fight the [file drawer problem](http://dx.doi.org/10.1037/0033-2909.86.3.638). 
 
-The database is distributed as an R package. Use the `devtools` package
-to install COSORE: `devtools::install_github()`.
+The database is distributed as an R package. Use the `remotes` or `devtools` packages
+to install COSORE, e.g. `devtools::install_github("bpbond/cosore")`.
 
-(For non-R users, the database is also distrubuted as a zip file of comma-separated files for non-R users, available through GitHub releases [here](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files, including a version of this vignette.)
+(For non-R users, the database is also distributed as a zip file of comma-separated files, available through the package's release [on GitHub](https://github.com/bpbond/cosore/releases). When you download and extract the file, there's a README, the data in two separate formats, and a number of other files, including a version of this vignette.)
 
 But how do we work with this database, exactly? Let's start by loading it into R:
 
@@ -32,42 +32,32 @@ But how do we work with this database, exactly? Let's start by loading it into R
 library(cosore)
 ```
 
-The database is comprised of a collection of _datasets_, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements taken at a single site and with constant treatment assignments.
-
-In practice, the `COSORE` database can be thought of as a two-level nested list of data frames:
+The database is comprised of a collection of _datasets_, each converted to a standard format and units. A dataset is one or more files of continuous (automated) soil respiration data, with accompanying metadata, with all measurements (i) taken at a single site (although different chambers can have individual geographic coordinates) and (ii) with constant treatment assignments. In R, each dataset is a [list](http://www.r-tutor.com/r-introduction/list) of [data frames](http://www.r-tutor.com/r-introduction/data-frame):
 
 ```
-cosore
-|- dataset 1
-|   |- description table (a data.frame)
-|   |- contributors table (ditto...)
-|   |- ports table
-|   |- columns table
-|   |- ancillary table
-|   |- data table
-|   |- diagnostics table
-|- dataset 2
-|   |- description table
-|   |- contributors table
-|   |- ports table
-|   |- columns table
-|   |- ancillary table
-|   |- data table
-|   |- diagnostics table
-|- dataset 3
+dataset 1
+|- description table (a data.frame)
+|- contributors table (ditto...)
+|- ports table
+|- columns table
+|- ancillary table
+|- data table
+|- diagnostics table
+
+dataset 2
 |   |- etc.
 ```
 
 For most analyses we want to extract one or more of these pieces and combine them--for example, to get a single dataset, a table of contributors, or an overview of the entire database. 
 
-With this in place, we extract a combined `description` table for the entire database and take a look at it:
+The package provides a useful function that gives an overview of the entire database:
 
 ```{r description-table}
 db_info <- csr_database()
 tibble::glimpse(db_info)
 ```
 
-Lots of information; note much of this is summarized in the `Report-all.html` file included with the data download.
+There's lots of information here, one row per dataset, including dataset name; geographic location; number of records; vegetation types; and gases, fluxes, and dates measured. Much of this is also summarized in the `Report-all.html` file included with the data in each release.
 
 # Exploring a single dataset
 
@@ -82,37 +72,44 @@ The `description` table gives the basic information about this dataset:
 where it was measured, the time zone that the `data` timestamps are in, 
 instrument used, and citation and acknowledgment information.
 
-```{r sr-varner}
+If you have questions about what COSORE fields contain, their units, etc., the `csr_metadata()` function returns a table with full information about this. This information is also packaged into each flat-file release.
+
+Next, we want to look at the actual data:
+
+```{r sr-varner-data}
 sr <- varner$data
 nrow(sr)
 summary(sr)
 ```
 
-This dataset has `r nrow(sr)` observations; extends from April 2003 to December 2006; and soil respiration was measured on eight ports, along with air and 5 cm soil temperature. Visualizing it:
+This dataset has `r format(nrow(sr), big.mark = ",")` observations; extends from April 2003 to December 2006; and soil respiration was measured using eight chambers, along with air and 5 cm soil temperature. Visualizing it:
 
 ```{r visualize-varner}
 library(ggplot2)
+theme_set(theme_minimal()) # so much nicer
 ggplot(sr, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX_CO2, color = CSR_PORT)) +
-  geom_point(size = 0.5) + ggtitle("Flux over time")
+  geom_point(size = 0.5, alpha = 0.25) +
+  coord_cartesian(ylim = c(0, 20))
 
 library(lubridate, warn.conflicts = FALSE)
 ggplot(sr, aes(CSR_T5, CSR_FLUX_CO2)) + 
   facet_wrap(~month(CSR_TIMESTAMP_BEGIN), scales = "free") +
-  geom_point(size = 0.5, alpha = 0.5) +
-  ggtitle("5 cm soil temp vs. flux, by month")
+  geom_point(size = 0.5, alpha = 0.25)
 ```
+
+The November data include one very large flux that we'd probably want to exclude.
 
 Did these eight different ports (chambers) represent different treatments?
 We might want to exclude treatment collars, or color them differently 
 in the plots above. The `ports` table holds this information.
 
 ```{r ports-varner}
-varner$ports
+tibble::glimpse(varner$ports)
 ```
 
-From this we see that the only `CSR_PORT` entry is zero, and has a `CSR_TREATMENT` of "None", i.e. all ports/collars had the same treatment, and there _wasn't_ any treatment. Also, the collars were `r varner$ports$CSR_AREA` cm2.
+From this we see that the only `CSR_PORT` entry is zero (meaning that this information applies to _all_ ports), has has a `CSR_TREATMENT` of "None". Also, the collars were `r format(varner$ports$CSR_AREA, big.mark = ",")` cm2.
 
-Finally, we can use the `description` table information to get a full citation:
+Finally, we can use the `description` table information to get a full reference (which you will **definitely** cite in your published analysis, right?):
 
 ```{r pub-varner}
 doi <- varner$description$CSR_PRIMARY_PUB
@@ -125,13 +122,12 @@ try({  # in case you don't have 'rcrossref' installed...
 
 # Selecting and combining multiple datasets
 
-Time for something more ambitious: let's examine how soil respiration varies over the course of the day in temperate deciduous forests.
+Time for something more ambitious: let's examine how soil respiration varies over the course of the day in temperate deciduous forests. For this we use the `csr_table()` function, which combined data across multiple datasets.
 
 ```{r}
 dbf_datasets <- subset(db_info, CSR_IGBP == "Deciduous broadleaf forest")$CSR_DATASET
 tdf <- csr_table("description", dbf_datasets)
 ```
-
 
 ```{r dbf-map}
 # Make a map of these datasets
@@ -148,10 +144,15 @@ There are `r nrow(tdf)` datasets here. Extract and visualize their data:
 
 ```{r dbf-data}
 tdf_dat <- csr_table("data", dbf_datasets, quiet = TRUE)
+```
+
+`r format(nrow(tdf_dat), big.mark = ",")` rows of data!
+
+```{r dbf-data-plot}
 ggplot(tdf_dat, aes(CSR_TIMESTAMP_BEGIN, CSR_FLUX_CO2, color = CSR_DATASET)) + 
-  geom_point(size = 0.5) + 
-  coord_cartesian(ylim = c(0, 20)) +
-  ggtitle("Flux over time, colored by dataset")
+  geom_point(size = 0.5, alpha = 0.25) + 
+  scale_color_discrete(guide = FALSE) +
+  coord_cartesian(ylim = c(0, 20))
 ```
 
 The original question we were interested in was how respiration varies over the course of the day. Say we're also interested in site latitude as a possible covariate, requiring us to join together two of the tables we've extracted.
@@ -162,28 +163,26 @@ site_info <- tdf[c("CSR_DATASET", "CSR_SITE_NAME", "CSR_LATITUDE")]
 tdf_combined <- merge(tdf_dat, site_info, by = "CSR_DATASET")
 # add some new fields
 tdf_combined$Hour <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
-tdf_combined$Month <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
-tdf_combined$Year <- hour(tdf_combined$CSR_TIMESTAMP_BEGIN)
+tdf_combined$Month <- month(tdf_combined$CSR_TIMESTAMP_BEGIN)
 
 # for each month, compute mean flux for each hour of the day
-tdf_smry <- aggregate(CSR_FLUX_CO2 ~ CSR_DATASET + CSR_LATITUDE + Year + Month + Hour,
+tdf_smry <- aggregate(CSR_FLUX_CO2 ~ CSR_DATASET + CSR_LATITUDE + Month + Hour,
                       FUN = mean, data = tdf_combined)
 
 ggplot(tdf_smry, aes(Hour, CSR_FLUX_CO2, color = CSR_LATITUDE)) + 
-  geom_point(size = 0.5) + facet_wrap(~Month) +
-  ggtitle("Flux by hour of day and month of year")
+  geom_point(size = 0.5) + facet_wrap(~Month)
 ```
 
-(Note that for simplicity, we're assuming above that data timestamps are in _local_ time, but that might not be true, e.g. if an instrument is set to UTC; see the `description` table.)
+Note that in COSORE all timestamps are in the site's _local_, [_standard_](https://en.wikipedia.org/wiki/Standard_time) time.
 
 # Other tables and data
 
-This vignette has mostly focused on the `description` and `data` tables, and briefly mentioned `ports`. Others include:
+This vignette has mostly focused on the `description` and `data` tables, and briefly mentioned `ports` and `contributors`. Others include:
 
-* The `contributors` table: dataset contributors. The first person listed should be considered the primary point of contact.
+* The `contributors` table: dataset contributors. The first person listed should be considered the primary point of contact for questions about the data or offers of co-authorship.
 * `ancillary`: ancillary site-level data such as leaf area index, net primary production, soil texture, etc. All optional.
 
-Two additional tables provide information about the processing of raw data into standardized COSORE datasets:
+Two additional tables provide information about the processing of raw (contributed) data into standardized COSORE datasets:
 
 * `columns`: describes how columns in the original dataset (i.e. as contributed) were mapped to the COSORE standard fields, including any unit changes or transformations.
 * `diagnostics`: metadata about the data ingestion process: rows and columns removed, errors, etc.
@@ -197,6 +196,7 @@ These can all be extracted using the `csr_table()` function shown above.
 * `csr_table()`, demonstrated above, load a single _table_ across multiple datasets
 * `csr_report_database()` generates a HTML summary of the entire database
 * `csr_report_dataset()` generates an HTML summary of a single dataset
+* `csr_metadata()` returns an informational table describing columns in all tables
 
 # Feedback and contributions
 

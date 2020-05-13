@@ -11,9 +11,7 @@ Database,				Dataset,	Computation,				Notes
 CSR_FLUX_CO2,  			Fco2,
 CSR_FLUX_CH4,			Fch4,
 CSR_SOIL_O2,			O2,
-CSR_PAR,				PPFD_IN_F
 CSR_PORT,				Port,
-CSR_PRECIP,				P_RAIN
 CSR_RH,					RH_1_1_1,
 CSR_SM10,				VWC,
 CSR_T5,					T5,

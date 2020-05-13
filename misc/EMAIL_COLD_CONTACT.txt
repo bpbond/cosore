@@ -1,0 +1,10 @@
+Dear Dr. $LAST_NAME, or to whom it may concern,
+ 
+I have been working with a number of other scientists to assemble an open, community database of continuous soil respiration measurements (see attached poster I presented at the recent AGU Chapman conference; also for more information https://github.com/bpbond/cosore). COSORE now has 1.9 million soil respiration measurements from around the world. I am trying to continue to build it out, and am planning to write a ESSD paper with all contributors this winter.
+ 
+First, congratulations on your $PUBLICATION paper! It’s very interesting and well written. I’m writing to ask if you would be able and willing to deposit the underlying automatic chamber data–the fluxes measured each 30 minutes–into COSORE? That would be a fantastic addition to the database and greatly expand the ability of researchers to conduct syntheses and meta-analyses. Please note that COSORE is firmly open: all citation and contributor contact information is logged with each dataset, but we can only (strongly) request people who use the data cite/involve the contributors.
+ 
+Thanks for your consideration of this request,
+ 
+Ben Bond-Lamberty
+ 
