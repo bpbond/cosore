@@ -343,30 +343,80 @@ ggsave("figures/figure2.png")
 
 **Figure 3.** Temporal data coverage by latitude.
 
-```{r lat-coverage, message = FALSE, echo = FALSE, eval=FALSE}
-p <- db %>% 
-  mutate(Lat_bin = floor(CSR_LATITUDE / 2.5) * 2.5) %>% 
-  ggplot() + 
-  geom_segment(aes(x = CSR_DATE_BEGIN, y = Lat_bin, xend = CSR_DATE_END, yend = Lat_bin),
-               color = "blue4", size = 2) + 
-  labs(x = "Year", y = "Latitude")
+```{r lat-coverage, message = FALSE, echo = FALSE, eval=FALSE, cache=TRUE}
+# Get data density by month of year
+datasets <- db$CSR_DATASET
+results <- lapply(datasets, function(x) {
+  d <- csr_dataset(x)
+  if(!is.data.frame(d$data)) return(NULL)
+  if(!"CSR_FLUX_CO2" %in% names(d$data)) d$data$CSR_FLUX_CO2 <- NA
+  if(!"CSR_FLUX_CH4" %in% names(d$data)) d$data$CSR_FLUX_CH4 <- NA
+  d$data %>% 
+    mutate(year = year(CSR_TIMESTAMP_BEGIN),
+           month = month(CSR_TIMESTAMP_BEGIN)) %>% 
+    group_by(year, month) %>% 
+    summarise(timestamp = mean(CSR_TIMESTAMP_BEGIN),
+              n_co2 = sum(!is.na(CSR_FLUX_CO2)),
+              n_ch4 = sum(!is.na(CSR_FLUX_CH4))) %>% 
+    mutate(CSR_DATASET = x,
+           CSR_LATITUDE = d$description$CSR_LATITUDE)
+})
+results_lat <- bind_rows(results)
+
+p <- results_lat %>% 
+  mutate(Quarter = floor(month / 3),
+         Lat_bin = floor(CSR_LATITUDE / 3) * 3) %>%
+  group_by(year, Quarter, Lat_bin) %>% 
+  summarise(Records = sum(n_co2) / 3,
+            timestamp = mean(timestamp)) %>% 
+  ggplot(aes(timestamp, Lat_bin, color = Records)) + 
+  geom_point(size = 2) + 
+  labs(x = "Year", y = "Latitude") +
+  scale_color_continuous(labels = comma)
 print(p)
 ggsave("figures/figure3.png")
 ```
 
-```{r doy-counts}
-data_meta %>% 
-  mutate(DOY = yday(CSR_TIMESTAMP_BEGIN),
-         Hemi = ifelse(CSR_LATITUDE < 0, "Southern Hemisphere", "Northern Hemisphere")) %>% 
-  group_by(Hemi, DOY) %>% 
-  summarise(CSR_FLUX_CO2 = mean(CSR_FLUX_CO2, na.rm = TRUE), n = n()) %>% 
-  filter(DOY <= 365 ) -> doy_counts
+**Figure 4.** Temporal data coverage by day of year and hemisphere
 
-ggplot(data = doy_counts, aes(x = DOY, y = n)) + 
-  geom_line(color = "blue4", size = 1) + 
-  facet_wrap(~Hemi, ncol = 1, scales = "free_y") +
-  labs(x= "Day of year", y = "Number of observations") +
-  theme_minimal()
+```{r doy-counts}
+datasets <- db$CSR_DATASET
+results <- lapply(datasets, function(x) {
+  d <- csr_dataset(x)
+  if(!is.data.frame(d$data)) return(NULL)
+  if(!"CSR_FLUX_CO2" %in% names(d$data)) d$data$CSR_FLUX_CO2 <- NA
+  if(!"CSR_FLUX_CH4" %in% names(d$data)) d$data$CSR_FLUX_CH4 <- NA
+  d$data %>% 
+    mutate(yearday = yday(CSR_TIMESTAMP_BEGIN)) %>% 
+    group_by(yearday) %>% 
+    summarise(n_co2 = sum(!is.na(CSR_FLUX_CO2)),
+              n_ch4 = sum(!is.na(CSR_FLUX_CH4)),
+              co2 = mean(CSR_FLUX_CO2, na.rm = TRUE),
+              ch4 = mean(CSR_FLUX_CH4, na.rm = TRUE)) %>% 
+    mutate(CSR_DATASET = x,
+           CSR_LATITUDE = d$description$CSR_LATITUDE)
+})
+results_doy <- bind_rows(results)
+
+
+results_doy %>% 
+  mutate(Hemi = if_else(CSR_LATITUDE < 0, "Southern hemisphere", "Northern hemisphere")) %>% 
+  group_by(Hemi, yearday) %>% 
+  summarise(n_ch4 = sum(n_ch4), 
+            n_co2 = sum(n_co2)) %>% 
+  filter(yearday <= 365) %>% 
+  gather(variable, value, n_ch4, n_co2) %>% 
+  separate(variable, into = c("junk", "Gas")) %>% 
+  mutate(Gas = toupper(Gas)) -> 
+  doy_counts
+
+p <- ggplot(data = doy_counts, aes(x = yearday, y = value)) + 
+  geom_line() + 
+  facet_wrap(~Hemi + Gas, scales = "free") +
+  labs(x = "Day of year", y = "Number of observations") +
+  scale_y_continuous(labels = comma)
+print(p)
+ggsave("figures/figure4.png")
 ```
 
 ```{r mat-map}
