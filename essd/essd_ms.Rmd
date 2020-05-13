@@ -77,19 +77,16 @@ cat(paste0("\t<li>", institution_list, "</li>"), sep = "\n")
 cat("</ol>\n")
 ```
 
-## The COSORE database
 
 COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. 
 It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well, paralleling the recent SIdB database (TODO). 
 Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
 The database currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figures X and Y). 
 
-### Overall database structure
+_Database and dataset structure_
 
 The database is structured as a collection of independent contributed _datasets_, all of which have been standardized to a common structure, units, etc. 
 Each dataset is given a reference name that links its constituent tables, provides a point of reference in reports, and is used when calling the R package accessor functions (see below).
-
-### Individual dataset structure
 
 Each constituent dataset normally has a series of separate data tables that are linked by keys.
 These tables include:
@@ -103,24 +100,22 @@ curation, and/or submission of the dataset;
 * _columns_ (**Table 7**), mapping raw data columns to standard COSORE columns, providing a record for reproducibility; and
 * _diagnostics_ (**Table 8**), which provides statistics on the data import process: errors, columns and rows dropped, etc.
 
-The common key linking these dataset tables is the `CSR_DATASET` field, which records the unique name assigned to the dataset. In addition, a `CSR_PORT` key field links the `ports` and `data` tables. These links make it straightforward to extract datasets that have measured particular fluxes in
+The common key linking these dataset tables is the CSR_DATASET field, which records the unique name assigned to the dataset. In addition, a CSR_PORT key field links the _ports_ and _data_ tables. These links make it straightforward to extract datasets that have measured particular fluxes in
 certain ecosystem types, or isolate only non-treatment (control) chamber fluxes, for example.
 
-### Database versioning and archiving
+_Versioning and archiving_
 
 COSORE uses semantic versioning (https://semver.org/), meaning that its version numbers
-generally follow an "x.y.z" format, where _x_ is the major version number (changing only when there are major changes to the database structure and/or functioning); _y_ is the minor version number (typically changing with significant data updates); and _z_ the patch number (bug fixes, documentation upgrades, or other changes that are completely backwards compatible).
+generally follow an "x.y.z" format, where _x_ is the major version number (changing only when there are major changes to the database or package structure and/or function, in a manner that may break existing scripts using the data); _y_ is the minor version number (typically changing with significant data updates); and _z_ the patch number (bug fixes, documentation upgrades, or other changes that are completely backwards compatible).
 Following each official (major) release a DOI will be issued and the data archived by Zenodo (https://zenodo.org/).
 All changes to the data or codebase are immediately available through the GitHub repository, but only official releases will be issued a DOI.
 
-### Database license
+_Data license and citation_
 
 The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/); see the "LICENSE" file in the repository.
-This is identical to that used by e.g. Ameriflux and FLUXNET Tier 1. 
+This is identical to that used by e.g. FLUXNET Tier 1. 
 In general, this license provides that users may copy and redistribute the database and R package code in any medium or format, adapting and building upon them for any scientific or commercial purpose, as long as appropriate credit is given.
 We request that users cite this database definition paper, and strongly encourage them to (i) cite all constituent dataset primary publications, and (ii) involve data contributors as co-authors when possible.
-
-### Citing COSORE
 
 Papers or other research products using COSORE should cite this publication. 
 In addition, users should also reference the specific version of the dataset they used (e.g. `r db_vers`), access date, and ideally the specific Git commit number. 
@@ -128,19 +123,12 @@ This provides full reproducibility of any analyses.
 As noted above, we encourage data users to cite the primary publication for each dataset
 they use in analyses as well.
 
-## Accessing COSORE data
+**Data access and use**
 
-### Downloading a release
-
-COSORE data releases are currently available via the GitHub "Releases" page at https://github.com/bpbond/cosore/releases, although we anticipate that institutional repositories such as ESS-DIVE may host releases at some point in the future.
+COSORE data releases are currently available via the GitHub "Releases" page at https://github.com/bpbond/cosore/releases, although we anticipate that institutional repositories such as ESS-DIVE (https://ess-dive.lbl.gov/) may host releases at some point in the future.
 Downloads via this page are flat-file CSV (comma-separated value), and readable by any modern computing system. 
 Missing values are encoded by a blank (i.e. two successive commas in the CSV format).
-A release download is fully self-contained, with full data and documentation, links to this publication, a file manifest, etc.
-
-### Using the R package
-
-An alternative way to access COSORE data is to install and use the `cosore` R package.
-This provides a robust framework, including dedicated access functions, dataset and database report generation, and QA/QC (see below).
+A release download is fully self-contained, with full data, metadata, and documentation; a file manifest; a copy of the data license; an introductory vignette; a summary report on the entire database; and an explanatory README with links to this publication.
 
 ```{r dbsize, include=FALSE, cache=TRUE}
 db_memsize <- sum(sapply(db$CSR_DATASET, function(x) object.size(csr_dataset(x)$data))) / 1e6
@@ -151,7 +139,11 @@ db_disksize <- db_disksize[grepl("size:",db_disksize)]
 db_disksize <- gsub("size: ", "", db_disksize)
 ```
 
-Because currently the flux data are included in the repository itself, the latter is quite large (compared to most Git repositories) to download, ~`r db_disksize`. (Note that the data are stored in R's compressed `RDS` file format; when loaded into memory, the entire database is significantly larger, ~`r round(db_memsize, 0)` MiB.) It thus cannot easily be hosted on CRAN (the Comprehensive R Archive Network), the canonical source for R packages. Installing directly from GitHub is however straightforward using the `devtools` or `remotes` packages:
+An alternative way to access COSORE data is to install and use the _cosore_ R (TODO CITATION) package.
+This provides a robust framework, including dedicated access functions, dataset and database report generation, and QA/QC (see below).
+Because currently the flux data are included in the repository itself, the latter is quite large (compared to most Git repositories) to download, ~`r db_disksize`. 
+(Note that the data are stored in R's compressed RDS file format; when loaded into memory, the entire database is significantly larger, ~`r round(db_memsize, 0)` MB.) 
+It thus cannot easily be hosted on CRAN (the Comprehensive R Archive Network), the canonical source for R packages. Installing directly from GitHub is however straightforward using the _devtools_ or _remotes_ packages:
 
 ```
 devtools::install_github("bpbond/cosore")
@@ -166,25 +158,25 @@ devtools::install_github("bpbond/cosore@v0.4")
 
 Four primary user-facing functions are available:
 
-* `csr_database()` summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-8** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured.
-* `csr_dataset()` returns a single dataset: an R list structure, each element of which is a table (`description`, `contributors`, etc., as described above). 
-* `csr_table()` collects, into a single data frame, one of the tables (`description`, `contributors`, etc., as described above) of the database, for any or all datasets.
-* `csr_metadata()` provides metadata information about all fields in all tables.
+* *csr_database()* summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-8** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured.
+* *csr_dataset()* returns a single dataset: an R list structure, each element of which is a table (_description_, _contributors_, etc., as described above). 
+* *csr_table()* collects, into a single data frame, one of the tables of the database, for any or all datasets.
+* *csr_metadata()* provides metadata information about all fields in all tables.
 
-Two additional reporting functions may also be useful to COSORE users:
+Two additional reporting functions may also be useful to users:
 
-* `csr_report_database()` generates an HTML report on the entire database: number of datasets, locations, number of observations, distribution of flux values, etc.
-* `csr_report_dataset()` generates an HTML report on a single dataset, including tabular and graphical summaries of location, flux data, diagnostics, etc.
+* *csr_report_database()* generates an HTML report on the entire database: number of datasets, locations, number of observations, distribution of flux values, etc.
+* *csr_report_dataset()* generates an HTML report on a single dataset, including tabular and graphical summaries of location, flux data, diagnostics, etc.
 
 Finally, a number of functions are targeted at developers, and include functionality to ingest contributed data, standardize data, and prepare a new release. See the package documentation for more details on these.
 
-#### Documentation and vignettes
+_Documentation_
 
 The primary documentation for the COSORE database is this paper.
 Both the flat-file releases and `cosore` R package include extensive documentation, including an in-depth vignette included both in the package and online (LINK TODO).
 The R package includes documentation available via R's standard help system.
 
-#### Testing and quality assurance
+_Data quality and testing_
 
 When contributed data are imported into COSORE, the package code performs a number of quality assurance checks. These include:
 
@@ -192,8 +184,6 @@ When contributed data are imported into COSORE, the package code performs a numb
 * Bad email addresses or ORCID identifiers
 * Records with no flux value
 * Records for which the analyzer recorded an error condition
-* Extremely low or high (<-10 and >50 µmol CO~2~ m^-2^ s^-1^ respectively; currently there are no CH~4~ limits) flux rates
-* Extremely low or high temperature values
 
 ```{r errors, cache=TRUE}
 # Calculate what percent of observations are removed across all datasets
@@ -218,26 +208,8 @@ package_coverage(line_exclusions = list("R/parse-others.R")) %>%
   csr_cov
 ```
 
-The `cosore` R package also has a wide variety of unit tests (CITATION TODO) that test code functionality, typically via assertions about function behavior, but also by verifying behavior of those functions when importing test datasets (of different formats and with a variety of errors, for example). In total these tests cover `r round(csr_cov, 1)`% of the codebase.
+The _cosore_ R package also has a wide variety of unit tests (CITATION TODO) that test code functionality, typically via assertions about function behavior, but also by verifying behavior of those functions when importing test datasets (of different formats and with a variety of errors, for example). In total these tests cover `r round(csr_cov, 1)`% of the codebase.
 
-## The `cosore` repository
-
-### Reporting issues
-
-Like any dataset or piece of software, COSORE undoubtedly has problems: incomplete or incorrect data, faulty logic, documentation gaps. 
-We use the `cosore` GitHub issue tracker (https://github.com/bpbond/cosore/issues) to track and categorize user improvement suggestions, problems or errors with the R package code or database data, requests for new variables or functionality, and/or asking questions on any other aspect of COSORE.
-The COSORE team welcomes questions, contributions, and suggestions; all issues and discussion are subject to a code of conduct (see the "CODE_OF_CONDUCT.md" file in the repository).
-
-### Contributing data
-
-The COSORE team welcomes data contributions of chamber flux data. We prioritize continuously-measured
-(i.e. from automated systems) soil respiration datasets, but the database structure also accommodates
-long-term survey (discontinuous) data; measurements of methane, net ecosystem exchange, and
-heterotrophic respiration fluxes. There currently is no standardized template data contributors must follow, but we anticipate this changing before version 1.0 (planned for late 2020).
-
-It is important to note that COSORE itself is not designed to be, and should not be treated as, a permanent data repository. 
-It is an open community database, but not an institutionally-backed repository like Figshare (https://figshare.com), DataONE (https://www.dataone.org), ESS-DIVE (https://ess-dive.lbl.gov), ORNL-DAAC (https://daac.ornl.gov), etc. 
-We recommend that contributors deposit data in one of these first, and providing its Digital Object Identifier (DOI) in the COSORE dataset metadata.
 
 # Tables
 

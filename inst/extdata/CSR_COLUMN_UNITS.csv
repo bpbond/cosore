@@ -130,7 +130,7 @@ contributors,CSR_ROLE,CReDiT role; see https://www.casrai.org/credit.html,charac
 #,,,,,
 diagnostics,CSR_ASSUMED_MSMT_LENGTH,If no measurement length is provided this is set to assumed value,numeric,s,FALSE
 diagnostics,CSR_EXAMPLE_BAD_TIMESTAMPS,Example bad timestamps,character,,FALSE
-diagnostics,CSR_GASES,Gases for which is present in final dataset,character,,TRUE
+diagnostics,CSR_GASES,Gases present in final dataset,character,,TRUE
 diagnostics,CSR_RECORDS,Records in final dataset,integer,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_ERR,Number of observations removed for error code,integer,,TRUE
 diagnostics,CSR_RECORDS_REMOVED_NA,Number of observations removed for missing flux,integer,,TRUE
