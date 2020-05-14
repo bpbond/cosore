@@ -323,7 +323,7 @@ db %>%
 
 # Extract cosore location data from worldclim data for precip...
 raster::extract(precip, cosore_coords) -> precip_coords
-apply(precip_coords, 1, mean) -> map_cosore
+apply(precip_coords, 1, sum) -> map_cosore
 cbind(cosore_coords, map_cosore) -> map_coords
 
 # ...and tmean
@@ -342,7 +342,7 @@ raster::as.data.frame(precip, xy = TRUE) %>%
 # Calculate annual mean for precip...
 precip_global %>%
   dplyr::select(-x, -y) %>%
-  apply(1, mean) -> map_global
+  apply(1, sum) -> map_global
 
 raster::as.data.frame(tmean, xy = TRUE) %>%
   drop_na() -> tmean_global
