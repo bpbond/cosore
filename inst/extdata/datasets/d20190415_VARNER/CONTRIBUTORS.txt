@@ -10,6 +10,6 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,				CSR_ORCID,					CSR_ROLE
-Ruth,			Varner,				ruth.varner@unh.edu,	0000-0002-3571-6629
+Ruth K.,		Varner,				ruth.varner@unh.edu,	0000-0002-3571-6629
 Patrick,		Crill
 Steve,			Wofsy

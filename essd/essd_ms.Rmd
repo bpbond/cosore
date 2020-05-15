@@ -323,7 +323,7 @@ db %>%
 
 # Extract cosore location data from worldclim data for precip...
 raster::extract(precip, cosore_coords) -> precip_coords
-apply(precip_coords, 1, mean) -> map_cosore
+apply(precip_coords, 1, sum) -> map_cosore
 cbind(cosore_coords, map_cosore) -> map_coords
 
 # ...and tmean
@@ -342,7 +342,7 @@ raster::as.data.frame(precip, xy = TRUE) %>%
 # Calculate annual mean for precip...
 precip_global %>%
   dplyr::select(-x, -y) %>%
-  apply(1, mean) -> map_global
+  apply(1, sum) -> map_global
 
 raster::as.data.frame(tmean, xy = TRUE) %>%
   drop_na() -> tmean_global
@@ -371,41 +371,45 @@ p <- ggplot() +
 ggsave("figures/figure2-climate.png")
 ```
 
-**Figure 3.** Waffle plot of COSORE Coverage by IGBP by year of measurement. Here, one square equals 1,000 datapoints.
+```{r waffle-prep, echo=FALSE}
+scaling_factor <- 5000
+```
 
-```{r flux-density, message = FALSE, echo = FALSE, eval=FALSE}
-# devtools::install_github("liamgilbey/ggwaffle")
-# library(ggwaffle)
+**Figure 3.** Waffle plot of COSORE Coverage by IGBP by year of measurement. Here, one square equals `r format(scaling_factor, big.mark = ",")` datapoints.
 
-db %>% 
-  mutate(Date = date(CSR_DATE_BEGIN), 
-         Month = month(CSR_DATE_BEGIN), 
-         Year = year(CSR_DATE_BEGIN)) %>% 
-  group_by(Year, CSR_IGBP) %>%
-  summarise(Date = mean(Date), Records = sum(CSR_RECORDS)) -> 
-  avg
+```{r waffle, message = FALSE, echo = FALSE}
+# devtools::install_github("hrbrmstr/waffle")
+library(waffle)
 
-p <- ggplot(avg, aes(Year, Records, fill = CSR_IGBP)) + 
-  geom_bar(stat = "identity", na.rm = TRUE) + 
-  scale_y_continuous(labels = comma)
+results <- lapply(datasets, function(x) {
+  d <- csr_dataset(x, quiet = TRUE)
+  if(!is.data.frame(d$data)) return(NULL)
+  d$data %>% 
+    mutate(CSR_DATASET = x, 
+           year = year(CSR_TIMESTAMP_BEGIN)) %>% 
+    left_join(db, by = "CSR_DATASET") %>% 
+    group_by(year, CSR_IGBP) %>% 
+    summarise(n = n())
+})
+
+# Scale records so 1 box equals 5,000 records, and round up to capture records under 5,000
+results_fluxes <- bind_rows(results) %>% 
+  arrange(CSR_IGBP) %>% 
+  mutate(Records_scale = ceiling(n / scaling_factor))
+
+# Waffle plot number of records by IGBP
+p <- ggplot(results_fluxes, aes(fill = CSR_IGBP, values = Records_scale)) +
+  geom_waffle(color = "white", size = 0.25, n_rows = 10, flip = TRUE) +
+  facet_wrap(~year, nrow = 2, strip.position = "bottom") +
+  coord_equal() +
+  labs(x = "Year", y = "Count") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(), legend.position = "bottom",
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
 print(p)
-ggsave("figures/figure3-waffle.png")
-
-# waffle plot no of records by IGBP
-# ggplot(avg, aes(fill = CSR_IGBP, values = n)) +
-#   geom_waffle(color = "white", size = .25, n_rows = 10, flip = TRUE) +
-#   facet_wrap(~Year, nrow = 2, strip.position = "bottom") +  coord_equal() +
-#   labs(subtitle = "1 block = 1,000 data points",
-#        x = "Year",
-#        y = "Count") +
-#   theme_minimal() +
-#   theme(panel.grid = element_blank()) + 
-#   theme(axis.text.x = element_blank(),
-#         axis.text.y = element_blank(),
-#         axis.ticks = element_blank())
-
-#still need to figure out what happens to datapoints under 1000
-
+ggsave("figures/figure3-waffle.png", width = 10, height = 5)
 ```
 
 **Figure 4.** Temporal data coverage by latitude.
@@ -507,7 +511,7 @@ pct_co2 <- round(nrow(out_co2) / nrow(filter(results_fluxes, is.finite(CSR_FLUX_
 pct_ch4 <- round(nrow(out_ch4) / nrow(filter(results_fluxes, is.finite(CSR_FLUX_CH4))) * 100, 1)
 ```
 
-Figure 6. Distribution of CO2 fluxes in COSORE datasets, by IGBP classification. For visual clarity this figure excludes fluxes <`r min(co2_limits)` and >`r max(co2_limits)` µmol m-2 s-1 (`r nrow(out_co2)` observations, `r pct_co2`% of the data).
+Figure 6. Distribution of CO2 fluxes in COSORE datasets, by IGBP classification. For visual clarity this figure excludes fluxes <`r min(co2_limits)` and >`r max(co2_limits)` µmol m-2 s-1 (`r format(nrow(out_co2), big.mark = ",")` observations, `r pct_co2`% of the data).
 
 ```{r flux-co2}
 
@@ -522,7 +526,7 @@ print(p)
 ggsave("figures/figure6-co2.png")
 ```
 
-Figure 7. Distribution of CH4 fluxes in COSORE datasets, by IGBP classification. For visual clarity this figure excludes fluxes <`r min(ch4_limits)` and >`r max(ch4_limits)` nmol m-2 s-1 (`r nrow(out_ch4)` observations, `r pct_ch4`% of the data).
+Figure 7. Distribution of CH4 fluxes in COSORE datasets, by IGBP classification. For visual clarity this figure excludes fluxes <`r min(ch4_limits)` and >`r max(ch4_limits)` nmol m-2 s-1 (`r format(nrow(out_ch4), big.mark = ",")` observations, `r pct_ch4`% of the data).
 
 ```{r, flux-ch4}
 p <- results_fluxes %>% 
