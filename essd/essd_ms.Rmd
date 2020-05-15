@@ -374,37 +374,48 @@ ggsave("figures/figure2-climate.png")
 **Figure 3.** Waffle plot of COSORE Coverage by IGBP by year of measurement. Here, one square equals 1,000 datapoints.
 
 ```{r flux-density, message = FALSE, echo = FALSE, eval=FALSE}
-# devtools::install_github("liamgilbey/ggwaffle")
-# library(ggwaffle)
+# devtools::install_github("hrbrmstr/waffle")
+library(waffle)
 
-db %>% 
-  mutate(Date = date(CSR_DATE_BEGIN), 
-         Month = month(CSR_DATE_BEGIN), 
-         Year = year(CSR_DATE_BEGIN)) %>% 
-  group_by(Year, CSR_IGBP) %>%
-  summarise(Date = mean(Date), Records = sum(CSR_RECORDS)) -> 
-  avg
+results <- lapply(datasets, function(x) {
+  d <- csr_dataset(x, quiet = TRUE)
+  if(!is.data.frame(d$data)) return(NULL)
+  d$data %>% mutate(CSR_DATASET = x, year = year(CSR_TIMESTAMP_BEGIN)) %>% 
+    left_join(db, by = "CSR_DATASET") %>% 
+    group_by(year, CSR_IGBP) %>% summarise(n = n())
+})
 
-p <- ggplot(avg, aes(Year, Records, fill = CSR_IGBP)) + 
-  geom_bar(stat = "identity", na.rm = TRUE) + 
-  scale_y_continuous(labels = comma)
-print(p)
+# Scale Records so 1 box equals 5,000 records, and round up to capture records under 5,000
+results_fluxes <- bind_rows(results) %>% arrange(CSR_IGBP) %>% mutate(Records_scale = ceiling(n/5000))
+
+# Waffle plot number of records by IGBP
+ggplot(results_fluxes, aes(fill = CSR_IGBP, values = Records_scale)) +
+  geom_waffle(color = "white", size = .25, n_rows = 10, flip = TRUE) +
+  facet_wrap(~year, nrow = 2, strip.position = "bottom") +  coord_equal() +
+  labs(x = "Year",
+       y = "Count") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(), legend.position = "bottom",
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
 ggsave("figures/figure3-waffle.png")
 
-# waffle plot no of records by IGBP
-# ggplot(avg, aes(fill = CSR_IGBP, values = n)) +
-#   geom_waffle(color = "white", size = .25, n_rows = 10, flip = TRUE) +
-#   facet_wrap(~Year, nrow = 2, strip.position = "bottom") +  coord_equal() +
-#   labs(subtitle = "1 block = 1,000 data points",
-#        x = "Year",
-#        y = "Count") +
-#   theme_minimal() +
-#   theme(panel.grid = element_blank()) + 
-#   theme(axis.text.x = element_blank(),
-#         axis.text.y = element_blank(),
-#         axis.ticks = element_blank())
-
-#still need to figure out what happens to datapoints under 1000
+# db %>% 
+#   mutate(Date = date(CSR_DATE_BEGIN), 
+#          Month = month(CSR_DATE_BEGIN), 
+#          Year = year(CSR_DATE_BEGIN)) %>% 
+#   group_by(Year, CSR_IGBP) %>%
+#   summarise(Date = mean(Date), Records = sum(CSR_RECORDS)) %>% 
+#   mutate(Records_scale = ceiling(Records/5000)) %>% 
+#   na.omit() -> 
+#   avg
+# 
+# p <- ggplot(avg, aes(Year, Records, fill = CSR_IGBP)) + 
+#   geom_bar(stat = "identity", na.rm = TRUE) + 
+#   scale_y_continuous(labels = comma)
+# print(p)
+# ggsave("figures/figure3-waffle.png")
 
 ```
 
