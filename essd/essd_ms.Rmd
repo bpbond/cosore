@@ -85,6 +85,20 @@ It is targeted at continuous soil respiration flux data--i.e., those measured by
 Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
 The database currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figures X and Y). 
 
+```{r compute-intervals, echo=FALSE, cache=TRUE, include=FALSE}
+datasets <- db$CSR_DATASET
+intervals <- lapply(datasets, function(x) {
+  ds <- csr_dataset(x)
+  if(is.null(ds$data)) return(NULL)
+  cosore:::compute_interval(ds$data) %>% 
+    mutate(CSR_DATASET = x)
+})
+intervals <- bind_rows(intervals)
+q <- round(quantile(intervals$Interval, na.rm = TRUE), 0)
+```
+
+The interval between measurements ranges from `r round(min(intervals$Interval, na.rm = TRUE), 0)` to `r round(max(intervals$Interval, na.rm = TRUE), 0)` minutes, with 25%-50%-75% quantile values of `r q[2]`, `r q[3]`, and `r q[4]` minutes respectively. A one-hour interval between measurements is thus by far the most common choice.
+
 _Database and dataset structure_
 
 The database is structured as a collection of independent contributed _datasets_, all of which have been standardized to a common structure, units, etc. 
@@ -416,7 +430,6 @@ ggsave("figures/figure3-waffle.png", width = 10, height = 5)
 
 ```{r lat-coverage, message = FALSE, echo = FALSE, eval=FALSE, cache=TRUE}
 # Get data density by month of year
-datasets <- db$CSR_DATASET
 results <- lapply(datasets, function(x) {
   d <- csr_dataset(x, quiet = TRUE)
   if(!is.data.frame(d$data)) return(NULL)
