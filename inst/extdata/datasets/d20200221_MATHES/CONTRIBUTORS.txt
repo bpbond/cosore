@@ -12,4 +12,4 @@
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,			CSR_ORCID,				CSR_ROLE
 Kayla,			Mathes,				matheskc@vcu.edu,	0000-0001-8812-8866,	Data curation
 Christopher,	Gough,				mgough@vcu.edu, 	0000-0002-1227-7731,	"Conceptualization, supervision, investigation" 
-Christopher,	Vogel,				csvogel@umich.edu,	,						"Supervision, project administration, investigation, data curation"
+Christoph,		Vogel,				csvogel@umich.edu,	,						"Supervision, project administration, investigation, data curation"
