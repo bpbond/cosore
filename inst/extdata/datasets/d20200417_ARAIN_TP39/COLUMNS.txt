@@ -8,8 +8,11 @@
 #	Notes: optional; generally to explain the computation
 #
 Database,			Dataset,	Computation,				Notes
-CSR_FLUX_CO2,  		Flux,
-CSR_PORT,			Chamber,
-CSR_SM5,			Soil Moisture (5 cm)
-CSR_T5,				Soil Temperature (5 cm)
-CSR_TIMESTAMP_END,	Date
+CSR_DRY_CO2,		CSR_CDRY
+CSR_CRVFIT_CO2,		CSR_CRVFIT
+CSR_FLUX_CO2,  		CSR_FLUX,
+CSR_PORT,			CSR_PORT,
+CSR_SM5,			CSR_SM5
+CSR_T5,				CSR_T5
+CSR_TAIR,			CSR_TCHAMBER
+CSR_TIMESTAMP_END,	CSR_TIME
