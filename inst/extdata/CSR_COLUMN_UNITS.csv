@@ -108,7 +108,7 @@ ancillary,CSR_NEP,"Net ecosystem production, typically biometric; positive = car
 ancillary,CSR_NH4,"Ammonium, dry soil",numeric,mg/kg soil,FALSE
 ancillary,CSR_NO3,"Nitrate, dry soil",numeric,mg/kg soil,FALSE
 ancillary,CSR_NPP,Total net primary production,numeric,gC/m^2^/yr,FALSE
-ancillary,CSR_PAR,Photosynthetically active radation,numeric,µmol/m^2^/s,FALSE
+ancillary,CSR_PAR,Photosynthetically active radiation,numeric,µmol/m^2^/s,FALSE
 ancillary,CSR_PH,Soil pH,numeric,,FALSE
 ancillary,CSR_PRECIP,Precipitation at site,numeric,mm,FALSE
 ancillary,CSR_SAND,Sand,numeric,%,FALSE
