@@ -8,6 +8,7 @@ Table_name,Field_name,Description,Class,Units,Required
 data,CSR_DRY_CO2,Chamber CO~2~ concentration,numeric,ppmv,FALSE
 data,CSR_DRY_CH4,Chamber CH~4~ concentration,numeric,ppbv,FALSE
 data,CSR_CO2_AMB,Ambient CO~2~ concentration,numeric,ppmv,FALSE
+data,CSR_CH4_AMB,Ambient CH~4~ concentration,numeric,ppbv,FALSE
 data,CSR_COMMENTS,Comments,character,,FALSE
 data,CSR_CRVFIT_CO2,"CO2 flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE
 data,CSR_CRVFIT_CH4,"CH4 flux computation method (""Lin"" or ""Exp"" for linear and exponential)",character,,FALSE

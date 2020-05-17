@@ -167,12 +167,6 @@ devtools::install_github("bpbond/cosore")
 library(cosore)
 ```
 
-A specific release number may also be installed:
-
-```
-devtools::install_github("bpbond/cosore@v0.4")
-```
-
 Four primary user-facing functions are available:
 
 * *csr_database()* summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-8** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured.
@@ -212,7 +206,7 @@ csr_table("diagnostics", quiet = TRUE) %>%
   pull(removed_pct) -> errs
 ```
 
-Any errors flagged or records removed during this process are summarized in the _diagnostics_ table that is part of each dataset (**Table 7** below). Across all contributed datasets, a median of `r round(median(errs), 1)`% of raw observations were removed for one of these reasons.
+Any errors flagged or records removed during this process are summarized in the _diagnostics_ table that is part of each dataset (**Table 7** below). Across all contributed datasets, a median of `r round(median(errs), 1)`% of raw observations were removed for one of these reasons. Note however that no checking on the flux values themselves is performed (e.g. for outliers, improbable values); currently this is the responsibility of the user.
 
 ```{r coverage, cache=TRUE}
 # We exclude parse-others.R from the coverage calculation, because it's all
