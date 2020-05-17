@@ -10,4 +10,4 @@
 #     common roles include "Funding acquisition", "Investigation", "Data curation"
 #
 CSR_FIRST_NAME,	CSR_FAMILY_NAME,	CSR_EMAIL,					CSR_ORCID,					CSR_ROLE
-James,		Raich,			jraich@iastate.edu,		0000-0002-7637-299X
+James W.,		Raich,			jraich@iastate.edu,		0000-0002-7637-299X
