@@ -369,7 +369,7 @@ tibble(x = precip_global$x, y = precip_global$y, map = as.vector(map_global)) ->
 
 left_join(map, mat, by = c("x", "y")) %>%
   # Temp data is stored in degC * 10, so we need to divide to get back to degC
-  mutate(mat = mat/10) -> map_mat_global
+  mutate(mat = mat / 10) -> map_mat_global
 
 p <- ggplot() +
   geom_hex(data = map_mat_global,
@@ -447,17 +447,16 @@ results <- lapply(datasets, function(x) {
 results_lat <- bind_rows(results)
 
 p <- results_lat %>% 
-  mutate(Quarter = floor(month / 3),
-         Lat_bin = floor(CSR_LATITUDE / 3) * 3) %>%
-  group_by(year, Quarter, Lat_bin) %>% 
-  summarise(Records = sum(n_co2) / 3,
+  mutate(Lat_bin = floor(CSR_LATITUDE / 5) * 5) %>%
+  group_by(year, Lat_bin) %>% 
+  summarise(Records = sum(n_co2),
             timestamp = mean(timestamp)) %>% 
   ggplot(aes(timestamp, Lat_bin, color = Records)) + 
-  geom_point(size = 2) + 
-  labs(x = "Year", y = "Latitude") +
-  scale_color_continuous(labels = comma)
+  geom_point(size = 5) + 
+  scale_color_distiller(palette = "YlGnBu", name = "Observations", labels = comma) +
+  labs(x = "Year", y = "Latitude")
 print(p)
-ggsave("figures/figure5-latitude.png")
+ggsave("figures/figure5-latitude.png", width = 8, height = 6)
 ```
 
 **Figure 6.** Temporal data coverage by day of year and hemisphere
@@ -483,19 +482,20 @@ results_doy <- bind_rows(results)
 
 
 results_doy %>% 
-  mutate(Hemi = if_else(CSR_LATITUDE < 0, "Southern hemisphere", "Northern hemisphere")) %>% 
+  mutate(Hemi = if_else(CSR_LATITUDE < 0, "Southern~hemisphere", "Northern~hemisphere")) %>% 
   group_by(Hemi, yearday) %>% 
   summarise(n_ch4 = sum(n_ch4), 
             n_co2 = sum(n_co2)) %>% 
   filter(yearday <= 365) %>% 
   gather(variable, value, n_ch4, n_co2) %>% 
   separate(variable, into = c("junk", "Gas")) %>% 
-  mutate(Gas = toupper(Gas)) -> 
+  mutate(Gas = case_when(Gas == "ch4" ~ "CH[4]",
+                         Gas == "co2" ~ "CO[2]")) -> 
   doy_counts
 
 p <- ggplot(data = doy_counts, aes(x = yearday, y = value)) + 
   geom_line() + 
-  facet_wrap(~Hemi + Gas, scales = "free") +
+  facet_wrap(~Hemi + Gas, scales = "free", labeller = label_parsed) +
   labs(x = "Day of year", y = "Number of observations") +
   scale_y_continuous(labels = comma)
 print(p)
