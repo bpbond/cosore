@@ -427,7 +427,7 @@ ggsave("figures/figure4-waffle.png", width = 10, height = 5)
 
 **Figure 5.** Temporal data coverage by latitude.
 
-```{r lat-coverage, message = FALSE, echo = FALSE, eval=FALSE, cache=TRUE}
+```{r lat-coverage}
 # Get data density by month of year
 results <- lapply(datasets, function(x) {
   d <- csr_dataset(x, quiet = TRUE)
