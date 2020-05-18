@@ -84,21 +84,6 @@ cat("</ol>\n")
 COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. 
 It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well, paralleling the recent SIdB database (TODO). 
 Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
-The database currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figures X and Y). 
-
-```{r compute-intervals, echo=FALSE, cache=TRUE, include=FALSE}
-datasets <- db$CSR_DATASET
-intervals <- lapply(datasets, function(x) {
-  ds <- csr_dataset(x)
-  if(is.null(ds$data)) return(NULL)
-  cosore:::compute_interval(ds$data) %>% 
-    mutate(CSR_DATASET = x)
-})
-intervals <- bind_rows(intervals)
-q <- round(quantile(intervals$Interval, na.rm = TRUE), 0)
-```
-
-The interval between measurements ranges from `r round(min(intervals$Interval, na.rm = TRUE), 0)` to `r round(max(intervals$Interval, na.rm = TRUE), 0)` minutes, with 25%-50%-75% quantile values of `r q[2]`, `r q[3]`, and `r q[4]` minutes respectively. A one-hour interval between measurements is thus by far the most common choice.
 
 _Database and dataset structure_
 
@@ -113,9 +98,9 @@ These tables include:
 curation, and/or submission of the dataset; 
 * _ports_ (**Table 4**) which gives the different _ports_ (generally equivalent to separate measurement chambers) in use, and what each is measuring: flux, species, and treatment, as well as characteristics of the measurement collar;
 * _data_ (**Table 5**), the central table of the dataset, which records flux observations;
-* _ancillary_ (**Table 6**) summarizing site-level ancillary measurements;
-* _columns_ (**Table 7**), mapping raw data columns to standard COSORE columns, providing a record for reproducibility; and
-* _diagnostics_ (**Table 8**), which provides statistics on the data import process: errors, columns and rows dropped, etc.
+* _ancillary_ (**Supplementary Table S1**) summarizing site-level ancillary measurements;
+* _columns_ (**Supplementary Table S2**), mapping raw data columns to standard COSORE columns, providing a record for reproducibility; and
+* _diagnostics_ (**Supplementary Table S3**), which provides statistics on the data import process: errors, columns and rows dropped, etc.
 
 The common key linking these dataset tables is the CSR_DATASET field, which records the unique name assigned to the dataset. In addition, a CSR_PORT key field links the _ports_ and _data_ tables. These links make it straightforward to extract datasets that have measured particular fluxes in
 certain ecosystem types, or isolate only non-treatment (control) chamber fluxes, for example.
@@ -218,6 +203,27 @@ package_coverage(line_exclusions = list("R/parse-others.R")) %>%
 
 The _cosore_ R package also has a wide variety of unit tests (CITATION TODO) that test code functionality, typically via assertions about function behavior, but also by verifying behavior of those functions when importing test datasets (of different formats and with a variety of errors, for example). In total these tests cover `r round(csr_cov, 1)`% of the codebase.
 
+_Current data and community contributions_
+
+The database currently has `r nrow(db)` contributed datasets with a total of `r db_records` million flux observations across `r db_years` years and five continents (Table X, Figures X and Y). 
+
+```{r compute-intervals, echo=FALSE, cache=TRUE, include=FALSE}
+datasets <- db$CSR_DATASET
+intervals <- lapply(datasets, function(x) {
+  ds <- csr_dataset(x)
+  if(is.null(ds$data)) return(NULL)
+  cosore:::compute_interval(ds$data) %>% 
+    mutate(CSR_DATASET = x)
+})
+intervals <- bind_rows(intervals)
+q <- round(quantile(intervals$Interval, na.rm = TRUE), 0)
+subdailies <- intervals$Interval < 24 * 60
+subdaily_ds_pct <- sum(subdailies, na.rm = TRUE) / nrow(intervals) * 100
+subdaily_ds_N <- sum(intervals$N[subdailies], na.rm = TRUE) / sum(intervals$N, na.rm = TRUE) * 100
+```
+
+The interval between measurements ranges from `r round(min(intervals$Interval, na.rm = TRUE), 0)` to `r round(max(intervals$Interval, na.rm = TRUE), 0)` minutes, with 25%-50%-75% quantile values of `r q[2]`, `r q[3]`, and `r q[4]` minutes respectively. A one-hour interval between measurements is thus by far the most common choice; `r round(subdaily_ds_pct, 0)`% of the datasets, and `r round(subdaily_ds_N, 3)`% of the data, provide sub-daily temporal resolution.
+
 
 # Tables
 
@@ -275,7 +281,7 @@ make_table(db_fields, "ports")
 make_table(db_fields, "data")
 ```
 
-**Table 6.** Summary of COSORE's _ancillary_ table, which includes optional information, typically ecosystem-level soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Supplementary Table S1.** Summary of COSORE's _ancillary_ table, which includes optional information, typically ecosystem-level soil information, carbon fluxes, and climate normals. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_ancillary}
 db_fields %>% 
@@ -283,13 +289,13 @@ db_fields %>%
   make_table("ancillary")
 ```
 
-**Table 7.** Summary of COSORE's _columns_ table, which maps raw dataset columns to standardized COSORE columns. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required. We expect that this table will be dropped at some point in the future when COSORE requires structurally compliant data submissions (i.e. contributors will be required to format their data to match COSORE structure before submission).
+**Supplementary Table S2.** Summary of COSORE's _columns_ table, which maps raw dataset columns to standardized COSORE columns. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required. We expect that this table will be dropped at some point in the future when COSORE requires structurally compliant data submissions (i.e. contributors will be required to format their data to match COSORE structure before submission).
 
 ```{r table_columns}
 make_table(db_fields, "columns")
 ```
 
-**Table 8.** Summary of COSORE's _diagnostics_ table, which is populated automatically when parsing and importing non-COSORE data. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Supplementary Table S3.** Summary of COSORE's _diagnostics_ table, which is populated automatically when parsing and importing non-COSORE data. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_diagnostics}
 make_table(db_fields, "diagnostics")
