@@ -312,11 +312,10 @@ map <- get_map(location = bbox, source = "stamen", maptype = "terrain") # load m
 
 p <- ggmap(map) + 
   geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE, size = CSR_RECORDS), 
-             alpha = 0.6, color = "blue4", shape = 18) + 
+             alpha = 0.5, color = "blue4") + 
   labs(x = "Longitude", y = "Latitude") +
   scale_size_continuous("", labels = comma) +
-  scale_fill_manual(name = "", values = c("COSORE Submission Site" = "#FC4E07")) +
-  scale_shape_manual(values = 18) + theme(legend.position = "bottom")
+  theme(legend.position = "bottom")
 print(p)
 ggsave("figures/figure1-map.png")
 ```
