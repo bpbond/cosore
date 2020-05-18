@@ -82,7 +82,7 @@ cat("</ol>\n")
 
 
 COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. 
-It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well, paralleling the recent SIdB database (TODO). 
+It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well, paralleling the recent SIDb database (TODO). 
 Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
 
 _Database and dataset structure_
