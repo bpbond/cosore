@@ -9,7 +9,7 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 
 This document is the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc. Most of the introductory text with citations will be in the Google Doc.
 
-```{r setup, include=FALSE, cache=TRUE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
 library(cosore)
@@ -20,7 +20,7 @@ library(tidyr)
 library(covr)
 library(magrittr)
 library(ggplot2)
-theme_set(theme_bw())
+theme_set(theme_minimal())
 
 db <- csr_database()
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
@@ -80,9 +80,8 @@ cat(paste0("\t<li>", institution_list, "</li>"), sep = "\n")
 cat("</ol>\n")
 ```
 
-
-COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler. 
-It is targeted at continuous soil respiration flux data--i.e., those measured by automated systems on a e.g. half hourly basis--but its design accommodates survey-style R~S~ fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well, paralleling the recent SIDb database (TODO). 
+COSORE is designed to be a relatively lightweight database: as simple as possible, but not simpler.
+It is targeted at continuous–i.e., measured by automated systems–soil respiration flux data, but the database design accommodates manual point (survey-style) RS fluxes, methane fluxes, and chamber measurements of net ecosystem exchange as well, paralleling the recent Soil Incubation Database (SIDb) database (Schädel et al., 2019).
 Its development started in April 2019, and as of this writing (`r Sys.Date()`) the COSORE version number is `r db_vers`. 
 
 _Database and dataset structure_
@@ -114,10 +113,12 @@ All changes to the data or codebase are immediately available through the GitHub
 
 _Data license and citation_
 
-The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/); see the "LICENSE" file in the repository.
-This is identical to that used by e.g. FLUXNET Tier 1. 
-In general, this license provides that users may copy and redistribute the database and R package code in any medium or format, adapting and building upon them for any scientific or commercial purpose, as long as appropriate credit is given.
-We request that users cite this database definition paper, and strongly encourage them to (i) cite all constituent dataset primary publications, and (ii) involve data contributors as co-authors when possible.
+The database license is CC-BY-4 (https://creativecommons.org/licenses/by/4.0/); see the “LICENSE” file in the repository. 
+This is identical to that used by e.g. FLUXNET Tier 1 and ICOS R1. 
+In general, this license provides that users may copy and redistribute the database and R package code in any medium or format, adapting and building upon them for any scientific or commercial purpose, as long as appropriate credit is given. 
+We request that users cite this article and strongly encourage them to (i) cite all constituent dataset primary publications, and (ii) involve data contributors as co-authors whenever possible, as is commonly done for other global databases such as FLUXNET (Baldocchi et al., 2001; Knox et al., 2019). 
+In addition, users should also reference the specific version of the dataset they used (e.g., v0.6.0), access date, and ideally the specific Git commit number. 
+This supports reproducibility of any analyses.
 
 Papers or other research products using COSORE should cite this publication. 
 In addition, users should also reference the specific version of the dataset they used (e.g. `r db_vers`), access date, and ideally the specific Git commit number. 
@@ -169,7 +170,7 @@ Finally, a number of functions are targeted at developers, and include functiona
 _Documentation_
 
 The primary documentation for the COSORE database is this paper.
-Both the flat-file releases and `cosore` R package include extensive documentation, including an in-depth vignette included both in the package and online (LINK TODO).
+Both the flat-file releases and `cosore` R package include extensive documentation, including an in-depth vignette included both in the package and online (https://rpubs.com/bpbond/502069).
 The R package includes documentation available via R's standard help system.
 
 _Data quality and testing_
@@ -227,7 +228,7 @@ The interval between measurements ranges from `r round(min(intervals$Interval, n
 
 # Tables
 
-**Table 1.** Summary of COSORE v. `r db_vers` datasets with deposited data, by International Geosphere-Biosphere Programme land cover classification (CITATION TODO). Columns include number of datasets, total number of records (flux observations), and dates of first and last records.
+**Table 1.** Summary of COSORE v. `r db_vers` datasets with deposited data by International Geosphere-Biosphere Programme land cover classification (Loveland et al., 2000) as provided by data contributors. Columns include number of datasets, total number of records (flux observations), and dates of first and last records.
 
 ```{r table_igbp}
 smrise <- function(x) {
@@ -263,7 +264,7 @@ make_table <- function(db_fields, table) {
 make_table(db_fields, "description")
 ```
 
-**Table 3.** Summary of COSORE's _contributors_ table, which provides information on the researchers who measured and contributed each dataset. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required. Note that although none of the columns in this table are marked as required, at least one contributor (with filled-in name and email) is required for each dataset.
+**Table 3.** Summary of COSORE's _contributors_ table, which provides information on the researchers (at least one; there may be arbitrarily many listed) who measured and contributed each dataset. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
 
 ```{r table_contributors}
 make_table(db_fields, "contributors")
@@ -391,7 +392,7 @@ ggsave("figures/figure2-climate.png")
 scaling_factor <- 5000
 ```
 
-**Figure 4.** Flux observations, by IGBP (cf. Table 1), over time. Each square represents `r format(scaling_factor, big.mark = ",")` observations.
+**Figure 4.** Flux observations, by IGBP (cf. Table 1), over time. Each square represents `r format(scaling_factor, big.mark = ",")` observations, with categories of <`r format(scaling_factor, big.mark = ",")` observations rounded up so that they occupy a single square.
 
 ```{r waffle, message = FALSE, echo = FALSE}
 # devtools::install_github("hrbrmstr/waffle")
@@ -421,7 +422,6 @@ p <- ggplot(results_fluxes, aes(fill = IGBP, values = Records_scale)) +
   facet_wrap(~year, nrow = 2, strip.position = "bottom") +
   coord_equal() +
   labs(x = "Year", y = "Count") +
-  theme_minimal() +
   theme(panel.grid = element_blank(), legend.position = "bottom",
         axis.text.x = element_blank(),
         axis.text.y = element_blank(),
@@ -502,7 +502,7 @@ p <- ggplot(data = doy_counts, aes(x = yearday, y = value)) +
   geom_line() + 
   facet_wrap(~Hemi + Gas, scales = "free", labeller = label_parsed) +
   labs(x = "Day of year", y = "Number of observations") +
-  scale_y_continuous(labels = comma)
+  scale_y_continuous(labels = comma) +
 print(p)
 ggsave("figures/figure6-doy.png")
 ```
@@ -554,7 +554,7 @@ print(p)
 ggsave("figures/figure7-co2.png")
 ```
 
-Figure 8. Distribution of CH4 fluxes in COSORE datasets, by IGBP classification (cf. Table 1). For visual clarity this figure excludes fluxes <`r min(ch4_limits)` and >`r max(ch4_limits)` nmol m-2 s-1 (`r format(nrow(out_ch4), big.mark = ",")` observations, `r pct_ch4`% of the data).
+Figure 8. Distribution of CH4 fluxes in COSORE datasets, by IGBP classification (cf. Table 1). For visual clarity this figure excludes fluxes <`r min(ch4_limits)` and >`r max(ch4_limits)` nmol m-2 s-1 (`r format(nrow(out_ch4), big.mark = ",")` observations, `r pct_ch4`% of the data). Positive values are emissions to the atmosphere, and negative values uptake by the soil.
 
 ```{r, flux-ch4}
 results_fluxes %>% 
