@@ -9,7 +9,7 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 
 This document is the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc. Most of the introductory text with citations will be in the Google Doc.
 
-```{r setup, include=FALSE, cache=TRUE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
 library(cosore)
@@ -275,7 +275,7 @@ make_table(db_fields, "contributors")
 make_table(db_fields, "ports")
 ```
 
-**Table 5.** Summary of COSORE's _data_ table, which holds the actual flux observations and accompanying time-stamped data. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required.
+**Table 5.** Summary of COSORE's _data_ table, which holds the actual flux observations and accompanying time-stamped data. Columns include field name, description, class (i.e. type of data), units, and whether or not the field is required. Note that all data in this table are acquired at the point of GHG flux measurement; see Supplementary Table S1 for site-level data.
 
 ```{r table_data}
 make_table(db_fields, "data")
