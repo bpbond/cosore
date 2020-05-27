@@ -74,7 +74,7 @@ csr_dataset <- function(dataset_name, quiet = FALSE, metadata_only = FALSE) {
 #' @importFrom stats aggregate
 csr_database <- function() {
   desc <- csr_table("description")
-  desc <- desc[c("CSR_DATASET", "CSR_LONGITUDE", "CSR_LATITUDE", "CSR_ELEVATION", "CSR_IGBP")]
+  desc <- desc[c("CSR_DATASET", "CSR_LONGITUDE", "CSR_LATITUDE", "CSR_ELEVATION", "CSR_IGBP", "CSR_PRIMARY_PUB")]
 
   ports <- csr_table("ports")
   ports <- aggregate(CSR_MSMT_VAR ~ CSR_DATASET, data = ports, FUN = function(x) paste(unique(x), collapse = ", "))
