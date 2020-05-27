@@ -382,7 +382,7 @@ left_join(map, mat, by = c("x", "y")) %>%
 p <- ggplot() +
   geom_hex(data = map_mat_global,
              aes(x = mat, y = map), bins = 100) +
-  scale_fill_viridis_c(name = "Grid cells", begin = 0.7, end = 0) +
+  scale_fill_viridis_c(name = "Grid cells", begin = 0.85, end = 0) +
   geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
              color = "black", shape = 4, size = 1.5, na.rm = TRUE) +
   theme_minimal() +
@@ -461,7 +461,7 @@ p <- results_lat %>%
             timestamp = mean(timestamp)) %>% 
   ggplot(aes(timestamp, Lat_bin, color = Records)) + 
   geom_point(size = 5) + 
-  scale_colour_viridis_c(name = "Observations", begin = 0.9, end = 0) +
+  scale_colour_viridis_c(name = "Observations", begin = 0.95, end = 0) +
   labs(x = "Year", y = "Latitude")
 print(p)
 ggsave("figures/figure5-latitude.png", width = 8, height = 6)
