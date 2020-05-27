@@ -9,7 +9,7 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 
 This document is the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc. Most of the introductory text with citations will be in the Google Doc.
 
-```{r setup, include=FALSE}
+```{r packages, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
 library(cosore)
@@ -21,7 +21,10 @@ library(covr)
 library(magrittr)
 library(ggplot2)
 theme_set(theme_minimal())
+```
 
+
+```{r setup, include=FALSE, cache=TRUE}
 db <- csr_database()
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
 db_years <- max(year(db$CSR_DATE_END), na.rm = TRUE) - min(year(db$CSR_DATE_BEGIN), na.rm = TRUE) + 1
@@ -58,7 +61,7 @@ read_csv("authors_from_google_sheets.csv", skip = 1, col_types = "cccccccc") %>%
   write_csv("authors_final.csv") ->
   authors
 
-# First four authors are fixed; after that it's alphabetical
+# First five authors are fixed; after that it's alphabetical
 authors <- bind_rows(authors[1:5,],
                      arrange(authors[-1:-5,], CSR_FAMILY_NAME, CSR_FIRST_NAME))
 a_names <- paste(authors$CSR_FIRST_NAME, authors$CSR_FAMILY_NAME)
@@ -380,11 +383,12 @@ left_join(map, mat, by = c("x", "y")) %>%
 p <- ggplot() +
   geom_hex(data = map_mat_global,
              aes(x = mat, y = map), bins = 100) +
-  scale_fill_distiller(palette = "YlGnBu", name = "Grid cells") +
+  scale_fill_distiller(palette = "YlGnBu", direction = 1, name = "Grid cells") +
   geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
              color = "darkorange", shape = 4, size = 1.5, na.rm = TRUE) +
   theme_minimal() +
   labs(x = "MAT (°C)", y = "MAP (mm)")
+print(p)
 ggsave("figures/figure2-climate.png")
 ```
 
@@ -430,7 +434,7 @@ print(p)
 ggsave("figures/figure4-waffle.png", width = 10, height = 5)
 ```
 
-**Figure 5.** Temporal data coverage by latitude.
+**Figure 5.** Temporal density of COSORE datasets, by latitude of the observational site.
 
 ```{r lat-coverage}
 # Get data density by month of year
@@ -458,7 +462,7 @@ p <- results_lat %>%
             timestamp = mean(timestamp)) %>% 
   ggplot(aes(timestamp, Lat_bin, color = Records)) + 
   geom_point(size = 5) + 
-  scale_color_distiller(palette = "YlGnBu", name = "Observations", labels = comma) +
+  scale_color_distiller(palette = "YlGnBu", direction = 1, name = "Observations", labels = comma) +
   labs(x = "Year", y = "Latitude")
 print(p)
 ggsave("figures/figure5-latitude.png", width = 8, height = 6)
@@ -502,7 +506,7 @@ p <- ggplot(data = doy_counts, aes(x = yearday, y = value)) +
   geom_line() + 
   facet_wrap(~Hemi + Gas, scales = "free", labeller = label_parsed) +
   labs(x = "Day of year", y = "Number of observations") +
-  scale_y_continuous(labels = comma) +
+  scale_y_continuous(labels = comma)
 print(p)
 ggsave("figures/figure6-doy.png")
 ```
