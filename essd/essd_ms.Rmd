@@ -21,6 +21,10 @@ library(covr)
 library(magrittr)
 library(ggplot2)
 theme_set(theme_minimal())
+
+# For world map
+library(ggmap)
+library(scales)
 ```
 
 ```{r setup, include=FALSE, cache=TRUE}
@@ -307,31 +311,31 @@ make_table(db_fields, "diagnostics")
 **Figure 1.** World satellite image with COSORE data submission sites shown as blue diamonds. Areas with multiple submissions are shown as darker.
 
 ```{r worldmap, message = FALSE, echo = FALSE, warning = FALSE}
-library(ggmap)
-library(scales)
-
 bbox <- make_bbox(lon = c(-160, 150), lat = c(-50, 70)) # make a coordinate box 
 map <- get_map(location = bbox, source = "stamen", maptype = "terrain") # load map from online
 
 p <- ggmap(map) + 
   geom_point(data = db, aes(x = CSR_LONGITUDE, y = CSR_LATITUDE, size = CSR_RECORDS), 
-             alpha = 0.5, color = "blue4") + 
+             alpha = 0.5, color = "blue4", na.rm = TRUE) + 
   labs(x = "Longitude", y = "Latitude") +
   scale_size_continuous("", labels = comma) +
   theme(legend.position = "bottom")
 print(p)
-ggsave("figures/figure1-map.png")
+
+ggsave_quiet <- function(...) suppressMessages(ggsave(...))
+ggsave_quiet("figures/figure1-map.png")
 ```
 
 **Figure 2.** Climate space figure.
 
-```{r mat-map}
-#source("mat-map.R")
-# Load libraries
+```{r worldmap-pkgs, include=FALSE}
+# Note raster masks 'tidyr::extract' and 'dplyr::select'
 library(raster)
 library(sp)
 library(RColorBrewer)
+```
 
+```{r mat-map}
 # Download worldclim data for precip and tmean if necessary, into w10/ folder
 precip <- getData("worldclim", path = "wc10/", var = "prec", res = 10, download = !file.exists("wc10/wc10/precip1.hdr"))
 tmean <- getData("worldclim", path = "wc10/", var = "tmean", res = 10, download = !file.exists("wc10/wc10/tmean1.hdr"))
@@ -381,14 +385,14 @@ left_join(map, mat, by = c("x", "y")) %>%
 
 p <- ggplot() +
   geom_hex(data = map_mat_global,
-             aes(x = mat, y = map), bins = 100) +
+             aes(x = mat, y = map), bins = 100, na.rm = TRUE) +
   scale_fill_viridis_c(name = "Grid cells", begin = 0.85, end = 0) +
   geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
              color = "black", shape = 4, size = 1.5, na.rm = TRUE) +
   theme_minimal() +
   labs(x = "MAT (°C)", y = "MAP (mm)")
 print(p)
-ggsave("figures/figure2-climate.png")
+ggsave_quiet("figures/figure2-climate.png")
 ```
 
 ```{r waffle-prep, echo=FALSE}
@@ -430,7 +434,7 @@ p <- ggplot(results_fluxes, aes(fill = IGBP, values = Records_scale)) +
         axis.text.y = element_blank(),
         axis.ticks = element_blank())
 print(p)
-ggsave("figures/figure4-waffle.png", width = 10, height = 5)
+ggsave_quiet("figures/figure4-waffle.png", width = 10, height = 5)
 ```
 
 **Figure 5.** Temporal density of COSORE datasets, by latitude of the observational site.
@@ -460,11 +464,11 @@ p <- results_lat %>%
   summarise(Records = sum(n_co2),
             timestamp = mean(timestamp)) %>% 
   ggplot(aes(timestamp, Lat_bin, color = Records)) + 
-  geom_point(size = 5) + 
+  geom_point(size = 5, na.rm = TRUE) + 
   scale_colour_viridis_c(name = "Observations", begin = 0.95, end = 0) +
   labs(x = "Year", y = "Latitude")
 print(p)
-ggsave("figures/figure5-latitude.png", width = 8, height = 6)
+ggsave_quiet("figures/figure5-latitude.png", width = 8, height = 6)
 ```
 
 **Figure 6.** Temporal data coverage by day of year and hemisphere
@@ -507,7 +511,7 @@ p <- ggplot(data = doy_counts, aes(x = yearday, y = value)) +
   labs(x = "Day of year", y = "Number of observations") +
   scale_y_continuous(labels = comma)
 print(p)
-ggsave("figures/figure6-doy.png")
+ggsave_quiet("figures/figure6-doy.png")
 ```
 
 ```{r flux-prep}
@@ -526,7 +530,7 @@ bind_rows(results) %>%
   results_fluxes
 
 co2_limits <- c(-1, 15)
-ch4_limits <- c(-5, 25)
+ch4_limits <- c(-5, 100)
 out_co2 <- filter(results_fluxes, is.finite(CSR_FLUX_CO2), CSR_FLUX_CO2 < min(co2_limits) | CSR_FLUX_CO2 > max(co2_limits))
 out_ch4 <- filter(results_fluxes, is.finite(CSR_FLUX_CH4), CSR_FLUX_CH4 < min(ch4_limits) | CSR_FLUX_CH4 > max(ch4_limits))
 pct_co2 <- round(nrow(out_co2) / nrow(filter(results_fluxes, is.finite(CSR_FLUX_CO2))) * 100, 1)
@@ -554,7 +558,7 @@ p <- rf_co2 %>%
   scale_y_continuous(labels = number_format(scale = 1e-3)) +
   labs(x = expression(CO[2]~flux~(µmol~m^-2~s^-1)), y = "Number of observations (*1000)")
 print(p)
-ggsave("figures/figure7-co2.png")
+ggsave_quiet("figures/figure7-co2.png")
 ```
 
 Figure 8. Distribution of CH4 fluxes in COSORE datasets, by IGBP classification (cf. Table 1). For visual clarity this figure excludes fluxes <`r min(ch4_limits)` and >`r max(ch4_limits)` nmol m-2 s-1 (`r format(nrow(out_ch4), big.mark = ",")` observations, `r pct_ch4`% of the data). Positive values are emissions to the atmosphere, and negative values uptake by the soil.
@@ -578,7 +582,7 @@ p <- rf_ch4 %>%
   scale_y_continuous(labels = number_format(scale = 1e-3)) +
   labs(x = expression(CH[4]~flux~(nmol~m^-2~s^-1)), y = "Number of observations (*1000)")
 print(p)
-ggsave("figures/figure8-ch4.png")
+ggsave_quiet("figures/figure8-ch4.png")
 ```
 
 The End.
