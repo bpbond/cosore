@@ -68,25 +68,35 @@ csr_dataset <- function(dataset_name, quiet = FALSE, metadata_only = FALSE) {
 
 #' Return metadata for the entire COSORE database.
 #'
+#' @param regenerate Regenerate (this is slow) summary data from database? Logical
 #' @return A \code{data.frame} with metadata about each constituent dataset. This consists of parts of
 #' the \code{description} file, joined with parts of \code{ports} and \code{diag}.
 #' @export
 #' @importFrom stats aggregate
-csr_database <- function() {
-  desc <- csr_table("description")
-  desc <- desc[c("CSR_DATASET", "CSR_LONGITUDE", "CSR_LATITUDE", "CSR_ELEVATION", "CSR_IGBP", "CSR_PRIMARY_PUB")]
+csr_database <- function(regenerate = FALSE) {
+  stopifnot(is.logical(regenerate))
 
-  ports <- csr_table("ports")
-  ports <- aggregate(CSR_MSMT_VAR ~ CSR_DATASET, data = ports, FUN = function(x) paste(unique(x), collapse = ", "))
+  if(regenerate) {
+    desc <- csr_table("description")
+    desc <- desc[c("CSR_DATASET", "CSR_LONGITUDE", "CSR_LATITUDE", "CSR_ELEVATION", "CSR_IGBP", "CSR_PRIMARY_PUB")]
 
-  diag <- csr_table("diagnostics", quiet = TRUE)
-  diag <- diag[c("CSR_DATASET", "CSR_RECORDS", "CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_GASES")]
-  diag$CSR_DATE_BEGIN <- as.Date(diag$CSR_TIMESTAMP_BEGIN)
-  diag$CSR_DATE_END <- as.Date(diag$CSR_TIMESTAMP_END)
-  diag$CSR_TIMESTAMP_BEGIN <- diag$CSR_TIMESTAMP_END <- NULL
+    ports <- csr_table("ports")
+    ports <- aggregate(CSR_MSMT_VAR ~ CSR_DATASET, data = ports,
+                       FUN = function(x) paste(unique(x), collapse = ", "))
 
-  x <- merge(desc, diag, by = "CSR_DATASET", all.x = TRUE)
-  tibble::as_tibble(merge(x, ports, by = "CSR_DATASET", all.x = TRUE))
+    diag <- csr_table("diagnostics", quiet = TRUE)
+    diag <- diag[c("CSR_DATASET", "CSR_RECORDS", "CSR_TIMESTAMP_BEGIN", "CSR_TIMESTAMP_END", "CSR_GASES")]
+    diag$CSR_DATE_BEGIN <- as.Date(diag$CSR_TIMESTAMP_BEGIN)
+    diag$CSR_DATE_END <- as.Date(diag$CSR_TIMESTAMP_END)
+    diag$CSR_TIMESTAMP_BEGIN <- diag$CSR_TIMESTAMP_END <- NULL
+
+    x <- merge(desc, diag, by = "CSR_DATASET", all.x = TRUE)
+    message("usethis::use_data(COSORE_SUMMARY, internal = TRUE, overwrite = TRUE)")
+    tibble::as_tibble(merge(x, ports, by = "CSR_DATASET", all.x = TRUE))
+  } else {
+    # Just return internal (pre-saved) summary object; to create/update it, see message() above
+    COSORE_SUMMARY
+  }
 }
 
 

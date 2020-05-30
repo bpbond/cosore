@@ -1,4 +1,4 @@
-# test-.R
+# test_user.R
 
 context("user")
 
