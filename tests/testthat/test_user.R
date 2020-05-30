@@ -1,4 +1,4 @@
-# test-.R
+# test_user.R
 
 context("user")
 
@@ -31,10 +31,14 @@ test_that("csr_dataset", {
 })
 
 test_that("csr_database", {
-  x <- csr_database()
+  expect_error(csr_database(1))
+
+  # Make sure that the internal COSORE_SUMMARY object has been updated
+  # NB this won't catch changes to the dataset, e.g. the number of data records
+
+  x <- csr_database(regenerate = FALSE)
   expect_s3_class(x, "data.frame")
-  y <- list_datasets()
-  expect_identical(nrow(x), length(y))  # should be one row per dataset
+  expect_identical(sort(x$CSR_DATASET), sort(list_datasets()))
 })
 
 test_that("extract_table", {

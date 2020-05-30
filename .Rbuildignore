@@ -5,6 +5,6 @@
 misc/
 essd/
 rsconnect/
-.pdf$
+\.pdf$
 CODE_OF_CONDUCT.md
 ^\.github$

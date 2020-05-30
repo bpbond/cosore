@@ -4,7 +4,10 @@
 \alias{csr_database}
 \title{Return metadata for the entire COSORE database.}
 \usage{
-csr_database()
+csr_database(regenerate = FALSE)
+}
+\arguments{
+\item{regenerate}{Regenerate (this is slow) summary data from database? Logical}
 }
 \value{
 A \code{data.frame} with metadata about each constituent dataset. This consists of parts of

@@ -67,6 +67,7 @@ list_datasets <- function(path = resolve_dataset("")) {
 #' @keywords internal
 #' @return Fully-qualified filename(s) of dataset folder in \code{inst/extdata/datasets}
 #'  (\code{extdata/datasets/} in built package).
+#' @keywords internal
 resolve_dataset <- function(dataset_name) {
   system.file(file.path("extdata/datasets", dataset_name), package = "cosore", mustWork = TRUE)
 }
