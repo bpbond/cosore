@@ -186,7 +186,7 @@ read_contributors_file <- function(dataset_name, file_data = NULL) {
     stop(dataset_name, ": email for primary contributor is missing")
   }
   # Check for invalid email addresses
-  eml <- sapply(strsplit(cfd$CSR_EMAIL, ";"), function(x) x[1])
+  eml <- vapply(strsplit(cfd$CSR_EMAIL, ";"), function(x) x[1], FUN.VALUE = character(1))
   # 	\p{L} matches all Perl letters; we need this for diacriticals etc.
   invalid_emails <- grep("^[0-9\\p{L}._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
                          eml, ignore.case = TRUE, invert = TRUE, perl = TRUE)

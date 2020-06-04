@@ -140,7 +140,8 @@ Missing values are encoded by a blank (i.e. two successive commas in the CSV for
 A release download is fully self-contained, with full data, metadata, and documentation; a file manifest; a copy of the data license; an introductory vignette; a summary report on the entire database; and an explanatory README with links to this publication.
 
 ```{r dbsize, include=FALSE, cache=TRUE}
-db_memsize <- sum(sapply(db$CSR_DATASET, function(x) object.size(csr_dataset(x)$data))) / 1e6
+db_memsize <- sum(vapply(db$CSR_DATASET, function(x) object.size(csr_dataset(x)$data),
+                         FUN.VALUE = numeric(1))) / 1e6
 db_disksize <- system2("git", 
                        args = c("count-objects", "-vH"), 
                        stdout = TRUE)
