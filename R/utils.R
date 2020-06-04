@@ -147,10 +147,10 @@ rbind_list <- function(x) {
   if(length(x) == 0) return(tibble())
 
   # Everything in x has to be data.frame-equivalent or NULL
-  stopifnot(all(sapply(x, function(x) {
+  stopifnot(all(vapply(x, function(x) {
     any(c("data.frame", "NULL") %in% class(x))
   }
-  )))
+  , FUN.VALUE = logical(1))))
 
   all_names <- unique(unlist(lapply(x, function(x) names(x))))
 
@@ -160,8 +160,9 @@ rbind_list <- function(x) {
               if(is.null(x_entry)) {
                 data.frame()
               } else {
-                data.frame(c(x_entry, sapply(setdiff(all_names, names(x_entry)),
-                                             function(y) NA)),
+                data.frame(c(x_entry, vapply(setdiff(all_names, names(x_entry)),
+                                             function(y) NA,
+                                             FUN.VALUE = logical(1))),
                            check.names = FALSE, stringsAsFactors = FALSE)
               }
             }), make.row.names = FALSE, stringsAsFactors = FALSE))
@@ -601,7 +602,7 @@ remove_invalid_timestamps <- function(dsd, tf, tz) {
 #' @keywords internal
 remove_empty_columns <- function(x) {
   stopifnot(is.data.frame(x))
-  all_na <- sapply(x, function(x) all(is.na(x)))
+  all_na <- vapply(x, function(x) all(is.na(x)), FUN.VALUE = logical(1))
   x[!all_na]
 }
 
