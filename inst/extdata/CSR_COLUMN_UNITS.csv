@@ -73,7 +73,7 @@ ports,CSR_OPAQUE,Opaque chamber?,logical,,TRUE
 ports,CSR_PLANTS_REMOVED,Plants removed from chamber?,logical,,TRUE
 ports,CSR_FAN,Mixing fan in chamber?,logical,,FALSE
 ports,CSR_SPECIES,Comma-separated species list,character,,FALSE
-ports,CSR_SENSOR_DEPTHS,"Comma-separated depths of solid-state sensors, gradient method only",character,cm,FALSE
+ports,CSR_SENSOR_DEPTHS,Comma-separated list of sensor depths,character,cm,FALSE
 ports,CSR_LONGITUDE,"Decimal longitude of measurement chamber, positive = north",numeric,degrees,FALSE
 ports,CSR_LATITUDE,"Decimal latitude of measurement chamber, positive = east",numeric,degrees,FALSE
 ports,CSR_ELEVATION,Elevation of measurement chamber,numeric,m,FALSE
@@ -93,7 +93,7 @@ ancillary,CSR_DATE,Date (YYYY or YYYY-MM or YYYY-MM-DD) of which ancillary measu
 ancillary,CSR_STATISTIC,"Statistic being reported in this row, following AmeriFlux controlled vocabulary (Mean, Max, Standard Deviation, Measurement Uncertainty, Single observation, Expert estimate, etc.)",character,,FALSE
 ancillary,CSR_ABM,Aboveground biomass,numeric,gC/m^2^,FALSE
 ancillary,CSR_AGE,Time since most recent disturbance,numeric,years,FALSE
-ancillary,CSR_ANPP,Aboveground net primary production,numeric,gC/m^2^/yr,FALSE
+ancillary,CSR_ANPP,Total aboveground net primary production,numeric,gC/m^2^/yr,FALSE
 ancillary,CSR_BA,Basal area,numeric,m2/ha,FALSE
 ancillary,CSR_BD,Soil bulk density,numeric,g/cm^3^,FALSE
 ancillary,CSR_BNPP,Total belowground net primary production,numeric,gC/m^2^/yr,FALSE
@@ -120,7 +120,7 @@ ancillary,CSR_STC,Total soil carbon,numeric,%,FALSE
 ancillary,CSR_STN,Total soil nitrogen,numeric,%,FALSE
 data,CSR_VPD,Vapor pressure deficit,numeric,Pa,FALSE
 ancillary,CSR_WIND,Wind speed (height undefined),numeric,m/s,FALSE
-ancillary,CSR_WTD,Water table depth at chamber (positive = depth),numeric,cm,FALSE
+ancillary,CSR_WTD,Water table depth (positive = depth),numeric,cm,FALSE
 #,,,,,
 # `contributors`: data contributor information,,,,,
 #,,,,,

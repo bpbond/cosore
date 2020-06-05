@@ -7,6 +7,7 @@ CSR_DATASET,CSR_FAMILY_NAME,CSR_FIRST_NAME,Author?,CSR_EMAIL,CSR_ORCID,"Institut
 ,Sihi,Debjani,Yes,sihid@ornl.gov,0000-0002-5513-8862,"Climate Change Science Institute and Environmental Sciences Division, Oak Ridge National Laboratory, 1 Bethel Valley Rd, Oak Ridge, TN 37830, USA", 
 ,Jian,Jinshi,Yes,jinshi.jian@pnnl.gov,0000-0002-5272-5367,"Pacific Northwest National Laboratory, Joint Global Change Research Institute at the University of Maryland–College Park, College Park, MD 20740, USA", 
 ,Hopple,Anya,Yes,anya.hopple@pnnl.gov,0000-0002-5957-8603,"Pacific Northwest National Laboratory, Richland, WA 99354, USA",
+,Hopple,Anya,Yes,anya.hopple@pnnl.gov,0000-0002-5957-8603,"Smithsonian Environmental Research Center, Edgewater, MD 21037, USA",
 d20190409_ANJILELI,AghaKouchak,Amir,Yes,amir.a@uci.edu,0000-0003-4689-8357,"Department of Civil and Environmental Engineering, University of California Irvine, Irvine, CA 92617, USA", 
 d20190409_ANJILELI,Ashraf,Samaneh,Yes,samaneh.ashraf@mail.concordia.ca,0000-0003-4858-6496,"Concordia University, Montreal, Canada", 
 d20190409_ANJILELI,Anjileli,Hassan,Yes,hassan.a@uci.edu,0000-0001-9635-0686,"Department of Civil and Environmental Engineering, University of California Irvine, Irvine, CA 92617, USA", 
@@ -52,7 +53,7 @@ d20190607_RUEHR,Ruehr,Nadine K.,Yes,nadine.ruehr@kit.edu,0000-0001-5989-7463,"In
 d20190607_RUEHR,Buchmann,Nina,Yes,nina.buchmann@usys.ethz.ch,0000-0003-0826-2980,"Department of Environmental Systems Science, Institute of Agricultural Sciences, ETH Zurich, Zurich, Switzerland", 
 d20190610_SIHI_(all),Sihi,Debjani,Yes,sihid@ornl.gov,0000-0002-5513-8862,"Climate Change Science Institute and Environmental Sciences Division, Oak Ridge National Laboratory, 1 Bethel Valley Rd, Oak Ridge, TN 37830, USA",
 d20190610_SIHI_(all),Savage,Kathleen E.,Yes,savage@whrc.org,0000-0002-1649-5314,"Woods Hole Research Center, Falmouth, MA 02540, USA",
-d20190610_SIHI_(all),Hughs,Holly,Yes,holly.hughes@maine.edu,,"School of Forest Resources, University of Maine, Orono, ME 04469, USA", 
+d20190610_SIHI_(all),Hughes,Holly,Yes,holly.hughes@maine.edu,,"School of Forest Resources, University of Maine, Orono, ME 04469, USA", 
 d20190610_SIHI_(all),Davidson,Eric A.,Yes,edavidson@umces.edu,0000-0002-8525-8697,"Appalachian Laboratory, University of Maryland Center for Environmental Science, Frostburg, MD 21532, USA",Supported by USDA grant # 2014-67003-22073
 d20190617_SCOTT_SRM,Scott,Russell L.,Yes,russ.scott@ars.usda.gov,0000-0003-2987-5380,"Southwest Watershed Research Center, USDA-ARS, Tucson, AZ 85719, USA", 
 d20190617_SCOTT_WHS,Scott,Russell L.,Yes,russ.scott@ars.usda.gov,0000-0003-2987-5380,"Southwest Watershed Research Center, USDA-ARS, Tucson, AZ 85719, USA", 
@@ -133,7 +134,7 @@ d20200221_MATHES,Mathes,Kayla,Yes,matheskc@vcu.edu,0000-0001-8812-8866,"Integrat
 d20200221_MATHES,Gough,Christopher M.,Yes,cmgough@vcu.edu,0000-0002-1227-7731,"Department of Biology, Virginia Commonwealth University, Richmond, VA 23284, USA", 
 d20200224_MATHES,Nietz,Jennifer G.,Yes,jennifergoedhart@gmail.com,,"Department of Evolution, Ecology and Organismal Biology, Ohio State University, Columbus, OH 43210, USA", 
 d20200224_MATHES,Mathes,Kayla,Yes,matheskc@vcu.edu,0000-0001-8812-8866,"Integrated Life Sciences, Virginia Commonwealth University, Richmond, VA 23284, USA", 
-d20200224_MATHES,Curtis,Peter,Yes,curtis.7@osu.edu,,"Department of Evolution, Ecology and Organismal Biology, Ohio State University, Columbus, OH 43210, USA", 
+d20200224_MATHES,Curtis,Peter S.,Yes,curtis.7@osu.edu,,"Department of Evolution, Ecology and Organismal Biology, Ohio State University, Columbus, OH 43210, USA", 
 d20200228_RENCHON,Tjoelker,Mark G.,Yes,M.Tjoelker@westernsydney.edu.au,0000-0003-4607-5238,"Hawkesbury Institute for the Environment, Western Sydney University, Penrith, NSW 2571, Australia",
 d20200228_RENCHON,Renchon,Alexandre A.,Yes,a.renchon@gmail.com,0000-0002-9521-5092,"Hawkesbury Institute for the Environment, Western Sydney University, Penrith, NSW 2571, Australia","Australian Research Council grants DP170102766, DP110105102 and DP160102452."
 d20200228_RENCHON,Pendall,Elise,Yes,e.pendall@westernsydney.edu.au,0000-0002-1651-8969,"Hawkesbury Institute for the Environment, Western Sydney University, Penrith, NSW 2571, Australia","Australian Research Council grants DP170102766, DP110105102 and DP160102452."
