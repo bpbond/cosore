@@ -335,19 +335,17 @@ tmean <- getData("worldclim", path = "wc10/", var = "tmean", res = 10, download 
 
 # Pull out cosore dataset latitudes and longitudes
 db %>%
-  dplyr::select(CSR_LONGITUDE, CSR_LATITUDE) -> cosore_coords
+  dplyr::select(CSR_DATASET, CSR_LONGITUDE, CSR_LATITUDE) -> cosore_coords
 
 # Extract cosore location data from worldclim data for precip...
-raster::extract(precip, cosore_coords) -> precip_coords
+raster::extract(precip, cosore_coords[2:3]) -> precip_coords
 apply(precip_coords, 1, sum) -> map_cosore
 cbind(cosore_coords, map_cosore) -> map_coords
 
 # ...and tmean
-raster::extract(tmean, cosore_coords) -> tmean_vals
+raster::extract(tmean, cosore_coords[2:3]) -> tmean_vals
 apply(tmean_vals, 1, mean) -> mat_cosore
-cbind(map_coords, mat_cosore) -> mat_coords
-
-left_join(map_coords, mat_coords, by = c("CSR_LONGITUDE", "CSR_LATITUDE", "map_cosore")) %>%
+cbind(map_coords, mat_cosore)  %>%
   # Temp data is stored in degC * 10, so we need to divide to get back to degC
   mutate(mat_cosore = mat_cosore / 10) -> cosore_points
 
@@ -355,7 +353,7 @@ left_join(map_coords, mat_coords, by = c("CSR_LONGITUDE", "CSR_LATITUDE", "map_c
 raster::as.data.frame(precip, xy = TRUE) %>%
   drop_na() -> precip_global
 
-# Calculate annual mean for precip...
+# Calculate annual sum for precip...
 precip_global %>%
   dplyr::select(-x, -y) %>%
   apply(1, sum) -> map_global
@@ -363,7 +361,7 @@ precip_global %>%
 raster::as.data.frame(tmean, xy = TRUE) %>%
   drop_na() -> tmean_global
 
-# ...and tmean
+# ...and mean for temperature
 tmean_global %>%
   dplyr::select(-x, -y) %>%
   apply(1, mean) -> mat_global
