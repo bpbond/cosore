@@ -1,0 +1,45 @@
+# DESCRIPTION.txt
+#
+# This key-value data file holds the minimal metadata for each dataset.
+# Most entries  be filled out for each dataset. Entries below include:
+# 	CSR_SITE_NAME: standard site name
+# 	CSR_LONGITUDE: decimal degrees; positive = east, negative = west
+# 	CSR_LATITUDE: decimal degrees; positive = north, negative = south
+# 	CSR_ELEVATION: elevation above sea level, meters
+#	CSR_TIMEZONE: see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+#		For US sites, a corresponding Central American timezone is used if 
+#		the instrument does not follow daylight savings 
+# 	CSR_IGBP: CSR_IGBP land cover type. Common types include:
+#		Evergreen needleleaf forest, Evergreen broadleaf forest,
+#		Deciduous needleleaf forest, Deciduous broadleaf forest,
+#		Mixed forests, Closed shrubland, Open shrubland, Woody savanna,
+#		Savannas, Grassland, Wetland, Cropland, Urban
+#	CSR_NETWORK and CSR_SITE_ID: Optional network (e.g. "Ameriflux") and site ID in network
+# 	CSR_INSTRUMENT: e.g. "LI-8100A/LI-8150" for standard Licor setup,
+#		"LI-8100A" (no multiplexer), others...
+#	CSR_MSMT_LENGTH: measurement length (seconds)
+#	CSR_FILE_FORMAT: "Processed", "Processed_csv", "Custom", "LI-8100A_raw", etc.
+#	CSR_TIMESTAMP_FORMAT. See ?strptime, but briefly:
+		%d day of month; %H hour; %M minute; %m month; %S second; %Y year; %y year w/o century
+# 	Primary publication: optional DOI (preferred) or other primary publication 
+#		that should be cited when these data are used. Leave empty if unpublished.
+# 	Other publications: optional comma-separated DOIs
+# 	CSR_ACKNOWLEDGMENT: optional acknowledgment (funding or other) text
+# --------------------------------------
+CSR_SITE_NAME: Joseph W. Jones Ecological Research Center
+CSR_LONGITUDE: -84.48
+CSR_LATITUDE: 31.27
+CSR_ELEVATION: 158
+CSR_TIMEZONE: Etc/GMT+5
+CSR_IGBP: Woody savanna
+CSR_NETWORK: 
+CSR_SITE_ID: 
+CSR_INSTRUMENT: LI-6400-09
+CSR_MSMT_LENGTH: 200
+CSR_FILE_FORMAT: Processed
+CSR_TIMESTAMP_FORMAT: %Y-%m-%dT%H:%M:%SZ
+CSR_TIMESTAMP_TZ: Etc/GMT+5
+CSR_PRIMARY_PUB: 10.1016/j.agrformet.2011.12.008
+CSR_OTHER_PUBS:
+CSR_DATA_URL:
+CSR_ACKNOWLEDGMENT: This study was supported by U.S. Department of Energy (DOE) National Institute for Climatic Change Research (NICCR) grant 08-SC-NICCR-1074, and the USDA Forest Service, Southern Research Station. We are grateful to D.P. Aubrey and M.G. Ryan for providing helpful comments on a previous version of this manuscript. We acknowledge the support of many individuals, past and present, especially J. Bradley and R. Winans for managing the RO and irrigation system, M. McCorvey for collecting manual Esoil measurements, and R. Atkinson, J. Davis, R. McCollum, C.R. Maier, N. Muldoon, A. Ouimette, B. Shelton, C. Sobek, and D. Williams for field work and laboratory processing.  
