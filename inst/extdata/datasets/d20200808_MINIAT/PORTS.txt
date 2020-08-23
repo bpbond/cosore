@@ -3,17 +3,96 @@
 # This comma-separated data file provides information about multiplexer ports
 # and what conditions they represent. Entries below include: 
 #
-# 	CSR_PORT: CSR_PORT number, numeric; "0" means all ports [req]
-#	CSR_MSMT_VAR: measurement variable: "Rs", "Rh", or "NEE" [req]
+# 	CSR_PORT: CSR_PORT number,	 numeric; "0" means all ports [req]
+#	CSR_MSMT_VAR: measurement variable: "	Rs",	 "Rh",	 or "NEE" [req]
 # 	CSR_TREATMENT: "None" or experimental manipulation [req]
-#	CSR_AREA: optional chamber area, cm2
-#	CSR_VOLUME: optional volume of chamber, cm3
-#	CSR_DEPTH: optional collar insertion depth, cm
-#	CSR_OPAQUE: opaque chamber? Assumed TRUE unless appears below  [req]
-#	CSR_PLANTS_REMOVED: plants removed? Assumed TRUE unless appears below [req] 
+#	CSR_AREA: optional chamber area,	 cm2
+#	CSR_VOLUME: optional volume of chamber,	 cm3
+#	CSR_DEPTH: optional collar insertion depth,	 cm
+#	CSR_OPAQUE: opaque chamber? Assumed TRUE unless appea	Rs below  [req]
+#	CSR_PLANTS_REMOVED: plants removed? Assumed TRUE unless appea	Rs below [req] 
 #	CSR_FAN: mixing fan in chamber? Optional
 # 	CSR_SPECIES: optional field describing species measured
 #	CSR_SENSOR_DEPTHS: optional sensor depths for gradient method
 #
-CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,	CSR_FAN,	CSR_AREA,	CSR_DEPTH,	CSR_SPECIES
-0,			Rs,				None,			TRUE,		81.07,		3,			Pinus palustris	
+CSR_PORT,	CSR_MSMT_VAR,	CSR_TREATMENT,		CSR_FAN,		CSR_AREA,		CSR_DEPTH,		CSR_SPECIES
+0601,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0602,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0603,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0604,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0605,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0606,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0607,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0608,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0609,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0610,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0701,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0702,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0703,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0704,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0705,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0706,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0707,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0708,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0709,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0710,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0801,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0802,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0803,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0804,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0805,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+0806,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0807,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0808,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0809,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0810,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+0901,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0902,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0903,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0904,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0905,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+0906,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0907,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0908,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0909,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+0910,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1101,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1102,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1103,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1104,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1105,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1106,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1107,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1108,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1109,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1110,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1301,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1302,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1303,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1304,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1305,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1306,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1307,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1308,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1309,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1310,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1401,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1402,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1403,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1404,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1405,		Rs,		None,		TRUE,	81.07,	3,	Pinus palustris
+1406,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1407,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1408,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1409,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1410,		Rs,		In-growth core,	TRUE,	81.07,	3,	Pinus palustris
+1501,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1502,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1503,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1504,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1505,		Rs,		Irrigated,	TRUE,	81.07,	3,	Pinus palustris
+1506,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1507,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1508,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1509,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
+1510,		Rs,		"Irrigated,	 in-growth core",	TRUE,	81.07,	3,	Pinus palustris
