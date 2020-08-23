@@ -19,8 +19,8 @@ ds <- params$dataset
 # Compute a mean timestamp for ease of use below
 dsd <- ds$data
 dsd$CSR_TIMESTAMP <- do.call(c, Map(function(x, y) mean(c(x, y)), 
-                                    ds$data$CSR_TIMESTAMP_BEGIN, 
-                                    ds$data$CSR_TIMESTAMP_END))
+                                    dsd$CSR_TIMESTAMP_BEGIN, 
+                                    dsd$CSR_TIMESTAMP_END))
 quick <- params$quick
 ```
 
@@ -146,7 +146,12 @@ if(is.data.frame(dsd) & !quick) {
   # flux over time
   if(has_co2) {
     p1 <- ggplot(dsd, aes(CSR_TIMESTAMP, CSR_FLUX_CO2, color = CSR_PORT)) + 
-      geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
+      geom_line()
+    if(length(unique(dsd$CSR_PORT)) < 17) {
+      p1 <- p1 + geom_line() + facet_grid(CSR_PORT~., scales = "free_y")
+    } else {  # under these conditions a faceted plot looks terrible
+      p1 <- p1 + geom_point()
+    }
     print(p1)
     
     smry <- aggregate(CSR_FLUX_CO2 ~ CSR_PORT + Month, data = dsd, mean)
