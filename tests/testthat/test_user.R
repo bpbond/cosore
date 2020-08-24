@@ -38,7 +38,8 @@ test_that("csr_database", {
 
   x <- csr_database(regenerate = FALSE)
   expect_s3_class(x, "data.frame")
-  expect_identical(sort(x$CSR_DATASET), sort(list_datasets()))
+  expect_identical(sort(x$CSR_DATASET), sort(list_datasets()),
+                   info = "Run csr_database(regenerate = TRUE)")
 })
 
 test_that("extract_table", {
