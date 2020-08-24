@@ -154,7 +154,7 @@ library(cosore)
 
 Four primary user-facing functions are available:
 
-* *csr_database()* summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-8** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured;
+* *csr_database()* summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-5 and S1-S3** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured;
 * *csr_dataset()* returns a single dataset: an R list structure, each element of which is a table (_description_, _contributors_, etc., as described above);
 * *csr_table()* collects, into a single data frame, one of the tables of the database, for any or all datasets;
 * *csr_metadata()* provides metadata information about all fields in all tables.
@@ -185,8 +185,8 @@ When contributed data are imported into COSORE, the package code performs a numb
 # Calculate what percent of observations are removed across all datasets
 csr_table("diagnostics", quiet = TRUE) %>% 
   group_by(CSR_DATASET, CSR_RECORDS) %>% 
-  summarise(removed = CSR_RECORDS_REMOVED_NA + CSR_RECORDS_REMOVED_ERR + CSR_RECORDS_REMOVED_TIMESTAMP) %>% 
-  ungroup() %>% 
+  summarise(removed = CSR_RECORDS_REMOVED_NA + CSR_RECORDS_REMOVED_ERR + CSR_RECORDS_REMOVED_TIMESTAMP,
+            .groups = "drop") %>% 
   mutate(removed_pct = removed / (removed + CSR_RECORDS) * 100) %>% 
   pull(removed_pct) -> errs
 ```
@@ -235,7 +235,8 @@ smrise <- function(x) {
     summarise(Datasets = n(),
               Records = format(sum(CSR_RECORDS, na.rm = TRUE), big.mark = ","),
               `First record` = min(CSR_DATE_BEGIN, na.rm = TRUE),
-              `Last record` = max(CSR_DATE_END, na.rm = TRUE)) 
+              `Last record` = max(CSR_DATE_END, na.rm = TRUE),
+              .groups = "drop") 
 }
 db %>% 
   filter(CSR_RECORDS > 0) %>%
