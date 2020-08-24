@@ -529,8 +529,8 @@ results <- lapply(datasets, function(xname) {
 })
 results_res <- bind_rows(results)
 
-p <- ggplot(results_res, aes(`Interval (min)`, Records)) +
-  geom_col() + 
+p <- ggplot(results_res, aes(`Interval (min)`, weights = Records)) +
+  geom_histogram(bins = 50) + 
   scale_x_continuous(trans = "log10") +
   scale_y_continuous(labels = number_format(scale = 1e-3)) +
   annotation_logticks(sides = "b") +
