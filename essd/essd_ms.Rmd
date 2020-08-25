@@ -27,7 +27,7 @@ library(ggmap)
 library(scales)
 ```
 
-```{r setup, include=FALSE, cache=TRUE}
+```{r setup, include=FALSE, cache=FALSE}
 db <- csr_database()
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
 db_years <- max(year(db$CSR_DATE_END), na.rm = TRUE) - min(year(db$CSR_DATE_BEGIN), na.rm = TRUE) + 1
@@ -80,6 +80,8 @@ if(length(dupes)) {
   a_names <- a_names[-dupes]
 }
 
+# Write out the author list and affiliation list. Note that this chunk is
+# results='asis', which lets us write html
 cat(paste0(a_names, "<sup>", a_inst_numbers, "</sup>"), sep = ", ")
 cat("<ol>\n") # ordered HTML list
 cat(paste0("\t<li>", institution_list, "</li>"), sep = "\n")
@@ -302,7 +304,7 @@ make_table(db_fields, "columns")
 make_table(db_fields, "diagnostics")
 ```
 
-**Figure 2.** World satellite image with COSORE data submission sites shown as blue diamonds. Areas with multiple submissions are shown as darker.
+**Figure 2.** Geographic distribution of COSORE datasets (N = 898), with point sizes corresponding to the number of records in each dataset. Map tiles show USGS land cover and national elevation data and are by Stamen Design, under CC BY 3.0; data by OpenStreetMap, under ODbL; figure rendered using R’s ggmap (Kahle and Wickham, 2013).
 
 ```{r worldmap, message = FALSE, echo = FALSE, warning = FALSE}
 bbox <- make_bbox(lon = c(-160, 150), lat = c(-50, 70)) # make a coordinate box 
@@ -403,6 +405,7 @@ p <- ggplot() +
 print(p)
 ggsave_quiet("figures/figure3-climate.png")
 
+library(cowplot, quietly = TRUE)
 p_new <- ggdraw() +
   draw_plot(p) +
   draw_plot(p_inset, x = 0.1, y = 0.5, width = 0.4, height = 0.45)
@@ -480,9 +483,9 @@ p <- results_lat %>%
   summarise(Records = sum(n_co2),
             timestamp = mean(timestamp), 
             .groups = "drop") %>% 
-  ggplot(aes(timestamp, Lat_bin, color = Records)) + 
+  ggplot(aes(timestamp, Lat_bin, color = Records / 1000)) + 
   geom_point(size = 5, na.rm = TRUE) + 
-  scale_colour_viridis_c(name = "Observations", begin = 0.95, end = 0) +
+  scale_colour_viridis_c(name = "Observations\n(*1000)", begin = 0.95, end = 0) +
   labs(x = "Year", y = "Latitude")
 print(p)
 ggsave_quiet("figures/figure5-latitude.png", width = 8, height = 6)
@@ -556,7 +559,7 @@ results_res <- bind_rows(results)
 p <- ggplot(results_res, aes(`Interval (min)`, weights = Records)) +
   geom_histogram(bins = 50) + 
   scale_x_continuous(trans = "log10") +
-  scale_y_continuous(labels = number_format(scale = 1e-3)) +
+  scale_y_continuous(labels = comma_format(scale = 1e-3)) +
   annotation_logticks(sides = "b") +
   ylab("Number of observations (*1000)")
 print(p)
