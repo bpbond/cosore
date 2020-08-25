@@ -6,7 +6,7 @@ output:
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
-This document is the core of the planned ESSD manuscript: summarizing the database, giving stats, describing functions, etc.
+This document is the core of the GCB manuscript: summarizing the database, giving stats, describing functions, etc.
 Most of the introductory text with citations will be in the Google Doc.
 
 ```{r packages, include=FALSE}
