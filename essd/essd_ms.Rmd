@@ -510,7 +510,7 @@ print(p)
 ggsave_quiet("figures/figure6-doy.png")
 ```
 
-**Figure 7.** Temporal resolution (time interval, minutes; note logarithmic scale) of COSORE data.
+**Figure 7.** Temporal resolution (time interval between successive measurements, minutes; note logarithmic scale) of COSORE data.
 
 ```{r temporal-resolution}
 results <- lapply(datasets, function(xname) {
@@ -582,7 +582,7 @@ p <- rf_co2 %>%
   ggplot(aes(x = CSR_FLUX_CO2)) + 
   geom_histogram(bins = 30) +
   facet_wrap(~IGBP_datasets, scales = "free_y") +
-  scale_y_continuous(labels = number_format(scale = 1e-3)) +
+  scale_y_continuous(labels = number_format(scale = 1e-3, accuracy = 0.1)) +
   labs(x = expression(CO[2]~flux~(µmol~m^-2~s^-1)), y = "Number of observations (*1000)")
 print(p)
 ggsave_quiet("figures/figure8-co2.png")
