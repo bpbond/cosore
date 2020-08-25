@@ -405,7 +405,7 @@ p <- ggplot() +
 print(p)
 ggsave_quiet("figures/figure3-climate.png")
 
-library(cowplot, quietly = TRUE)
+suppressMessages(library(cowplot, quietly = TRUE))
 p_new <- ggdraw() +
   draw_plot(p) +
   draw_plot(p_inset, x = 0.1, y = 0.5, width = 0.4, height = 0.45)
