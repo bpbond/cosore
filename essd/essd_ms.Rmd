@@ -27,7 +27,7 @@ library(ggmap)
 library(scales)
 ```
 
-```{r setup, include=FALSE, cache=TRUE}
+```{r setup, include=FALSE, cache=FALSE}
 db <- csr_database()
 db_records <- round(sum(db$CSR_RECORDS, na.rm = TRUE) / 1e6, 2)
 db_years <- max(year(db$CSR_DATE_END), na.rm = TRUE) - min(year(db$CSR_DATE_BEGIN), na.rm = TRUE) + 1
@@ -80,6 +80,8 @@ if(length(dupes)) {
   a_names <- a_names[-dupes]
 }
 
+# Write out the author list and affiliation list. Note that this chunk is
+# results='asis', which lets us write html
 cat(paste0(a_names, "<sup>", a_inst_numbers, "</sup>"), sep = ", ")
 cat("<ol>\n") # ordered HTML list
 cat(paste0("\t<li>", institution_list, "</li>"), sep = "\n")
@@ -154,7 +156,7 @@ library(cosore)
 
 Four primary user-facing functions are available:
 
-* *csr_database()* summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-8** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured;
+* *csr_database()* summarizes the entire database in a single convenient data frame, with one row per dataset, and is intended as a high-level overview. It returns a selection of variables summarized in **Tables 2-5 and S1-S3** below, including dataset name, longitude, latitude, elevation, IGBP code, number of records, dates, and variables measured;
 * *csr_dataset()* returns a single dataset: an R list structure, each element of which is a table (_description_, _contributors_, etc., as described above);
 * *csr_table()* collects, into a single data frame, one of the tables of the database, for any or all datasets;
 * *csr_metadata()* provides metadata information about all fields in all tables.
@@ -185,8 +187,8 @@ When contributed data are imported into COSORE, the package code performs a numb
 # Calculate what percent of observations are removed across all datasets
 csr_table("diagnostics", quiet = TRUE) %>% 
   group_by(CSR_DATASET, CSR_RECORDS) %>% 
-  summarise(removed = CSR_RECORDS_REMOVED_NA + CSR_RECORDS_REMOVED_ERR + CSR_RECORDS_REMOVED_TIMESTAMP) %>% 
-  ungroup() %>% 
+  summarise(removed = CSR_RECORDS_REMOVED_NA + CSR_RECORDS_REMOVED_ERR + CSR_RECORDS_REMOVED_TIMESTAMP,
+            .groups = "drop") %>% 
   mutate(removed_pct = removed / (removed + CSR_RECORDS) * 100) %>% 
   pull(removed_pct) -> errs
 ```
@@ -235,7 +237,8 @@ smrise <- function(x) {
     summarise(Datasets = n(),
               Records = format(sum(CSR_RECORDS, na.rm = TRUE), big.mark = ","),
               `First record` = min(CSR_DATE_BEGIN, na.rm = TRUE),
-              `Last record` = max(CSR_DATE_END, na.rm = TRUE)) 
+              `Last record` = max(CSR_DATE_END, na.rm = TRUE),
+              .groups = "drop") 
 }
 db %>% 
   filter(CSR_RECORDS > 0) %>%
@@ -301,7 +304,7 @@ make_table(db_fields, "columns")
 make_table(db_fields, "diagnostics")
 ```
 
-**Figure 2.** World satellite image with COSORE data submission sites shown as blue diamonds. Areas with multiple submissions are shown as darker.
+**Figure 2.** Geographic distribution of COSORE datasets (N = 898), with point sizes corresponding to the number of records in each dataset. Map tiles show USGS land cover and national elevation data and are by Stamen Design, under CC BY 3.0; data by OpenStreetMap, under ODbL; figure rendered using R’s ggmap (Kahle and Wickham, 2013).
 
 ```{r worldmap, message = FALSE, echo = FALSE, warning = FALSE}
 bbox <- make_bbox(lon = c(-160, 150), lat = c(-50, 70)) # make a coordinate box 
@@ -374,16 +377,40 @@ left_join(map, mat, by = c("x", "y")) %>%
   # Temp data is stored in degC * 10, so we need to divide to get back to degC
   mutate(mat = mat / 10) -> map_mat_global
 
+# Try Mark Tjoelker's suggestion re Whittaker biomes
+library(plotbiomes) # devtools::install_github("valentinitnelav/plotbiomes")
+p_inset <- whittaker_base_plot() +
+  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore / 10),
+             color = "black", shape = 4) +
+  theme(axis.title = element_blank(),
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 7),
+        legend.key.size = unit(0.4, "lines"),
+        legend.position = c(0.35, 0.75),
+        legend.title = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        panel.border = element_rect(colour = "black", fill = NA, size = 0.5))
+
+# SP's main climate space plot
 p <- ggplot() +
   geom_hex(data = map_mat_global,
-             aes(x = mat, y = map), bins = 100, na.rm = TRUE) +
+           aes(x = mat, y = map / 10), bins = 100, na.rm = TRUE) +
   scale_fill_viridis_c(name = "Grid cells", begin = 0.85, end = 0) +
-  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
+  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore / 10),
              color = "black", shape = 4, size = 1.5, na.rm = TRUE) +
   theme_minimal() +
   labs(x = "MAT (°C)", y = "MAP (mm)")
 print(p)
 ggsave_quiet("figures/figure3-climate.png")
+
+library(cowplot, quietly = TRUE)
+p_new <- ggdraw() +
+  draw_plot(p) +
+  draw_plot(p_inset, x = 0.1, y = 0.5, width = 0.4, height = 0.45)
+print(p_new)
+save_plot("figures/figure3-climate-whittaker.png", p_new, base_height = 5)
 ```
 
 ```{r waffle-prep, echo=FALSE}
@@ -404,7 +431,7 @@ results <- lapply(datasets, function(x) {
            year = year(CSR_TIMESTAMP_BEGIN)) %>% 
     left_join(db, by = "CSR_DATASET") %>% 
     group_by(year, CSR_IGBP) %>% 
-    summarise(n = n())
+    summarise(n = n(), .groups = "drop")
 })
 
 # Scale records so 1 box equals 5,000 records, and round up to capture records under 5,000
@@ -443,7 +470,8 @@ results <- lapply(datasets, function(x) {
     group_by(year, month) %>% 
     summarise(timestamp = mean(CSR_TIMESTAMP_BEGIN),
               n_co2 = sum(!is.na(CSR_FLUX_CO2)),
-              n_ch4 = sum(!is.na(CSR_FLUX_CH4))) %>% 
+              n_ch4 = sum(!is.na(CSR_FLUX_CH4)), 
+              .groups = "drop") %>% 
     mutate(CSR_DATASET = x,
            CSR_LATITUDE = d$description$CSR_LATITUDE)
 })
@@ -453,10 +481,11 @@ p <- results_lat %>%
   mutate(Lat_bin = floor(CSR_LATITUDE / 5) * 5) %>%
   group_by(year, Lat_bin) %>% 
   summarise(Records = sum(n_co2),
-            timestamp = mean(timestamp)) %>% 
-  ggplot(aes(timestamp, Lat_bin, color = Records)) + 
+            timestamp = mean(timestamp), 
+            .groups = "drop") %>% 
+  ggplot(aes(timestamp, Lat_bin, color = Records / 1000)) + 
   geom_point(size = 5, na.rm = TRUE) + 
-  scale_colour_viridis_c(name = "Observations", begin = 0.95, end = 0) +
+  scale_colour_viridis_c(name = "Observations\n(*1000)", begin = 0.95, end = 0) +
   labs(x = "Year", y = "Latitude")
 print(p)
 ggsave_quiet("figures/figure5-latitude.png", width = 8, height = 6)
@@ -477,7 +506,8 @@ results <- lapply(datasets, function(x) {
     summarise(n_co2 = sum(!is.na(CSR_FLUX_CO2)),
               n_ch4 = sum(!is.na(CSR_FLUX_CH4)),
               co2 = mean(CSR_FLUX_CO2, na.rm = TRUE),
-              ch4 = mean(CSR_FLUX_CH4, na.rm = TRUE)) %>% 
+              ch4 = mean(CSR_FLUX_CH4, na.rm = TRUE),
+              .groups = "drop") %>% 
     mutate(CSR_DATASET = x,
            CSR_LATITUDE = d$description$CSR_LATITUDE)
 })
@@ -488,7 +518,8 @@ results_doy %>%
   mutate(Hemi = if_else(CSR_LATITUDE < 0, "Southern~hemisphere", "Northern~hemisphere")) %>% 
   group_by(Hemi, yearday) %>% 
   summarise(n_ch4 = sum(n_ch4), 
-            n_co2 = sum(n_co2)) %>% 
+            n_co2 = sum(n_co2), 
+            .groups = "drop") %>% 
   filter(yearday <= 365) %>% 
   gather(variable, value, n_ch4, n_co2) %>% 
   separate(variable, into = c("junk", "Gas")) %>% 
@@ -504,6 +535,37 @@ p <- ggplot(data = doy_counts, aes(x = yearday, y = value)) +
 print(p)
 ggsave_quiet("figures/figure6-doy.png")
 ```
+
+**Figure 7.** Temporal resolution (time interval between successive measurements, minutes; note logarithmic scale) of COSORE data.
+
+```{r temporal-resolution}
+results <- lapply(datasets, function(xname) {
+  x <- csr_dataset(xname, quiet = TRUE)
+  
+  if(!is.null(x$data)) {
+    compute_interval <- function(dsd) {
+      results <- cosore:::compute_interval(dsd)
+      median(round(weighted.mean(results$Interval, results$N, na.rm = TRUE), 0))
+    }
+    tibble(Dataset = xname,
+           `Interval (min)` = as.integer(compute_interval(x$data)),
+           Records = nrow(x$data))
+  } else {
+    return(NULL)    
+  }
+})
+results_res <- bind_rows(results)
+
+p <- ggplot(results_res, aes(`Interval (min)`, weights = Records)) +
+  geom_histogram(bins = 50) + 
+  scale_x_continuous(trans = "log10") +
+  scale_y_continuous(labels = comma_format(scale = 1e-3)) +
+  annotation_logticks(sides = "b") +
+  ylab("Number of observations (*1000)")
+print(p)
+ggsave_quiet("figures/figure7-resolution.png")
+```
+
 
 ```{r flux-prep}
 results <- lapply(datasets, function(x) {
@@ -528,7 +590,7 @@ pct_co2 <- round(nrow(out_co2) / nrow(filter(results_fluxes, is.finite(CSR_FLUX_
 pct_ch4 <- round(nrow(out_ch4) / nrow(filter(results_fluxes, is.finite(CSR_FLUX_CH4))) * 100, 1)
 ```
 
-Figure 7. Distribution of CO2 fluxes in COSORE datasets, by IGBP classification (cf. Table 1). For visual clarity this figure excludes fluxes <`r min(co2_limits)` and >`r max(co2_limits)` µmol m-2 s-1 (`r format(nrow(out_co2), big.mark = ",")` observations, `r pct_co2`% of the data).
+**Figure 8.** Distribution of CO2 fluxes in COSORE datasets, by IGBP classification (cf. Table 1). For visual clarity this figure excludes fluxes <`r min(co2_limits)` and >`r max(co2_limits)` µmol m-2 s-1 (`r format(nrow(out_co2), big.mark = ",")` observations, `r pct_co2`% of the data).
 
 ```{r flux-co2}
 results_fluxes %>% 
@@ -537,7 +599,7 @@ results_fluxes %>%
 
 rf_co2 %>% 
   group_by(IGBP) %>% 
-  summarise(Ndatasets = length(unique(CSR_DATASET))) ->
+  summarise(Ndatasets = length(unique(CSR_DATASET)), .groups = "drop") ->
   dscounts
 
 p <- rf_co2 %>% 
@@ -546,13 +608,13 @@ p <- rf_co2 %>%
   ggplot(aes(x = CSR_FLUX_CO2)) + 
   geom_histogram(bins = 30) +
   facet_wrap(~IGBP_datasets, scales = "free_y") +
-  scale_y_continuous(labels = number_format(scale = 1e-3)) +
+  scale_y_continuous(labels = number_format(scale = 1e-3, accuracy = 0.1)) +
   labs(x = expression(CO[2]~flux~(µmol~m^-2~s^-1)), y = "Number of observations (*1000)")
 print(p)
-ggsave_quiet("figures/figure7-co2.png")
+ggsave_quiet("figures/figure8-co2.png")
 ```
 
-Figure 8. Distribution of CH4 fluxes in COSORE datasets, by IGBP classification (cf. Table 1). For visual clarity this figure excludes fluxes <`r min(ch4_limits)` and >`r max(ch4_limits)` nmol m-2 s-1 (`r format(nrow(out_ch4), big.mark = ",")` observations, `r pct_ch4`% of the data). Positive values are emissions to the atmosphere, and negative values uptake by the soil.
+**Figure 9.** Distribution of CH4 fluxes in COSORE datasets, by IGBP classification (cf. Table 1). For visual clarity this figure excludes fluxes <`r min(ch4_limits)` and >`r max(ch4_limits)` nmol m-2 s-1 (`r format(nrow(out_ch4), big.mark = ",")` observations, `r pct_ch4`% of the data). Positive values are emissions to the atmosphere, and negative values uptake by the soil.
 
 ```{r, flux-ch4}
 results_fluxes %>% 
@@ -561,7 +623,7 @@ results_fluxes %>%
 
 rf_ch4 %>% 
   group_by(IGBP) %>% 
-  summarise(Ndatasets = length(unique(CSR_DATASET))) ->
+  summarise(Ndatasets = length(unique(CSR_DATASET)), .groups = "drop") ->
   dscounts
 
 p <- rf_ch4 %>% 
@@ -573,7 +635,7 @@ p <- rf_ch4 %>%
   scale_y_continuous(labels = number_format(scale = 1e-3)) +
   labs(x = expression(CH[4]~flux~(nmol~m^-2~s^-1)), y = "Number of observations (*1000)")
 print(p)
-ggsave_quiet("figures/figure8-ch4.png")
+ggsave_quiet("figures/figure9-ch4.png")
 ```
 
 The End.
