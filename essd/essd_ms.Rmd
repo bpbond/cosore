@@ -401,7 +401,7 @@ p <- ggplot() +
   geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore / 10),
              color = "black", shape = 4, size = 1.5, na.rm = TRUE) +
   theme_minimal() +
-  labs(x = "MAT (°C)", y = "MAP (mm)")
+  labs(x = "MAT (°C)", y = "MAP (cm)")
 print(p)
 ggsave_quiet("figures/figure3-climate.png")
 
