@@ -375,16 +375,39 @@ left_join(map, mat, by = c("x", "y")) %>%
   # Temp data is stored in degC * 10, so we need to divide to get back to degC
   mutate(mat = mat / 10) -> map_mat_global
 
+# Try Mark Tjoelker's suggestion re Whittaker biomes
+library(plotbiomes) # devtools::install_github("valentinitnelav/plotbiomes")
+p_inset <- whittaker_base_plot() +
+  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore / 10),
+             color = "black", shape = 4) +
+  theme(axis.title = element_blank(),
+        axis.text = element_text(size = 8),
+        legend.text = element_text(size = 7),
+        legend.key.size = unit(0.4, "lines"),
+        legend.position = c(0.35, 0.75),
+        legend.title = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        panel.border = element_rect(colour = "black", fill = NA, size = 0.5))
+
+# SP's main climate space plot
 p <- ggplot() +
   geom_hex(data = map_mat_global,
-           aes(x = mat, y = map), bins = 100, na.rm = TRUE) +
+           aes(x = mat, y = map / 10), bins = 100, na.rm = TRUE) +
   scale_fill_viridis_c(name = "Grid cells", begin = 0.85, end = 0) +
-  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore),
+  geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore / 10),
              color = "black", shape = 4, size = 1.5, na.rm = TRUE) +
   theme_minimal() +
   labs(x = "MAT (°C)", y = "MAP (mm)")
 print(p)
 ggsave_quiet("figures/figure3-climate.png")
+
+p_new <- ggdraw() +
+  draw_plot(p) +
+  draw_plot(p_inset, x = 0.1, y = 0.5, width = 0.4, height = 0.45)
+print(p_new)
+save_plot("figures/figure3-climate-whittaker.png", p_new, base_height = 5)
 ```
 
 ```{r waffle-prep, echo=FALSE}
