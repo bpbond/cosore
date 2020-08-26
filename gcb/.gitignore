@@ -13,3 +13,4 @@ wc10/
 
 # Exception to *.csv above - this is not regenerated automatically
 !authors_from_google_sheets.csv
+!igbp_abbreviations.csv
