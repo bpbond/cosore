@@ -1,14 +1,10 @@
 # COLUMNS.txt
 #
 Database,			Dataset,	Computation,							Notes
-CSR_DRY_CO2,		CO2S,
 CSR_FLUX_CO2,  		EFFLUX,
-CSR_PAR,			PARo
-CSR_PORT,			cap#,		"paste0(sprintf('%02d', `Plot#`), sprintf('%02d', `cap#`))"
-CSR_RECORD,			Obs,
+CSR_PORT,			port,
 CSR_RH,				RHcmbr%,
-CSR_SM15,			VWC
-CSR_T5,				Tsoil_C,	"ifelse(Tsoil_C<0, NA_real_, Tsoil_C)",	following contributor SAS code
+CSR_SM15,			VSM%
+CSR_T15,			Tsoil_C,
 CSR_TAIR,			Tsch_C
-CSR_TAIR_AMB,		Tair
-CSR_TIMESTAMP_END,	YYYYMMDD,	"paste(YYYYMMDD, HHMMSS)"
+CSR_TIMESTAMP_END,	Date,		"paste(Date, Time)"

@@ -792,4 +792,45 @@ parse_d20200423_OYONARTE <- function(path) {
   rbind_list(dats)
 }
 
+#' Parse a custom file from d20200825_MINIAT
+#'
+#' @param path Data directory path, character
+#' @return A \code{data.frame} containing extracted data.
+#' @keywords internal
+parse_d20200825_MINIAT <- function(path) {
+  dat <- parse_PROCESSED_CSV(path)
 
+  # This is complex
+  # There is site (hardwood, ball creek, shope fork); plot; treatment; and surface
+  # All this gets wrapped up into our port and treatments fields
+  port <- gsub("\\D", "", dat$Plot) # e.g. 1.1-4 -> 114
+  dat$Surface <- trimws(dat$Surface)
+
+  # We compute all this to put into the PORT file
+  treatments <- rep("None", nrow(dat))
+  treatments[dat$tmt == "hdwd" & dat$Surface == "c"] <- "Partial O horizon"
+  treatments[dat$tmt == "hdwd" & dat$Surface == "u"] <- "None"
+  treatments[dat$tmt == "gird" & dat$Surface == "c"] <- "Girdled, partial O horizon"
+  treatments[dat$tmt == "gird" & dat$Surface == "u"] <- "Girdled"
+  treatments[dat$tmt == "hem" & dat$Surface == "c"] <- "Woody adelgid, partial O horizon"
+  treatments[dat$tmt == "hem" & dat$Surface == "u"] <- "Woody adelgid"
+
+  species <- rep("Tsuga canadensis", nrow(dat)) # hemlock and girdled
+  species[dat$tmt == "hdwd"] <- "Liriodendron tulipifera, Acer rubrum, Quercus spp., Carya spp., Rhododendron maximum"
+
+  covers <- as.integer(as.factor(dat$Surface))
+  ports <- paste0(port, covers) # now 1141 or 1142 e.g.
+  dat$port <- ports
+
+  miniat_ports <- tibble(port = ports,
+                         rs = "Rs",
+                         treatments = treatments,
+                         fan = "TRUE",
+                         area = 71.6,
+                         vol = 991,
+                         depth = 0.5,
+                         species = species)
+  miniat_ports
+  #  write.csv(miniat_ports, "~/Desktop/miniat_ports.csv", row.names = FALSE)
+  dat
+}

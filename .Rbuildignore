@@ -3,7 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 misc/
-essd/
+gcb/
 rsconnect/
 \.pdf$
 CODE_OF_CONDUCT.md

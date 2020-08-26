@@ -141,6 +141,7 @@ csr_build <- function(raw_data,
 
       if(write_standardized) {
         csr_standardize_data(x, path = standardized_path, create_dirs = TRUE)
+        message("You may want to re-run csr_database(regenerate = TRUE)")
       }
     }
 
