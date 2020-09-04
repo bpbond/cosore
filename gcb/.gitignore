@@ -11,6 +11,6 @@
 # worldclim data
 wc10/
 
-# Exception to *.csv above - this is not regenerated automatically
+# Exception to *.csv above - these are not regenerated automatically
 !authors_from_google_sheets.csv
 !igbp_abbreviations.csv
