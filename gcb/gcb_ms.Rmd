@@ -325,7 +325,7 @@ p <- ggmap(map) +
 print(p)
 
 ggsave_quiet <- function(...) suppressMessages(ggsave(...))
-ggsave_quiet("figures/figure2-map.png")
+ggsave_quiet("figures/figure2-map.pdf")
 ```
 
 **Figure 3.** Climate space figure.
@@ -388,6 +388,7 @@ library(plotbiomes) # devtools::install_github("valentinitnelav/plotbiomes")
 p_inset <- whittaker_base_plot() +
   geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore / 10),
              color = "black", shape = 4) +
+  coord_cartesian(ylim = c(0, 500)) +
   theme(axis.title = element_blank(),
         axis.text = element_text(size = 8),
         legend.text = element_text(size = 7),
@@ -407,16 +408,18 @@ p <- ggplot() +
   geom_point(data = cosore_points, aes(x = mat_cosore, y = map_cosore / 10),
              color = "black", shape = 4, size = 1.5, na.rm = TRUE) +
   theme_minimal() +
+  coord_cartesian(ylim = c(0, 500)) +
   labs(x = "MAT (°C)", y = "MAP (cm)")
 print(p)
-ggsave_quiet("figures/figure3-climate.png")
+ggsave_quiet("figures/figure3-climate.pdf")
 
 suppressMessages(library(cowplot, quietly = TRUE))
 p_new <- ggdraw() +
   draw_plot(p) +
-  draw_plot(p_inset, x = 0.1, y = 0.5, width = 0.4, height = 0.45)
+  draw_plot(p_inset, x = 0.1, y = 0.52, width = 0.4, height = 0.45)
 print(p_new)
 save_plot("figures/figure3-climate-whittaker.png", p_new, base_height = 5)
+save_plot("figures/figure3-climate-whittaker.pdf", p_new, base_height = 5)
 ```
 
 ```{r waffle-prep, echo=FALSE}
@@ -458,7 +461,7 @@ p <- ggplot(results_fluxes, aes(fill = IGBP, values = Records_scale)) +
         axis.text.y = element_blank(),
         axis.ticks = element_blank())
 print(p)
-ggsave_quiet("figures/figure4-waffle.png", width = 10, height = 5)
+ggsave_quiet("figures/figure4-waffle.pdf", width = 10, height = 5)
 ```
 
 **Figure 5.** Temporal density of COSORE datasets, by latitude of the observational site.
@@ -494,7 +497,7 @@ p <- results_lat %>%
   scale_colour_viridis_c(name = "Observations\n(*1000)", begin = 0.95, end = 0) +
   labs(x = "Year", y = "Latitude")
 print(p)
-ggsave_quiet("figures/figure5-latitude.png", width = 8, height = 6)
+ggsave_quiet("figures/figure5-latitude.pdf", width = 8, height = 6)
 ```
 
 **Figure 6.** Temporal data coverage by day of year and hemisphere
@@ -539,7 +542,7 @@ p <- ggplot(data = doy_counts, aes(x = yearday, y = value)) +
   labs(x = "Day of year", y = "Number of observations") +
   scale_y_continuous(labels = comma)
 print(p)
-ggsave_quiet("figures/figure6-doy.png")
+ggsave_quiet("figures/figure6-doy.pdf")
 ```
 
 **Figure 7.** Temporal resolution (time interval between successive measurements, minutes; note logarithmic scale) of COSORE data.
@@ -569,7 +572,7 @@ p <- ggplot(results_res, aes(`Interval (min)`, weights = Records)) +
   annotation_logticks(sides = "b") +
   ylab("Number of observations (*1000)")
 print(p)
-ggsave_quiet("figures/figure7-resolution.png")
+ggsave_quiet("figures/figure7-resolution.pdf")
 ```
 
 
@@ -623,7 +626,7 @@ p <- in_co2 %>%
   scale_y_continuous(labels = number_format(scale = 1e-3, accuracy = 0.1)) +
   labs(x = expression(CO[2]~flux~(µmol~m^-2~s^-1)), y = "Number of observations (*1000)")
 print(p)
-ggsave_quiet("figures/figure8-co2.png")
+ggsave_quiet("figures/figure8-co2.pdf")
 ```
 
 **Figure 9.** Distribution of CH4 fluxes in COSORE datasets, by IGBP classification (cf. Table 1). For visual clarity this figure excludes some extreme values (`r format(nrow(rf_ch4) - nrow(in_ch4), big.mark = ",")` observations or `r pct_ch4`% of the data). Number of datasets (sites) making up data is given in parentheses after IGBP abbreviations in each panel. Positive values are emissions to the atmosphere, and negative values uptake by the soil.
@@ -643,7 +646,7 @@ p <- in_ch4 %>%
   scale_y_continuous(labels = number_format(scale = 1e-3)) +
   labs(x = expression(CH[4]~flux~(nmol~m^-2~s^-1)), y = "Number of observations (*1000)")
 print(p)
-ggsave_quiet("figures/figure9-ch4.png")
+ggsave_quiet("figures/figure9-ch4.pdf")
 ```
 
 The End.

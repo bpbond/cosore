@@ -2,6 +2,7 @@
 *.html
 *.csv
 *.png
+*.pdf
 *.docx
 
 # knitr and R markdown default cache directories
@@ -14,3 +15,6 @@ wc10/
 # Exception to *.csv above - these are not regenerated automatically
 !authors_from_google_sheets.csv
 !igbp_abbreviations.csv
+
+# Final documents
+final/
