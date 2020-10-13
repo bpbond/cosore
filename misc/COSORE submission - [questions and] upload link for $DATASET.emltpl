@@ -1,17 +1,17 @@
-User-Agent: Microsoft-MacOutlook/10.22.0.200209
-Date: Fri, 28 Feb 2020 05:43:28 -0500
+User-Agent: Microsoft-MacOutlook/16.41.20091302
+Date: Tue, 13 Oct 2020 05:23:01 -0400
 Subject: COSORE submission - [questions and] upload link for $DATASET
 From: "Bond-Lamberty, Benjamin" <bondlamberty@pnnl.gov>
-Message-ID: <B290D013-38E6-4314-B5EE-83E9F1454381@pnnl.gov>
+Message-ID: <E381F4B4-AAB0-490B-9F16-8B4190EA5DAC@pnnl.gov>
 Thread-Topic: COSORE submission - [questions and] upload link for $DATASET
 Mime-version: 1.0
 Content-type: multipart/alternative;
-	boundary="B_3665713434_1404880777"
+	boundary="B_3685411393_992936293"
 
 > This message is in MIME format. Since your mail reader does not understand
 this format, some or all of this message may not be legible.
 
---B_3665713434_1404880777
+--B_3685411393_992936293
 Content-type: text/plain;
 	charset="UTF-8"
 Content-transfer-encoding: quoted-printable
@@ -57,7 +57,7 @@ Kind regards,
 Ben Bond-Lamberty
 
 
---B_3665713434_1404880777
+--B_3685411393_992936293
 Content-type: text/html;
 	charset="UTF-8"
 Content-transfer-encoding: quoted-printable
@@ -68,13 +68,13 @@ s-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/office/20=
 ontent-Type content=3D"text/html; charset=3Dutf-8"><meta name=3DProgId content=3DWor=
 d.Document><meta name=3DGenerator content=3D"Microsoft Word 15"><meta name=3DOrigi=
 nator content=3D"Microsoft Word 15"><link rel=3DFile-List href=3D"cid:filelist.xml=
-@01D5EDFA.00CB0650"><!--[if gte mso 9]><xml>
+@01D6A120.EB4A9F90"><!--[if gte mso 9]><xml>
 <o:OfficeDocumentSettings>
 <o:AllowPNG/>
 </o:OfficeDocumentSettings>
 </xml><![endif]--><!--[if gte mso 9]><xml>
 <w:WordDocument>
-<w:Zoom>101</w:Zoom>
+<w:Zoom>110</w:Zoom>
 <w:SpellingState>Clean</w:SpellingState>
 <w:DocumentKind>DocumentEmail</w:DocumentKind>
 <w:TrackMoves/>
@@ -814,15 +814,13 @@ p.MsoNormal, li.MsoNormal, div.MsoNormal
 	mso-style-qformat:yes;
 	mso-style-parent:"";
 	margin:0in;
-	margin-bottom:.0001pt;
 	mso-pagination:widow-orphan;
 	font-size:12.0pt;
 	font-family:"Calibri",sans-serif;
 	mso-fareast-font-family:DengXian;
 	mso-bidi-font-family:Arial;}
 a:link, span.MsoHyperlink
-	{mso-style-noshow:yes;
-	mso-style-priority:99;
+	{mso-style-priority:99;
 	color:#0563C1;
 	text-decoration:underline;
 	text-underline:single;}
@@ -837,7 +835,6 @@ p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
 	mso-style-priority:99;
 	mso-style-link:"Plain Text Char";
 	margin:0in;
-	margin-bottom:.0001pt;
 	mso-pagination:widow-orphan;
 	font-size:11.0pt;
 	mso-bidi-font-size:10.5pt;
@@ -899,33 +896,35 @@ table.MsoNormalTable
 	mso-style-parent:"";
 	mso-padding-alt:0in 5.4pt 0in 5.4pt;
 	mso-para-margin:0in;
-	mso-para-margin-bottom:.0001pt;
 	mso-pagination:widow-orphan;
 	font-size:10.0pt;
 	font-family:"Calibri",sans-serif;
 	mso-bidi-font-family:Arial;}
 </style><![endif]--></head><body lang=3DEN-US link=3D"#0563C1" vlink=3D"#954F72" =
-style=3D'tab-interval:.5in'><div class=3DWordSection1><p class=3DMsoPlainText>Dear=
- Dr. $LAST_NAME,</p><p class=3DMsoPlainText><o:p>&nbsp;</o:p></p><p class=3DMsoP=
-lainText>Thanks for your interest and submitting the COSORE metadata form. I=
-f you have any feedback on it (too complicated, unclear, something is missin=
-g) please let me know. </p><p class=3DMsoPlainText><o:p>&nbsp;</o:p></p><p cla=
-ss=3DMsoPlainText>Reviewing the metadata for this dataset, I do have some ques=
-tions:</p><p class=3DMsoPlainText>1. ...</p><p class=3DMsoPlainText><o:p>&nbsp;<=
-/o:p></p><p class=3DMsoPlainText>**To upload the data** for $SITE, please use =
-this link: $DROPBOX_LINK</p><p class=3DMsoPlainText><o:p>&nbsp;</o:p></p><p cl=
-ass=3DMsoPlainText>Note that there is no set data format=E2=80=94for these early sub=
-missions to COSORE, we will take on the work of translating your dataset int=
-o the standardized database form. Any sensible tabular (csv, <span class=3DSpe=
-llE>etc</span>) data format with columns clearly labeled is fine, but we can=
- handle raw 8100A files as well.<o:p></o:p></p><p class=3DMsoPlainText><o:p>&n=
-bsp;</o:p></p><p class=3DMsoPlainText>Once you upload, I may get back to you w=
-ith [further] questions, and will definitely send you a summary report for c=
-hecking. Thanks again for your willingness to contribute to the continuous s=
-oil respiration database in its early stages!</p><p class=3DMsoPlainText><o:p>=
-&nbsp;</o:p></p><p class=3DMsoPlainText>Kind regards,</p><p class=3DMsoPlainText=
-><o:p>&nbsp;</o:p></p><p class=3DMsoPlainText>Ben Bond-<span class=3DSpellE>Lamb=
-erty</span></p></div></body></html>
+style=3D'tab-interval:.5in;word-wrap:break-word'><div class=3DWordSection1><p cl=
+ass=3DMsoPlainText>Dear Dr. $LAST_NAME,</p><p class=3DMsoPlainText><o:p>&nbsp;</=
+o:p></p><p class=3DMsoPlainText>Thanks for your interest and submitting the CO=
+SORE metadata form. If you have any feedback on it (too complicated, unclear=
+, something is missing) please let me know. </p><p class=3DMsoPlainText><o:p>&=
+nbsp;</o:p></p><p class=3DMsoPlainText>Reviewing the metadata for this dataset=
+, I do have some questions:</p><p class=3DMsoPlainText>1. ...</p><p class=3DMsoP=
+lainText><o:p>&nbsp;</o:p></p><p class=3DMsoPlainText>**To upload the data** f=
+or $SITE, please use this link: $DROPBOX_LINK</p><p class=3DMsoPlainText><o:p>=
+&nbsp;</o:p></p><p class=3DMsoPlainText>Note that there is no set data format=E2=
+=80=94for these early submissions to COSORE, we will take on the work of transla=
+ting your dataset into the standardized database form. Any sensible tabular =
+(csv, <span class=3DSpellE>etc</span>) data format with columns clearly labele=
+d is fine, but we can handle raw 8100A files as well.</p><p class=3DMsoPlainTe=
+xt><o:p>&nbsp;</o:p></p><p class=3DMsoPlainText>Once you upload, I may get bac=
+k to you with [further] questions, and will definitely send you a summary re=
+port for checking. Thanks again for your willingness to contribute to the <a=
+ href=3D"https://onlinelibrary.wiley.com/doi/10.1111/gcb.15353">continuous soi=
+l respiration database</a> in its early stages!</p><p class=3DMsoPlainText><o:=
+p>&nbsp;</o:p></p><p class=3DMsoPlainText>Kind regards,</p><p class=3DMsoPlainTe=
+xt><o:p>&nbsp;</o:p></p><p class=3DMsoPlainText>Ben Bond-<span class=3DSpellE>La=
+mberty</span></p></div></body></html>
 
---B_3665713434_1404880777--
+--B_3685411393_992936293--
+
+B_3665713434_1404880777--
 
