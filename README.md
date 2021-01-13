@@ -5,6 +5,8 @@
 
 # cosore
 
+**The _Global Change Biology_** paper is [published](https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.15353)!
+
 The `cosore` package consists of data, metadata, and software tools for COSORE, a reproducibility-oriented 
 community database for continuous soil respiration data.
 
