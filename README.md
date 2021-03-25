@@ -5,6 +5,8 @@
 
 # cosore
 
+**A first data analysis** using COSORE is [published](https://www.nature.com/articles/s41598-021-85764-8.epdf)!
+
 **The _Global Change Biology_** paper is [published](https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.15353)!
 
 The `cosore` package consists of data, metadata, and software tools for COSORE, a reproducibility-oriented 
