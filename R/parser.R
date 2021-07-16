@@ -288,7 +288,7 @@ read_ancillary_file <- function(dataset_name, file_data = NULL) {
 
   if(nrow(anc)) {
     if(any(is.na(anc$CSR_STATISTIC))) {
-      stop("CSR_STATISTIC needs to be completely filled out in ancillary file")
+      stop(dataset_name, ": CSR_STATISTIC needs to be completely filled out in ancillary file")
     }
   }
 

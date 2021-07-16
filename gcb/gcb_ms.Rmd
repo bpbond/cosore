@@ -400,6 +400,8 @@ p_inset <- whittaker_base_plot() +
         panel.background = element_rect(fill = "white"),
         panel.border = element_rect(colour = "black", fill = NA, size = 0.5))
 
+ggsave_quiet("figures/figure3-climate-inset.png")
+
 # SP's main climate space plot
 p <- ggplot() +
   geom_hex(data = map_mat_global,
