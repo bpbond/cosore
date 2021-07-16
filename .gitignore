@@ -41,5 +41,5 @@ vignettes/*.pdf
 rsconnect/
 .Rproj.user
 
-# OS files
+# Mac OS files
 .DS_Store
